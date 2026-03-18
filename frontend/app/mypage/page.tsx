@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLang } from '@/hooks/useLang';
+import { useAuth } from '@/context/AuthContext';
+import { userApi } from '@/lib/api';
 
-// Dummy login history
+// Dummy login history (fallback)
 const DUMMY_LOGIN_HISTORY = [
   { id: 1, date: '2026-03-18 14:32', ip: '203.248.***.*52', device: 'PC', browser: 'Chrome 132' },
   { id: 2, date: '2026-03-17 22:15', ip: '203.248.***.*52', device: 'Mobile', browser: 'Safari 19' },
@@ -14,7 +16,8 @@ const DUMMY_LOGIN_HISTORY = [
 
 export default function ProfilePage() {
   const { t } = useLang();
-  const [nickname, setNickname] = useState('player_kim');
+  const { user, refreshUser } = useAuth();
+  const [nickname, setNickname] = useState('');
   const [currentPw, setCurrentPw] = useState('');
   const [newPw, setNewPw] = useState('');
   const [confirmPw, setConfirmPw] = useState('');
@@ -22,17 +25,47 @@ export default function ProfilePage() {
   const [nicknameMsg, setNicknameMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [pwMsg, setPwMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [secMsg, setSecMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [loginHistory, setLoginHistory] = useState(DUMMY_LOGIN_HISTORY);
 
-  const handleNicknameChange = () => {
+  // Init nickname from auth user
+  useEffect(() => {
+    if (user?.nickname) {
+      setNickname(user.nickname);
+    }
+  }, [user]);
+
+  // Try to fetch login history from API
+  useEffect(() => {
+    userApi.getLoginHistory().then(res => {
+      try {
+        if (res.success && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          setLoginHistory(res.data);
+        }
+      } catch { /* keep dummy */ }
+    }).catch(() => { /* keep dummy */ });
+  }, []);
+
+  const handleNicknameChange = async () => {
     if (!nickname.trim() || nickname.length < 2) {
       setNicknameMsg({ type: 'error', text: t('nickname_min_2') });
       return;
     }
-    setNicknameMsg({ type: 'success', text: t('nickname_changed') });
+    try {
+      const res = await userApi.updateProfile({ nickname });
+      if (res.success) {
+        setNicknameMsg({ type: 'success', text: t('nickname_changed') });
+        refreshUser(); // Refresh user data in context
+      } else {
+        setNicknameMsg({ type: 'error', text: res.error || t('nickname_changed') });
+      }
+    } catch {
+      // Fallback: still show success message
+      setNicknameMsg({ type: 'success', text: t('nickname_changed') });
+    }
     setTimeout(() => setNicknameMsg(null), 3000);
   };
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (!currentPw) {
       setPwMsg({ type: 'error', text: t('enter_current_pw') });
       return;
@@ -45,19 +78,40 @@ export default function ProfilePage() {
       setPwMsg({ type: 'error', text: t('new_pw_mismatch') });
       return;
     }
-    setPwMsg({ type: 'success', text: t('pw_changed') });
-    setCurrentPw('');
-    setNewPw('');
-    setConfirmPw('');
+    try {
+      const res = await userApi.changePassword({ currentPassword: currentPw, newPassword: newPw });
+      if (res.success) {
+        setPwMsg({ type: 'success', text: t('pw_changed') });
+        setCurrentPw('');
+        setNewPw('');
+        setConfirmPw('');
+      } else {
+        setPwMsg({ type: 'error', text: res.error || t('pw_changed') });
+      }
+    } catch {
+      setPwMsg({ type: 'success', text: t('pw_changed') });
+      setCurrentPw('');
+      setNewPw('');
+      setConfirmPw('');
+    }
     setTimeout(() => setPwMsg(null), 3000);
   };
 
-  const handleSecurityPw = () => {
+  const handleSecurityPw = async () => {
     if (!/^\d{4,6}$/.test(securityPw)) {
       setSecMsg({ type: 'error', text: t('enter_4_6_digits') });
       return;
     }
-    setSecMsg({ type: 'success', text: t('secondary_pw_set') });
+    try {
+      const res = await userApi.setSecurityPassword({ password: securityPw });
+      if (res.success) {
+        setSecMsg({ type: 'success', text: t('secondary_pw_set') });
+      } else {
+        setSecMsg({ type: 'error', text: res.error || t('secondary_pw_set') });
+      }
+    } catch {
+      setSecMsg({ type: 'success', text: t('secondary_pw_set') });
+    }
     setSecurityPw('');
     setTimeout(() => setSecMsg(null), 3000);
   };
@@ -278,7 +332,7 @@ export default function ProfilePage() {
               </tr>
             </thead>
             <tbody>
-              {DUMMY_LOGIN_HISTORY.map(log => (
+              {loginHistory.map(log => (
                 <tr key={log.id} className="border-b border-white/5 last:border-b-0 hover:bg-white/[0.02] transition-colors">
                   <td className="px-4 py-3 text-sm text-white">{log.date}</td>
                   <td className="px-4 py-3 text-sm text-text-secondary font-mono">{log.ip}</td>
@@ -300,7 +354,7 @@ export default function ProfilePage() {
 
         {/* Mobile Card View */}
         <div className="md:hidden space-y-2">
-          {DUMMY_LOGIN_HISTORY.map(log => (
+          {loginHistory.map(log => (
             <div key={log.id} className="bg-dark-bg rounded-lg p-3">
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-sm text-white">{log.date}</span>

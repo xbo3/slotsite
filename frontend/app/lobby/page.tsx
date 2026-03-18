@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import { DEMO_GAMES } from '@/lib/gameData';
+import { gameApi } from '@/lib/api';
 import { useLang } from '@/hooks/useLang';
 
 // ===== Dummy Game Data =====
@@ -22,50 +23,7 @@ interface Game {
   thumbnail?: string;
 }
 
-const GAMES: Game[] = [
-  { id: 'gates-of-olympus', name: 'Gates of Olympus', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.5, isHot: true, isNew: false, maxWin: 'x5000' },
-  { id: 'sweet-bonanza', name: 'Sweet Bonanza', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.48, isHot: true, isNew: false, maxWin: 'x21100' },
-  { id: 'starlight-princess', name: 'Starlight Princess', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.5, isHot: true, isNew: false, maxWin: 'x5000' },
-  { id: 'sugar-rush', name: 'Sugar Rush', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.5, isHot: false, isNew: true, maxWin: 'x5000' },
-  { id: 'big-bass-bonanza', name: 'Big Bass Bonanza', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.71, isHot: false, isNew: false, maxWin: 'x2100' },
-  { id: 'wild-west-gold', name: 'Wild West Gold', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.51, isHot: false, isNew: false, maxWin: 'x10000' },
-  { id: 'fortune-tiger', name: 'Fortune Tiger', provider: 'PG Soft', category: 'SLOT', rtp: 96.81, isHot: true, isNew: false, maxWin: 'x2500' },
-  { id: 'fortune-ox', name: 'Fortune Ox', provider: 'PG Soft', category: 'SLOT', rtp: 96.75, isHot: true, isNew: false, maxWin: 'x1000' },
-  { id: 'fortune-rabbit', name: 'Fortune Rabbit', provider: 'PG Soft', category: 'SLOT', rtp: 96.75, isHot: false, isNew: true, maxWin: 'x1000' },
-  { id: 'mahjong-ways', name: 'Mahjong Ways', provider: 'PG Soft', category: 'SLOT', rtp: 96.95, isHot: false, isNew: false, maxWin: 'x5000' },
-  { id: 'lucky-neko', name: 'Lucky Neko', provider: 'PG Soft', category: 'SLOT', rtp: 96.72, isHot: false, isNew: false, maxWin: 'x6500' },
-  { id: 'ganesha-gold', name: 'Ganesha Gold', provider: 'PG Soft', category: 'SLOT', rtp: 96.74, isHot: false, isNew: false, maxWin: 'x3000' },
-  { id: 'crazy-time', name: 'Crazy Time', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 95.5, isHot: true, isNew: false, maxWin: 'x25000' },
-  { id: 'lightning-roulette', name: 'Lightning Roulette', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 97.3, isHot: true, isNew: false, maxWin: 'x500' },
-  { id: 'monopoly-live', name: 'Monopoly Live', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 96.23, isHot: false, isNew: false, maxWin: 'x10000' },
-  { id: 'dream-catcher', name: 'Dream Catcher', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 96.58, isHot: false, isNew: true, maxWin: 'x7000' },
-  { id: 'mega-ball', name: 'Mega Ball', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 95.4, isHot: false, isNew: false, maxWin: 'x1000000' },
-  { id: 'starburst', name: 'Starburst', provider: 'NetEnt', category: 'SLOT', rtp: 96.09, isHot: false, isNew: false, maxWin: 'x500' },
-  { id: 'gonzo-quest', name: "Gonzo's Quest", provider: 'NetEnt', category: 'SLOT', rtp: 95.97, isHot: false, isNew: false, maxWin: 'x2500' },
-  { id: 'dead-or-alive-2', name: 'Dead or Alive 2', provider: 'NetEnt', category: 'SLOT', rtp: 96.82, isHot: true, isNew: false, maxWin: 'x111111' },
-  { id: 'divine-fortune', name: 'Divine Fortune', provider: 'NetEnt', category: 'SLOT', rtp: 96.59, isHot: false, isNew: false, maxWin: 'Jackpot' },
-  { id: 'twin-spin', name: 'Twin Spin', provider: 'NetEnt', category: 'SLOT', rtp: 96.56, isHot: false, isNew: true, maxWin: 'x1080' },
-  { id: 'immortal-romance', name: 'Immortal Romance', provider: 'Microgaming', category: 'SLOT', rtp: 96.86, isHot: false, isNew: false, maxWin: 'x12150' },
-  { id: 'mega-moolah', name: 'Mega Moolah', provider: 'Microgaming', category: 'SLOT', rtp: 88.12, isHot: true, isNew: false, maxWin: 'Progressive' },
-  { id: 'thunderstruck-2', name: 'Thunderstruck II', provider: 'Microgaming', category: 'SLOT', rtp: 96.65, isHot: false, isNew: false, maxWin: 'x8000' },
-  { id: 'break-da-bank', name: 'Break da Bank Again', provider: 'Microgaming', category: 'SLOT', rtp: 95.43, isHot: false, isNew: false, maxWin: 'x1000' },
-  { id: 'book-of-dead', name: 'Book of Dead', provider: "Play'n GO", category: 'SLOT', rtp: 96.21, isHot: true, isNew: false, maxWin: 'x5000' },
-  { id: 'reactoonz', name: 'Reactoonz', provider: "Play'n GO", category: 'SLOT', rtp: 96.51, isHot: false, isNew: false, maxWin: 'x4570' },
-  { id: 'fire-joker', name: 'Fire Joker', provider: "Play'n GO", category: 'SLOT', rtp: 96.15, isHot: false, isNew: true, maxWin: 'x800' },
-  { id: 'moon-princess', name: 'Moon Princess', provider: "Play'n GO", category: 'SLOT', rtp: 96.5, isHot: false, isNew: false, maxWin: 'x5000' },
-  // DEMO_GAMES (CDN 이미지 포함)
-  ...DEMO_GAMES.map(dg => ({
-    id: String(dg.id),
-    name: dg.name,
-    provider: dg.provider,
-    category: dg.category === 'slots' ? 'SLOT' : dg.category.toUpperCase(),
-    rtp: parseFloat(dg.rtp),
-    isHot: dg.isHot,
-    isNew: dg.isNew,
-    maxWin: dg.maxWin,
-    thumbnail: dg.thumbnail,
-  })),
-];
+// (GAMES is now managed as state in LobbyContent, initialized from DEFAULT_GAMES)
 
 // Dummy recent plays (kept for future use)
 // const RECENT_PLAYS: Game[] = [
@@ -186,11 +144,82 @@ export default function LobbyPage() {
   );
 }
 
+// Default GAMES from static data
+const DEFAULT_GAMES: Game[] = [
+  { id: 'gates-of-olympus', name: 'Gates of Olympus', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.5, isHot: true, isNew: false, maxWin: 'x5000' },
+  { id: 'sweet-bonanza', name: 'Sweet Bonanza', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.48, isHot: true, isNew: false, maxWin: 'x21100' },
+  { id: 'starlight-princess', name: 'Starlight Princess', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.5, isHot: true, isNew: false, maxWin: 'x5000' },
+  { id: 'sugar-rush', name: 'Sugar Rush', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.5, isHot: false, isNew: true, maxWin: 'x5000' },
+  { id: 'big-bass-bonanza', name: 'Big Bass Bonanza', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.71, isHot: false, isNew: false, maxWin: 'x2100' },
+  { id: 'wild-west-gold', name: 'Wild West Gold', provider: 'Pragmatic Play', category: 'SLOT', rtp: 96.51, isHot: false, isNew: false, maxWin: 'x10000' },
+  { id: 'fortune-tiger', name: 'Fortune Tiger', provider: 'PG Soft', category: 'SLOT', rtp: 96.81, isHot: true, isNew: false, maxWin: 'x2500' },
+  { id: 'fortune-ox', name: 'Fortune Ox', provider: 'PG Soft', category: 'SLOT', rtp: 96.75, isHot: true, isNew: false, maxWin: 'x1000' },
+  { id: 'fortune-rabbit', name: 'Fortune Rabbit', provider: 'PG Soft', category: 'SLOT', rtp: 96.75, isHot: false, isNew: true, maxWin: 'x1000' },
+  { id: 'mahjong-ways', name: 'Mahjong Ways', provider: 'PG Soft', category: 'SLOT', rtp: 96.95, isHot: false, isNew: false, maxWin: 'x5000' },
+  { id: 'lucky-neko', name: 'Lucky Neko', provider: 'PG Soft', category: 'SLOT', rtp: 96.72, isHot: false, isNew: false, maxWin: 'x6500' },
+  { id: 'ganesha-gold', name: 'Ganesha Gold', provider: 'PG Soft', category: 'SLOT', rtp: 96.74, isHot: false, isNew: false, maxWin: 'x3000' },
+  { id: 'crazy-time', name: 'Crazy Time', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 95.5, isHot: true, isNew: false, maxWin: 'x25000' },
+  { id: 'lightning-roulette', name: 'Lightning Roulette', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 97.3, isHot: true, isNew: false, maxWin: 'x500' },
+  { id: 'monopoly-live', name: 'Monopoly Live', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 96.23, isHot: false, isNew: false, maxWin: 'x10000' },
+  { id: 'dream-catcher', name: 'Dream Catcher', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 96.58, isHot: false, isNew: true, maxWin: 'x7000' },
+  { id: 'mega-ball', name: 'Mega Ball', provider: 'Evolution', category: 'LIVE_CASINO', rtp: 95.4, isHot: false, isNew: false, maxWin: 'x1000000' },
+  { id: 'starburst', name: 'Starburst', provider: 'NetEnt', category: 'SLOT', rtp: 96.09, isHot: false, isNew: false, maxWin: 'x500' },
+  { id: 'gonzo-quest', name: "Gonzo's Quest", provider: 'NetEnt', category: 'SLOT', rtp: 95.97, isHot: false, isNew: false, maxWin: 'x2500' },
+  { id: 'dead-or-alive-2', name: 'Dead or Alive 2', provider: 'NetEnt', category: 'SLOT', rtp: 96.82, isHot: true, isNew: false, maxWin: 'x111111' },
+  { id: 'divine-fortune', name: 'Divine Fortune', provider: 'NetEnt', category: 'SLOT', rtp: 96.59, isHot: false, isNew: false, maxWin: 'Jackpot' },
+  { id: 'twin-spin', name: 'Twin Spin', provider: 'NetEnt', category: 'SLOT', rtp: 96.56, isHot: false, isNew: true, maxWin: 'x1080' },
+  { id: 'immortal-romance', name: 'Immortal Romance', provider: 'Microgaming', category: 'SLOT', rtp: 96.86, isHot: false, isNew: false, maxWin: 'x12150' },
+  { id: 'mega-moolah', name: 'Mega Moolah', provider: 'Microgaming', category: 'SLOT', rtp: 88.12, isHot: true, isNew: false, maxWin: 'Progressive' },
+  { id: 'thunderstruck-2', name: 'Thunderstruck II', provider: 'Microgaming', category: 'SLOT', rtp: 96.65, isHot: false, isNew: false, maxWin: 'x8000' },
+  { id: 'break-da-bank', name: 'Break da Bank Again', provider: 'Microgaming', category: 'SLOT', rtp: 95.43, isHot: false, isNew: false, maxWin: 'x1000' },
+  { id: 'book-of-dead', name: 'Book of Dead', provider: "Play'n GO", category: 'SLOT', rtp: 96.21, isHot: true, isNew: false, maxWin: 'x5000' },
+  { id: 'reactoonz', name: 'Reactoonz', provider: "Play'n GO", category: 'SLOT', rtp: 96.51, isHot: false, isNew: false, maxWin: 'x4570' },
+  { id: 'fire-joker', name: 'Fire Joker', provider: "Play'n GO", category: 'SLOT', rtp: 96.15, isHot: false, isNew: true, maxWin: 'x800' },
+  { id: 'moon-princess', name: 'Moon Princess', provider: "Play'n GO", category: 'SLOT', rtp: 96.5, isHot: false, isNew: false, maxWin: 'x5000' },
+  ...DEMO_GAMES.map(dg => ({
+    id: String(dg.id),
+    name: dg.name,
+    provider: dg.provider,
+    category: dg.category === 'slots' ? 'SLOT' : dg.category.toUpperCase(),
+    rtp: parseFloat(dg.rtp),
+    isHot: dg.isHot,
+    isNew: dg.isNew,
+    maxWin: dg.maxWin,
+    thumbnail: dg.thumbnail,
+  })),
+];
+
 function LobbyContent() {
   const { t } = useLang();
   const searchParams = useSearchParams();
   const providerParam = searchParams.get('provider');
   const isMobile = useIsMobile();
+
+  // Games state: try API, fallback to DEFAULT_GAMES
+  const [GAMES, setGAMES] = useState<Game[]>(DEFAULT_GAMES);
+  const [, setApiLoading] = useState(true);
+
+  useEffect(() => {
+    gameApi.getGames().then(res => {
+      try {
+        if (res.success && res.data && Array.isArray(res.data) && res.data.length > 0) {
+          const apiGames: Game[] = res.data.map((g: Record<string, unknown>) => ({
+            id: String(g.id || ''),
+            name: String(g.name || ''),
+            provider: String(g.provider || ''),
+            category: String(g.category || 'SLOT'),
+            rtp: Number(g.rtp) || 96,
+            isHot: Boolean(g.isHot || g.is_hot),
+            isNew: Boolean(g.isNew || g.is_new),
+            maxWin: String(g.maxWin || g.max_win || ''),
+            thumbnail: g.thumbnail ? String(g.thumbnail) : undefined,
+          }));
+          setGAMES(apiGames);
+        }
+      } catch { /* fallback to DEFAULT_GAMES */ }
+      setApiLoading(false);
+    }).catch(() => setApiLoading(false));
+  }, []);
 
   // Multi-select providers
   const [selectedProviders, setSelectedProviders] = useState<Set<string>>(() => {

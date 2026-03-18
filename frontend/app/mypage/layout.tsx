@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { useCountUp } from '@/hooks/useCountUp';
 import { useLang } from '@/hooks/useLang';
+import { useAuth } from '@/context/AuthContext';
 
-// Dummy user data
+// Dummy user data (fallback)
 const DUMMY_USER = {
   nickname: 'player_kim',
   email: 'test***@gmail.com',
@@ -35,16 +36,37 @@ const TABS = [
 export default function MyPageLayout({ children }: { children: React.ReactNode }) {
   const { t } = useLang();
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isLoggedIn, isLoading: authLoading } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const tabContainerRef = useRef<HTMLDivElement>(null);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
 
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isLoggedIn) {
+      router.push('/login');
+    }
+  }, [authLoading, isLoggedIn, router]);
+
+  // Merge auth user data with dummy fallback
+  const userData: typeof DUMMY_USER = useMemo(() => {
+    if (user) {
+      return {
+        ...DUMMY_USER,
+        nickname: user.nickname || DUMMY_USER.nickname,
+        balance: parseFloat(user.balance) || DUMMY_USER.balance,
+      };
+    }
+    return DUMMY_USER;
+  }, [user]);
+
   // CountUp for hero card
-  const animatedBalance = useCountUp(DUMMY_USER.balance);
-  const animatedDeposit = useCountUp(DUMMY_USER.totalDeposit);
-  const animatedWithdraw = useCountUp(DUMMY_USER.totalWithdraw);
-  const animatedBet = useCountUp(DUMMY_USER.totalBet);
+  const animatedBalance = useCountUp(userData.balance);
+  const animatedDeposit = useCountUp(userData.totalDeposit);
+  const animatedWithdraw = useCountUp(userData.totalWithdraw);
+  const animatedBet = useCountUp(userData.totalBet);
 
   // Scroll listener for mini header
   useEffect(() => {
@@ -90,10 +112,10 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
       >
         <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
           <span className="text-sm font-medium" style={{ color: '#FFFFFF' }}>
-            {DUMMY_USER.nickname.charAt(0).toUpperCase()}
+            {userData.nickname.charAt(0).toUpperCase()}
           </span>
         </div>
-        <span className="text-sm font-light text-white truncate">{DUMMY_USER.nickname}</span>
+        <span className="text-sm font-light text-white truncate">{userData.nickname}</span>
         <span className="text-sm font-medium ml-auto whitespace-nowrap" style={{ color: '#FFFFFF' }}>
           {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 0 })} USDT
         </span>
@@ -105,10 +127,10 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         <div className="flex flex-col items-center mb-5">
           <div className="w-20 h-20 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.3)', boxShadow: '0 0 20px rgba(255,255,255,0.06)' }}>
             <span className="text-3xl font-medium" style={{ color: '#FFFFFF' }}>
-              {DUMMY_USER.nickname.charAt(0).toUpperCase()}
+              {userData.nickname.charAt(0).toUpperCase()}
             </span>
           </div>
-          <h1 className="text-xl font-light text-white mb-1">{DUMMY_USER.nickname}</h1>
+          <h1 className="text-xl font-light text-white mb-1">{userData.nickname}</h1>
           <p className="text-3xl font-medium" style={{ color: '#FFFFFF' }}>
             {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} <span className="text-sm font-light">USDT</span>
           </p>
@@ -134,21 +156,21 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         <div className="bg-dark-input/50 rounded-xl p-3 mb-4">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <span className="text-lg">{LEVEL_ICONS[DUMMY_USER.level - 1] || '\u2B50'}</span>
-              <span className="text-sm font-light text-white">{t('level')} {DUMMY_USER.level}</span>
+              <span className="text-lg">{LEVEL_ICONS[userData.level - 1] || '\u2B50'}</span>
+              <span className="text-sm font-light text-white">{t('level')} {userData.level}</span>
             </div>
             <span className="text-[11px] text-text-muted">
-              {DUMMY_USER.xp.toLocaleString()} / {DUMMY_USER.nextLevelXp.toLocaleString()} XP
+              {userData.xp.toLocaleString()} / {userData.nextLevelXp.toLocaleString()} XP
             </span>
           </div>
           <div className="w-full h-2 bg-dark-input rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-white to-white/80 rounded-full transition-all duration-1000 ease-out"
-              style={{ width: `${(DUMMY_USER.xp / DUMMY_USER.nextLevelXp) * 100}%` }}
+              style={{ width: `${(userData.xp / userData.nextLevelXp) * 100}%` }}
             />
           </div>
           <p className="text-[10px] text-text-muted mt-1.5">
-            {t('next_level_xp')} {(DUMMY_USER.nextLevelXp - DUMMY_USER.xp).toLocaleString()} XP
+            {t('next_level_xp')} {(userData.nextLevelXp - userData.xp).toLocaleString()} XP
           </p>
         </div>
 
@@ -168,50 +190,50 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         <div className="flex items-center gap-4 mb-4">
           <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
             <span className="text-2xl md:text-3xl font-medium" style={{ color: '#FFFFFF' }}>
-              {DUMMY_USER.nickname.charAt(0).toUpperCase()}
+              {userData.nickname.charAt(0).toUpperCase()}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg md:text-xl font-light text-white truncate">{DUMMY_USER.nickname}</h1>
-            <p className="text-xs text-text-muted">{DUMMY_USER.joinDate} {t('joined')}</p>
+            <h1 className="text-lg md:text-xl font-light text-white truncate">{userData.nickname}</h1>
+            <p className="text-xs text-text-muted">{userData.joinDate} {t('joined')}</p>
           </div>
           <div className="text-right flex-shrink-0">
             <p className="text-xs text-text-muted mb-0.5">{t('held_amount')}</p>
-            <p className="text-xl md:text-2xl font-medium" style={{ color: '#FFFFFF' }}>{DUMMY_USER.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
+            <p className="text-xl md:text-2xl font-medium" style={{ color: '#FFFFFF' }}>{userData.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
           </div>
         </div>
 
         {/* Level Progress (Desktop) */}
         <div className="flex items-center gap-4 mb-4 bg-dark-bg rounded-xl p-3">
           <div className="flex items-center gap-2">
-            <span className="text-xl">{LEVEL_ICONS[DUMMY_USER.level - 1] || '\u2B50'}</span>
-            <span className="text-sm font-light text-white">Lv.{DUMMY_USER.level}</span>
+            <span className="text-xl">{LEVEL_ICONS[userData.level - 1] || '\u2B50'}</span>
+            <span className="text-sm font-light text-white">Lv.{userData.level}</span>
           </div>
           <div className="flex-1">
             <div className="w-full h-2 bg-dark-input rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-white to-white/80 rounded-full transition-all duration-1000 ease-out"
-                style={{ width: `${(DUMMY_USER.xp / DUMMY_USER.nextLevelXp) * 100}%` }}
+                style={{ width: `${(userData.xp / userData.nextLevelXp) * 100}%` }}
               />
             </div>
           </div>
           <span className="text-xs text-text-muted whitespace-nowrap">
-            {DUMMY_USER.xp.toLocaleString()} / {DUMMY_USER.nextLevelXp.toLocaleString()} XP
+            {userData.xp.toLocaleString()} / {userData.nextLevelXp.toLocaleString()} XP
           </span>
         </div>
 
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">{t('total_deposit')}</p>
-            <p className="text-sm md:text-base font-light text-white">{DUMMY_USER.totalDeposit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
+            <p className="text-sm md:text-base font-light text-white">{userData.totalDeposit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">{t('total_bet')}</p>
-            <p className="text-sm md:text-base font-light text-white">{DUMMY_USER.totalBet.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
+            <p className="text-sm md:text-base font-light text-white">{userData.totalBet.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">{t('total_wins')}</p>
-            <p className="text-sm md:text-base font-medium" style={{ color: '#FFFFFF' }}>{DUMMY_USER.totalWin.toLocaleString()} <span className="text-xs" style={{ color: '#555555' }}>USDT</span></p>
+            <p className="text-sm md:text-base font-medium" style={{ color: '#FFFFFF' }}>{userData.totalWin.toLocaleString()} <span className="text-xs" style={{ color: '#555555' }}>USDT</span></p>
           </div>
         </div>
       </div>

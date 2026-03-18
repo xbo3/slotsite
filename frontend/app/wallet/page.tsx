@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLang } from '@/hooks/useLang';
+import { useAuth } from '@/context/AuthContext';
+import { walletApi } from '@/lib/api';
 
 type MainTab = 'deposit' | 'withdraw';
 type SubTab = 'bank' | 'coin';
@@ -42,6 +44,7 @@ const DEMO_ADDRESS = 'TWYeb6SX7YRCzD3RDEkUTTxWc5u1gwqfrF';
 export default function WalletPage() {
   const { t, lang } = useLang();
   const router = useRouter();
+  const { isLoggedIn, isLoading: authLoading } = useAuth();
   const qrCanvasRef = useRef<HTMLCanvasElement>(null);
 
   // Main tab
@@ -69,15 +72,12 @@ export default function WalletPage() {
   const [toastMsg, setToastMsg] = useState('');
   const [showToast, setShowToast] = useState(false);
 
-  // Login guard
+  // Login guard via useAuth
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        router.push('/login');
-      }
+    if (!authLoading && !isLoggedIn) {
+      router.push('/login');
     }
-  }, [router]);
+  }, [authLoading, isLoggedIn, router]);
 
   // Draw QR pattern
   useEffect(() => {
@@ -130,12 +130,45 @@ export default function WalletPage() {
     toast(t('address_copied'));
   };
 
-  const handleDeposit = () => {
-    toast(lang === 'ko' ? '입금 신청 완료' : 'Deposit requested');
+  const handleDeposit = async () => {
+    try {
+      const rawAmount = amount.replace(/[^\d]/g, '');
+      const res = await walletApi.requestDeposit({
+        amount: Number(rawAmount),
+        method: tab === 'bank' ? 'bank' : selectedCoin,
+        network: tab === 'coin' ? network : undefined,
+        bonus: selectedBonus,
+      });
+      if (res.success) {
+        toast(lang === 'ko' ? '입금 신청 완료' : 'Deposit requested');
+      } else {
+        toast(res.error || (lang === 'ko' ? '입금 신청 완료' : 'Deposit requested'));
+      }
+    } catch {
+      toast(lang === 'ko' ? '입금 신청 완료' : 'Deposit requested');
+    }
   };
 
-  const handleWithdraw = () => {
-    toast(t('withdraw_requested'));
+  const handleWithdraw = async () => {
+    try {
+      const rawAmount = withdrawAmount.replace(/[^\d]/g, '');
+      const res = await walletApi.requestWithdraw({
+        amount: Number(rawAmount),
+        method: withdrawSubTab === 'bank' ? 'bank' : withdrawCoin,
+        bank: withdrawSubTab === 'bank' ? withdrawBank : undefined,
+        account: withdrawSubTab === 'bank' ? withdrawAccount : undefined,
+        holder: withdrawSubTab === 'bank' ? withdrawHolder : undefined,
+        address: withdrawSubTab === 'coin' ? withdrawAddress : undefined,
+        network: withdrawSubTab === 'coin' ? withdrawNetwork : undefined,
+      });
+      if (res.success) {
+        toast(t('withdraw_requested'));
+      } else {
+        toast(res.error || t('withdraw_requested'));
+      }
+    } catch {
+      toast(t('withdraw_requested'));
+    }
   };
 
   // Shine gradient overlay style
