@@ -72,12 +72,30 @@ export default function WalletPage() {
   const [toastMsg, setToastMsg] = useState('');
   const [showToast, setShowToast] = useState(false);
 
+  // API data
+  const [depositAddress, setDepositAddress] = useState(DEMO_ADDRESS);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [depositHistory, setDepositHistory] = useState<any[] | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [withdrawHistory, setWithdrawHistory] = useState<any[] | null>(null);
+
   // Login guard via useAuth
   useEffect(() => {
     if (!authLoading && !isLoggedIn) {
       router.push('/login');
     }
   }, [authLoading, isLoggedIn, router]);
+
+  // Load deposit/withdraw history from API
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    walletApi.getDepositHistory().then(res => {
+      if (res.success && Array.isArray(res.data)) setDepositHistory(res.data);
+    }).catch(() => {});
+    walletApi.getWithdrawHistory().then(res => {
+      if (res.success && Array.isArray(res.data)) setWithdrawHistory(res.data);
+    }).catch(() => {});
+  }, [isLoggedIn]);
 
   // Draw QR pattern
   useEffect(() => {
@@ -126,7 +144,7 @@ export default function WalletPage() {
   };
 
   const copyAddress = () => {
-    navigator.clipboard.writeText(DEMO_ADDRESS);
+    navigator.clipboard.writeText(depositAddress);
     toast(t('address_copied'));
   };
 
@@ -140,6 +158,7 @@ export default function WalletPage() {
         bonus: selectedBonus,
       });
       if (res.success) {
+        if (res.data?.address) setDepositAddress(res.data.address);
         toast(lang === 'ko' ? '입금 신청 완료' : 'Deposit requested');
       } else {
         toast(res.error || (lang === 'ko' ? '입금 신청 완료' : 'Deposit requested'));
@@ -441,18 +460,18 @@ export default function WalletPage() {
                   <div className="text-[9px] font-light tracking-[1.5px] uppercase mb-2" style={{ color: '#555' }}>
                     {t('recent_deposits')}
                   </div>
-                  {[
-                    { amount: '+₩100,000', date: '2026.03.18  14:15' },
-                    { amount: '+₩50,000', date: '2026.03.17  11:30' },
-                  ].map((item, idx) => (
+                  {(depositHistory || [
+                    { amount: 100000, created_at: '2026.03.18  14:15' },
+                    { amount: 50000, created_at: '2026.03.17  11:30' },
+                  ]).slice(0, 3).map((item, idx) => (
                     <div
                       key={idx}
                       className="flex justify-between items-center py-[7px]"
                       style={{ borderBottom: idx === 0 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}
                     >
                       <div>
-                        <div className="text-xs font-light text-white">{item.amount}</div>
-                        <div className="text-[9px] font-extralight" style={{ color: '#555' }}>{item.date}</div>
+                        <div className="text-xs font-light text-white">+₩{Number(item.amount).toLocaleString()}</div>
+                        <div className="text-[9px] font-extralight" style={{ color: '#555' }}>{typeof item.created_at === 'string' ? item.created_at.slice(0, 16).replace('T', '  ') : item.created_at}</div>
                       </div>
                       <span className="text-[10px] font-light" style={{ color: '#999' }}>✓</span>
                     </div>
@@ -611,7 +630,7 @@ export default function WalletPage() {
                     onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)')}
                     onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}
                   >
-                    {DEMO_ADDRESS}
+                    {depositAddress}
                     <span className="absolute right-[10px] top-1/2 -translate-y-1/2 text-sm opacity-40 group-hover:opacity-80 transition-opacity duration-200">
                       ⧉
                     </span>
@@ -820,18 +839,18 @@ export default function WalletPage() {
                   <div className="text-[9px] font-light tracking-[1.5px] uppercase mb-2" style={{ color: '#555' }}>
                     {t('recent_withdrawals')}
                   </div>
-                  {[
-                    { amount: '-₩100,000', date: '2026.03.18  09:20' },
-                    { amount: '-₩50,000', date: '2026.03.17  15:45' },
-                  ].map((item, idx) => (
+                  {(withdrawHistory || [
+                    { amount: 100000, created_at: '2026.03.18  09:20' },
+                    { amount: 50000, created_at: '2026.03.17  15:45' },
+                  ]).slice(0, 3).map((item, idx) => (
                     <div
                       key={idx}
                       className="flex justify-between items-center py-[7px]"
                       style={{ borderBottom: idx === 0 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}
                     >
                       <div>
-                        <div className="text-xs font-light" style={{ color: '#ff6b6b' }}>{item.amount}</div>
-                        <div className="text-[9px] font-extralight" style={{ color: '#555' }}>{item.date}</div>
+                        <div className="text-xs font-light" style={{ color: '#ff6b6b' }}>-₩{Number(item.amount).toLocaleString()}</div>
+                        <div className="text-[9px] font-extralight" style={{ color: '#555' }}>{typeof item.created_at === 'string' ? item.created_at.slice(0, 16).replace('T', '  ') : item.created_at}</div>
                       </div>
                       <span className="text-[10px] font-light" style={{ color: '#999' }}>✓</span>
                     </div>

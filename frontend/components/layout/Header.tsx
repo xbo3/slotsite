@@ -56,6 +56,10 @@ export default function Header() {
           </span>
         </Link>
         <div className="flex items-center gap-1">
+          {/* Mobile balance */}
+          {isLoggedIn && (
+            <span className="text-[10px] font-light text-white/70 mr-1">{formatKRW(balance)}</span>
+          )}
           {/* Deposit button */}
           <Link href="/wallet" className="px-3 py-1.5 text-[10px] font-light tracking-wider uppercase text-white border border-white/40 rounded hover:bg-white hover:text-black transition-all">
             {t('deposit')}
