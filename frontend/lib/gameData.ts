@@ -45,19 +45,31 @@ export const DEMO_GAMES = [
   { id: 37, name: 'Piggy Gold', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/b92cbcd4-bdde-4729-86b8-775b386a707c.jpg', rtp: '96.50%', maxWin: 'x3500', isNew: false, isHot: false },
   { id: 38, name: 'Win Win Won', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/0b386742-2b40-460a-8748-e63d6c2dbc3e.png', rtp: '96.40%', maxWin: 'x2000', isNew: false, isHot: false },
   { id: 39, name: 'Fortune Gods', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/cd510c21-008d-4227-a8d3-419728cfd2bb.png', rtp: '96.65%', maxWin: 'x6000', isNew: false, isHot: true },
+
+  // === 신규 추가 10개 ===
+  { id: 40, name: 'Majestic Empire', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/804eb27d-8aed-47d4-9fce-806a82d01771.jpg', rtp: '96.60%', maxWin: 'x7000', isNew: true, isHot: false },
+  { id: 41, name: "Grimms' Bounty: Hansel & Gretel", provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/dc00e693-18db-4ea0-9656-6aac105bebeb.jpg', rtp: '96.70%', maxWin: 'x8000', isNew: true, isHot: true },
+  { id: 42, name: 'Galaxy Miner', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/ae03cb9b-5087-467b-9407-3fb24627a7d3.jpg', rtp: '96.55%', maxWin: 'x5000', isNew: true, isHot: false },
+  { id: 43, name: "Dragon's Treasure Quest", provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/60295f12-eeae-4d1f-a6d5-70e2574c7b34.jpg', rtp: '96.75%', maxWin: 'x9000', isNew: true, isHot: true },
+  { id: 44, name: 'Diner Frenzy Spins', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/08c45f5e-9462-46c5-9b32-49e1e8f98a75.webp', rtp: '96.45%', maxWin: 'x4000', isNew: true, isHot: false },
+  { id: 45, name: 'Jack the Giant Hunter', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/45fb4019-4095-43f1-a1e5-2eed2e697dc5.jpg', rtp: '96.65%', maxWin: 'x6500', isNew: true, isHot: false },
+  { id: 46, name: "Dead Man's Riches", provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/654961f8-840a-4c36-a093-17e4a7c1b25d.webp', rtp: '96.80%', maxWin: 'x12000', isNew: true, isHot: true },
+  { id: 47, name: 'Knockout Riches', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/5e2fe7a0-e09f-483a-9f9d-a599a53c12b3.webp', rtp: '96.50%', maxWin: 'x5500', isNew: true, isHot: false },
+  { id: 48, name: 'Doomsday Rampage', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/4bf3e0c1-9af6-41c2-9ade-7a4e5c9efcd7.jpg', rtp: '96.70%', maxWin: 'x8000', isNew: true, isHot: true },
+  { id: 49, name: 'Graffiti Rush', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/e8aac80c-9be2-4df8-8d4d-227dd8abf4ce.webp', rtp: '96.55%', maxWin: 'x6000', isNew: true, isHot: false },
 ];
 
 // 프로바이더 목록
 export const PROVIDERS = [
-  { name: 'PG Soft', slug: 'pgsoft', gameCount: 39, color: '#E8593C' },
+  { name: 'PG Soft', slug: 'pgsoft', gameCount: 49, color: '#E8593C' },
 ];
 
 // 카테고리 목록
 export const CATEGORIES = [
-  { name: '전체', slug: 'all', icon: '\uD83C\uDFAE', count: 39 },
-  { name: '인기', slug: 'hot', icon: '\uD83D\uDD25', count: 15 },
-  { name: '신규', slug: 'new', icon: '\u2B50', count: 12 },
-  { name: '슬롯', slug: 'slots', icon: '\uD83C\uDFB0', count: 39 },
+  { name: '전체', slug: 'all', icon: '\uD83C\uDFAE', count: 49 },
+  { name: '인기', slug: 'hot', icon: '\uD83D\uDD25', count: 20 },
+  { name: '신규', slug: 'new', icon: '\u2B50', count: 22 },
+  { name: '슬롯', slug: 'slots', icon: '\uD83C\uDFB0', count: 49 },
   { name: '라이브', slug: 'live', icon: '\uD83C\uDFB2', count: 0 },
   { name: '테이블', slug: 'table', icon: '\u2660\uFE0F', count: 0 },
 ];
