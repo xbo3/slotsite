@@ -294,6 +294,36 @@ export default function MyCouponsPage() {
         ))}
       </div>
 
+      {/* ===== BONUS BOX CARDS ===== */}
+      <SectionTitle title="Bonus Box" />
+      <div className="grid grid-cols-4 md:grid-cols-4 gap-2 mb-6">
+        {[
+          { img: '/0box.png', pct: '140%' },
+          { img: '/1box.png', pct: '146%' },
+          { img: '/2box.webp', pct: '3%' },
+          { img: '/3box.png', pct: '113%' },
+          { img: '/4box.png', pct: '114%' },
+          { img: '/5box.png', pct: '117%' },
+          { img: '/6box.png', pct: '160%' },
+          { img: '/7box.png', pct: '???' },
+        ].map((box, i) => (
+          <button
+            key={i}
+            className="relative overflow-hidden rounded-xl transition-all hover:-translate-y-1 hover:shadow-lg"
+            style={{ background: '#151519', border: '1px solid rgba(255,255,255,0.06)' }}
+            onClick={() => showToast(`Box ${i} — ${box.pct} Bonus!`, 'linear-gradient(135deg,#8b5cf6,#ec4899)')}
+          >
+            <div className="aspect-square overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={box.img} alt={`Box ${i}`} className="w-full h-full object-cover" />
+            </div>
+            <div className="absolute bottom-0 inset-x-0 py-1 text-center text-[10px] font-semibold text-white" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}>
+              {box.pct}
+            </div>
+          </button>
+        ))}
+      </div>
+
       {/* ===== MY COUPONS (unified) ===== */}
       <SectionTitle title={t('my_bonuses')} count={COUPONS.length} />
       <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-2.5 mb-2">
