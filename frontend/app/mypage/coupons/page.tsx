@@ -59,7 +59,6 @@ const TYPE_ACCENT_COLORS: Record<CouponType, string> = {
 
 export default function MyCouponsPage() {
   const { t, lang } = useLang();
-  const TYPE_LABELS = lang === 'en' ? TYPE_LABELS_EN : TYPE_LABELS_KO;
   const [coupons, setCoupons] = useState<UserCoupon[]>(lang === 'en' ? DUMMY_MY_COUPONS_EN : DUMMY_MY_COUPONS_KO);
   const [couponCode, setCouponCode] = useState('');
   const [applyResult, setApplyResult] = useState<{ success: boolean; message: string } | null>(null);

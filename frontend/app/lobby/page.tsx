@@ -268,10 +268,8 @@ function LobbyContent() {
                     <p className="text-white font-light text-sm truncate">{game.name}</p>
                     <p className="text-text-secondary text-[11px]">{game.provider}</p>
                   </div>
-                  <div className="absolute inset-0 bg-info/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="px-6 py-2.5 bg-white text-dark-bg font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
-                      {t('continue_play')} {'\u25B6'}
-                    </span>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+                    <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
                   </div>
                 </div>
               </Link>
@@ -311,10 +309,8 @@ function LobbyContent() {
                     <p className="text-text-secondary text-[11px]">{game.provider}</p>
                   </div>
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="px-6 py-2.5 bg-white text-dark-bg font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
-                      {t('play_now_icon')} {'\u25B6'}
-                    </span>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+                    <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
                   </div>
                 </div>
               </Link>
@@ -461,7 +457,6 @@ function LobbyContent() {
 
 function GameCard({ game }: { game: Game }) {
   const { t } = useLang();
-  const providerColors = PROVIDER_COLORS[game.provider];
   return (
     <div className="group relative">
       <Link href={`/game/${game.id}`} className="block">
@@ -488,26 +483,23 @@ function GameCard({ game }: { game: Game }) {
               </span>
             </div>
 
-            {/* Enhanced Hover Overlay with 2 buttons */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-gradient-to-t from-dark-bg/95 via-dark-bg/70 to-dark-bg/40">
-              {/* Provider name at top */}
-              <span className="absolute top-3 left-0 right-0 text-center text-white/80 text-[11px] font-medium" style={{ color: providerColors?.to }}>
-                {game.provider}
-              </span>
+            {/* Hover Overlay — play text + buttons */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+              <span className="text-white font-light text-lg tracking-wider mb-4">{'\u25B6'} PLAY</span>
               <div className="flex flex-col gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <Link
-                  href={`/game/${game.id}?mode=demo`}
-                  onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 border-2 border-white/60 text-white font-light rounded-xl text-xs hover:bg-white/10 transition-colors text-center"
-                >
-                  {t('free_trial')}
-                </Link>
                 <Link
                   href={`/game/${game.id}`}
                   onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 bg-white text-dark-bg font-light rounded-xl text-xs hover:shadow-lg hover:shadow-white/40 transition-all text-center"
+                  className="px-6 py-2 border border-white text-white font-light rounded-xl text-xs hover:bg-white hover:text-black transition-all text-center flex items-center justify-center gap-1"
                 >
-                  {t('real_play')} {'\u25B6'}
+                  <span>{'\u25B6'}</span> {t('real_play')}
+                </Link>
+                <Link
+                  href={`/game/${game.id}?mode=demo`}
+                  onClick={e => e.stopPropagation()}
+                  className="px-6 py-2 border border-white/30 text-white/70 font-light rounded-xl text-xs hover:bg-white hover:text-black transition-all text-center"
+                >
+                  {t('free_trial')}
                 </Link>
               </div>
             </div>

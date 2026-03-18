@@ -3,14 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useLang } from '@/hooks/useLang';
 
-const adminMenuDefs = [
-  { href: '/admin', labelKey: 'dashboard', icon: DashboardIcon },
-  { href: '/admin/users', labelKey: 'user_mgmt', icon: UsersIcon },
-  { href: '/admin/finance', labelKey: 'finance_mgmt', icon: FinanceIcon },
-  { href: '/admin/coupons', labelKey: 'bonus_mgmt', icon: CouponIcon },
-  { href: '/admin/games', labelKey: 'game_mgmt', icon: GamesIcon },
+const adminMenu = [
+  { href: '/admin', label: '대시보드', icon: DashboardIcon },
+  { href: '/admin/users', label: '회원관리', icon: UsersIcon },
+  { href: '/admin/finance', label: '입출금관리', icon: FinanceIcon },
+  { href: '/admin/coupons', label: '보너스관리', icon: CouponIcon },
+  { href: '/admin/games', label: '게임관리', icon: GamesIcon },
 ];
 
 export default function AdminLayout({
@@ -19,8 +18,6 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { t } = useLang();
-  const adminMenu = adminMenuDefs.map(m => ({ ...m, label: t(m.labelKey) }));
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
@@ -35,7 +32,7 @@ export default function AdminLayout({
               </svg>
             </div>
             <div>
-              <p className="text-sm font-light text-white">{t('admin_panel')}</p>
+              <p className="text-sm font-light text-white">{'관리자 패널'}</p>
               <p className="text-[10px] text-text-muted">SlotSite Admin</p>
             </div>
           </div>
@@ -67,7 +64,7 @@ export default function AdminLayout({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            {t('back_to_site')}
+            {'사이트로 돌아가기'}
           </Link>
         </div>
       </aside>
@@ -99,7 +96,7 @@ export default function AdminLayout({
         {/* Top bar with notification */}
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <div className="md:hidden">
-            <p className="text-sm font-light text-white">{t('admin_panel')}</p>
+            <p className="text-sm font-light text-white">{'관리자 패널'}</p>
           </div>
           <div className="flex items-center gap-2 ml-auto">
             <button className="relative p-2 text-text-muted hover:text-white rounded-lg hover:bg-white/5 transition-colors">

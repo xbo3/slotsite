@@ -273,39 +273,48 @@ export default function Home() {
       {/* ===== Coin Support Strip Banner ===== */}
       <section className="w-full" style={{ background: 'linear-gradient(135deg, #111111 0%, #1A1A1A 50%, #111111 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 overflow-hidden">
-          {/* Left: Text */}
+          {/* Left: Tether logo + Text */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
-            </div>
+            <svg width="40" height="40" viewBox="0 0 40 40" className="flex-shrink-0">
+              <circle cx="20" cy="20" r="20" fill="#26A17B"/>
+              <text x="20" y="26" textAnchor="middle" fill="white" fontSize="22" fontWeight="600" fontFamily="Poppins, sans-serif">{'\u20AE'}</text>
+            </svg>
             <div>
               <p className="text-white font-light text-sm md:text-base tracking-wide">
                 {t('coin_support_title')}
               </p>
-              <p className="text-white/50 font-thin text-xs md:text-sm">
-                {t('coin_support_desc')}
-              </p>
             </div>
           </div>
 
-          {/* Center: Coin icons */}
+          {/* Center: Coin icons — Desktop (8 + "+8") */}
           <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-            {['BTC', 'ETH', 'USDT', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'DOT', 'MATIC', 'LTC', 'AVAX'].map((coin) => (
-              <div key={coin} className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                {coin.slice(0, 2)}
-              </div>
-            ))}
-            <span className="text-white/40 text-xs font-thin">+12</span>
+            {/* BTC */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#F7931A' }}>{'\u20BF'}</div>
+            {/* ETH */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#627EEA' }}>{'\u039E'}</div>
+            {/* USDT — emphasized */}
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 8px rgba(38,161,123,0.4)' }}>{'\u20AE'}</div>
+            {/* BNB */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#F3BA2F' }}>B</div>
+            {/* SOL */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#9945FF' }}>S</div>
+            {/* XRP */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#23292F' }}>X</div>
+            {/* ADA */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#0033AD' }}>A</div>
+            {/* DOGE */}
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#C2A633' }}>D</div>
+            <span className="text-white/40 text-xs font-thin">+8</span>
           </div>
 
-          {/* Mobile: fewer coins */}
+          {/* Mobile: 5 coins + "+11" */}
           <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
-            {['BTC', 'ETH', 'USDT', 'SOL', 'XRP'].map((coin) => (
-              <div key={coin} className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-medium" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                {coin.slice(0, 2)}
-              </div>
-            ))}
-            <span className="text-white/40 text-[10px] font-thin">+19</span>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F7931A' }}>{'\u20BF'}</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#627EEA' }}>{'\u039E'}</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 6px rgba(38,161,123,0.4)' }}>{'\u20AE'}</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F3BA2F' }}>B</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#9945FF' }}>S</div>
+            <span className="text-white/40 text-[10px] font-thin">+11</span>
           </div>
 
           {/* Right: CTA */}
@@ -416,10 +425,8 @@ export default function Home() {
                     <p className="text-text-secondary text-[11px] font-light">{game.provider}</p>
                   </div>
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(255,255,255,0.9)' }}>
-                    <span className="px-6 py-2.5 font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform" style={{ background: '#0A0A0A', color: '#FFFFFF' }}>
-                      {t('play_now_icon')} {'\u25B6'}
-                    </span>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+                    <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
                   </div>
                 </div>
               </Link>
@@ -659,13 +666,16 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
             </span>
           </div>
 
-          {/* Hover overlay with 2 buttons */}
+          {/* Hover overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+            <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
+          </div>
           <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-dark-bg via-dark-bg/90 to-transparent game-card-overlay">
             <div className="flex gap-2">
-              <button className="flex-1 py-2 bg-white text-dark-bg text-xs font-light rounded-lg hover:brightness-110 transition-all touch-active">
-                {t('real_play')}
+              <button className="flex-1 py-2 border border-white text-white text-xs font-light rounded-lg hover:bg-white hover:text-black transition-all touch-active flex items-center justify-center gap-1">
+                <span>{'\u25B6'}</span> {t('real_play')}
               </button>
-              <button className="flex-1 py-2 bg-white/10 text-white text-xs font-light rounded-lg hover:bg-white/20 transition-all touch-active">
+              <button className="flex-1 py-2 border border-white/30 text-white/70 text-xs font-light rounded-lg hover:bg-white hover:text-black transition-all touch-active">
                 {t('free_trial')}
               </button>
             </div>
