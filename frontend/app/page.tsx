@@ -196,47 +196,47 @@ export default function Home() {
   return (
     <div className="min-h-[calc(100vh-4rem)]">
       {/* ===== Hero Banner ===== */}
-      <section className="relative overflow-hidden h-64 md:h-[480px] hero-particles">
+      <section className="relative overflow-hidden h-56 md:h-[480px] hero-particles">
         {/* Background effects */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent" />
-        <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] rounded-full blur-[120px] animate-pulse" style={{ background: 'rgba(255,255,255,0.04)' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[100px] animate-pulse" style={{ background: 'rgba(255,255,255,0.03)', animationDelay: '2s' }} />
-        <div className="absolute top-10 right-10 w-32 h-32 rounded-full animate-spin" style={{ border: '1px solid rgba(255,255,255,0.06)', animationDuration: '20s' }} />
-        <div className="absolute bottom-20 left-20 w-20 h-20 rounded-full animate-spin" style={{ border: '1px solid rgba(255,255,255,0.05)', animationDuration: '15s', animationDirection: 'reverse' }} />
+        <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] rounded-full blur-[120px] animate-pulse hidden md:block" style={{ background: 'rgba(255,255,255,0.04)' }} />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[100px] animate-pulse hidden md:block" style={{ background: 'rgba(255,255,255,0.03)', animationDelay: '2s' }} />
+        <div className="absolute top-10 right-10 w-32 h-32 rounded-full animate-spin hidden md:block" style={{ border: '1px solid rgba(255,255,255,0.06)', animationDuration: '20s' }} />
+        <div className="absolute bottom-20 left-20 w-20 h-20 rounded-full animate-spin hidden md:block" style={{ border: '1px solid rgba(255,255,255,0.05)', animationDuration: '15s', animationDirection: 'reverse' }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 h-full flex items-center">
+        <div className="relative max-w-7xl mx-auto px-3 md:px-4 h-full flex items-center">
           <div className="flex items-center justify-between w-full">
             {/* Left: Text */}
             <div className={`flex-1 text-center md:text-left ${bannerAnim === 'enter' ? 'banner-enter' : 'banner-exit'}`}>
-              <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full mb-2 md:mb-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#FFFFFF' }} />
-                <span className="text-sm font-light text-white/80">{t('now_playing_count').replace('{count}', onlineCount.toLocaleString())}</span>
+              <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full mb-2 md:mb-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full animate-pulse" style={{ background: '#FFFFFF' }} />
+                <span className="text-[10px] md:text-sm font-light text-white/80">{t('now_playing_count').replace('{count}', onlineCount.toLocaleString())}</span>
               </div>
 
-              <h1 className="text-2xl md:text-6xl lg:text-7xl font-extralight leading-[0.95] tracking-tight">
+              <h1 className="text-xl md:text-6xl lg:text-7xl font-extralight leading-[0.95] tracking-tight">
                 <span className="text-white">{t(bannerKeys.titleKey)}</span>
                 <br />
                 <span className="text-white font-thin">
                   {t(bannerKeys.highlightKey)}
                 </span>
               </h1>
-              <p className="mt-2 md:mt-4 text-sm md:text-lg text-text-secondary max-w-lg leading-relaxed font-light">
+              <p className="mt-1.5 md:mt-4 text-xs md:text-lg text-text-secondary max-w-lg leading-relaxed font-light mx-auto md:mx-0">
                 {t(bannerKeys.descKey)}
               </p>
 
-              <div className="mt-4 md:mt-8 flex flex-col sm:flex-row gap-2 md:gap-3 justify-center md:justify-start">
+              <div className="mt-3 md:mt-8 flex flex-col sm:flex-row gap-2 md:gap-3 justify-center md:justify-start">
                 <Link
                   href={bannerKeys.ctaHref}
-                  className="group inline-flex items-center justify-center gap-2 px-6 md:px-8 py-2.5 md:py-3.5 text-sm md:text-lg font-light btn-cta"
+                  className="group inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-8 py-2 md:py-3.5 text-xs md:text-lg font-light btn-cta"
                 >
                   <span>{t(bannerKeys.ctaKey)}</span>
-                  <svg className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </Link>
                 <Link
                   href="/lobby"
-                  className="inline-flex items-center justify-center px-6 md:px-8 py-2.5 md:py-3.5 text-sm md:text-lg font-light transition-all hover:scale-105 active:scale-95"
+                  className="inline-flex items-center justify-center px-4 md:px-8 py-2 md:py-3.5 text-xs md:text-lg font-light transition-all hover:scale-105 active:scale-95"
                   style={{ border: '1px solid rgba(255,255,255,0.12)', color: '#FFFFFF' }}
                 >
                   {t('browse_games')}
@@ -244,7 +244,7 @@ export default function Home() {
               </div>
 
               {/* Banner dots */}
-              <div className="flex gap-2 mt-6 justify-center md:justify-start">
+              <div className="flex gap-2 mt-3 md:mt-6 justify-center md:justify-start">
                 {BANNER_SLIDES_KEYS.map((_, i) => (
                   <button
                     key={i}
@@ -294,15 +294,21 @@ export default function Home() {
 
       {/* ===== Coin Support Strip Banner ===== */}
       <section className="w-full" style={{ background: 'linear-gradient(135deg, #111111 0%, #1A1A1A 50%, #111111 100%)' }}>
-        <div className="max-w-7xl mx-auto px-3 md:px-4 py-2.5 md:py-3 flex items-center justify-between gap-2 md:gap-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3 md:px-4 py-2 md:py-3 flex items-center justify-between gap-2 md:gap-4 overflow-hidden">
           {/* Left: Tether logo + Text */}
-          <div className="flex items-center gap-2 md:gap-3 flex-shrink-0 min-w-0">
-            <div className="w-8 md:w-10 h-8 md:h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#26A17B' }}>
-              <span className="text-white text-sm md:text-lg font-semibold" style={{ fontFamily: 'Poppins, sans-serif' }}>T</span>
+          <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0 min-w-0">
+            <div className="w-7 md:w-10 h-7 md:h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#26A17B' }}>
+              <span className="text-white text-xs md:text-lg font-semibold" style={{ fontFamily: 'Poppins, sans-serif' }}>T</span>
             </div>
             <div className="min-w-0">
-              <p className="text-white font-light text-xs md:text-base tracking-wide truncate">
+              {/* Desktop: single line */}
+              <p className="hidden md:block text-white font-light text-base tracking-wide truncate">
                 {t('coin_support_title')}
+              </p>
+              {/* Mobile: two lines */}
+              <p className="md:hidden text-white font-light text-[10px] leading-tight tracking-wide">
+                <span className="block">16 Coins Supported!</span>
+                <span className="block text-white/60">Bonus every 3rd USDT deposit!</span>
               </p>
             </div>
           </div>
@@ -328,18 +334,17 @@ export default function Home() {
             <span className="text-white/40 text-xs font-thin">+8</span>
           </div>
 
-          {/* Mobile: 5 coins + "+11" */}
-          <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F7931A' }}>B</div>
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#627EEA' }}>E</div>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 6px rgba(38,161,123,0.4)' }}>T</div>
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F3BA2F' }}>B</div>
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#9945FF' }}>S</div>
-            <span className="text-white/40 text-[10px] font-thin">+11</span>
+          {/* Mobile: 4 coins + "+12" */}
+          <div className="flex md:hidden items-center gap-1 flex-shrink-0">
+            <div className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-medium text-white" style={{ background: '#F7931A' }}>B</div>
+            <div className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-medium text-white" style={{ background: '#627EEA' }}>E</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-semibold text-white" style={{ background: '#26A17B', border: '1.5px solid rgba(38,161,123,0.5)', boxShadow: '0 0 4px rgba(38,161,123,0.4)' }}>T</div>
+            <div className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-medium text-white" style={{ background: '#F3BA2F' }}>B</div>
+            <span className="text-white/40 text-[9px] font-thin">+12</span>
           </div>
 
           {/* Right: CTA */}
-          <Link href="/wallet" className="flex-shrink-0 px-3 md:px-4 py-1.5 md:py-2 text-[10px] md:text-xs font-light tracking-widest uppercase transition-all border border-white/30 text-white hover:bg-white hover:text-black rounded-none min-h-[44px] flex items-center">
+          <Link href="/wallet" className="flex-shrink-0 px-2.5 md:px-4 py-1.5 md:py-2 text-[9px] md:text-xs font-light tracking-widest uppercase transition-all border border-white/30 text-white hover:bg-white hover:text-black rounded-none min-h-[36px] md:min-h-[44px] flex items-center">
             {t('deposit')}
           </Link>
         </div>
@@ -347,7 +352,7 @@ export default function Home() {
 
       {/* ===== Live Betting Feed ===== */}
       <div ref={feedSection.ref} className={feedSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-4 md:py-6">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-3 md:py-6">
           <div className="bg-dark-card/50 border border-white/5 rounded-xl md:rounded-2xl px-3 md:px-4 py-2.5 md:py-3 flex items-center gap-2 md:gap-4 overflow-hidden">
             <div className="flex items-center gap-2 flex-shrink-0">
               <span className="w-2 h-2 bg-danger rounded-full animate-pulse" />
@@ -378,15 +383,15 @@ export default function Home() {
 
       {/* ===== Popular Games ===== */}
       <div ref={popularSection.ref} className={popularSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-24">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           {/* 보라 악센트 그라디언트 라인 */}
           <div className="h-[2px] mb-4 md:mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, #9945FF, transparent)' }} />
           <div className="flex items-center justify-between mb-4 md:mb-8">
             <div className="flex items-center gap-2 md:gap-3">
               <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #9945FF, rgba(153,69,255,0.3))' }} />
               <div>
-                <h2 className="text-lg md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                  <span className="text-lg md:text-2xl">{'\uD83D\uDD25'}</span> {t('popular_games_icon')}
+                <h2 className="text-base md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
+                  <span className="text-base md:text-2xl">{'\uD83D\uDD25'}</span> {t('popular_games_icon')}
                 </h2>
                 <p className="text-text-secondary text-xs md:text-sm mt-0.5 font-light">{t('top8_realtime')}</p>
               </div>
@@ -418,14 +423,14 @@ export default function Home() {
 
       {/* ===== New Games ===== */}
       <div ref={newSection.ref} className={newSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-24">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           {/* 귤/오렌지 악센트 그라디언트 라인 */}
           <div className="h-[2px] mb-4 md:mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, #F7931A, transparent)' }} />
           <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-8">
             <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #F7931A, rgba(247,147,26,0.3))' }} />
             <div>
-              <h2 className="text-lg md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                <span className="text-lg md:text-2xl">{'\u2B50'}</span> {t('new_games_icon')}
+              <h2 className="text-base md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
+                <span className="text-base md:text-2xl">{'\u2B50'}</span> {t('new_games_icon')}
               </h2>
               <p className="text-text-secondary text-xs md:text-sm mt-0.5 font-light">{t('new_hot_games')}</p>
             </div>
@@ -441,12 +446,12 @@ export default function Home() {
 
       {/* ===== BIG WIN ===== */}
       <div ref={bigWinSection.ref} className={bigWinSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-24">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-8">
             <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
             <div>
-              <h2 className="text-lg md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                <span className="text-lg md:text-2xl">{'\uD83C\uDFC6'}</span> {t('big_win_title')}
+              <h2 className="text-base md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
+                <span className="text-base md:text-2xl">{'\uD83C\uDFC6'}</span> {t('big_win_title')}
               </h2>
               <p className="text-text-secondary text-xs md:text-sm mt-0.5 font-light">{t('recent_big_winners')}</p>
             </div>
@@ -481,7 +486,7 @@ export default function Home() {
 
       {/* ===== Provider Logos ===== */}
       <div ref={providerSection.ref} className={providerSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-24">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <h3 className="text-center text-text-muted text-xs md:text-sm font-light uppercase tracking-wider mb-4 md:mb-6">{t('official_providers')}</h3>
           <div className="overflow-hidden relative">
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-dark-bg to-transparent z-10" />
@@ -505,7 +510,7 @@ export default function Home() {
 
       {/* ===== Features ===== */}
       <div ref={featureSection.ref} className={featureSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-24">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
             <FeatureCard
               title={t('300_premium_games')}
@@ -531,11 +536,11 @@ export default function Home() {
 
       {/* ===== Leaderboard ===== */}
       <div ref={leaderboardSection.ref} className={leaderboardSection.inView ? 'section-visible' : 'section-hidden'}>
-        <section className="max-w-7xl mx-auto px-4 py-8 md:py-24">
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-8">
             <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
             <div>
-              <h2 className="text-lg md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
+              <h2 className="text-base md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
                 {'\uD83C\uDFC6'} {t('weekly_top10')}
               </h2>
               <p className="text-text-secondary text-xs md:text-sm mt-0.5 font-light">{t('most_winners')}</p>
@@ -624,18 +629,18 @@ export default function Home() {
       <div ref={ctaSection.ref} className={ctaSection.inView ? 'section-visible' : 'section-hidden'}>
         <section className="relative overflow-hidden">
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.04), rgba(255,255,255,0.02))' }} />
-          <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-24 text-center">
-            <h2 className="text-xl md:text-5xl font-extralight text-white leading-tight tracking-wide">
+          <div className="relative max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24 text-center">
+            <h2 className="text-lg md:text-5xl font-extralight text-white leading-tight tracking-wide">
               {t('join_now_and')}
               <br />
               <span className="font-thin text-white">{t('get_special_bonus')}</span>
             </h2>
-            <p className="mt-2 md:mt-4 text-text-secondary text-sm md:text-lg font-light">
+            <p className="mt-2 md:mt-4 text-text-secondary text-xs md:text-lg font-light">
               {t('new_member_bonus')} <span className="font-light text-white">{t('up_to_200_bonus')}</span> {t('bonus_given')}
             </p>
             <Link
               href="/register"
-              className="mt-6 md:mt-10 inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-4 text-sm md:text-lg font-light btn-cta"
+              className="mt-4 md:mt-10 inline-flex items-center justify-center px-6 md:px-10 py-2.5 md:py-4 text-xs md:text-lg font-light btn-cta"
             >
               {t('join_now')}
             </Link>
