@@ -357,8 +357,10 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
                     alt={sub.label || ''}
                     className="h-5 w-auto object-contain transition-all duration-300"
                     style={{
-                      filter: 'brightness(0) invert(1)',
-                      opacity: isActive ? 0.9 : 0.25,
+                      opacity: isActive ? 1 : 0.3,
+                      border: isActive ? '1px solid rgba(255,255,255,0.3)' : 'none',
+                      borderRadius: '4px',
+                      padding: isActive ? '1px' : '0',
                     }}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
