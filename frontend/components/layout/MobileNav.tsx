@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { useLang } from '@/hooks/useLang';
@@ -16,6 +16,7 @@ const navItemDefs = [
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [visible, setVisible] = useState(true);
   const [bottomSheet, setBottomSheet] = useState(false);
   const lastScrollY = useRef(0);
@@ -85,6 +86,29 @@ export default function MobileNav() {
                   <item.icon active={!!isActive} />
                   <span className="text-[10px] font-light">{item.label}</span>
                 </Link>
+              );
+            }
+
+            // Bonus tab: redirect to /register if not logged in
+            if (item.href === '/mypage/coupons') {
+              return (
+                <button
+                  key={item.href}
+                  onClick={() => {
+                    const isLoggedIn = typeof window !== 'undefined' && !!localStorage.getItem('token');
+                    if (isLoggedIn) {
+                      router.push('/mypage/coupons');
+                    } else {
+                      router.push('/register');
+                    }
+                  }}
+                  className="flex flex-col items-center gap-0.5 px-3 py-2 min-w-[56px] min-h-[48px] justify-center relative touch-active"
+                  style={{ color: isActive ? '#FFFFFF' : '#555555' }}
+                >
+                  {isActive && <span className="w-1 h-1 rounded-full absolute top-1" style={{ background: '#FFFFFF' }} />}
+                  <item.icon active={!!isActive} />
+                  <span className="text-[10px] font-light">{item.label}</span>
+                </button>
               );
             }
 

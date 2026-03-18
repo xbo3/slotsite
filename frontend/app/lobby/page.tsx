@@ -54,12 +54,12 @@ const GAMES: Game[] = [
   { id: 'fire-joker', name: 'Fire Joker', provider: "Play'n GO", category: 'SLOT', rtp: 96.15, isHot: false, isNew: true, maxWin: 'x800' },
   { id: 'moon-princess', name: 'Moon Princess', provider: "Play'n GO", category: 'SLOT', rtp: 96.5, isHot: false, isNew: false, maxWin: 'x5000' },
   // DEMO_GAMES (CDN 이미지 포함)
-  ...DEMO_GAMES.filter(dg => !['dead-or-alive-2'].includes(dg.id)).map(dg => ({
-    id: dg.id,
+  ...DEMO_GAMES.map(dg => ({
+    id: String(dg.id),
     name: dg.name,
     provider: dg.provider,
     category: dg.category === 'slots' ? 'SLOT' : dg.category.toUpperCase(),
-    rtp: dg.rtp,
+    rtp: parseFloat(dg.rtp),
     isHot: dg.isHot,
     isNew: dg.isNew,
     maxWin: dg.maxWin,

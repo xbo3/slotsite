@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useLang } from '@/hooks/useLang';
 
@@ -58,6 +59,8 @@ const TYPE_ACCENT_COLORS: Record<CouponType, string> = {
 };
 
 export default function MyCouponsPage() {
+  const router = useRouter();
+  const [isAuth, setIsAuth] = useState(false);
   const { t, lang } = useLang();
   const [coupons, setCoupons] = useState<UserCoupon[]>(lang === 'en' ? DUMMY_MY_COUPONS_EN : DUMMY_MY_COUPONS_KO);
   const [couponCode, setCouponCode] = useState('');
@@ -66,6 +69,19 @@ export default function MyCouponsPage() {
   const [glowId, setGlowId] = useState<number | null>(null);
   const [isUnfolded, setIsUnfolded] = useState(false);
   const [unfoldKey, setUnfoldKey] = useState(0);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/login');
+    } else {
+      setIsAuth(true);
+    }
+  }, [router]);
+
+  if (!isAuth) {
+    return <div className="flex items-center justify-center min-h-[50vh]"><span className="text-white/50 font-light">Loading...</span></div>;
+  }
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;

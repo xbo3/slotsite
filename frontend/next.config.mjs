@@ -7,6 +7,10 @@ const nextConfig = {
         hostname: 'fan-cdn.nolimitcity.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.pgsoft.com',
+      },
     ],
   },
 };

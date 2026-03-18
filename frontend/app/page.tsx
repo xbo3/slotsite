@@ -49,7 +49,7 @@ const BANNER_SLIDES_KEYS = [
     highlightKey: 'up_to_15',
     descKey: 'daily_cashback_desc',
     ctaKey: 'see_details',
-    ctaHref: '/mypage/coupons',
+    ctaHref: '/register',
   },
   {
     titleKey: 'vip_benefits',
@@ -358,9 +358,11 @@ export default function Home() {
       {/* ===== Popular Games ===== */}
       <div ref={popularSection.ref} className={popularSection.inView ? 'section-visible' : 'section-hidden'}>
         <section className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+          {/* 보라 악센트 그라디언트 라인 */}
+          <div className="h-[2px] mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, #9945FF, transparent)' }} />
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
+              <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #9945FF, rgba(153,69,255,0.3))' }} />
               <div>
                 <h2 className="text-2xl md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
                   <span className="text-2xl">{'\uD83D\uDD25'}</span> {t('popular_games_icon')}
@@ -396,8 +398,10 @@ export default function Home() {
       {/* ===== New Games ===== */}
       <div ref={newSection.ref} className={newSection.inView ? 'section-visible' : 'section-hidden'}>
         <section className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+          {/* 귤/오렌지 악센트 그라디언트 라인 */}
+          <div className="h-[2px] mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, #F7931A, transparent)' }} />
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #42A5F5, rgba(66,165,245,0.3))' }} />
+            <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #F7931A, rgba(247,147,26,0.3))' }} />
             <div>
               <h2 className="text-2xl md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
                 <span className="text-2xl">{'\u2B50'}</span> {t('new_games_icon')}
@@ -666,7 +670,7 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
           <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
           <div className="flex items-center justify-between mt-1">
             <p className="text-text-muted text-[11px] font-light">{game.provider}</p>
-            {game.rtp && <span className="text-[10px] text-white/40 font-light">RTP {game.rtp}%</span>}
+            {game.rtp && <span className="text-[10px] text-white/40 font-light">RTP {game.rtp}</span>}
           </div>
         </div>
       </div>
