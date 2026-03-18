@@ -90,13 +90,13 @@ const PROVIDER_COLORS: Record<string, { from: string; to: string; emoji: string 
 const ITEMS_PER_PAGE = 12;
 const ITEMS_PER_LOAD = 6;
 
-function GameThumbnail({ game, className = '' }: { game: Game; className?: string }) {
+function GameThumbnail({ game, onImgError, className = '' }: { game: Game; onImgError?: () => void; className?: string }) {
   const colors = PROVIDER_COLORS[game.provider] || { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' };
 
   if (game.thumbnail) {
     return (
       <div className={`w-full aspect-square relative overflow-hidden ${className}`}>
-        <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" loading="lazy" />
+        <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" loading="lazy" onError={onImgError} />
       </div>
     );
   }
@@ -251,28 +251,7 @@ function LobbyContent() {
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
             {RECENT_PLAYS.map(game => (
-              <Link
-                key={`recent-${game.id}`}
-                href={`/game/${game.id}`}
-                className="snap-start flex-shrink-0 w-40 md:w-48 group"
-              >
-                <div className="relative rounded-2xl overflow-hidden border-2 border-info/30 group-hover:border-info transition-all shadow-lg shadow-info/10 group-hover:shadow-info/25">
-                  <GameThumbnail game={game} className="group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
-                  <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 bg-info text-white text-[10px] font-light rounded-full">
-                      {'\uD83D\uDD04'} {t('recent_label')}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white font-light text-sm truncate">{game.name}</p>
-                    <p className="text-text-secondary text-[11px]">{game.provider}</p>
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
-                    <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-                  </div>
-                </div>
-              </Link>
+              <RecentGameCard key={`recent-${game.id}`} game={game} />
             ))}
           </div>
         </div>
@@ -286,34 +265,7 @@ function LobbyContent() {
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
             {hotGames.map(game => (
-              <Link
-                key={game.id}
-                href={`/game/${game.id}`}
-                className="snap-start flex-shrink-0 w-48 md:w-56 group"
-              >
-                <div className="relative rounded-2xl overflow-hidden border-2 border-danger/30 group-hover:border-danger transition-all shadow-lg shadow-danger/10 group-hover:shadow-danger/25">
-                  <GameThumbnail game={game} className="group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
-                  <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 bg-danger text-white text-[10px] font-light rounded-full uppercase tracking-wider animate-pulse">
-                      HOT
-                    </span>
-                  </div>
-                  <div className="absolute top-2 right-2">
-                    <span className="px-2 py-0.5 bg-dark-bg/60 text-white/70 text-[10px] font-light rounded-full">
-                      {game.maxWin}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white font-light text-sm truncate">{game.name}</p>
-                    <p className="text-text-secondary text-[11px]">{game.provider}</p>
-                  </div>
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
-                    <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-                  </div>
-                </div>
-              </Link>
+              <HotGameCard key={game.id} game={game} />
             ))}
           </div>
         </div>
@@ -455,15 +407,79 @@ function LobbyContent() {
   );
 }
 
+function RecentGameCard({ game }: { game: Game }) {
+  const { t } = useLang();
+  const [imgError, setImgError] = useState(false);
+  if (imgError) return null;
+  return (
+    <Link
+      href={`/game/${game.id}`}
+      className="snap-start flex-shrink-0 w-40 md:w-48 group"
+    >
+      <div className="relative rounded-2xl overflow-hidden border-2 border-info/30 group-hover:border-info transition-all shadow-lg shadow-info/10 group-hover:shadow-info/25">
+        <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-110 transition-transform duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
+        <div className="absolute top-2 left-2">
+          <span className="px-2 py-0.5 bg-info text-white text-[10px] font-light rounded-full">
+            {'\uD83D\uDD04'} {t('recent_label')}
+          </span>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-3">
+          <p className="text-white font-light text-sm truncate">{game.name}</p>
+          <p className="text-text-secondary text-[11px]">{game.provider}</p>
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+          <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function HotGameCard({ game }: { game: Game }) {
+  const [imgError, setImgError] = useState(false);
+  if (imgError) return null;
+  return (
+    <Link
+      href={`/game/${game.id}`}
+      className="snap-start flex-shrink-0 w-48 md:w-56 group"
+    >
+      <div className="relative rounded-2xl overflow-hidden border-2 border-danger/30 group-hover:border-danger transition-all shadow-lg shadow-danger/10 group-hover:shadow-danger/25">
+        <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-110 transition-transform duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
+        <div className="absolute top-2 left-2">
+          <span className="px-2 py-0.5 bg-danger text-white text-[10px] font-light rounded-full uppercase tracking-wider animate-pulse">
+            HOT
+          </span>
+        </div>
+        <div className="absolute top-2 right-2">
+          <span className="px-2 py-0.5 bg-dark-bg/60 text-white/70 text-[10px] font-light rounded-full">
+            {game.maxWin}
+          </span>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-3">
+          <p className="text-white font-light text-sm truncate">{game.name}</p>
+          <p className="text-text-secondary text-[11px]">{game.provider}</p>
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+          <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 function GameCard({ game }: { game: Game }) {
   const { t } = useLang();
+  const [imgError, setImgError] = useState(false);
+  if (imgError) return null;
   return (
     <div className="group relative">
       <Link href={`/game/${game.id}`} className="block">
         <div className="relative rounded-2xl overflow-hidden card-matte hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow">
           {/* Thumbnail */}
           <div className="relative overflow-hidden">
-            <GameThumbnail game={game} className="group-hover:scale-[1.08] transition-transform duration-700" />
+            <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
 
             {/* Badges */}

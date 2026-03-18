@@ -408,28 +408,7 @@ export default function Home() {
 
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
             {NEW_GAMES.map(game => (
-              <Link key={game.id} href={`/game/${game.id}`} className="snap-start flex-shrink-0 w-44 md:w-52 group">
-                <div className="relative rounded-2xl overflow-hidden card-matte group-hover:border-white/20 transition-all shadow-lg card-hover card-glow">
-                  <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} className="group-hover:scale-[1.08] transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
-                  <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 bg-success text-dark-bg text-[10px] font-medium rounded-md">NEW</span>
-                  </div>
-                  <div className="absolute top-2 right-2">
-                    <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/80 text-[9px] font-light rounded-md backdrop-blur-sm">
-                      {game.maxWin}
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white font-light text-sm truncate">{game.name}</p>
-                    <p className="text-text-secondary text-[11px] font-light">{game.provider}</p>
-                  </div>
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
-                    <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-                  </div>
-                </div>
-              </Link>
+              <NewGameCard key={game.id} game={game} />
             ))}
           </div>
         </section>
@@ -645,11 +624,13 @@ export default function Home() {
 // ===== GameCard Component =====
 function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
   const { t } = useLang();
+  const [imgError, setImgError] = useState(false);
+  if (imgError) return null;
   return (
     <Link href={`/game/${game.id}`} className="group">
       <div className="relative rounded-2xl overflow-hidden card-matte hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow">
         <div className="relative overflow-hidden">
-          <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} className="group-hover:scale-[1.08] group-hover:brightness-110 transition-all duration-700" />
+          <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] group-hover:brightness-110 transition-all duration-700" />
           <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
 
           {/* Rank badge */}
@@ -693,14 +674,44 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
   );
 }
 
+// ===== NewGameCard Component =====
+function NewGameCard({ game }: { game: typeof NEW_GAMES[0] }) {
+  const [imgError, setImgError] = useState(false);
+  if (imgError) return null;
+  return (
+    <Link href={`/game/${game.id}`} className="snap-start flex-shrink-0 w-44 md:w-52 group">
+      <div className="relative rounded-2xl overflow-hidden card-matte group-hover:border-white/20 transition-all shadow-lg card-hover card-glow">
+        <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] transition-transform duration-700" />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
+        <div className="absolute top-2 left-2">
+          <span className="px-2 py-0.5 bg-success text-dark-bg text-[10px] font-medium rounded-md">NEW</span>
+        </div>
+        <div className="absolute top-2 right-2">
+          <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/80 text-[9px] font-light rounded-md backdrop-blur-sm">
+            {game.maxWin}
+          </span>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-3">
+          <p className="text-white font-light text-sm truncate">{game.name}</p>
+          <p className="text-text-secondary text-[11px] font-light">{game.provider}</p>
+        </div>
+        {/* Hover overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+          <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 // ===== GameThumb Component =====
-function GameThumb({ name, provider, thumbnail, className = '' }: { name: string; provider: string; thumbnail?: string; className?: string }) {
+function GameThumb({ name, provider, thumbnail, onImgError, className = '' }: { name: string; provider: string; thumbnail?: string; onImgError?: () => void; className?: string }) {
   const colors = PROVIDER_COLORS[provider] || { from: '#42A5F5', to: '#64B5F6', pattern: 'svg-pattern-dots' };
 
   if (thumbnail) {
     return (
       <div className={`w-full aspect-square relative overflow-hidden ${className}`}>
-        <img src={thumbnail} alt={name} className="w-full h-full object-cover" loading="lazy" />
+        <img src={thumbnail} alt={name} className="w-full h-full object-cover" loading="lazy" onError={onImgError} />
       </div>
     );
   }

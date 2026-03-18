@@ -21,7 +21,7 @@ export default function Header() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifCount] = useState(3);
   const [onlineCount, setOnlineCount] = useState(2847);
-  const { t, lang, toggleLang } = useLang();
+  const { t } = useLang();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -161,15 +161,6 @@ export default function Header() {
 
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center gap-2">
-          {/* Language Toggle */}
-          <button
-            onClick={toggleLang}
-            className="px-2.5 py-1.5 text-xs font-medium rounded-md border transition-all hover:bg-white/10"
-            style={{ color: '#888888', borderColor: 'rgba(255,255,255,0.15)' }}
-            title={lang === 'ko' ? 'Switch to English' : '한국어로 전환'}
-          >
-            {lang === 'ko' ? 'EN' : 'KO'}
-          </button>
           {loggedIn ? (
             <>
               {/* Notification Bell */}
@@ -304,13 +295,6 @@ export default function Header() {
 
         {/* Mobile: search + hamburger */}
         <div className="flex md:hidden items-center gap-2 ml-auto">
-          <button
-            onClick={toggleLang}
-            className="px-2 py-1 text-[10px] font-medium rounded border transition-all"
-            style={{ color: '#888888', borderColor: 'rgba(255,255,255,0.15)' }}
-          >
-            {lang === 'ko' ? 'EN' : 'KO'}
-          </button>
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             className="p-2 hover:text-white"
