@@ -1,74 +1,129 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { useLang } from '@/hooks/useLang';
 
-type CouponType = 'bonus_money' | 'free_spin' | 'deposit_bonus';
-type CouponStatus = 'available' | 'used' | 'expired';
+/* ──────────────────────────────────────────────
+   TYPES & DATA
+   ────────────────────────────────────────────── */
 
-interface UserCoupon {
+interface Coupon {
   id: number;
-  code: string;
+  type: 'wager' | 'conversion' | 'deposit' | 'welcome' | 'derived' | 'spins';
   name: string;
-  type: CouponType;
-  amount: number;
-  min_deposit: number;
-  status: CouponStatus;
-  end_date: string;
-  description: string;
+  desc: string;
+  amount: string;
+  label: string;
+  btnText: string;
+  btnDisabled?: boolean;
+  accentGradient: string;
+  accentColor: string;
+  typeBadge: string;
+  conditions: string[];
+  progress?: { label: string; current: number; max: number };
+  chainBadge?: string;
 }
 
-const DUMMY_MY_COUPONS_KO: UserCoupon[] = [
-  { id: 1, code: 'WELCOME2026', name: '신규 가입 보너스', type: 'deposit_bonus', amount: 15, min_deposit: 50000, status: 'available', end_date: '2026-12-31', description: '첫 충전 시 15% 보너스 지급' },
-  { id: 2, code: 'FREESPIN50', name: '3월 프리스핀', type: 'free_spin', amount: 50, min_deposit: 0, status: 'available', end_date: '2026-03-31', description: 'Gates of Olympus 50회 프리스핀' },
-  { id: 3, code: 'VIP10K', name: 'VIP 보너스', type: 'bonus_money', amount: 10000, min_deposit: 100000, status: 'used', end_date: '2026-02-28', description: 'VIP 전용 보너스 머니 10,000원' },
-  { id: 4, code: 'NEWYEAR2026', name: '새해 이벤트', type: 'bonus_money', amount: 20000, min_deposit: 200000, status: 'expired', end_date: '2026-01-07', description: '새해 특별 보너스 20,000원' },
+interface ExpiredCoupon {
+  id: number;
+  icon: string;
+  name: string;
+  amount: string;
+  date: string;
+  tag: string;
+  tagType: 'used' | 'expired' | 'converted';
+}
+
+const TIERS = [
+  { icon: '\u{1F949}', name: 'Bronze', perk: '3%\nDaily', color: '#9ca3af', barColor: '#6b7280' },
+  { icon: '\u{1F948}', name: 'Silver', perk: '5%\nDaily', color: '#a78bfa', barColor: '#a78bfa' },
+  { icon: '\u{1F947}', name: 'Gold', perk: '8%\nDaily', color: '#fbbf24', barColor: 'linear-gradient(135deg,#0284c7,#38bdf8)' },
+  { icon: '\u{1F48E}', name: 'Platinum', perk: '12%\n+Weekly', color: '#4ade80', barColor: 'linear-gradient(135deg,#16a34a,#4ade80)' },
+  { icon: '\u{1F451}', name: 'Diamond', perk: '15%\n+Cashback', color: '#fbbf24', barColor: 'linear-gradient(135deg,#d97706,#fbbf24)' },
+  { icon: '\u{1F525}', name: 'Master', perk: '18%\n+VIP Host', color: '#f472b6', barColor: 'linear-gradient(135deg,#db2777,#f472b6)' },
+  { icon: '\u{1F31F}', name: 'Legend', perk: '25%\n+All Perks', color: '#ffffff', barColor: 'linear-gradient(135deg,#ff4757,#fbbf24,#22c55e,#0ea5e9,#8b5cf6)' },
+];
+const CURRENT_TIER = 2; // Gold
+
+const BONUS_TYPES = [
+  { img: '/0box.png', name: 'Emergency Bonus', desc: 'Emergency support', badge: 'Available', badgeClass: 'bg-[rgba(34,197,94,0.25)] text-[#4ade80]' },
+  { img: '/1box.png', name: 'Grade Benefits', desc: 'Auto bonus by level', badge: 'VIP Only', badgeClass: 'bg-[rgba(245,158,11,0.25)] text-[#fbbf24]' },
+  { img: '/2box.webp', name: 'Bonus Loan', desc: 'Advance payment', badge: 'Apply', badgeClass: 'bg-[rgba(34,197,94,0.25)] text-[#4ade80]' },
+  { img: '/3box.png', name: 'Derived Bonus', desc: 'Chain from rewards', badge: 'Chain', badgeClass: 'bg-[rgba(236,72,153,0.25)] text-[#f472b6] animate-pulse' },
+  { img: '/4box.png', name: 'Free Spins', desc: 'Slot spin rewards', badge: 'New', badgeClass: 'bg-[rgba(139,92,246,0.25)] text-[#a78bfa] animate-pulse' },
 ];
 
-const DUMMY_MY_COUPONS_EN: UserCoupon[] = [
-  { id: 1, code: 'WELCOME2026', name: 'Welcome Bonus', type: 'deposit_bonus', amount: 15, min_deposit: 50000, status: 'available', end_date: '2026-12-31', description: '15% bonus on first deposit' },
-  { id: 2, code: 'FREESPIN50', name: 'March Free Spins', type: 'free_spin', amount: 50, min_deposit: 0, status: 'available', end_date: '2026-03-31', description: '50 Free Spins on Gates of Olympus' },
-  { id: 3, code: 'VIP10K', name: 'VIP Bonus', type: 'bonus_money', amount: 10000, min_deposit: 100000, status: 'used', end_date: '2026-02-28', description: 'VIP exclusive bonus ₩10,000' },
-  { id: 4, code: 'NEWYEAR2026', name: 'New Year Event', type: 'bonus_money', amount: 20000, min_deposit: 200000, status: 'expired', end_date: '2026-01-07', description: 'New Year special bonus ₩20,000' },
+const COUPONS: Coupon[] = [
+  {
+    id: 1, type: 'wager',
+    name: '\u20a950,000 Wager Coupon', desc: 'Convert to cash upon 500% rolling achievement',
+    amount: '\u20a950K', label: 'Wager', btnText: '46.8%', btnDisabled: true,
+    accentGradient: 'linear-gradient(135deg,#d97706,#fbbf24)', accentColor: '#f59e0b',
+    typeBadge: 'Wager',
+    conditions: ['Rolling 500%', 'Cash convertible'],
+    progress: { label: 'Rolling', current: 234, max: 500 },
+  },
+  {
+    id: 2, type: 'conversion',
+    name: '\u20a970,000 Conversion Coupon', desc: 'Convert upon 777% rolling \u00b7 Max \u20a9770,000',
+    amount: '\u20a970K', label: 'Convert', btnText: '74.6%',
+    accentGradient: 'linear-gradient(135deg,#db2777,#f472b6)', accentColor: '#ec4899',
+    typeBadge: 'Conversion',
+    conditions: ['Rolling 777%', 'Max \u20a9770K'],
+    progress: { label: 'Rolling', current: 580, max: 777 },
+  },
+  {
+    id: 3, type: 'deposit',
+    name: 'Deposit Match \u20a950,000', desc: 'Deposit \u20a9100,000 and get \u20a950,000 bonus to use together',
+    amount: '\u20a950K', label: 'Bonus', btnText: 'USE',
+    accentGradient: 'linear-gradient(135deg,#0284c7,#38bdf8)', accentColor: '#0ea5e9',
+    typeBadge: 'Deposit',
+    conditions: ['Min \u20a9100K deposit', 'Rolling x3', '~04.30'],
+  },
+  {
+    id: 4, type: 'welcome',
+    name: 'Welcome Bonus 15%', desc: '15% bonus on first deposit \u00b7 #WELCOME2026',
+    amount: '15%', label: 'Deposit', btnText: 'USE',
+    accentGradient: 'linear-gradient(135deg,#ff4757,#ff6b81)', accentColor: '#ff4757',
+    typeBadge: 'Welcome',
+    conditions: ['Min \u20a910K', 'Rolling x3', '~12.31'],
+  },
+  {
+    id: 5, type: 'derived',
+    name: 'Wager Reward \u20a930K', desc: 'From Welcome Bonus \u00b7 \u20a930,000 cash after 200% rolling',
+    amount: '\u20a930K', label: 'Cash', btnText: 'USE',
+    accentGradient: 'linear-gradient(135deg,#16a34a,#4ade80)', accentColor: '#22c55e',
+    typeBadge: 'Derived',
+    conditions: ['Rolling 200%', 'From: Welcome'],
+    chainBadge: '\u{1F517} CHAIN',
+  },
+  {
+    id: 6, type: 'spins',
+    name: 'March Free Spins', desc: '50 Free Spins on Gates of Olympus \u00b7 #FREESPIN03',
+    amount: '50', label: 'Spins', btnText: 'USE',
+    accentGradient: 'linear-gradient(135deg,#0891b2,#22d3ee)', accentColor: '#06b6d4',
+    typeBadge: 'Spins',
+    conditions: ['50 Spins', '~03.31'],
+  },
 ];
 
-const TYPE_ICONS: Record<CouponType, string> = {
-  free_spin: '\uD83C\uDFB0',
-  bonus_money: '\uD83D\uDCB0',
-  deposit_bonus: '\uD83D\uDCC8',
-};
+const EXPIRED_COUPONS: ExpiredCoupon[] = [
+  { id: 101, icon: '\u{1F4B0}', name: 'VIP Bonus', amount: '\u20a910,000', date: '2026.02.28', tag: 'Used', tagType: 'used' },
+  { id: 102, icon: '\u{1F386}', name: 'New Year Event', amount: '\u20a920,000', date: '2026.01.07', tag: 'Expired', tagType: 'expired' },
+  { id: 103, icon: '\u{1F3AF}', name: 'Wager Complete', amount: '\u20a930,000', date: '2026.02.15', tag: 'Converted', tagType: 'converted' },
+];
 
-const TYPE_LABELS_KO: Record<CouponType, string> = {
-  bonus_money: '보너스머니',
-  free_spin: '프리스핀',
-  deposit_bonus: '입금보너스',
-};
-
-const TYPE_LABELS_EN: Record<CouponType, string> = {
-  bonus_money: 'Bonus Money',
-  free_spin: 'Free Spin',
-  deposit_bonus: 'Deposit Bonus',
-};
-
-const TYPE_ACCENT_COLORS: Record<CouponType, string> = {
-  bonus_money: 'border-l-white/40',
-  free_spin: 'border-l-white/30',
-  deposit_bonus: 'border-l-blue-400',
-};
+/* ──────────────────────────────────────────────
+   MAIN PAGE COMPONENT
+   ────────────────────────────────────────────── */
 
 export default function MyCouponsPage() {
   const router = useRouter();
   const [isAuth, setIsAuth] = useState(false);
-  const { t, lang } = useLang();
-  const [coupons, setCoupons] = useState<UserCoupon[]>(lang === 'en' ? DUMMY_MY_COUPONS_EN : DUMMY_MY_COUPONS_KO);
-  const [couponCode, setCouponCode] = useState('');
-  const [applyResult, setApplyResult] = useState<{ success: boolean; message: string } | null>(null);
-  const [applyLoading, setApplyLoading] = useState(false);
-  const [glowId, setGlowId] = useState<number | null>(null);
-  const [isUnfolded, setIsUnfolded] = useState(false);
-  const [unfoldKey, setUnfoldKey] = useState(0);
+  const { t } = useLang();
+  const [gradeFillWidth, setGradeFillWidth] = useState(0);
+  const [toast, setToast] = useState<{ msg: string; bg: string } | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -79,308 +134,388 @@ export default function MyCouponsPage() {
     }
   }, [router]);
 
+  // Animate grade fill
+  useEffect(() => {
+    if (isAuth) {
+      const timer = setTimeout(() => setGradeFillWidth(62.5), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuth]);
+
+  const showToast = (msg: string, bg: string) => {
+    setToast({ msg, bg });
+    setTimeout(() => setToast(null), 2000);
+  };
+
   if (!isAuth) {
     return <div className="flex items-center justify-center min-h-[50vh]"><span className="text-white/50 font-light">Loading...</span></div>;
   }
 
-  const handleApplyCoupon = async () => {
-    if (!couponCode.trim()) return;
-    setApplyLoading(true);
-    setApplyResult(null);
-
-    // Simulate API call
-    await new Promise(r => setTimeout(r, 800));
-
-    // Demo: always succeed with a new coupon
-    const newCoupon: UserCoupon = {
-      id: Date.now(),
-      code: couponCode.toUpperCase(),
-      name: lang === 'en' ? 'Promo Bonus' : '프로모션 보너스',
-      type: 'bonus_money',
-      amount: 5000,
-      min_deposit: 0,
-      status: 'available',
-      end_date: '2026-12-31',
-      description: lang === 'en' ? 'Promo bonus money ₩5,000' : '프로모션 보너스 머니 5,000원',
-    };
-
-    setCoupons(prev => [newCoupon, ...prev]);
-    setGlowId(newCoupon.id);
-    setApplyResult({ success: true, message: t('bonus_applied') });
-    setCouponCode('');
-    setApplyLoading(false);
-
-    setTimeout(() => {
-      setGlowId(null);
-      setApplyResult(null);
-    }, 3000);
-  };
-
-  const availableCoupons = coupons.filter(c => c.status === 'available');
-  const pastCoupons = coupons.filter(c => c.status !== 'available');
-
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
-      <h1 className="text-2xl font-light text-white mb-6">{t('my_bonuses')}</h1>
+    <div className="max-w-[760px] mx-auto px-4 py-4 animate-fade-in relative z-[1]" style={{ fontFamily: "'Poppins', sans-serif" }}>
 
-      {/* Coupon Code Input */}
-      <div className="bg-dark-card rounded-xl border border-white/5 p-5 mb-8">
-        <h2 className="text-sm font-light text-text-secondary mb-3">{t('bonus_code_input')}</h2>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={couponCode}
-            onChange={e => setCouponCode(e.target.value.toUpperCase())}
-            onKeyDown={e => e.key === 'Enter' && handleApplyCoupon()}
-            placeholder={t('enter_bonus_code')}
-            className="flex-1 px-4 py-3 bg-dark-input border border-white/5 rounded-lg text-white text-sm font-mono placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
-          />
-          <button
-            onClick={handleApplyCoupon}
-            disabled={applyLoading || !couponCode.trim()}
-            className="px-6 py-3 btn-cta text-sm rounded-lg whitespace-nowrap"
-          >
-            {applyLoading ? t('checking') : t('apply')}
-          </button>
-        </div>
-        {applyResult && (
-          <div className={`mt-3 px-4 py-2.5 rounded-lg text-sm font-medium ${
-            applyResult.success
-              ? 'bg-success/10 text-success border border-success/20 glow-green'
-              : 'bg-danger/10 text-danger border border-danger/20'
-          }`}>
-            {applyResult.message}
-          </div>
-        )}
+      {/* Toast */}
+      <div
+        className="fixed top-5 left-1/2 z-[99] px-6 py-2.5 rounded-[20px] text-[11px] font-normal text-white transition-all duration-300 pointer-events-none"
+        style={{
+          transform: toast ? 'translateX(-50%) translateY(0)' : 'translateX(-50%) translateY(-40px)',
+          opacity: toast ? 1 : 0,
+          background: toast?.bg || '#fff',
+          boxShadow: '0 8px 30px rgba(0,0,0,0.5)',
+        }}
+      >
+        {toast?.msg}
       </div>
 
-      {/* ===== Bonus Categories ===== */}
-      <div className="mb-10">
-        <div
-          onClick={() => {
-            if (!isUnfolded) {
-              setUnfoldKey(prev => prev + 1);
-            }
-            setIsUnfolded(!isUnfolded);
-          }}
-          className="cursor-pointer select-none"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium text-white">{t('bonus_types')}</h2>
-            <div className="flex items-center gap-2">
-              <span className="text-white font-light text-sm">Bonus Cards</span>
-              <svg
-                className={`w-4 h-4 text-white/50 transition-transform duration-300 ${isUnfolded ? 'rotate-180' : ''}`}
-                fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+      {/* ===== PROFILE CARD ===== */}
+      <div className="relative overflow-hidden rounded-2xl p-5 mb-5" style={{ background: '#0e0e12', border: '1px solid rgba(255,255,255,0.06)' }}>
+        {/* Top gradient overlay */}
+        <div className="absolute top-0 left-0 right-0 h-20" style={{ background: 'linear-gradient(135deg,rgba(139,92,246,0.08),rgba(6,182,212,0.06),rgba(236,72,153,0.05))' }} />
+
+        {/* Profile top */}
+        <div className="flex items-center gap-3.5 relative mb-4">
+          <div
+            className="w-[52px] h-[52px] rounded-[14px] flex items-center justify-center text-xl font-bold text-white flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg,#7c3aed,#ec4899)', boxShadow: '0 4px 16px rgba(139,92,246,0.3)' }}
+          >
+            P
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-base font-semibold text-white flex items-center gap-2">
+              player_kim
+              <span className="text-[8px] font-bold tracking-wider py-0.5 px-2 rounded" style={{ background: 'linear-gradient(135deg,#d97706,#fbbf24)', color: '#000' }}>
+                LV.3 GOLD
+              </span>
+            </div>
+            <div className="text-[10px] font-light" style={{ color: '#5e5e70' }}>Joined 2025.01.15</div>
+          </div>
+          <div className="text-right relative">
+            <div className="text-[9px] font-light tracking-wider" style={{ color: '#5e5e70' }}>Balance</div>
+            <div className="text-[22px] font-bold text-white tracking-tight">
+              12,450.5<span className="text-[11px] font-light ml-1" style={{ color: '#5e5e70' }}>USDT</span>
             </div>
           </div>
         </div>
-        <div className={`space-y-3 transition-all duration-300 ${isUnfolded ? '' : 'max-h-16 overflow-hidden'}`}>
-          {[
-            { icon: '🚨', nameKey: 'emergency_bonus', descKey: 'emergency_bonus_desc', borderColor: 'border-danger/40', available: true },
-            { icon: '🔮', nameKey: 'derived_bonus', descKey: 'derived_bonus_desc', borderColor: 'border-white/20', available: false },
-            { icon: '🔗', nameKey: 'linked_bonus', descKey: 'linked_bonus_desc', borderColor: 'border-blue-400/40', available: true },
-            { icon: '🏃', nameKey: 'relay_bonus', descKey: 'relay_bonus_desc', borderColor: 'border-white/20', available: false },
-            { icon: '✋', nameKey: 'request_bonus', descKey: 'request_bonus_desc', borderColor: 'border-green-500/40', available: true },
-          ].map((card, i) => (
+
+        {/* Grade Gauge */}
+        <div className="relative mb-4">
+          <div className="flex items-center gap-2.5 mb-2">
+            <span className="text-lg">{'\u2B50'}</span>
+            <span className="text-xs font-medium" style={{ color: '#f59e0b' }}>Lv.3 Gold</span>
+            <span className="text-[10px] font-light ml-auto" style={{ color: '#5e5e70' }}>1,250 / 2,000 XP</span>
+          </div>
+          <div className="h-2 rounded overflow-hidden mb-1.5" style={{ background: '#08080b' }}>
             <div
-              key={`${i}-${unfoldKey}`}
-              className={`${isUnfolded && i < 4 ? `card-unfold-${i + 1}` : isUnfolded ? 'animate-fade-in' : ''}`}
+              className="h-full rounded relative"
+              style={{
+                width: `${gradeFillWidth}%`,
+                background: 'linear-gradient(135deg,#d97706,#fbbf24)',
+                transition: 'width 1.5s cubic-bezier(0.4,0,0.2,1)',
+              }}
             >
-              <BonusCategoryCard
-                icon={card.icon}
-                name={t(card.nameKey)}
-                desc={t(card.descKey)}
-                borderColor={card.borderColor}
-                available={card.available}
-              />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)', animation: 'shimmer 2.5s infinite' }} />
+            </div>
+          </div>
+          <div className="flex justify-between px-0.5">
+            {['Lv.1', 'Lv.2', 'Lv.3', 'Lv.4', 'Lv.5', 'Lv.6', 'Lv.7'].map((lv, i) => {
+              const passed = i < CURRENT_TIER;
+              const active = i === CURRENT_TIER;
+              return (
+                <div key={lv} className="flex flex-col items-center gap-0.5 cursor-default group">
+                  <div
+                    className="w-2 h-2 rounded-full transition-all"
+                    style={{
+                      border: `2px solid ${passed || active ? '#f59e0b' : '#3a3a48'}`,
+                      background: passed || active ? '#f59e0b' : '#08080b',
+                      boxShadow: active ? '0 0 8px rgba(245,158,11,0.4)' : 'none',
+                    }}
+                  />
+                  <span
+                    className="text-[7px] tracking-wider transition-colors group-hover:text-white/70"
+                    style={{ color: active ? '#f59e0b' : '#3a3a48', fontWeight: active ? 600 : 400 }}
+                  >
+                    {lv}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { label: 'Total Deposit', value: '35,000', color: '#0ea5e9' },
+            { label: 'Total Bet', value: '28,500', color: '#f97316' },
+            { label: 'Total Wins', value: '31,200', color: '#22c55e' },
+          ].map((s) => (
+            <div key={s.label} className="rounded-[10px] py-2.5 px-3 text-center" style={{ background: '#08080b', border: '1px solid rgba(255,255,255,0.04)' }}>
+              <div className="text-[8px] font-light tracking-widest uppercase mb-0.5" style={{ color: '#3a3a48' }}>{s.label}</div>
+              <div className="text-sm font-semibold" style={{ color: s.color }}>{s.value}</div>
             </div>
           ))}
         </div>
-        <div className="mb-6" />
-
-        {/* Grade Benefit - card-pearl large */}
-        <div className="card-pearl rounded-2xl p-6 mb-4" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center text-2xl" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)' }}>
-              👑
-            </div>
-            <div className="flex-1">
-              <h3 className="text-white font-medium text-base">{t('grade_benefits_title')}</h3>
-              <p className="text-text-secondary text-sm font-light">{t('grade_auto_bonus')}</p>
-            </div>
-            <span className="px-4 py-1.5 text-xs font-medium rounded-full" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)', color: '#0A0A0A' }}>
-              {t('vip_only')}
-            </span>
-          </div>
-        </div>
-
-        {/* Bonus Loan - card-pearl dark premium */}
-        <div className="card-pearl rounded-2xl p-6" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-dark-elevated flex items-center justify-center text-2xl">
-              💳
-            </div>
-            <div className="flex-1">
-              <h3 className="text-white font-medium text-base">{t('bonus_loan_title')}</h3>
-              <p className="text-text-secondary text-sm font-light">{t('advance_rolling')}</p>
-            </div>
-            <span className="px-4 py-1.5 btn-outline text-xs rounded-full">
-              {t('apply_loan')}
-            </span>
-          </div>
-        </div>
       </div>
 
-      {/* ===== 7만원 전환 쿠폰 ===== */}
-      <div className="card-pearl rounded-2xl p-6 mb-10" style={{ borderWidth: '1px', borderColor: 'rgba(255,255,255,0.20)' }}>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)' }}>
-            🎫
-          </div>
-          <div>
-            <h3 className="text-white font-medium text-base">{t('conversion_coupon_70k')}</h3>
-            <p className="text-text-secondary text-sm font-light">{t('rolling_777_desc')}</p>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between text-sm mb-2">
-          <span className="text-text-secondary font-light">{t('current_rolling_label')}</span>
-          <span className="text-white font-medium">234% / 777%</span>
-        </div>
-
-        {/* Progress bar */}
-        <div className="w-full h-3 bg-dark-elevated rounded-full overflow-hidden mb-4">
+      {/* ===== GRADE BENEFITS (7 tiers) ===== */}
+      <SectionTitle title={t('grade_benefits')} />
+      <div className="grid gap-1.5 mb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))' }}>
+        {TIERS.map((tier, i) => (
           <div
-            className="h-full rounded-full transition-all duration-1000"
+            key={tier.name}
+            className="relative overflow-hidden rounded-[10px] py-3 px-2 text-center transition-all duration-300 cursor-default hover:-translate-y-0.5"
             style={{
-              width: `${(234 / 777) * 100}%`,
-              background: 'linear-gradient(90deg, #FFFFFF, #E0E0E0)',
+              background: '#151519',
+              border: i === CURRENT_TIER ? '1px solid rgba(245,158,11,0.4)' : '1px solid rgba(255,255,255,0.05)',
+              boxShadow: i === CURRENT_TIER ? '0 0 20px rgba(245,158,11,0.08)' : 'none',
             }}
-          />
-        </div>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-text-muted text-xs font-light">{t('coupon_amount')}</p>
-            <p className="text-white text-xl font-medium">₩70,000</p>
-            <p className="text-text-muted text-xs font-light mt-0.5">{lang === 'en' ? 'Max conversion ₩770,000' : '최대 전환 ₩770,000'}</p>
-          </div>
-          <button
-            disabled
-            className="px-6 py-3 rounded-xl text-sm font-medium opacity-50 cursor-not-allowed"
-            style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)', color: '#0A0A0A' }}
           >
-            {t('convert_btn')}
-          </button>
-        </div>
+            {/* Top color bar */}
+            <div
+              className="absolute top-0 left-0 right-0 h-[3px]"
+              style={{
+                background: i === 6
+                  ? 'linear-gradient(135deg,#ff4757,#fbbf24,#22c55e,#0ea5e9,#8b5cf6)'
+                  : tier.barColor,
+                backgroundSize: i === 6 ? '200% 200%' : undefined,
+                animation: i === 6 ? 'rainbow 3s ease infinite' : undefined,
+              }}
+            />
+            <div className="text-[22px] mb-1">{tier.icon}</div>
+            <div className="text-[9px] font-medium tracking-wider mb-0.5" style={{ color: tier.color, textShadow: i === 6 ? '0 0 10px rgba(255,255,255,0.3)' : undefined }}>
+              {tier.name}
+            </div>
+            <div className="text-[8px] font-extralight leading-snug whitespace-pre-line" style={{ color: '#5e5e70' }}>{tier.perk}</div>
+            {i === CURRENT_TIER && (
+              <div className="text-[6px] font-bold tracking-widest uppercase mt-1" style={{ color: '#f59e0b' }}>{'\u2605'} YOU</div>
+            )}
+          </div>
+        ))}
       </div>
 
-      {/* Available Coupons */}
-      {availableCoupons.length > 0 ? (
-        <>
-          <h2 className="text-lg font-light text-white mb-4">
-            {t('available_bonuses')} <span className="text-white ml-1">{availableCoupons.length}</span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-10">
-            {availableCoupons.map(coupon => (
-              <CouponCard key={coupon.id} coupon={coupon} isGlowing={glowId === coupon.id} />
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="flex flex-col items-center justify-center py-16 text-center mb-10">
-          <span className="text-5xl mb-4">{'\uD83C\uDF9F\uFE0F'}</span>
-          <h3 className="text-lg font-light text-white mb-1">{t('no_bonuses')}</h3>
-          <p className="text-text-secondary text-sm mb-4">{t('no_bonuses_desc')}</p>
-          <Link href="/lobby" className="px-6 py-2.5 btn-cta text-sm rounded-lg">
-            {t('view_promotions')}
-          </Link>
-        </div>
-      )}
-
-      {/* Past Coupons */}
-      {pastCoupons.length > 0 && (
-        <>
-          <h2 className="text-lg font-light text-text-muted mb-4">{t('past_bonuses')}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {pastCoupons.map(coupon => (
-              <CouponCard key={coupon.id} coupon={coupon} disabled />
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-function BonusCategoryCard({ icon, name, desc, borderColor, available }: { icon: string; name: string; desc: string; borderColor: string; available: boolean }) {
-  const { t } = useLang();
-  return (
-    <div className={`card-glossy rounded-xl p-4 transition-all duration-300 ${borderColor} ${available ? 'card-hover' : 'opacity-50'}`} style={{ borderLeftWidth: '3px' }}>
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-dark-elevated flex items-center justify-center text-xl flex-shrink-0">
-          {icon}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-white font-normal text-sm">{name}</h3>
-          <p className="text-text-secondary text-xs font-light">{desc}</p>
-        </div>
-        {available && (
-          <span className="px-2.5 py-1 text-[10px] font-medium rounded-full glow-gold" style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
-            {t('available')}
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function CouponCard({ coupon, isGlowing = false, disabled = false }: { coupon: UserCoupon; isGlowing?: boolean; disabled?: boolean }) {
-  const { t, lang } = useLang();
-  const TYPE_LABELS = lang === 'en' ? TYPE_LABELS_EN : TYPE_LABELS_KO;
-  return (
-    <div className={`relative bg-dark-card rounded-xl border-l-4 ${TYPE_ACCENT_COLORS[coupon.type]} border border-white/5 overflow-hidden transition-all duration-300 ${
-      isGlowing ? 'glow-gold border-white/20' : ''
-    } ${disabled ? 'opacity-60' : 'card-hover'}`}>
-      <div className="p-4">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{TYPE_ICONS[coupon.type]}</span>
-            <div>
-              <h3 className="text-sm font-light text-white">{coupon.name}</h3>
-              <span className="text-[10px] text-text-muted font-mono">{coupon.code}</span>
+      {/* ===== BONUS TYPES (image cards) ===== */}
+      <SectionTitle title={t('bonus_types')} />
+      <div className="grid gap-2.5 mb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))' }}>
+        {BONUS_TYPES.map((bt, i) => (
+          <div
+            key={bt.name}
+            className="cursor-pointer overflow-hidden rounded-xl transition-all hover:-translate-y-1 hover:border-white/[0.14] relative"
+            style={{
+              background: '#151519',
+              border: '1px solid rgba(255,255,255,0.06)',
+              animation: `cardUp 0.5s ease both`,
+              animationDelay: `${i * 0.06}s`,
+            }}
+            onClick={() => {
+              if (bt.badge === 'Available' || bt.badge === 'Apply') {
+                showToast(`${bt.name} activated`, bt.badge === 'Apply'
+                  ? 'linear-gradient(135deg,#0284c7,#38bdf8)'
+                  : 'linear-gradient(135deg,#ff4757,#ff6b81)');
+              }
+            }}
+          >
+            {/* Badge */}
+            <span className={`absolute top-2 right-2 z-10 text-[7px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded backdrop-blur-sm ${bt.badgeClass}`}>
+              {bt.badge}
+            </span>
+            {/* Image */}
+            <div className="relative aspect-[16/10] overflow-hidden">
+              <img src={bt.img} alt={bt.name} className="w-full h-full object-cover" />
+            </div>
+            {/* Info */}
+            <div className="p-3">
+              <p className="text-[11px] font-medium text-white">{bt.name}</p>
+              <p className="text-[9px] font-extralight" style={{ color: '#5e5e70' }}>{bt.desc}</p>
             </div>
           </div>
-          <div className="text-right">
-            <p className="text-lg font-light text-white">
-              {coupon.type === 'deposit_bonus' ? `${coupon.amount}%` : coupon.type === 'free_spin' ? `${coupon.amount} ${lang === 'en' ? 'spins' : '회'}` : `${lang === 'en' ? '₩' : ''}${coupon.amount.toLocaleString()}${lang === 'en' ? '' : '원'}`}
-            </p>
-            <span className="text-[10px] text-text-muted">{TYPE_LABELS[coupon.type]}</span>
+        ))}
+      </div>
+
+      {/* ===== MY COUPONS (unified) ===== */}
+      <SectionTitle title={t('my_bonuses')} count={COUPONS.length} />
+      <div className="grid gap-2.5 mb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))' }}>
+        {COUPONS.map((cpn, i) => (
+          <CouponCard key={cpn.id} cpn={cpn} index={i} onUse={(msg, bg) => showToast(msg, bg)} />
+        ))}
+      </div>
+
+      {/* ===== EXPIRED ===== */}
+      <div className="opacity-40">
+        <SectionTitle title="Used / Expired" />
+      </div>
+      <div className="grid gap-2 mb-5" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))' }}>
+        {EXPIRED_COUPONS.map((exp) => (
+          <div
+            key={exp.id}
+            className="relative overflow-hidden rounded-xl p-3 opacity-40"
+            style={{ background: '#151519', border: '1px solid rgba(255,255,255,0.03)' }}
+          >
+            {/* Diagonal stripe overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'repeating-linear-gradient(135deg,transparent,transparent 10px,rgba(255,255,255,0.01) 10px,rgba(255,255,255,0.01) 20px)' }}
+            />
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-6 h-6 rounded-md flex items-center justify-center text-xs" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                {exp.icon}
+              </div>
+              <span className="text-[10px] font-normal" style={{ color: '#9898a8' }}>{exp.name}</span>
+            </div>
+            <div className="text-sm font-semibold mb-0.5" style={{ color: '#5e5e70' }}>{exp.amount}</div>
+            <div className="text-[8px]" style={{ color: '#3a3a48' }}>{exp.date}</div>
+            <span
+              className="inline-block text-[7px] font-semibold tracking-widest uppercase px-1.5 py-0.5 rounded mt-1"
+              style={{
+                background: exp.tagType === 'expired' ? 'rgba(255,71,87,0.1)' : 'rgba(255,255,255,0.04)',
+                color: exp.tagType === 'expired' ? '#ff6b81' : '#3a3a48',
+              }}
+            >
+              {exp.tag}
+            </span>
           </div>
-        </div>
+        ))}
+      </div>
 
-        <p className="text-xs text-text-secondary mb-3">{coupon.description}</p>
+      {/* Keyframes injected inline */}
+      <style jsx global>{`
+        @keyframes cardUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rainbow {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes cpnShimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @media (max-width: 500px) {
+          .cpn-grid-responsive { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </div>
+  );
+}
 
-        <div className="flex items-center justify-between">
-          <div className="text-[11px] text-text-muted">
-            {coupon.min_deposit > 0 && <span>{lang === 'en' ? 'Min' : '최소'} ₩{coupon.min_deposit.toLocaleString()} | </span>}
-            <span>~{coupon.end_date}</span>
-          </div>
+/* ──────────────────────────────────────────────
+   SUB COMPONENTS
+   ────────────────────────────────────────────── */
 
-          {coupon.status === 'available' ? (
-            <button className="px-4 py-1.5 btn-cta text-xs rounded-lg">
-              {t('use_coupon')}
-            </button>
-          ) : coupon.status === 'used' ? (
-            <span className="px-3 py-1 bg-dark-elevated text-text-muted text-xs rounded-lg">{t('used_complete')}</span>
-          ) : (
-            <span className="px-3 py-1 bg-danger/10 text-danger text-xs rounded-lg">{t('expired')}</span>
+function SectionTitle({ title, count }: { title: string; count?: number }) {
+  return (
+    <div className="flex items-center gap-2 mb-3 mt-7">
+      <h2 className="text-sm font-medium tracking-wider">{title}</h2>
+      {count !== undefined && (
+        <span className="text-[9px] font-semibold py-0.5 px-2 rounded-[10px]" style={{ background: 'rgba(139,92,246,0.15)', color: '#8b5cf6' }}>
+          {count}
+        </span>
+      )}
+      <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(255,255,255,0.06),transparent)' }} />
+    </div>
+  );
+}
+
+function CouponCard({ cpn, index, onUse }: { cpn: Coupon; index: number; onUse: (msg: string, bg: string) => void }) {
+  const progressRef = useRef<HTMLDivElement>(null);
+  const [progWidth, setProgWidth] = useState(0);
+
+  useEffect(() => {
+    if (!cpn.progress) return;
+    const pct = (cpn.progress.current / cpn.progress.max) * 100;
+    const timer = setTimeout(() => setProgWidth(pct), 200 + index * 100);
+    return () => clearTimeout(timer);
+  }, [cpn.progress, index]);
+
+  return (
+    <div
+      className="flex overflow-hidden rounded-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-white/[0.12] cpn-grid-responsive"
+      style={{
+        background: '#151519',
+        border: '1px solid rgba(255,255,255,0.06)',
+        animation: `cardUp 0.5s ease both`,
+        animationDelay: index % 2 === 0 ? '0.05s' : '0.12s',
+      }}
+    >
+      {/* Left accent bar */}
+      <div className="w-1 flex-shrink-0" style={{ background: cpn.accentGradient }} />
+
+      {/* Main content */}
+      <div className="flex-1 py-3.5 px-4 min-w-0">
+        <span
+          className="inline-block text-[7px] font-semibold tracking-widest uppercase py-0.5 px-1.5 rounded mb-1.5"
+          style={{ background: `${cpn.accentColor}1f`, color: cpn.accentColor }}
+        >
+          {cpn.typeBadge}
+        </span>
+        <div className="text-xs font-medium text-white mb-0.5 flex items-center gap-1.5 flex-wrap">
+          {cpn.name}
+          {cpn.chainBadge && (
+            <span className="text-[7px] font-semibold tracking-wider py-0.5 px-1.5 rounded" style={{ background: `${cpn.accentColor}26`, color: cpn.accentColor }}>
+              {cpn.chainBadge}
+            </span>
           )}
         </div>
+        <div className="text-[9px] font-extralight leading-relaxed mb-2" style={{ color: '#5e5e70' }}>{cpn.desc}</div>
+
+        {/* Progress bar */}
+        {cpn.progress && (
+          <div className="mb-2">
+            <div className="flex justify-between text-[8px] font-light mb-1" style={{ color: '#3a3a48' }}>
+              <span>{cpn.progress.label}</span>
+              <span style={{ color: cpn.accentColor }}>{cpn.progress.current}% / {cpn.progress.max}%</span>
+            </div>
+            <div className="h-[5px] rounded-sm overflow-hidden" style={{ background: '#08080b' }}>
+              <div
+                ref={progressRef}
+                className="h-full rounded-sm relative"
+                style={{
+                  width: `${progWidth}%`,
+                  background: cpn.accentGradient,
+                  transition: 'width 1.5s cubic-bezier(0.4,0,0.2,1)',
+                }}
+              >
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)', animation: 'cpnShimmer 2.5s infinite' }} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Conditions */}
+        <div className="flex flex-wrap gap-1">
+          {cpn.conditions.map((c) => (
+            <span key={c} className="text-[8px] font-light py-0.5 px-1.5 rounded" style={{ color: '#3a3a48', background: 'rgba(255,255,255,0.03)' }}>
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Right section with cutouts */}
+      <div
+        className="w-[90px] flex flex-col items-center justify-center relative py-2.5 px-2.5"
+        style={{ borderLeft: '1px dashed rgba(255,255,255,0.06)' }}
+      >
+        {/* Circular cutouts */}
+        <div className="absolute -left-[7px] -top-[7px] w-3.5 h-3.5 rounded-full" style={{ background: '#08080b' }} />
+        <div className="absolute -left-[7px] -bottom-[7px] w-3.5 h-3.5 rounded-full" style={{ background: '#08080b' }} />
+
+        <div className="text-xl font-bold tracking-tight" style={{ color: cpn.accentColor }}>{cpn.amount}</div>
+        <div className="text-[7px] font-light tracking-widest uppercase mb-1.5" style={{ color: '#5e5e70' }}>{cpn.label}</div>
+        <button
+          className="py-1.5 px-3.5 border-none rounded-md text-[9px] font-medium cursor-pointer transition-transform hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100"
+          style={{ background: `${cpn.accentColor}1a`, color: cpn.accentColor, fontFamily: "'Poppins', sans-serif" }}
+          disabled={cpn.btnDisabled}
+          onClick={() => {
+            if (!cpn.btnDisabled) onUse(`${cpn.name} applied!`, cpn.accentGradient);
+          }}
+        >
+          {cpn.btnText}
+        </button>
       </div>
     </div>
   );

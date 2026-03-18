@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Bonuses</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bk:#08080b;--bk2:#0e0e12;--bk3:#151519;--bk4:#1c1c22;--bk5:#25252d;
+  --wt:#fff;--wt2:#e4e4ea;--wt3:#9898a8;--wt4:#5e5e70;--wt5:#3a3a48;
+  --r:12px;--r2:16px;
+  --fire:#ff4757;--fire-g:linear-gradient(135deg,#ff4757,#ff6b81);
+  --royal:#8b5cf6;--royal-g:linear-gradient(135deg,#7c3aed,#a78bfa);
+  --ocean:#0ea5e9;--ocean-g:linear-gradient(135deg,#0284c7,#38bdf8);
+  --gold:#f59e0b;--gold-g:linear-gradient(135deg,#d97706,#fbbf24);
+  --lime:#22c55e;--lime-g:linear-gradient(135deg,#16a34a,#4ade80);
+  --pink:#ec4899;--pink-g:linear-gradient(135deg,#db2777,#f472b6);
+  --cyan:#06b6d4;--cyan-g:linear-gradient(135deg,#0891b2,#22d3ee);
+  --mint:#2dd4bf;--mint-g:linear-gradient(135deg,#0d9488,#5eead4);
+  --amber:#f97316;--amber-g:linear-gradient(135deg,#ea580c,#fb923c);
+}
+body{
+  background:var(--bk);font-family:'Poppins',sans-serif;color:var(--wt2);
+  min-height:100vh;padding:16px;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:760px;margin:0 auto;position:relative;z-index:1}
+
+/* ===== PROFILE CARD ===== */
+.profile{
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.06);
+  border-radius:var(--r2);padding:20px;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.profile::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:80px;
+  background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(6,182,212,0.06),rgba(236,72,153,0.05));
+}
+.profile-top{display:flex;align-items:center;gap:14px;position:relative;margin-bottom:16px}
+.avatar{
+  width:52px;height:52px;border-radius:14px;
+  background:linear-gradient(135deg,#7c3aed,#ec4899);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:#fff;flex-shrink:0;
+  box-shadow:0 4px 16px rgba(139,92,246,0.3);
+}
+.profile-info{flex:1;min-width:0}
+.profile-name{font-size:16px;font-weight:600;color:var(--wt);display:flex;align-items:center;gap:8px}
+.profile-name .vip-tag{
+  font-size:8px;font-weight:700;letter-spacing:1.2px;
+  padding:2px 8px;border-radius:4px;
+  background:var(--gold-g);color:#000;
+}
+.profile-joined{font-size:10px;font-weight:300;color:var(--wt4)}
+.tg-link{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:400;color:var(--ocean);
+  text-decoration:none;margin-top:2px;transition:.2s;
+}
+.tg-link:hover{color:#38bdf8}
+.balance-box{
+  text-align:right;position:relative;
+}
+.bal-label{font-size:9px;font-weight:300;color:var(--wt4);letter-spacing:0.5px}
+.bal-val{font-size:22px;font-weight:700;color:var(--wt);letter-spacing:-0.5px}
+.bal-unit{font-size:11px;font-weight:300;color:var(--wt4);margin-left:4px}
+
+/* Grade Gauge */
+.grade-section{position:relative;margin-bottom:16px}
+.grade-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.grade-icon{font-size:18px}
+.grade-label{font-size:12px;font-weight:500;color:var(--gold)}
+.grade-xp{font-size:10px;font-weight:300;color:var(--wt4);margin-left:auto}
+
+.grade-bar{
+  height:8px;background:var(--bk);border-radius:4px;overflow:hidden;
+  position:relative;margin-bottom:6px;
+}
+.grade-fill{
+  height:100%;border-radius:4px;position:relative;
+  background:var(--gold-g);
+  transition:width 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.grade-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  animation:shimmer 2.5s infinite;
+}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+.grade-ticks{
+  display:flex;justify-content:space-between;padding:0 2px;
+}
+.grade-tick{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:default;transition:.2s;
+}
+.grade-tick:hover .tick-label{color:var(--wt2)}
+.tick-dot{
+  width:8px;height:8px;border-radius:50%;
+  border:2px solid var(--wt5);background:var(--bk);
+  transition:.2s;
+}
+.tick-dot.active{border-color:var(--gold);background:var(--gold);box-shadow:0 0 8px rgba(245,158,11,0.4)}
+.tick-dot.passed{border-color:var(--gold);background:var(--gold)}
+.tick-label{font-size:7px;font-weight:400;color:var(--wt5);letter-spacing:0.5px;transition:.2s}
+.tick-label.active{color:var(--gold);font-weight:600}
+
+/* Stats row */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.stat{
+  background:var(--bk);border:1px solid rgba(255,255,255,0.04);
+  border-radius:10px;padding:10px 12px;text-align:center;
+}
+.stat-label{font-size:8px;font-weight:300;color:var(--wt5);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}
+.stat-val{font-size:14px;font-weight:600}
+
+/* ===== SECTION TITLE ===== */
+.sec{display:flex;align-items:center;gap:8px;margin-bottom:12px;margin-top:28px}
+.sec h2{font-size:14px;font-weight:500;letter-spacing:0.3px}
+.sec .cnt{font-size:9px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(139,92,246,0.15);color:var(--royal)}
+.sec-line{height:1px;flex:1;background:linear-gradient(90deg,rgba(255,255,255,0.06),transparent)}
+
+/* ===== BONUS TYPES (with images) ===== */
+.bonus-types{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:8px;
+}
+.bt{
+  background:var(--bk3);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r);
+  overflow:hidden;cursor:pointer;transition:all .3s;position:relative;
+  animation:cardUp .5s ease both;
+}
+.bt:nth-child(1){animation-delay:0s}
+.bt:nth-child(2){animation-delay:.06s}
+.bt:nth-child(3){animation-delay:.12s}
+.bt:nth-child(4){animation-delay:.18s}
+.bt:nth-child(5){animation-delay:.24s}
+@keyframes cardUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.bt:hover{border-color:rgba(255,255,255,0.14);transform:translateY(-4px)}
+
+.bt-img{
+  width:100%;aspect-ratio:16/10;object-fit:cover;display:block;
+  background:var(--bk);
+  /* fallback gradient for placeholder */
+  position:relative;
+}
+.bt-img-placeholder{
+  width:100%;aspect-ratio:16/10;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;position:relative;overflow:hidden;
+}
+/* Each card gets a unique gradient bg */
+.bt:nth-child(1) .bt-img-placeholder{background:linear-gradient(135deg,#1a0a1e,#2d0a3e)}
+.bt:nth-child(2) .bt-img-placeholder{background:linear-gradient(135deg,#1a150a,#2e1f0a)}
+.bt:nth-child(3) .bt-img-placeholder{background:linear-gradient(135deg,#0a1a1e,#0a2d3e)}
+.bt:nth-child(4) .bt-img-placeholder{background:linear-gradient(135deg,#0a1a0e,#0a2e1a)}
+.bt:nth-child(5) .bt-img-placeholder{background:linear-gradient(135deg,#1a0a0e,#3e0a1a)}
+.bt-img-placeholder::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.6));
+}
+
+.bt-body{padding:10px 12px}
+.bt-name{font-size:11px;font-weight:500;color:var(--wt);margin-bottom:2px}
+.bt-desc{font-size:9px;font-weight:200;color:var(--wt4);line-height:1.4}
+.bt-badge{
+  position:absolute;top:8px;right:8px;z-index:2;
+  font-size:7px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 7px;border-radius:4px;backdrop-filter:blur(4px);
+}
+.b-avail{background:rgba(34,197,94,0.25);color:#4ade80}
+.b-vip{background:rgba(245,158,11,0.25);color:#fbbf24}
+.b-chain{background:rgba(236,72,153,0.25);color:#f472b6;animation:pulse 2s infinite}
+.b-new{background:rgba(139,92,246,0.25);color:#a78bfa;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ===== GRADE BENEFITS (7 tiers) ===== */
+.grade-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;margin-bottom:8px;
+}
+.g-tier{
+  background:var(--bk3);border:1px solid rgba(255,255,255,0.05);border-radius:10px;
+  padding:12px 8px;text-align:center;position:relative;overflow:hidden;
+  transition:all .3s;cursor:default;
+}
+.g-tier:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-2px)}
+.g-tier::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+}
+.g-tier:nth-child(1)::before{background:#6b7280}
+.g-tier:nth-child(2)::before{background:#a78bfa}
+.g-tier:nth-child(3)::before{background:var(--ocean-g)}
+.g-tier:nth-child(4)::before{background:var(--lime-g)}
+.g-tier:nth-child(5)::before{background:var(--gold-g)}
+.g-tier:nth-child(6)::before{background:var(--pink-g)}
+.g-tier:nth-child(7)::before{background:linear-gradient(135deg,#ff4757,#fbbf24,#22c55e,#0ea5e9,#8b5cf6);background-size:200% 200%;animation:rainbow 3s ease infinite}
+@keyframes rainbow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.g-tier.current{border-color:rgba(245,158,11,0.4);box-shadow:0 0 20px rgba(245,158,11,0.08)}
+.g-icon{font-size:22px;margin-bottom:4px}
+.g-name{font-size:9px;font-weight:500;letter-spacing:0.5px;margin-bottom:2px}
+.g-perk{font-size:8px;font-weight:200;color:var(--wt4);line-height:1.4}
+.g-tier:nth-child(1) .g-name{color:#9ca3af}
+.g-tier:nth-child(2) .g-name{color:#a78bfa}
+.g-tier:nth-child(3) .g-name{color:#38bdf8}
+.g-tier:nth-child(4) .g-name{color:#4ade80}
+.g-tier:nth-child(5) .g-name{color:#fbbf24}
+.g-tier:nth-child(6) .g-name{color:#f472b6}
+.g-tier:nth-child(7) .g-name{color:var(--wt);text-shadow:0 0 10px rgba(255,255,255,0.3)}
+
+.g-current-tag{
+  font-size:6px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-top:4px;
+}
+
+/* ===== UNIFIED COUPONS ===== */
+.coupon-unified{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;margin-bottom:8px;
+}
+@media(max-width:500px){.coupon-unified{grid-template-columns:1fr}}
+
+.cpn{
+  background:var(--bk3);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r);
+  display:flex;overflow:hidden;transition:all .3s;position:relative;
+  animation:cardUp .5s ease both;
+}
+.cpn:nth-child(odd){animation-delay:.05s}
+.cpn:nth-child(even){animation-delay:.12s}
+.cpn:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-2px)}
+
+.cpn-accent{width:4px;flex-shrink:0}
+.cpn-main{flex:1;padding:14px 16px;min-width:0}
+.cpn-right{
+  width:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-left:1px dashed rgba(255,255,255,0.06);position:relative;padding:10px;
+}
+.cpn-right::before,.cpn-right::after{
+  content:'';position:absolute;left:-7px;width:14px;height:14px;
+  border-radius:50%;background:var(--bk);
+}
+.cpn-right::before{top:-7px}
+.cpn-right::after{bottom:-7px}
+
+.cpn-type{
+  font-size:7px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;display:inline-block;margin-bottom:6px;
+}
+.cpn-name{font-size:12px;font-weight:500;color:var(--wt);margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cpn-desc{font-size:9px;font-weight:200;color:var(--wt4);line-height:1.5;margin-bottom:8px}
+
+/* Progress inside coupon */
+.cpn-prog{margin-bottom:8px}
+.cpn-prog-label{display:flex;justify-content:space-between;font-size:8px;font-weight:300;color:var(--wt5);margin-bottom:4px}
+.cpn-prog-bar{height:5px;background:var(--bk);border-radius:3px;overflow:hidden}
+.cpn-prog-fill{height:100%;border-radius:3px;position:relative}
+.cpn-prog-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  animation:shimmer 2.5s infinite;
+}
+
+.cpn-cond{display:flex;flex-wrap:wrap;gap:4px}
+.cpn-cond span{
+  font-size:8px;font-weight:300;color:var(--wt5);
+  padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.03);
+}
+
+.cpn-val{font-size:20px;font-weight:700;letter-spacing:-0.5px}
+.cpn-label{font-size:7px;font-weight:300;color:var(--wt4);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.cpn-btn{
+  padding:6px 14px;border:none;border-radius:6px;
+  font-family:'Poppins',sans-serif;font-size:9px;font-weight:500;
+  cursor:pointer;transition:all .2s;letter-spacing:0.5px;
+}
+.cpn-btn:hover{transform:scale(1.05)}
+.cpn-btn:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+
+.chain-badge{
+  font-size:7px;font-weight:600;letter-spacing:0.8px;
+  padding:2px 5px;border-radius:3px;
+}
+
+/* ===== EXPIRED ===== */
+.exp-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin-bottom:20px;
+}
+.exp{
+  background:var(--bk3);border:1px solid rgba(255,255,255,0.03);border-radius:var(--r);
+  padding:12px;opacity:0.4;position:relative;overflow:hidden;
+}
+.exp::after{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,transparent,transparent 10px,rgba(255,255,255,0.01) 10px,rgba(255,255,255,0.01) 20px);
+  pointer-events:none;
+}
+.exp-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.exp-icon{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-size:12px}
+.exp-name{font-size:10px;font-weight:400;color:var(--wt3)}
+.exp-val{font-size:14px;font-weight:600;color:var(--wt4);margin-bottom:2px}
+.exp-date{font-size:8px;color:var(--wt5)}
+.exp-tag{
+  font-size:7px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;display:inline-block;margin-top:4px;
+}
+.exp-used{background:rgba(255,255,255,0.04);color:var(--wt5)}
+.exp-expired{background:rgba(255,71,87,0.1);color:#ff6b81}
+
+/* Particles */
+.particles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.particle{position:absolute;border-radius:50%;opacity:0.025;animation:float linear infinite}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg)}100%{transform:translateY(-100px) rotate(360deg)}}
+
+/* Toast */
+.toast{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-40px);
+  padding:10px 24px;border-radius:20px;font-size:11px;font-weight:400;color:#fff;
+  opacity:0;transition:all .3s;pointer-events:none;z-index:99;
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+<div class="toast" id="toast"></div>
+
+<div class="page">
+
+  <!-- ========== PROFILE CARD ========== -->
+  <div class="profile">
+    <div class="profile-top">
+      <div class="avatar">P</div>
+      <div class="profile-info">
+        <div class="profile-name">
+          player_kim
+          <span class="vip-tag">LV.3 GOLD</span>
+        </div>
+        <div class="profile-joined">Joined 2025.01.15</div>
+        <a href="https://t.me/" class="tg-link" target="_blank">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.53 8.15l-1.8 8.47c-.13.6-.5.75-.99.47l-2.76-2.03-1.33 1.28c-.15.15-.27.27-.56.27l.2-2.82 5.13-4.63c.22-.2-.05-.31-.34-.12l-6.34 3.99-2.73-.85c-.6-.19-.61-.6.12-.88l10.68-4.12c.5-.18.93.12.72.87z"/></svg>
+          @player_kim
+        </a>
+      </div>
+      <div class="balance-box">
+        <div class="bal-label">Balance</div>
+        <div class="bal-val">12,450.5<span class="bal-unit">USDT</span></div>
+      </div>
+    </div>
+
+    <!-- Grade Gauge (7 levels) -->
+    <div class="grade-section">
+      <div class="grade-row">
+        <span class="grade-icon">⭐</span>
+        <span class="grade-label">Lv.3 Gold</span>
+        <span class="grade-xp">1,250 / 2,000 XP</span>
+      </div>
+      <div class="grade-bar">
+        <div class="grade-fill" id="gradeFill" style="width:0%"></div>
+      </div>
+      <div class="grade-ticks">
+        <div class="grade-tick"><div class="tick-dot passed"></div><span class="tick-label">Lv.1</span></div>
+        <div class="grade-tick"><div class="tick-dot passed"></div><span class="tick-label">Lv.2</span></div>
+        <div class="grade-tick"><div class="tick-dot active"></div><span class="tick-label active">Lv.3</span></div>
+        <div class="grade-tick"><div class="tick-dot"></div><span class="tick-label">Lv.4</span></div>
+        <div class="grade-tick"><div class="tick-dot"></div><span class="tick-label">Lv.5</span></div>
+        <div class="grade-tick"><div class="tick-dot"></div><span class="tick-label">Lv.6</span></div>
+        <div class="grade-tick"><div class="tick-dot"></div><span class="tick-label">Lv.7</span></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Total Deposit</div>
+        <div class="stat-val" style="color:var(--ocean)">35,000</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total Bet</div>
+        <div class="stat-val" style="color:var(--amber)">28,500</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Total Wins</div>
+        <div class="stat-val" style="color:var(--lime)">31,200</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== GRADE BENEFITS (7 tiers) ========== -->
+  <div class="sec"><h2>Grade Benefits</h2><div class="sec-line"></div></div>
+  <div class="grade-grid">
+    <div class="g-tier">
+      <div class="g-icon">🥉</div>
+      <div class="g-name">Bronze</div>
+      <div class="g-perk">3%<br>Daily</div>
+    </div>
+    <div class="g-tier">
+      <div class="g-icon">🥈</div>
+      <div class="g-name">Silver</div>
+      <div class="g-perk">5%<br>Daily</div>
+    </div>
+    <div class="g-tier current">
+      <div class="g-icon">🥇</div>
+      <div class="g-name">Gold</div>
+      <div class="g-perk">8%<br>Daily</div>
+      <div class="g-current-tag">★ YOU</div>
+    </div>
+    <div class="g-tier">
+      <div class="g-icon">💎</div>
+      <div class="g-name">Platinum</div>
+      <div class="g-perk">12%<br>+Weekly</div>
+    </div>
+    <div class="g-tier">
+      <div class="g-icon">👑</div>
+      <div class="g-name">Diamond</div>
+      <div class="g-perk">15%<br>+Cashback</div>
+    </div>
+    <div class="g-tier">
+      <div class="g-icon">🔥</div>
+      <div class="g-name">Master</div>
+      <div class="g-perk">18%<br>+VIP Host</div>
+    </div>
+    <div class="g-tier">
+      <div class="g-icon">🌟</div>
+      <div class="g-name">Legend</div>
+      <div class="g-perk">25%<br>+All Perks</div>
+    </div>
+  </div>
+
+  <!-- ========== BONUS TYPES (image cards) ========== -->
+  <!--
+    ┌─────────────────────────────────────────────────┐
+    │  IMAGE GUIDE                                     │
+    │  Replace .bt-img-placeholder with <img> tags:    │
+    │  <img class="bt-img" src="/coupbox/name.png">    │
+    │  Recommended: 320×200px or 16:10 ratio           │
+    └─────────────────────────────────────────────────┘
+  -->
+  <div class="sec"><h2>Bonus Types</h2><div class="sec-line"></div></div>
+  <div class="bonus-types">
+    <div class="bt" onclick="showToast('Emergency Bonus activated','var(--fire-g)')">
+      <span class="bt-badge b-avail">Available</span>
+      <div class="bt-img-placeholder">🔥</div>
+      <!-- <img class="bt-img" src="/coupbox/emergency.png" alt="Emergency"> -->
+      <div class="bt-body">
+        <div class="bt-name">Emergency Bonus</div>
+        <div class="bt-desc">Emergency support</div>
+      </div>
+    </div>
+    <div class="bt">
+      <span class="bt-badge b-vip">VIP Only</span>
+      <div class="bt-img-placeholder">👑</div>
+      <div class="bt-body">
+        <div class="bt-name">Grade Benefits</div>
+        <div class="bt-desc">Auto bonus by level</div>
+      </div>
+    </div>
+    <div class="bt" onclick="showToast('Bonus Loan applied','var(--ocean-g)')">
+      <span class="bt-badge b-avail">Apply</span>
+      <div class="bt-img-placeholder">💳</div>
+      <div class="bt-body">
+        <div class="bt-name">Bonus Loan</div>
+        <div class="bt-desc">Advance payment</div>
+      </div>
+    </div>
+    <div class="bt">
+      <span class="bt-badge b-chain">Chain</span>
+      <div class="bt-img-placeholder">🔗</div>
+      <div class="bt-body">
+        <div class="bt-name">Derived Bonus</div>
+        <div class="bt-desc">Chain from rewards</div>
+      </div>
+    </div>
+    <div class="bt">
+      <span class="bt-badge b-new">New</span>
+      <div class="bt-img-placeholder">🎰</div>
+      <div class="bt-body">
+        <div class="bt-name">Free Spins</div>
+        <div class="bt-desc">Slot spin rewards</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ALL COUPONS (unified) ========== -->
+  <div class="sec"><h2>My Coupons</h2><span class="cnt">6</span><div class="sec-line"></div></div>
+  <div class="coupon-unified">
+
+    <!-- Wager Coupon -->
+    <div class="cpn">
+      <div class="cpn-accent" style="background:var(--gold-g)"></div>
+      <div class="cpn-main">
+        <span class="cpn-type" style="background:rgba(245,158,11,0.12);color:var(--gold)">Wager</span>
+        <div class="cpn-name">₩50,000 Wager Coupon</div>
+        <div class="cpn-desc">Convert to cash upon 500% rolling achievement</div>
+        <div class="cpn-prog">
+          <div class="cpn-prog-label"><span>Rolling</span><span style="color:var(--gold)">234% / 500%</span></div>
+          <div class="cpn-prog-bar"><div class="cpn-prog-fill" style="width:46.8%;background:var(--gold-g)"></div></div>
+        </div>
+        <div class="cpn-cond"><span>Rolling 500%</span><span>Cash convertible</span></div>
+      </div>
+      <div class="cpn-right">
+        <div class="cpn-val" style="color:var(--gold)">₩50K</div>
+        <div class="cpn-label">Wager</div>
+        <button class="cpn-btn" style="background:rgba(245,158,11,0.1);color:var(--gold)" disabled>46.8%</button>
+      </div>
+    </div>
+
+    <!-- 70K Conversion -->
+    <div class="cpn">
+      <div class="cpn-accent" style="background:var(--pink-g)"></div>
+      <div class="cpn-main">
+        <span class="cpn-type" style="background:rgba(236,72,153,0.12);color:var(--pink)">Conversion</span>
+        <div class="cpn-name">₩70,000 Conversion Coupon</div>
+        <div class="cpn-desc">Convert upon 777% rolling · Max ₩770,000</div>
+        <div class="cpn-prog">
+          <div class="cpn-prog-label"><span>Rolling</span><span style="color:var(--pink)">580% / 777%</span></div>
+          <div class="cpn-prog-bar"><div class="cpn-prog-fill" style="width:74.6%;background:var(--pink-g)"></div></div>
+        </div>
+        <div class="cpn-cond"><span>Rolling 777%</span><span>Max ₩770K</span></div>
+      </div>
+      <div class="cpn-right">
+        <div class="cpn-val" style="color:var(--pink)">₩70K</div>
+        <div class="cpn-label">Convert</div>
+        <button class="cpn-btn" style="background:rgba(236,72,153,0.12);color:var(--pink)" onclick="showToast('74.6% — Keep going!','var(--pink-g)')">74.6%</button>
+      </div>
+    </div>
+
+    <!-- Deposit Match -->
+    <div class="cpn">
+      <div class="cpn-accent" style="background:var(--ocean-g)"></div>
+      <div class="cpn-main">
+        <span class="cpn-type" style="background:rgba(14,165,233,0.12);color:var(--ocean)">Deposit</span>
+        <div class="cpn-name">Deposit Match ₩50,000</div>
+        <div class="cpn-desc">Deposit ₩100,000 and get ₩50,000 bonus to use together</div>
+        <div class="cpn-cond"><span>Min ₩100K deposit</span><span>Rolling x3</span><span>~04.30</span></div>
+      </div>
+      <div class="cpn-right">
+        <div class="cpn-val" style="color:var(--ocean)">₩50K</div>
+        <div class="cpn-label">Bonus</div>
+        <button class="cpn-btn" style="background:rgba(14,165,233,0.12);color:var(--ocean)" onclick="showToast('Coupon applied!','var(--ocean-g)')">USE</button>
+      </div>
+    </div>
+
+    <!-- Welcome Bonus -->
+    <div class="cpn">
+      <div class="cpn-accent" style="background:var(--fire-g)"></div>
+      <div class="cpn-main">
+        <span class="cpn-type" style="background:rgba(255,71,87,0.12);color:var(--fire)">Welcome</span>
+        <div class="cpn-name">Welcome Bonus 15%</div>
+        <div class="cpn-desc">15% bonus on first deposit · #WELCOME2026</div>
+        <div class="cpn-cond"><span>Min ₩10K</span><span>Rolling x3</span><span>~12.31</span></div>
+      </div>
+      <div class="cpn-right">
+        <div class="cpn-val" style="color:var(--fire)">15%</div>
+        <div class="cpn-label">Deposit</div>
+        <button class="cpn-btn" style="background:rgba(255,71,87,0.12);color:var(--fire)" onclick="showToast('Welcome Bonus!','var(--fire-g)')">USE</button>
+      </div>
+    </div>
+
+    <!-- Derived: Wager Reward -->
+    <div class="cpn">
+      <div class="cpn-accent" style="background:var(--lime-g)"></div>
+      <div class="cpn-main">
+        <span class="cpn-type" style="background:rgba(34,197,94,0.12);color:var(--lime)">Derived</span>
+        <div class="cpn-name">Wager Reward ₩30K <span class="chain-badge" style="background:rgba(34,197,94,0.15);color:var(--lime)">🔗 CHAIN</span></div>
+        <div class="cpn-desc">From Welcome Bonus · ₩30,000 cash after 200% rolling</div>
+        <div class="cpn-cond"><span>Rolling 200%</span><span>From: Welcome</span></div>
+      </div>
+      <div class="cpn-right">
+        <div class="cpn-val" style="color:var(--lime)">₩30K</div>
+        <div class="cpn-label">Cash</div>
+        <button class="cpn-btn" style="background:rgba(34,197,94,0.12);color:var(--lime)" onclick="showToast('Wager Reward activated','var(--lime-g)')">USE</button>
+      </div>
+    </div>
+
+    <!-- Free Spins -->
+    <div class="cpn">
+      <div class="cpn-accent" style="background:var(--cyan-g)"></div>
+      <div class="cpn-main">
+        <span class="cpn-type" style="background:rgba(6,182,212,0.12);color:var(--cyan)">Spins</span>
+        <div class="cpn-name">March Free Spins</div>
+        <div class="cpn-desc">50 Free Spins on Gates of Olympus · #FREESPIN03</div>
+        <div class="cpn-cond"><span>50 Spins</span><span>~03.31</span></div>
+      </div>
+      <div class="cpn-right">
+        <div class="cpn-val" style="color:var(--cyan)">50</div>
+        <div class="cpn-label">Spins</div>
+        <button class="cpn-btn" style="background:rgba(6,182,212,0.12);color:var(--cyan)" onclick="showToast('Free Spins!','var(--cyan-g)')">USE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== EXPIRED ========== -->
+  <div class="sec" style="opacity:0.4"><h2>Used / Expired</h2><div class="sec-line"></div></div>
+  <div class="exp-grid">
+    <div class="exp">
+      <div class="exp-top"><div class="exp-icon">💰</div><div class="exp-name">VIP Bonus</div></div>
+      <div class="exp-val">₩10,000</div>
+      <div class="exp-date">2026.02.28</div>
+      <span class="exp-tag exp-used">Used</span>
+    </div>
+    <div class="exp">
+      <div class="exp-top"><div class="exp-icon">🎆</div><div class="exp-name">New Year Event</div></div>
+      <div class="exp-val">₩20,000</div>
+      <div class="exp-date">2026.01.07</div>
+      <span class="exp-tag exp-expired">Expired</span>
+    </div>
+    <div class="exp">
+      <div class="exp-top"><div class="exp-icon">🎯</div><div class="exp-name">Wager Complete</div></div>
+      <div class="exp-val">₩30,000</div>
+      <div class="exp-date">2026.02.15</div>
+      <span class="exp-tag exp-used">Converted</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showToast(m,bg){
+  const t=document.getElementById('toast');
+  t.textContent=m;t.style.background=bg||'#fff';t.style.color='#fff';
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// Animate grade fill
+setTimeout(()=>{document.getElementById('gradeFill').style.width='62.5%'},300);
+
+// Animate coupon progress bars on scroll
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.cpn-prog-fill').forEach(f=>{
+        const w=f.style.width;f.style.width='0';f.style.transition='width 1.5s cubic-bezier(0.4,0,0.2,1)';
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{f.style.width=w}));
+      });
+    }
+  });
+},{threshold:0.2});
+document.querySelectorAll('.cpn').forEach(c=>obs.observe(c));
+
+// Particles
+(function(){
+  const el=document.getElementById('particles');
+  const colors=['#ff4757','#8b5cf6','#06b6d4','#f59e0b','#22c55e','#ec4899'];
+  for(let i=0;i<12;i++){
+    const p=document.createElement('div');p.className='particle';
+    const s=Math.random()*180+60;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${colors[i%colors.length]};animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*10}s`;
+    el.appendChild(p);
+  }
+})();
+</script>
+</body>
+</html>
