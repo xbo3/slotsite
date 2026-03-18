@@ -1,0 +1,528 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  username          String    @unique
+  password          String
+  nickname          String
+  phone             String?
+  security_password String?   // 2차 비밀번호 (bcrypt 해시)
+  role              Role      @default(USER)
+  status            Status    @default(ACTIVE)
+  balance           Decimal   @default(0) @db.Decimal(18, 2)
+  bonus_balance     Decimal   @default(0) @db.Decimal(18, 2)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  last_login        DateTime?
+
+  transactions      Transaction[]
+  game_logs          GameLog[]
+  user_bonuses       UserBonus[]
+  bonus_transactions BonusTransaction[]
+  coupon_logs        CouponLog[]
+  login_logs         LoginLog[]
+  fingerprints       UserFingerprint[]
+  wallet_addresses   WalletAddress[]
+  deposit_requests   DepositRequest[]
+  withdraw_requests  WithdrawRequest[]
+  game_sessions      GameSession[]
+  game_rounds        GameRound[]
+  admin_logs         AdminLog[]
+}
+
+model Transaction {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  type          TxType
+  amount        Decimal   @db.Decimal(18, 2)
+  balance_after Decimal   @db.Decimal(18, 2)
+  method        String?
+  status        TxStatus  @default(PENDING)
+  reference     String?
+  memo          String?
+  created_at    DateTime  @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model GameLog {
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  game_id     String
+  game_name   String
+  provider    String
+  round_id    String
+  bet_amount  Decimal   @db.Decimal(18, 2)
+  win_amount  Decimal   @db.Decimal(18, 2)
+  profit      Decimal   @default(0) @db.Decimal(18, 2)
+  result      String?   // win, lose
+  created_at  DateTime  @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+}
+
+model LoginLog {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  ip_address String
+  user_agent String?
+  device     String?  // PC, Mobile, Tablet
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
+// ===== 보너스 시스템 =====
+
+model BonusTemplate {
+  id               Int                 @id @default(autoincrement())
+  name             String
+  description      String?
+  status           BonusTemplateStatus @default(ACTIVE)
+
+  deposit_type     DepositType         @default(ALL)
+  min_deposit      Decimal             @default(0) @db.Decimal(18, 2)
+  max_deposit      Decimal             @default(0) @db.Decimal(18, 2)
+
+  bonus_percent    Decimal             @db.Decimal(5, 2)
+  max_bonus        Decimal             @default(0) @db.Decimal(18, 2)
+
+  wager_multiplier Decimal             @db.Decimal(5, 2)
+  wager_base       WagerBase           @default(DEPOSIT_PLUS_BONUS)
+
+  max_conversion   Decimal             @default(0) @db.Decimal(18, 2)
+
+  allowed_games    GameCategory[]
+
+  validity_days    Int                 @default(7)
+  daily_limit      Int                 @default(0)
+  total_limit      Int                 @default(0)
+
+  priority         Int                 @default(0)
+  created_at       DateTime            @default(now())
+  updated_at       DateTime            @updatedAt
+
+  user_bonuses     UserBonus[]
+}
+
+model UserBonus {
+  id               Int             @id @default(autoincrement())
+  user_id          Int
+  template_id      Int
+  status           UserBonusStatus @default(ACTIVE)
+
+  deposit_amount   Decimal         @db.Decimal(18, 2)
+  bonus_amount     Decimal         @db.Decimal(18, 2)
+  current_bonus    Decimal         @db.Decimal(18, 2)
+
+  wager_required   Decimal         @db.Decimal(18, 2)
+  wager_completed  Decimal         @default(0) @db.Decimal(18, 2)
+  wager_percent    Decimal         @default(0) @db.Decimal(5, 2)
+
+  converted_amount Decimal         @default(0) @db.Decimal(18, 2)
+  max_conversion   Decimal         @db.Decimal(18, 2)
+
+  activated_at     DateTime        @default(now())
+  expires_at       DateTime
+  completed_at     DateTime?
+  cancelled_at     DateTime?
+
+  user             User            @relation(fields: [user_id], references: [id])
+  template         BonusTemplate   @relation(fields: [template_id], references: [id])
+  wager_logs       WagerLog[]
+
+  @@index([user_id, status])
+  @@index([expires_at])
+}
+
+model WagerLog {
+  id              Int          @id @default(autoincrement())
+  user_bonus_id   Int
+  game_id         String
+  game_category   GameCategory
+  bet_amount      Decimal      @db.Decimal(18, 2)
+  wager_counted   Decimal      @db.Decimal(18, 2)
+  win_amount      Decimal      @db.Decimal(18, 2)
+  created_at      DateTime     @default(now())
+
+  user_bonus      UserBonus    @relation(fields: [user_bonus_id], references: [id])
+
+  @@index([user_bonus_id])
+}
+
+model BonusTransaction {
+  id              Int         @id @default(autoincrement())
+  user_id         Int
+  user_bonus_id   Int?
+  type            BonusTxType
+  amount          Decimal     @db.Decimal(18, 2)
+  balance_after   Decimal     @db.Decimal(18, 2)
+  memo            String?
+  created_at      DateTime    @default(now())
+
+  user            User        @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+  @@index([user_bonus_id])
+}
+
+// ===== 쿠폰 시스템 =====
+
+model Coupon {
+  id             Int         @id @default(autoincrement())
+  code           String      @unique
+  type           CouponType
+  value          Decimal     @db.Decimal(18, 2)
+  min_deposit    Decimal     @default(0) @db.Decimal(18, 2)
+  max_uses       Int         @default(0)
+  used_count     Int         @default(0)
+  starts_at      DateTime    @default(now())
+  expires_at     DateTime?
+  is_active      Boolean     @default(true)
+  target_user_id Int?
+  description    String?
+  created_at     DateTime    @default(now())
+  updated_at     DateTime    @updatedAt
+
+  logs           CouponLog[]
+}
+
+model CouponLog {
+  id           Int      @id @default(autoincrement())
+  coupon_id    Int
+  user_id      Int
+  bonus_amount Decimal  @db.Decimal(18, 2)
+  used_at      DateTime @default(now())
+
+  coupon       Coupon   @relation(fields: [coupon_id], references: [id])
+  user         User     @relation(fields: [user_id], references: [id])
+
+  @@index([coupon_id])
+  @@index([user_id])
+}
+
+// ===== Enums =====
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  BLOCKED
+  DORMANT
+}
+
+enum TxType {
+  DEPOSIT
+  WITHDRAW
+  BET
+  WIN
+  BONUS
+}
+
+enum TxStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum BonusTemplateStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum UserBonusStatus {
+  ACTIVE
+  COMPLETED
+  CONVERTED
+  EXPIRED
+  CANCELLED
+}
+
+enum DepositType {
+  ALL
+  CRYPTO
+  BANK
+}
+
+enum WagerBase {
+  DEPOSIT_ONLY
+  BONUS_ONLY
+  DEPOSIT_PLUS_BONUS
+}
+
+enum GameCategory {
+  SLOT
+  LIVE_CASINO
+  SPORTS
+  MINI_GAME
+  ALL
+}
+
+enum CouponType {
+  BONUS_MONEY
+  FREE_SPIN
+  DEPOSIT_BONUS
+}
+
+enum BonusTxType {
+  GRANT
+  BET
+  WIN
+  CONVERT
+  EXPIRE
+  CANCEL
+}
+
+// ===== 충전/출금 시스템 =====
+
+model WalletAddress {
+  id          Int       @id @default(autoincrement())
+  user_id     Int?
+  address     String    @unique
+  is_assigned Boolean   @default(false)
+  assigned_at DateTime?
+  created_at  DateTime  @default(now())
+
+  user        User?     @relation(fields: [user_id], references: [id])
+}
+
+model DepositRequest {
+  id             Int       @id @default(autoincrement())
+  user_id        Int
+  wallet_address String
+  amount         Decimal   @default(0) @db.Decimal(18, 2)
+  actual_amount  Decimal   @default(0) @db.Decimal(18, 2)
+  tx_hash        String?
+  status         DepositStatus @default(PENDING)
+  expires_at     DateTime
+  confirmed_at   DateTime?
+  created_at     DateTime  @default(now())
+
+  user           User      @relation(fields: [user_id], references: [id])
+  @@index([user_id])
+  @@index([status])
+}
+
+model WithdrawRequest {
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  to_address  String
+  amount      Decimal   @db.Decimal(18, 2)
+  fee         Decimal   @default(1) @db.Decimal(18, 2)
+  net_amount  Decimal   @db.Decimal(18, 2)
+  tx_hash     String?
+  status      WithdrawStatus @default(PENDING)
+  admin_memo  String?
+  reviewed_by Int?
+  reviewed_at DateTime?
+  created_at  DateTime  @default(now())
+
+  user        User      @relation(fields: [user_id], references: [id])
+  @@index([user_id])
+  @@index([status])
+}
+
+enum DepositStatus {
+  PENDING
+  CONFIRMED
+  EXPIRED
+  FAILED
+}
+
+enum WithdrawStatus {
+  PENDING
+  APPROVED
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+// ===== 게임 연동 시스템 =====
+
+model Game {
+  id          Int       @id @default(autoincrement())
+  external_id String?   @unique
+  name        String
+  name_ko     String?
+  provider    String
+  category    String    @default("slots")
+  thumbnail   String?
+  is_active   Boolean   @default(true)
+  is_featured Boolean   @default(false)
+  is_new      Boolean   @default(false)
+  rtp         Decimal?  @db.Decimal(5, 2)
+  sort_order  Int       @default(0)
+  play_count  Int       @default(0)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  sessions    GameSession[]
+  rounds      GameRound[]
+}
+
+model GameSession {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  game_id       Int
+  session_token String    @unique @default(uuid())
+  status        String    @default("active")
+  total_bet     Decimal   @default(0) @db.Decimal(18, 2)
+  total_win     Decimal   @default(0) @db.Decimal(18, 2)
+  started_at    DateTime  @default(now())
+  ended_at      DateTime?
+
+  user          User      @relation(fields: [user_id], references: [id])
+  game          Game      @relation(fields: [game_id], references: [id])
+  rounds        GameRound[]
+  @@index([session_token])
+  @@index([user_id])
+}
+
+model GameRound {
+  id          Int       @id @default(autoincrement())
+  session_id  Int
+  user_id     Int
+  game_id     Int
+  round_id    String
+  bet_amount  Decimal   @db.Decimal(18, 2)
+  win_amount  Decimal   @default(0) @db.Decimal(18, 2)
+  profit      Decimal   @default(0) @db.Decimal(18, 2)
+  result      String?
+  round_data  String?
+  played_at   DateTime  @default(now())
+
+  session     GameSession @relation(fields: [session_id], references: [id])
+  user        User        @relation(fields: [user_id], references: [id])
+  game        Game        @relation(fields: [game_id], references: [id])
+  @@index([user_id])
+  @@index([session_id])
+  @@index([round_id])
+}
+
+// ===== 어드민 관리 시스템 =====
+
+model SystemSetting {
+  id          Int       @id @default(autoincrement())
+  key         String    @unique
+  value       String
+  description String?
+  updated_at  DateTime  @updatedAt
+  updated_by  Int?
+}
+
+model AdminLog {
+  id          Int       @id @default(autoincrement())
+  admin_id    Int
+  action      String
+  target_type String?
+  target_id   Int?
+  details     String?
+  ip_address  String?
+  created_at  DateTime  @default(now())
+
+  admin       User      @relation(fields: [admin_id], references: [id])
+  @@index([admin_id])
+  @@index([action])
+  @@index([created_at])
+}
+
+// ===== 유저 핑거프린트 (메타데이터 수집) =====
+
+model UserFingerprint {
+  id              Int       @id @default(autoincrement())
+  user_id         Int?
+  session_id      String?   // 비로그인 방문자 추적용
+
+  // 네트워크
+  ip_address      String?
+  country         String?
+  region          String?
+  city            String?
+  isp             String?
+
+  // 브라우저/OS
+  user_agent      String?
+  browser         String?   // Chrome 120, Safari 17 등
+  browser_version String?
+  os              String?   // Windows 11, macOS 14, iOS 17 등
+  os_version      String?
+  device_type     String?   // desktop, mobile, tablet
+  device_model    String?   // iPhone 15, Galaxy S24 등
+
+  // 화면
+  screen_width    Int?
+  screen_height   Int?
+  viewport_width  Int?
+  viewport_height Int?
+  pixel_ratio     Float?    // devicePixelRatio
+  color_depth     Int?
+
+  // 시스템
+  language        String?   // ko-KR, en-US
+  languages       String?   // ["ko-KR","ko","en"] JSON
+  timezone        String?   // Asia/Seoul
+  timezone_offset Int?      // -540 (분)
+  platform        String?   // Win32, MacIntel, Linux armv8l
+
+  // 하드웨어
+  cpu_cores       Int?      // navigator.hardwareConcurrency
+  memory_gb       Float?    // navigator.deviceMemory
+  touch_support   Boolean?  // 터치 지원 여부
+  max_touch       Int?      // maxTouchPoints
+
+  // 네트워크 상세
+  connection_type String?   // 4g, wifi, ethernet
+  downlink        Float?    // Mbps
+
+  // 핑거프린트
+  canvas_hash     String?   // Canvas fingerprint
+  webgl_hash      String?   // WebGL fingerprint
+  audio_hash      String?   // AudioContext fingerprint
+  font_hash       String?   // 설치 폰트 해시
+
+  // 브라우저 기능
+  cookies_enabled Boolean?
+  do_not_track    Boolean?
+  adblock         Boolean?
+  webgl_vendor    String?   // GPU 벤더
+  webgl_renderer  String?   // GPU 모델
+
+  // 방문 정보
+  referrer        String?   // 어디서 왔는지
+  landing_page    String?   // 첫 접속 페이지
+  utm_source      String?
+  utm_medium      String?
+  utm_campaign    String?
+
+  // 행동
+  visit_count     Int       @default(1)
+  page_views      Int       @default(0)
+
+  // 배터리
+  battery_level   Float?    // 0~1
+  battery_charging Boolean?
+
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  user            User?     @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+  @@index([ip_address])
+  @@index([canvas_hash])
+  @@index([session_id])
+}
