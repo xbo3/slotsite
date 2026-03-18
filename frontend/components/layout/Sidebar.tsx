@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { useLang } from '@/hooks/useLang';
 
-const categories = [
+const categoryDefs = [
   {
     href: '/lobby?cat=slot',
-    label: '슬롯',
+    labelKey: 'slots',
     count: 142,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -19,7 +20,7 @@ const categories = [
   },
   {
     href: '/lobby?cat=live',
-    label: '라이브',
+    labelKey: 'live',
     count: 38,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -30,7 +31,7 @@ const categories = [
   },
   {
     href: '/lobby?cat=table',
-    label: '테이블',
+    labelKey: 'table',
     count: 25,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -42,7 +43,7 @@ const categories = [
   },
   {
     href: '/lobby?cat=mini',
-    label: '미니게임',
+    labelKey: 'mini_games',
     count: 15,
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -67,6 +68,9 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [providersOpen, setProvidersOpen] = useState(false);
+  const { t } = useLang();
+
+  const categories = categoryDefs.map(c => ({ ...c, label: t(c.labelKey) }));
 
   // Hide sidebar on admin pages and mobile
   if (pathname?.startsWith('/admin')) return null;
@@ -133,7 +137,7 @@ export default function Sidebar() {
               onClick={() => setProvidersOpen(!providersOpen)}
               className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-light text-text-muted uppercase tracking-wider hover:text-white transition-colors"
             >
-              <span>프로바이더</span>
+              <span>{t('providers')}</span>
               <svg
                 className={`w-3 h-3 transition-transform ${providersOpen ? 'rotate-180' : ''}`}
                 fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -165,7 +169,7 @@ export default function Sidebar() {
                 </svg>
               </button>
               <div className="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-dark-elevated text-white text-sm rounded-md whitespace-nowrap z-50 shadow-lg">
-                프로바이더
+                {t('providers')}
               </div>
             </div>
           </div>
@@ -186,8 +190,8 @@ export default function Sidebar() {
               </svg>
             </div>
             <div>
-              <p className="text-white text-xs font-light">24/7 고객지원</p>
-              <p className="text-text-muted text-[10px] font-light">실시간 채팅 상담</p>
+              <p className="text-white text-xs font-light">{t('customer_support_247')}</p>
+              <p className="text-text-muted text-[10px] font-light">{t('live_chat')}</p>
             </div>
           </Link>
         </div>
@@ -199,7 +203,7 @@ export default function Sidebar() {
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
             <div className="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-dark-elevated text-white text-sm rounded-md whitespace-nowrap z-50 shadow-lg">
-              24/7 고객지원
+              {t('customer_support_247')}
             </div>
           </Link>
         </div>

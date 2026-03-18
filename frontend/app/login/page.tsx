@@ -6,10 +6,12 @@ import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { setToken } from '@/lib/auth';
 import { useToast } from '@/components/ui/Toast';
+import { useLang } from '@/hooks/useLang';
 
 export default function LoginPage() {
   const router = useRouter();
   const { showToast } = useToast();
+  const { t } = useLang();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
@@ -21,7 +23,7 @@ export default function LoginPage() {
     setError('');
 
     if (!username || !password) {
-      setError('아이디와 비밀번호를 입력해주세요.');
+      setError(t('login_required'));
       return;
     }
 
@@ -33,10 +35,10 @@ export default function LoginPage() {
         showToast('success', `${username}님, 환영합니다!`);
         router.push('/lobby');
       } else {
-        setError(res.error || '로그인에 실패했습니다.');
+        setError(res.error || t('login_failed'));
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '로그인 중 오류가 발생했습니다.';
+      const message = err instanceof Error ? err.message : t('login_error');
       setError(message);
     } finally {
       setLoading(false);
@@ -48,9 +50,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="bg-dark-card rounded-2xl p-8 shadow-2xl border border-white/5">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white">로그인</h1>
+            <h1 className="text-2xl font-bold text-white">{t('login_title')}</h1>
             <p className="mt-2 text-text-secondary text-sm">
-              계정에 로그인하고 게임을 시작하세요
+              {t('login_subtitle')}
             </p>
           </div>
 
@@ -63,14 +65,14 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="username" className="block text-sm text-text-secondary mb-1.5">
-                아이디
+                {t('username')}
               </label>
               <input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="아이디를 입력하세요"
+                placeholder={t('enter_username')}
                 className="w-full px-4 py-3 bg-dark-input border border-white/5 rounded-lg text-white placeholder-text-muted focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition-colors"
                 autoComplete="username"
               />
@@ -78,7 +80,7 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm text-text-secondary mb-1.5">
-                비밀번호
+                {t('password')}
               </label>
               <div className="relative">
                 <input
@@ -86,7 +88,7 @@ export default function LoginPage() {
                   type={showPw ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="비밀번호를 입력하세요"
+                  placeholder={t('enter_password')}
                   className="w-full px-4 py-3 pr-12 bg-dark-input border border-white/5 rounded-lg text-white placeholder-text-muted focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition-colors"
                   autoComplete="current-password"
                 />
@@ -116,17 +118,17 @@ export default function LoginPage() {
               disabled={loading}
               className={`w-full py-3.5 btn-cta text-sm rounded-lg ${loading ? 'btn-loading' : ''}`}
             >
-              {loading ? '로그인 중...' : '로그인'}
+              {loading ? t('logging_in') : t('login')}
             </button>
           </form>
 
           {/* Links */}
           <div className="mt-5 flex items-center justify-between text-sm">
             <Link href="/register" className="text-white hover:text-white/80 transition-colors">
-              아직 회원이 아니세요?
+              {t('not_member')}
             </Link>
             <button className="text-text-muted hover:text-white transition-colors">
-              비밀번호 잊으셨나요?
+              {t('forgot_password')}
             </button>
           </div>
 
@@ -136,7 +138,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-white/5" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="px-4 bg-dark-card text-text-muted">또는</span>
+              <span className="px-4 bg-dark-card text-text-muted">{t('or')}</span>
             </div>
           </div>
 

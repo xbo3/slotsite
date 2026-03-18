@@ -5,22 +5,24 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 import { setToken } from '@/lib/auth';
+import { useLang } from '@/hooks/useLang';
 
-function getPasswordStrength(pw: string): { level: number; label: string; color: string } {
-  if (pw.length === 0) return { level: 0, label: '', color: '' };
-  if (pw.length < 8) return { level: 1, label: '약함', color: 'bg-danger' };
+function getPasswordStrength(pw: string): { level: number; labelKey: string; color: string } {
+  if (pw.length === 0) return { level: 0, labelKey: '', color: '' };
+  if (pw.length < 8) return { level: 1, labelKey: 'pw_weak', color: 'bg-danger' };
   let score = 0;
   if (/[a-z]/.test(pw)) score++;
   if (/[A-Z]/.test(pw)) score++;
   if (/[0-9]/.test(pw)) score++;
   if (/[^a-zA-Z0-9]/.test(pw)) score++;
-  if (score <= 1) return { level: 1, label: '약함', color: 'bg-danger' };
-  if (score === 2) return { level: 2, label: '보통', color: 'bg-warning' };
-  return { level: 3, label: '강함', color: 'bg-success' };
+  if (score <= 1) return { level: 1, labelKey: 'pw_weak', color: 'bg-danger' };
+  if (score === 2) return { level: 2, labelKey: 'pw_medium', color: 'bg-warning' };
+  return { level: 3, labelKey: 'pw_strong', color: 'bg-success' };
 }
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useLang();
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -48,22 +50,22 @@ export default function RegisterPage() {
     setError('');
 
     if (!form.username || !form.password) {
-      setError('필수 항목을 모두 입력해주세요.');
+      setError(t('required_fields'));
       return;
     }
 
     if (form.username.length < 4) {
-      setError('아이디는 4자 이상이어야 합니다.');
+      setError(t('username_min'));
       return;
     }
 
     if (form.password.length < 8) {
-      setError('비밀번호는 8자 이상이어야 합니다.');
+      setError(t('pw_min'));
       return;
     }
 
     if (form.password !== form.passwordConfirm) {
-      setError('비밀번호가 일치하지 않습니다.');
+      setError(t('pw_mismatch'));
       return;
     }
 
@@ -80,10 +82,10 @@ export default function RegisterPage() {
         setToken(res.data.token);
         router.push('/lobby');
       } else {
-        setError(res.error || '회원가입에 실패했습니다.');
+        setError(res.error || t('register_failed'));
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다.';
+      const message = err instanceof Error ? err.message : t('register_error');
       setError(message);
     } finally {
       setLoading(false);
@@ -103,28 +105,28 @@ export default function RegisterPage() {
         <div className="relative z-10 text-center px-12">
           <div className="text-7xl mb-6">{'\uD83C\uDFB0'}</div>
           <h2 className="text-4xl font-black text-white mb-4 leading-tight">
-            가입 보너스
+            {t('signup_bonus_title')}
             <br />
             <span className="bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
-              {'\u20AE'}10 즉시 지급!
+              {t('signup_bonus_amount')}
             </span>
           </h2>
           <p className="text-text-secondary text-lg">
-            지금 가입하고 무료 보너스로
-            <br />프리미엄 슬롯을 체험하세요
+            {t('signup_bonus_desc1')}
+            <br />{t('signup_bonus_desc2')}
           </p>
           <div className="mt-8 flex justify-center gap-6 text-text-muted text-sm">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-accent rounded-full" />
-              300+ 게임
+              {t('games_count')}
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-white rounded-full" />
-              즉시 출금
+              {t('instant_withdraw')}
             </div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-info rounded-full" />
-              24/7 지원
+              {t('247_support')}
             </div>
           </div>
         </div>
@@ -135,9 +137,9 @@ export default function RegisterPage() {
         <div className="w-full max-w-md">
           <div className="bg-dark-card rounded-2xl p-8 shadow-2xl border border-white/5">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-white">회원가입</h1>
+              <h1 className="text-2xl font-bold text-white">{t('register_title')}</h1>
               <p className="mt-2 text-text-secondary text-sm">
-                무료로 가입하고 다양한 게임을 즐기세요
+                {t('register_subtitle')}
               </p>
             </div>
 
@@ -151,14 +153,14 @@ export default function RegisterPage() {
               {/* Username */}
               <div>
                 <label htmlFor="username" className="block text-sm text-text-secondary mb-1.5">
-                  아이디 <span className="text-danger">*</span>
+                  {t('username')} <span className="text-danger">*</span>
                 </label>
                 <input
                   id="username"
                   type="text"
                   value={form.username}
                   onChange={(e) => updateForm('username', e.target.value)}
-                  placeholder="영문, 숫자 4자 이상"
+                  placeholder={t('username_placeholder')}
                   className={`w-full px-4 py-3 bg-dark-input border rounded-lg text-white placeholder-text-muted focus:outline-none transition-colors ${
                     form.username.length > 0
                       ? usernameValid
@@ -169,17 +171,17 @@ export default function RegisterPage() {
                   autoComplete="username"
                 />
                 {form.username.length > 0 && !usernameValid && (
-                  <p className="mt-1 text-xs text-danger">4자 이상 입력해주세요</p>
+                  <p className="mt-1 text-xs text-danger">{t('username_min_msg')}</p>
                 )}
                 {usernameValid && (
-                  <p className="mt-1 text-xs text-success">사용 가능한 아이디입니다</p>
+                  <p className="mt-1 text-xs text-success">{t('username_valid')}</p>
                 )}
               </div>
 
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm text-text-secondary mb-1.5">
-                  비밀번호 <span className="text-danger">*</span>
+                  {t('password')} <span className="text-danger">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -187,7 +189,7 @@ export default function RegisterPage() {
                     type={showPw ? 'text' : 'password'}
                     value={form.password}
                     onChange={(e) => updateForm('password', e.target.value)}
-                    placeholder="8자 이상"
+                    placeholder={t('pw_placeholder')}
                     className="w-full px-4 py-3 pr-12 bg-dark-input border border-white/5 rounded-lg text-white placeholder-text-muted focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition-colors"
                     autoComplete="new-password"
                   />
@@ -224,7 +226,7 @@ export default function RegisterPage() {
                       ))}
                     </div>
                     <p className={`text-xs ${pwStrength.level === 1 ? 'text-danger' : pwStrength.level === 2 ? 'text-warning' : 'text-success'}`}>
-                      비밀번호 강도: {pwStrength.label}
+                      {t('pw_strength')}: {t(pwStrength.labelKey)}
                     </p>
                   </div>
                 )}
@@ -233,7 +235,7 @@ export default function RegisterPage() {
               {/* Password Confirm */}
               <div>
                 <label htmlFor="passwordConfirm" className="block text-sm text-text-secondary mb-1.5">
-                  비밀번호 확인 <span className="text-danger">*</span>
+                  {t('confirm_password')} <span className="text-danger">*</span>
                 </label>
                 <div className="relative">
                   <input
@@ -241,7 +243,7 @@ export default function RegisterPage() {
                     type={showPwConfirm ? 'text' : 'password'}
                     value={form.passwordConfirm}
                     onChange={(e) => updateForm('passwordConfirm', e.target.value)}
-                    placeholder="비밀번호를 다시 입력하세요"
+                    placeholder={t('pw_confirm_placeholder')}
                     className={`w-full px-4 py-3 pr-12 bg-dark-input border rounded-lg text-white placeholder-text-muted focus:outline-none transition-colors ${
                       form.passwordConfirm.length > 0
                         ? pwMatch
@@ -270,8 +272,8 @@ export default function RegisterPage() {
                     )}
                   </button>
                 </div>
-                {pwMatch && <p className="mt-1 text-xs text-success">비밀번호가 일치합니다</p>}
-                {pwMismatch && <p className="mt-1 text-xs text-danger">비밀번호가 일치하지 않습니다</p>}
+                {pwMatch && <p className="mt-1 text-xs text-success">{t('pw_match')}</p>}
+                {pwMismatch && <p className="mt-1 text-xs text-danger">{t('pw_mismatch')}</p>}
               </div>
 
               <button
@@ -279,7 +281,7 @@ export default function RegisterPage() {
                 disabled={loading}
                 className={`w-full py-3.5 btn-cta text-sm rounded-lg mt-2 ${loading ? 'btn-loading' : ''}`}
               >
-                {loading ? '가입 중...' : '가입하기'}
+                {loading ? t('registering') : t('register_btn')}
               </button>
             </form>
 
@@ -289,7 +291,7 @@ export default function RegisterPage() {
                 <div className="w-full border-t border-white/5" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-4 bg-dark-card text-text-muted">또는</span>
+                <span className="px-4 bg-dark-card text-text-muted">{t('or')}</span>
               </div>
             </div>
 
@@ -319,9 +321,9 @@ export default function RegisterPage() {
             </div>
 
             <p className="mt-6 text-center text-sm text-text-secondary">
-              이미 계정이 있으신가요?{' '}
+              {t('already_have_account')}{' '}
               <Link href="/login" className="text-white hover:text-white/80 transition-colors">
-                로그인
+                {t('login')}
               </Link>
             </p>
           </div>

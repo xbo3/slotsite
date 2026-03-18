@@ -4,13 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useLang } from '@/hooks/useLang';
 
-const navItems = [
-  { href: '/', label: '홈', icon: HomeIcon },
-  { href: '/lobby', label: '게임', icon: GameIcon },
-  { href: '/mypage/coupons', label: '보너스', icon: BonusIcon },
-  { href: '/wallet', label: '지갑', icon: WalletIcon },
-  { href: '/mypage', label: '프로필', icon: ProfileIcon },
+const navItemDefs = [
+  { href: '/', labelKey: 'home', icon: HomeIcon },
+  { href: '/lobby', labelKey: 'games', icon: GameIcon },
+  { href: '/mypage/coupons', labelKey: 'bonus', icon: BonusIcon },
+  { href: '/wallet', labelKey: 'wallet', icon: WalletIcon },
+  { href: '/mypage', labelKey: 'profile', icon: ProfileIcon },
 ];
 
 export default function MobileNav() {
@@ -19,6 +20,9 @@ export default function MobileNav() {
   const [bottomSheet, setBottomSheet] = useState(false);
   const lastScrollY = useRef(0);
   const isAdmin = pathname?.startsWith('/admin');
+  const { t } = useLang();
+
+  const navItems = navItemDefs.map(n => ({ ...n, label: t(n.labelKey) }));
 
   // Scroll hide/show
   useEffect(() => {
@@ -112,13 +116,13 @@ export default function MobileNav() {
               <div className="w-10 h-1 bg-white/20 rounded-full" />
             </div>
             <div className="px-4 pb-6">
-              <h3 className="text-white font-light text-lg mb-4 tracking-wide">카테고리 선택</h3>
+              <h3 className="text-white font-light text-lg mb-4 tracking-wide">{t('select_category')}</h3>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { href: '/lobby?cat=slot', label: '슬롯', count: 142, icon: '\uD83C\uDFB0' },
-                  { href: '/lobby?cat=live', label: '라이브', count: 38, icon: '\uD83C\uDFB2' },
-                  { href: '/lobby?cat=table', label: '테이블', count: 25, icon: '\uD83C\uDCCF' },
-                  { href: '/lobby?cat=mini', label: '미니게임', count: 15, icon: '\uD83C\uDFAF' },
+                  { href: '/lobby?cat=slot', label: t('slots'), count: 142, icon: '\uD83C\uDFB0' },
+                  { href: '/lobby?cat=live', label: t('live'), count: 38, icon: '\uD83C\uDFB2' },
+                  { href: '/lobby?cat=table', label: t('table'), count: 25, icon: '\uD83C\uDCCF' },
+                  { href: '/lobby?cat=mini', label: t('mini_games'), count: 15, icon: '\uD83C\uDFAF' },
                 ].map(cat => (
                   <Link
                     key={cat.href}
@@ -129,7 +133,7 @@ export default function MobileNav() {
                     <span className="text-2xl">{cat.icon}</span>
                     <div>
                       <p className="text-white font-light text-sm">{cat.label}</p>
-                      <p className="text-text-muted text-xs font-light">{cat.count}개 게임</p>
+                      <p className="text-text-muted text-xs font-light">{cat.count}{t('num_games')}</p>
                     </div>
                   </Link>
                 ))}
@@ -140,7 +144,7 @@ export default function MobileNav() {
                 className="block w-full mt-4 py-3 text-center font-light rounded-xl text-sm touch-active border"
                 style={{ background: 'transparent', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.8)' }}
               >
-                전체 게임 보기
+                {t('view_all_games')}
               </Link>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { isLoggedIn, decodeToken, getToken, logout } from '@/lib/auth';
 import { api } from '@/lib/api';
 import { formatKRW } from '@/lib/utils';
+import { useLang } from '@/hooks/useLang';
 
 const RECENT_SEARCHES = ['Gates of Olympus', 'Sweet Bonanza', 'Fortune Tiger'];
 
@@ -20,6 +21,7 @@ export default function Header() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifCount] = useState(3);
   const [onlineCount, setOnlineCount] = useState(2847);
+  const { t, lang, toggleLang } = useLang();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -96,7 +98,7 @@ export default function Header() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               onFocus={() => setSearchFocused(true)}
-              placeholder="게임 검색..."
+              placeholder={t('search_games')}
               className={`pl-10 pr-4 py-2 border rounded-lg text-sm text-white focus:outline-none transition-all ${searchFocused ? 'w-full' : 'w-64'}`}
               style={{ background: '#0A0A0A', borderColor: 'rgba(255,255,255,0.06)', }}
             />
@@ -104,7 +106,7 @@ export default function Header() {
             {searchFocused && !searchQuery && (
               <div className="absolute top-full left-0 right-0 mt-2 border rounded-xl shadow-xl z-50 overflow-hidden dropdown-enter" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}>
                 <div className="p-2">
-                  <p className="text-[10px] uppercase tracking-wider px-2 py-1" style={{ color: '#555555' }}>최근 검색어</p>
+                  <p className="text-[10px] uppercase tracking-wider px-2 py-1" style={{ color: '#555555' }}>{t('recent_searches')}</p>
                   {RECENT_SEARCHES.map(s => (
                     <button
                       key={s}
@@ -127,18 +129,27 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
           <Link href="/lobby" className="px-3 py-2 text-sm font-light rounded-lg hover:bg-white/5 transition-all" style={{ color: '#888888' }}>
-            게임
+            {t('games')}
           </Link>
           <Link href="/mypage/coupons" className="px-3 py-2 text-sm font-light rounded-lg hover:bg-white/5 transition-all" style={{ color: '#888888' }}>
-            보너스
+            {t('bonus')}
           </Link>
           <Link href="/support" className="px-3 py-2 text-sm font-light rounded-lg hover:bg-white/5 transition-all" style={{ color: '#888888' }}>
-            고객센터
+            {t('support')}
           </Link>
         </nav>
 
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center gap-2">
+          {/* Language Toggle */}
+          <button
+            onClick={toggleLang}
+            className="px-2.5 py-1.5 text-xs font-medium rounded-md border transition-all hover:bg-white/10"
+            style={{ color: '#888888', borderColor: 'rgba(255,255,255,0.15)' }}
+            title={lang === 'ko' ? 'Switch to English' : '한국어로 전환'}
+          >
+            {lang === 'ko' ? 'EN' : 'KO'}
+          </button>
           {loggedIn ? (
             <>
               {/* Notification Bell */}
@@ -171,7 +182,7 @@ export default function Header() {
                 {walletOpen && (
                   <div className="absolute top-full right-0 mt-2 w-60 border rounded-xl shadow-xl z-50 dropdown-enter" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}>
                     <div className="p-4">
-                      <p className="text-xs mb-1" style={{ color: '#555555' }}>보유 잔액</p>
+                      <p className="text-xs mb-1" style={{ color: '#555555' }}>{t('held_balance')}</p>
                       <p className="text-2xl font-light text-white">{formatKRW(balance)}</p>
                     </div>
                     <div className="border-t p-3 flex gap-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -181,14 +192,14 @@ export default function Header() {
                         className="flex-1 text-center py-2.5 font-light text-sm rounded-lg hover:brightness-110 transition-all touch-active"
                         style={{ background: '#FFFFFF', color: '#0A0A0A' }}
                       >
-                        충전
+                        {t('deposit')}
                       </Link>
                       <Link
                         href="/wallet?tab=withdraw"
                         onClick={() => setWalletOpen(false)}
                         className="flex-1 text-center py-2.5 bg-white/10 text-white font-light text-sm rounded-lg hover:bg-white/20 transition-all touch-active"
                       >
-                        출금
+                        {t('withdrawal')}
                       </Link>
                     </div>
                   </div>
@@ -222,7 +233,7 @@ export default function Header() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
-                        마이페이지
+                        {t('mypage')}
                       </Link>
                       <Link
                         href="/mypage/settings"
@@ -234,7 +245,7 @@ export default function Header() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        설정
+                        {t('settings')}
                       </Link>
                       <div className="my-1 mx-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }} />
                       <button
@@ -245,7 +256,7 @@ export default function Header() {
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
-                        로그아웃
+                        {t('logout')}
                       </button>
                     </div>
                   </div>
@@ -259,13 +270,13 @@ export default function Header() {
                 className="px-4 py-2 text-sm font-light hover:text-white transition-colors rounded-lg hover:bg-white/5"
                 style={{ color: '#888888' }}
               >
-                로그인
+                {t('login')}
               </Link>
               <Link
                 href="/register"
                 className="px-4 py-2 text-sm btn-cta"
               >
-                회원가입
+                {t('register')}
               </Link>
             </>
           )}
@@ -273,6 +284,13 @@ export default function Header() {
 
         {/* Mobile: search + hamburger */}
         <div className="flex md:hidden items-center gap-2">
+          <button
+            onClick={toggleLang}
+            className="px-2 py-1 text-[10px] font-medium rounded border transition-all"
+            style={{ color: '#888888', borderColor: 'rgba(255,255,255,0.15)' }}
+          >
+            {lang === 'ko' ? 'EN' : 'KO'}
+          </button>
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             className="p-2 hover:text-white"
@@ -285,7 +303,7 @@ export default function Header() {
           <button
             className="flex flex-col gap-1.5 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="메뉴"
+            aria-label={t('menu')}
           >
             <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
             <span className={`w-5 h-0.5 bg-white transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
@@ -301,7 +319,7 @@ export default function Header() {
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="게임 검색..."
+            placeholder={t('search_games')}
             autoFocus
             className="w-full px-4 py-2.5 border rounded-lg text-sm text-white focus:outline-none"
             style={{ background: '#0A0A0A', borderColor: 'rgba(255,255,255,0.06)', color: '#FFFFFF' }}
@@ -319,11 +337,11 @@ export default function Header() {
                 <span className="font-light text-sm text-white">{formatKRW(balance)}</span>
               </div>
               {[
-                { href: '/lobby', label: '게임' },
-                { href: '/wallet', label: '지갑' },
-                { href: '/mypage', label: '마이페이지' },
-                { href: '/mypage/coupons', label: '보너스' },
-                { href: '/support', label: '고객센터' },
+                { href: '/lobby', label: t('games') },
+                { href: '/wallet', label: t('wallet') },
+                { href: '/mypage', label: t('mypage') },
+                { href: '/mypage/coupons', label: t('bonus') },
+                { href: '/support', label: t('support') },
               ].map(item => (
                 <Link
                   key={item.href}
@@ -340,14 +358,14 @@ export default function Header() {
                 className="block w-full text-left py-2.5 px-2 text-sm font-light rounded-lg"
                 style={{ color: '#E53935' }}
               >
-                로그아웃
+                {t('logout')}
               </button>
             </>
           ) : (
             <>
               {[
-                { href: '/lobby', label: '게임' },
-                { href: '/support', label: '고객센터' },
+                { href: '/lobby', label: t('games') },
+                { href: '/support', label: t('support') },
               ].map(item => (
                 <Link
                   key={item.href}
@@ -366,14 +384,14 @@ export default function Header() {
                   style={{ borderColor: 'rgba(255,255,255,0.1)' }}
                   onClick={() => setMenuOpen(false)}
                 >
-                  로그인
+                  {t('login')}
                 </Link>
                 <Link
                   href="/register"
                   className="flex-1 text-center py-2.5 btn-cta text-sm"
                   onClick={() => setMenuOpen(false)}
                 >
-                  회원가입
+                  {t('register')}
                 </Link>
               </div>
             </>

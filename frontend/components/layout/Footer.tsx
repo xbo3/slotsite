@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useLang } from '@/hooks/useLang';
 
 export default function Footer() {
+  const { t } = useLang();
+
   return (
     <footer className="border-t mt-auto" style={{ background: '#161616', borderColor: 'rgba(255,255,255,0.06)' }}>
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -12,27 +17,27 @@ export default function Footer() {
               <span style={{ color: '#888888' }}>Site</span>
             </span>
             <p className="mt-2 text-sm font-light" style={{ color: '#888888' }}>
-              최고의 온라인 슬롯 경험을 제공합니다.
+              {t('best_slot_experience')}
             </p>
           </div>
 
           {/* Links */}
           <div>
-            <h3 className="text-sm font-light text-white mb-3">바로가기</h3>
+            <h3 className="text-sm font-light text-white mb-3">{t('quick_links')}</h3>
             <ul className="space-y-2 text-sm font-light" style={{ color: '#888888' }}>
               <li>
                 <Link href="/lobby" className="hover:text-white transition-colors">
-                  게임 로비
+                  {t('game_lobby')}
                 </Link>
               </li>
               <li>
                 <Link href="/wallet" className="hover:text-white transition-colors">
-                  충전/환전
+                  {t('deposit_withdraw')}
                 </Link>
               </li>
               <li>
                 <Link href="/support" className="hover:text-white transition-colors">
-                  고객센터
+                  {t('support')}
                 </Link>
               </li>
             </ul>
@@ -40,10 +45,10 @@ export default function Footer() {
 
           {/* Info */}
           <div>
-            <h3 className="text-sm font-light text-white mb-3">안내</h3>
+            <h3 className="text-sm font-light text-white mb-3">{t('info')}</h3>
             <ul className="space-y-2 text-sm font-light" style={{ color: '#888888' }}>
-              <li>18세 이상 이용 가능</li>
-              <li>책임감 있는 게임을 권장합니다</li>
+              <li>{t('age_restriction')}</li>
+              <li>{t('responsible_gaming_msg')}</li>
             </ul>
           </div>
         </div>
