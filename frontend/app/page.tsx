@@ -18,22 +18,17 @@ const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: strin
   'Big Time Gaming': { from: '#555555', to: '#888888', pattern: 'svg-pattern-diagonal' },
 };
 
-const TOP_GAMES = DEMO_GAMES.slice(0, 8).filter(g => g.thumbnail && g.thumbnail.length > 0).map(g => ({
-  id: g.id,
-  name: g.name,
-  provider: g.provider,
-  maxWin: g.maxWin,
-  thumbnail: g.thumbnail,
-  rtp: g.rtp,
+// 인기 게임 = Nolimit City HOT 게임 우선
+const NLC_HOT = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isHot && g.thumbnail).slice(0, 8);
+const TOP_GAMES = NLC_HOT.map(g => ({
+  id: g.id, name: g.name, provider: g.provider, maxWin: g.maxWin, thumbnail: g.thumbnail, rtp: g.rtp,
 }));
 
-const NEW_GAMES = DEMO_GAMES.filter(g => g.isNew && g.thumbnail && g.thumbnail.length > 0).map(g => ({
-  id: g.id,
-  name: g.name,
-  provider: g.provider,
-  maxWin: g.maxWin,
-  thumbnail: g.thumbnail,
-  rtp: g.rtp,
+// 신규 게임 = Nolimit City 신규 우선 + PG Soft 신규 보충
+const NLC_NEW = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isNew && g.thumbnail);
+const PG_NEW = DEMO_GAMES.filter(g => g.provider === 'PG Soft' && g.isNew && g.thumbnail);
+const NEW_GAMES = [...NLC_NEW, ...PG_NEW].slice(0, 8).map(g => ({
+  id: g.id, name: g.name, provider: g.provider, maxWin: g.maxWin, thumbnail: g.thumbnail, rtp: g.rtp,
 }));
 
 const BANNER_SLIDES_KEYS = [
@@ -684,18 +679,7 @@ function PGStyleCard({ game, gradient }: { game: { id: number | string; name: st
           <div className="relative w-full" style={{ height: `${imgH}px` }}>
             <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
           </div>
-          {/* Reflection — 작게 */}
-          <div className="absolute w-full pointer-events-none" style={{
-            height: '60px', top: `${imgH}px`, left: 0,
-            backgroundImage: `url(${game.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center bottom',
-            transform: 'rotate(180deg) scaleX(-1)',
-            maskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
-            opacity: 0.15, zIndex: 1,
-          }} />
-          {/* Bottom gradient */}
-          <div className="absolute w-full bottom-0 left-0" style={{ height: `calc(100% - ${imgH}px)`, background: gradient.bg, zIndex: 2 }} />
-          <div className="absolute inset-0 pointer-events-none" style={{ background: gradient.overlay, zIndex: 3 }} />
+          {/* 이미지 위 오버레이 없음 — 원본 이미지 그대로 */}
           {/* Game info — 컴팩트 + 반투명 배경 */}
           <div className="absolute w-full left-0 bottom-0" style={{ zIndex: 5 }}>
             <div style={{ padding: isMobile ? '8px 10px' : '12px 16px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}>

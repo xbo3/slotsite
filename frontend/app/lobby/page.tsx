@@ -161,42 +161,7 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
             />
           </div>
 
-          {/* Reflection image — 작게, 살짝만 */}
-          <div
-            className="absolute w-full pointer-events-none"
-            style={{
-              height: '60px',
-              top: imgHeight,
-              left: 0,
-              backgroundImage: `url(${game.thumbnail})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center bottom',
-              transform: 'rotate(180deg) scaleX(-1)',
-              maskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
-              opacity: 0.15,
-              zIndex: 1,
-            }}
-          />
-
-          {/* Background gradient block */}
-          <div
-            className="absolute w-full bottom-0 left-0"
-            style={{
-              height: `calc(100% - ${imgHeight})`,
-              background: gradient.bg,
-              zIndex: 2,
-            }}
-          />
-
-          {/* Gradient overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: gradient.overlay,
-              zIndex: 3,
-            }}
-          />
+          {/* 이미지 위 오버레이 없음 — 원본 이미지 그대로 */}
 
           {/* Game info panel — 컴팩트 + 반투명 배경으로 가독성 */}
           <div
