@@ -659,9 +659,9 @@ function PGStyleCard({ game, gradient }: { game: { id: number | string; name: st
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  const cardH = isMobile ? 260 : 360;
-  const imgH = isMobile ? 180 : 250;
-  const btnH = isMobile ? 36 : 44;
+  const cardH = isMobile ? 220 : 360;
+  const imgH = isMobile ? 220 : 250; // 모바일: 이미지가 카드 전체 채움
+  const btnH = isMobile ? 32 : 44;
   const showButtons = isMobile || isHovered;
 
   if (imgError || !game.thumbnail) return null;

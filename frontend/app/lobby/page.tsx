@@ -125,10 +125,10 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
 
   if (imgError || !game.thumbnail) return null;
 
-  const cardHeight = isMobile ? '260px' : '360px';
-  const imgHeight = isMobile ? '180px' : '250px';  // 이미지 70% 차지
-  const infoHeight = isMobile ? '80px' : '110px';   // 설명 30%만
-  const btnHeight = isMobile ? '36px' : '44px';     // 버튼 1/3 크기
+  const cardHeight = isMobile ? '220px' : '360px';
+  const imgHeight = isMobile ? '220px' : '250px';  // 모바일: 이미지 전체 채움
+  const infoHeight = isMobile ? '60px' : '110px';   // 모바일: 오버레이로
+  const btnHeight = isMobile ? '32px' : '44px';
   const showButtons = isMobile || isHovered;
 
   return (
