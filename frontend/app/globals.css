@@ -675,20 +675,28 @@ a.sub-item {
   border: 1px solid transparent;
   position: relative;
   overflow: visible !important;
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity, padding, border-color, box-shadow;
+  transition:
+    border-color 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.4s ease,
+    padding 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.4s ease,
+    opacity 0.4s ease;
+  will-change: transform, border-color, box-shadow, background;
 }
 
 a.sub-item:hover {
-  border-color: var(--item-color, rgba(255,255,255,0.3)) !important;
-  box-shadow: 0 0 5px var(--item-glow, rgba(255,255,255,0.15)),
-              0 0 10px var(--item-glow, rgba(255,255,255,0.08)) !important;
-  background: rgba(255,255,255,0.03);
+  border-color: color-mix(in srgb, var(--item-color, rgba(255,255,255,0.3)) 40%, transparent) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--item-glow, rgba(255,255,255,0.2)) 30%, transparent),
+              0 0 16px color-mix(in srgb, var(--item-glow, rgba(255,255,255,0.2)) 15%, transparent) !important;
+  background: rgba(255,255,255,0.025);
+  transform: translateX(2px);
 }
 
 a.sub-item:active {
-  transform: scale(0.97);
-  transition-duration: 0.1s;
+  transform: scale(0.98) translateX(1px);
+  transition-duration: 0.12s;
 }
 
 a.sub-item.border-click {
