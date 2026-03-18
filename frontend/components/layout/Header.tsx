@@ -286,8 +286,8 @@ export default function Header() {
           )}
         </div>
 
-        {/* Mobile: search + hamburger */}
-        <div className="flex md:hidden items-center gap-2 ml-auto">
+        {/* Mobile: search + hamburger — 우측 끝 정렬 */}
+        <div className="flex md:hidden items-center gap-1 flex-shrink-0">
           <button
             onClick={() => setSearchOpen(!searchOpen)}
             className="p-2 hover:text-white"
