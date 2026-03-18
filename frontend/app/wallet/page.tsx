@@ -247,9 +247,9 @@ export default function WalletPage() {
                 {/* Bonus List */}
                 <div className="flex flex-col gap-1.5 mb-3.5">
                   {[
-                    { name: t('first_deposit_100'), pct: '100%', desc: t('first_deposit_100_desc') },
-                    { name: t('daily_bonus_10'), pct: '10%', desc: t('daily_bonus_10_desc') },
-                    { name: t('no_bonus'), pct: null, desc: t('no_bonus_desc') },
+                    { name: t('first_deposit_100'), pct: '100%', desc: t('first_deposit_100_desc'), pctBg: 'rgba(255,107,107,0.15)', pctColor: '#ff6b6b', accentColor: '#ff6b6b' },
+                    { name: t('daily_bonus_10'), pct: '10%', desc: t('daily_bonus_10_desc'), pctBg: 'rgba(255,212,59,0.15)', pctColor: '#ffd43b', accentColor: '#ffd43b' },
+                    { name: t('no_bonus'), pct: null, desc: t('no_bonus_desc'), pctBg: '', pctColor: '', accentColor: '#555' },
                   ].map((bonus, idx) => (
                     <button
                       key={idx}
@@ -263,13 +263,15 @@ export default function WalletPage() {
                       }}
                     >
                       <span className="absolute inset-0 pointer-events-none" style={shineStyle} />
+                      {/* 좌측 컬러 라인 */}
+                      <span className="absolute left-0 top-0 bottom-0 w-[3px] rounded-l" style={{ background: bonus.accentColor }} />
                       {/* Radio */}
                       <span
                         className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200"
-                        style={{ border: `2px solid ${selectedBonus === idx ? '#fff' : '#555'}` }}
+                        style={{ border: `2px solid ${selectedBonus === idx ? bonus.accentColor || '#fff' : '#555'}` }}
                       >
                         {selectedBonus === idx && (
-                          <span className="w-2 h-2 rounded-full bg-white" />
+                          <span className="w-2 h-2 rounded-full" style={{ background: bonus.accentColor || '#fff' }} />
                         )}
                       </span>
                       <span className="flex-1 min-w-0">
@@ -277,7 +279,7 @@ export default function WalletPage() {
                           {bonus.name}
                           {bonus.pct && (
                             <span className="text-[9px] font-medium tracking-[1px] px-1.5 py-0.5 rounded-[3px]"
-                              style={{ background: 'rgba(255,255,255,0.1)', color: '#999' }}>
+                              style={{ background: bonus.pctBg, color: bonus.pctColor }}>
                               {bonus.pct}
                             </span>
                           )}
