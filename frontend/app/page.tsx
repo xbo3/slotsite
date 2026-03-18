@@ -270,6 +270,51 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== Coin Support Strip Banner ===== */}
+      <section className="w-full" style={{ background: 'linear-gradient(135deg, #111111 0%, #1A1A1A 50%, #111111 100%)' }}>
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 overflow-hidden">
+          {/* Left: Text */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
+            </div>
+            <div>
+              <p className="text-white font-light text-sm md:text-base tracking-wide">
+                {t('coin_support_title')}
+              </p>
+              <p className="text-white/50 font-thin text-xs md:text-sm">
+                {t('coin_support_desc')}
+              </p>
+            </div>
+          </div>
+
+          {/* Center: Coin icons */}
+          <div className="hidden md:flex items-center gap-2 flex-shrink-0">
+            {['BTC', 'ETH', 'USDT', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'DOT', 'MATIC', 'LTC', 'AVAX'].map((coin) => (
+              <div key={coin} className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                {coin.slice(0, 2)}
+              </div>
+            ))}
+            <span className="text-white/40 text-xs font-thin">+12</span>
+          </div>
+
+          {/* Mobile: fewer coins */}
+          <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
+            {['BTC', 'ETH', 'USDT', 'SOL', 'XRP'].map((coin) => (
+              <div key={coin} className="w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-medium" style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                {coin.slice(0, 2)}
+              </div>
+            ))}
+            <span className="text-white/40 text-[10px] font-thin">+19</span>
+          </div>
+
+          {/* Right: CTA */}
+          <Link href="/wallet" className="flex-shrink-0 px-4 py-2 text-xs font-light tracking-widest uppercase transition-all border border-white/30 text-white hover:bg-white hover:text-black rounded-none">
+            {t('deposit')}
+          </Link>
+        </div>
+      </section>
+
       {/* ===== Live Betting Feed ===== */}
       <div ref={feedSection.ref} className={feedSection.inView ? 'section-visible' : 'section-hidden'}>
         <section className="max-w-7xl mx-auto px-4 py-6">

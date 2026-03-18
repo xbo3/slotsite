@@ -20,6 +20,10 @@ const translations = {
     'settings': '설정',
     'profile': '프로필',
 
+    // 코인 배너
+    'coin_support_title': '24종의 코인 지원!',
+    'coin_support_desc': '테더는 +3회 시마다 누적 보너스 혜택까지!',
+
     // 메인
     'popular_games': '인기 게임',
     'new_games': '신규 게임',
@@ -473,6 +477,9 @@ const translations = {
     'withdraw': 'Withdraw',
     'settings': 'Settings',
     'profile': 'Profile',
+
+    'coin_support_title': '24 Coins Supported!',
+    'coin_support_desc': 'USDT deposits: cumulative bonus every 3rd deposit!',
 
     'popular_games': 'Popular Games',
     'new_games': 'New Games',
