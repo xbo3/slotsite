@@ -131,7 +131,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
-                  <span className="text-white text-sm font-bold">{'\u20AE'}{m.reward}</span>
+                  <span className="text-white text-sm font-bold">${m.reward}</span>
                 </div>
               </div>
             </div>

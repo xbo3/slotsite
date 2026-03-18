@@ -283,10 +283,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4 overflow-hidden">
           {/* Left: Tether logo + Text */}
           <div className="flex items-center gap-3 flex-shrink-0">
-            <svg width="40" height="40" viewBox="0 0 40 40" className="flex-shrink-0">
-              <circle cx="20" cy="20" r="20" fill="#26A17B"/>
-              <text x="20" y="26" textAnchor="middle" fill="white" fontSize="22" fontWeight="600" fontFamily="Poppins, sans-serif">{'\u20AE'}</text>
-            </svg>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#26A17B' }}>
+              <span className="text-white text-lg font-semibold" style={{ fontFamily: 'Poppins, sans-serif' }}>T</span>
+            </div>
             <div>
               <p className="text-white font-light text-sm md:text-base tracking-wide">
                 {t('coin_support_title')}
@@ -297,11 +296,11 @@ export default function Home() {
           {/* Center: Coin icons — Desktop (8 + "+8") */}
           <div className="hidden md:flex items-center gap-2 flex-shrink-0">
             {/* BTC */}
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#F7931A' }}>{'\u20BF'}</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#F7931A' }}>B</div>
             {/* ETH */}
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#627EEA' }}>{'\u039E'}</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#627EEA' }}>E</div>
             {/* USDT — emphasized */}
-            <div className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 8px rgba(38,161,123,0.4)' }}>{'\u20AE'}</div>
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-[11px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 8px rgba(38,161,123,0.4)' }}>T</div>
             {/* BNB */}
             <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-medium text-white" style={{ background: '#F3BA2F' }}>B</div>
             {/* SOL */}
@@ -317,9 +316,9 @@ export default function Home() {
 
           {/* Mobile: 5 coins + "+11" */}
           <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F7931A' }}>{'\u20BF'}</div>
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#627EEA' }}>{'\u039E'}</div>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 6px rgba(38,161,123,0.4)' }}>{'\u20AE'}</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F7931A' }}>B</div>
+            <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#627EEA' }}>E</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-semibold text-white" style={{ background: '#26A17B', border: '2px solid rgba(38,161,123,0.5)', boxShadow: '0 0 6px rgba(38,161,123,0.4)' }}>T</div>
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#F3BA2F' }}>B</div>
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#9945FF' }}>S</div>
             <span className="text-white/40 text-[10px] font-thin">+11</span>
@@ -353,7 +352,7 @@ export default function Home() {
                   <span className="text-text-muted"> {t('at_game')} </span>
                   <span className={`font-medium text-white`}>
                     {feedItem.amount >= 1000000 ? '\uD83D\uDD25 ' : ''}
-                    {'\u20AE'}{feedItem.amount.toLocaleString()}
+                    ${feedItem.amount.toLocaleString()}
                   </span>
                   <span className="text-text-muted"> {t('won')}</span>
                 </span>
@@ -458,7 +457,7 @@ export default function Home() {
                 </div>
                 <p className="text-text-secondary text-sm font-light mb-2">{win.game}</p>
                 <p className="text-2xl md:text-3xl font-extralight shimmer-white">
-                  {'\u20AE'}{win.amount.toLocaleString()}
+                  ${win.amount.toLocaleString()}
                 </p>
               </div>
             ))}
@@ -566,7 +565,7 @@ export default function Home() {
                     <td className="px-6 py-4 text-text-secondary text-sm font-light">{row.game}</td>
                     <td className="px-6 py-4 text-right">
                       <span className="font-light text-sm text-white">
-                        {'\u20AE'}{row.amount.toLocaleString()}
+                        ${row.amount.toLocaleString()}
                       </span>
                     </td>
                   </tr>
@@ -596,7 +595,7 @@ export default function Home() {
                   <div className="flex items-center justify-between">
                     <span className="text-white font-light text-sm">{row.nick}</span>
                     <span className="font-light text-sm text-white">
-                      {'\u20AE'}{row.amount.toLocaleString()}
+                      ${row.amount.toLocaleString()}
                     </span>
                   </div>
                   <p className="text-text-muted text-xs mt-0.5 font-light">{row.game}</p>
