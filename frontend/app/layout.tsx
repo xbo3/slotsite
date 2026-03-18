@@ -10,7 +10,7 @@ import FingerprintCollector from '@/components/FingerprintCollector';
 const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500'] });
 
 export const metadata: Metadata = {
-  title: 'SlotSite - 최고의 온라인 슬롯',
+  title: 'DR.SLOT - 최고의 온라인 슬롯',
   description: '최고의 온라인 슬롯 게임을 즐겨보세요.',
   manifest: '/manifest.json',
 };

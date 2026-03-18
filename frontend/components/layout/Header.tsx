@@ -75,12 +75,9 @@ export default function Header() {
         {/* Logo area — matches sidebar width (240px) on lg+ */}
         <div className="hidden lg:flex items-center w-60 flex-shrink-0 px-4">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#FFFFFF' }}>
-              <span className="font-black text-sm" style={{ color: '#0A0A0A' }}>S</span>
-            </div>
-            <span className="text-xl font-light tracking-wider">
-              <span className="text-white">Slot</span>
-              <span style={{ color: '#888888' }}>Site</span>
+            <span className="text-lg md:text-xl tracking-[0.15em]">
+              <span className="text-white font-light">DR.</span>
+              <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
             <div className="flex items-center gap-1 ml-2">
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
@@ -91,12 +88,9 @@ export default function Header() {
         {/* Mobile logo — shown below lg */}
         <div className="flex lg:hidden items-center px-4 flex-shrink-0">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#FFFFFF' }}>
-              <span className="font-black text-sm" style={{ color: '#0A0A0A' }}>S</span>
-            </div>
-            <span className="text-xl font-light hidden sm:block tracking-wider">
-              <span className="text-white">Slot</span>
-              <span style={{ color: '#888888' }}>Site</span>
+            <span className="text-lg md:text-xl tracking-[0.15em]">
+              <span className="text-white font-light">DR.</span>
+              <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
             <div className="hidden sm:flex items-center gap-1 ml-2">
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />

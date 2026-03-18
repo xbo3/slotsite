@@ -82,7 +82,7 @@ const translations = {
     'responsible_gaming': '책임감 있는 게이밍',
     'terms': '이용약관',
     'privacy': '개인정보처리방침',
-    'copyright': '© 2026 SlotSite. All rights reserved.',
+    'copyright': '© 2026 DR.SLOT. All rights reserved.',
 
     // 기타
     'loading': '로딩 중...',
@@ -532,7 +532,7 @@ const translations = {
     'responsible_gaming': 'Responsible Gaming',
     'terms': 'Terms of Service',
     'privacy': 'Privacy Policy',
-    'copyright': '© 2026 SlotSite. All rights reserved.',
+    'copyright': '© 2026 DR.SLOT. All rights reserved.',
 
     'loading': 'Loading...',
     'no_data': 'No data available',

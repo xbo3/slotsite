@@ -33,7 +33,7 @@ export default function AdminLayout({
             </div>
             <div>
               <p className="text-sm font-light text-white">{'관리자 패널'}</p>
-              <p className="text-[10px] text-text-muted">SlotSite Admin</p>
+              <p className="text-[10px] text-text-muted">DR.SLOT Admin</p>
             </div>
           </div>
         </div>

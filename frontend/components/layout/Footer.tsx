@@ -12,9 +12,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & Copyright */}
           <div>
-            <span className="text-xl font-light tracking-wider">
-              <span className="text-white">Slot</span>
-              <span style={{ color: '#888888' }}>Site</span>
+            <span className="text-xl tracking-[0.15em]">
+              <span className="text-white font-light">DR.</span>
+              <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
             <p className="mt-2 text-sm font-light" style={{ color: '#888888' }}>
               {t('best_slot_experience')}
@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-4 border-t text-center text-xs font-light" style={{ borderColor: 'rgba(255,255,255,0.06)', color: '#555555' }}>
-          &copy; {new Date().getFullYear()} SlotSite. All rights reserved.
+          &copy; {new Date().getFullYear()} DR.SLOT. All rights reserved.
         </div>
       </div>
     </footer>
