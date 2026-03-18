@@ -67,57 +67,215 @@ const GAMES: Game[] = [
   })),
 ];
 
-// Dummy recent plays (shown when "logged in" — always show for demo)
-const RECENT_PLAYS: Game[] = [
-  GAMES[0], // Gates of Olympus
-  GAMES[6], // Fortune Tiger
-  GAMES[12], // Crazy Time
-  GAMES[19], // Dead or Alive 2
-];
-
-const PROVIDER_COLORS: Record<string, { from: string; to: string; emoji: string }> = {
-  'Pragmatic Play': { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' },
-  'PG Soft': { from: '#888888', to: '#AAAAAA', emoji: '\uD83D\uDC2F' },
-  'Evolution': { from: '#4CAF50', to: '#66BB6A', emoji: '\uD83C\uDFB2' },
-  'NetEnt': { from: '#E53935', to: '#EF5350', emoji: '\uD83D\uDC8E' },
-  'Microgaming': { from: '#AAAAAA', to: '#CCCCCC', emoji: '\uD83E\uDD81' },
-  "Play'n GO": { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83D\uDCD6' },
-  'Nolimit City': { from: '#E53935', to: '#EF5350', emoji: '\uD83D\uDD25' },
-  'Red Tiger': { from: '#FFB300', to: '#FFCA28', emoji: '\uD83D\uDC2F' },
-  'Big Time Gaming': { from: '#AAAAAA', to: '#CCCCCC', emoji: '\uD83D\uDCA3' },
-};
+// Dummy recent plays (kept for future use)
+// const RECENT_PLAYS: Game[] = [
+//   GAMES[0], GAMES[6], GAMES[12], GAMES[19],
+// ];
 
 const ITEMS_PER_PAGE = 12;
-const ITEMS_PER_LOAD = 6;
+const ITEMS_PER_LOAD = 8;
 
-function getCardGradient(index: number, total: number): string {
-  const hue = (index / total) * 360;
-  const saturation = 60 + (index % 3) * 10;
-  const lightness = 15 + (index % 3) * 3;
-  const hue2 = hue + 30;
-  return `linear-gradient(135deg, hsl(${hue}, ${saturation}%, ${lightness}%) 0%, hsl(${hue2}, ${saturation - 10}%, ${lightness + 5}%) 100%)`;
+// ===== Gradient Palettes =====
+const hotGradients = [
+  { border: '#FF6B35', glow: 'rgba(255,107,53,0.4)', overlay: 'linear-gradient(135deg, rgba(255,107,53,0.2), rgba(255,71,87,0.2))', bg: 'linear-gradient(135deg, #c0392b, #e74c3c)' },
+  { border: '#FF4757', glow: 'rgba(255,71,87,0.4)', overlay: 'linear-gradient(135deg, rgba(255,71,87,0.2), rgba(255,107,157,0.2))', bg: 'linear-gradient(135deg, #8e44ad, #9b59b6)' },
+  { border: '#FF7F00', glow: 'rgba(255,127,0,0.4)', overlay: 'linear-gradient(135deg, rgba(255,127,0,0.2), rgba(255,69,0,0.2))', bg: 'linear-gradient(135deg, #e67e22, #f39c12)' },
+  { border: '#FF2D55', glow: 'rgba(255,45,85,0.4)', overlay: 'linear-gradient(135deg, rgba(255,45,85,0.2), rgba(255,107,53,0.2))', bg: 'linear-gradient(135deg, #c0392b, #e74c3c)' },
+  { border: '#FF416C', glow: 'rgba(255,65,108,0.4)', overlay: 'linear-gradient(135deg, rgba(255,65,108,0.2), rgba(255,75,43,0.2))', bg: 'linear-gradient(135deg, #d35400, #e74c3c)' },
+  { border: '#F7971E', glow: 'rgba(247,151,30,0.4)', overlay: 'linear-gradient(135deg, rgba(247,151,30,0.2), rgba(255,210,0,0.2))', bg: 'linear-gradient(135deg, #f39c12, #f1c40f)' },
+  { border: '#FF6B6B', glow: 'rgba(255,107,107,0.4)', overlay: 'linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,230,109,0.2))', bg: 'linear-gradient(135deg, #e74c3c, #c0392b)' },
+  { border: '#FC5C7D', glow: 'rgba(252,92,125,0.4)', overlay: 'linear-gradient(135deg, rgba(252,92,125,0.2), rgba(106,48,147,0.2))', bg: 'linear-gradient(135deg, #8e44ad, #6a3093)' },
+];
+
+const coldGradients = [
+  { border: '#00B4DB', glow: 'rgba(0,180,219,0.4)', overlay: 'linear-gradient(135deg, rgba(0,180,219,0.2), rgba(0,131,176,0.2))', bg: 'linear-gradient(135deg, #0083B0, #00B4DB)' },
+  { border: '#667EEA', glow: 'rgba(102,126,234,0.4)', overlay: 'linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2))', bg: 'linear-gradient(135deg, #667EEA, #764BA2)' },
+  { border: '#4ECDC4', glow: 'rgba(78,205,196,0.4)', overlay: 'linear-gradient(135deg, rgba(78,205,196,0.2), rgba(68,160,141,0.2))', bg: 'linear-gradient(135deg, #4ECDC4, #44A08D)' },
+  { border: '#6A11CB', glow: 'rgba(106,17,203,0.4)', overlay: 'linear-gradient(135deg, rgba(106,17,203,0.2), rgba(37,117,252,0.2))', bg: 'linear-gradient(135deg, #6A11CB, #2575FC)' },
+  { border: '#48C6EF', glow: 'rgba(72,198,239,0.4)', overlay: 'linear-gradient(135deg, rgba(72,198,239,0.2), rgba(111,134,214,0.2))', bg: 'linear-gradient(135deg, #48C6EF, #6F86D6)' },
+  { border: '#89F7FE', glow: 'rgba(137,247,254,0.3)', overlay: 'linear-gradient(135deg, rgba(137,247,254,0.15), rgba(102,166,255,0.15))', bg: 'linear-gradient(135deg, #89F7FE, #66A6FF)' },
+  { border: '#A8EDEA', glow: 'rgba(168,237,234,0.3)', overlay: 'linear-gradient(135deg, rgba(168,237,234,0.15), rgba(254,214,227,0.15))', bg: 'linear-gradient(135deg, #A8EDEA, #FED6E3)' },
+  { border: '#5EE7DF', glow: 'rgba(94,231,223,0.4)', overlay: 'linear-gradient(135deg, rgba(94,231,223,0.2), rgba(180,144,202,0.2))', bg: 'linear-gradient(135deg, #5EE7DF, #B490CA)' },
+];
+
+interface GradientStyle {
+  border: string;
+  glow: string;
+  overlay: string;
+  bg: string;
 }
 
-function GameThumbnail({ game, onImgError, className = '' }: { game: Game; onImgError?: () => void; className?: string }) {
-  const colors = PROVIDER_COLORS[game.provider] || { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' };
+function getAllGameGradient(index: number, total: number): GradientStyle {
+  const hue = (index / total) * 360;
+  const sat = 60 + (index % 3) * 10;
+  const light = 20 + (index % 3) * 3;
+  const hue2 = hue + 30;
+  return {
+    border: `hsl(${hue}, ${sat}%, ${light + 20}%)`,
+    glow: `hsla(${hue}, ${sat}%, ${light + 20}%, 0.3)`,
+    overlay: `linear-gradient(135deg, hsla(${hue}, ${sat}%, ${light}%, 0.2), hsla(${hue2}, ${sat - 10}%, ${light + 5}%, 0.2))`,
+    bg: `linear-gradient(135deg, hsl(${hue}, ${sat}%, ${light}%), hsl(${hue2}, ${sat - 10}%, ${light + 5}%))`,
+  };
+}
 
-  if (game.thumbnail) {
-    return (
-      <div className={`w-full aspect-square relative overflow-hidden ${className}`}>
-        <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" loading="lazy" onError={onImgError} />
-      </div>
-    );
-  }
+// ===== PGSoft Style Card =====
+function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number; gradient: GradientStyle; isMobile?: boolean }) {
+  const [imgError, setImgError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  if (imgError || !game.thumbnail) return null;
+
+  const cardHeight = isMobile ? '300px' : '400px';
+  const imgHeight = isMobile ? '140px' : '180px';
+  const infoHeight = isMobile ? '160px' : '220px';
 
   return (
     <div
-      className={`w-full aspect-square flex flex-col items-center justify-center relative overflow-hidden ${className}`}
-      style={{ background: `linear-gradient(135deg, ${colors.from} 0%, ${colors.to} 100%)` }}
+      className="group relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <span className="text-white font-medium text-xs md:text-sm text-center px-3 leading-tight max-w-[90%] truncate">{game.name}</span>
-      <span className="text-white/50 text-[10px] mt-1">{game.provider}</span>
+      <Link href={`/game/${game.id}`}>
+        <div
+          className="relative overflow-hidden transition-all duration-300"
+          style={{
+            height: cardHeight,
+            borderRadius: '14px',
+            border: `2px solid ${gradient.border}`,
+            boxShadow: isHovered
+              ? `0 30px 20px -20px rgba(14,6,23,0.3), 0 0 20px ${gradient.glow}`
+              : '0 4px 15px rgba(0,0,0,0.3)',
+            transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
+          }}
+        >
+          {/* Top cover image */}
+          <div className="relative w-full" style={{ height: imgHeight }}>
+            <img
+              src={game.thumbnail}
+              alt={game.name}
+              className="w-full h-full object-cover"
+              loading="lazy"
+              onError={() => setImgError(true)}
+            />
+          </div>
+
+          {/* Reflection image */}
+          <div
+            className="absolute w-full pointer-events-none"
+            style={{
+              height: imgHeight,
+              top: imgHeight,
+              left: 0,
+              backgroundImage: `url(${game.thumbnail})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              transform: 'rotate(180deg) scaleX(-1)',
+              maskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
+              opacity: 0.4,
+              zIndex: 1,
+            }}
+          />
+
+          {/* Background gradient block */}
+          <div
+            className="absolute w-full bottom-0 left-0"
+            style={{
+              height: `calc(100% - ${imgHeight})`,
+              background: gradient.bg,
+              zIndex: 2,
+            }}
+          />
+
+          {/* Gradient overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: gradient.overlay,
+              zIndex: 3,
+            }}
+          />
+
+          {/* Game info panel */}
+          <div
+            className="absolute w-full left-0 transition-all duration-300"
+            style={{
+              bottom: isHovered ? '50px' : '0px',
+              height: infoHeight,
+              zIndex: 5,
+              padding: isMobile ? '12px' : '20px',
+            }}
+          >
+            {/* Game name + provider */}
+            <div className="relative z-10" style={{ height: isMobile ? '45px' : '60px' }}>
+              <p className={`text-white font-medium leading-6 truncate ${isMobile ? 'text-sm' : 'text-lg'}`}>
+                {game.name}
+              </p>
+              <p className={`text-white/70 font-light mt-1 ${isMobile ? 'text-[10px]' : 'text-xs'}`}>
+                {game.provider}
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className={`flex justify-between relative z-10 ${isMobile ? 'mt-2' : 'mt-4'}`}>
+              <div>
+                <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'}`}>MEDIUM</p>
+                <p className={`text-white/50 mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>Volatility</p>
+              </div>
+              <div>
+                <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'}`}>{game.rtp}%</p>
+                <p className={`text-white/50 mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>RTP</p>
+              </div>
+              <div>
+                <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'}`}>{game.maxWin}</p>
+                <p className={`text-white/50 mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>Max Win</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Buttons (slide up on hover) */}
+          <div
+            className="absolute w-full flex transition-all duration-300"
+            style={{
+              height: '50px',
+              bottom: isHovered ? '0px' : '-50px',
+              left: 0,
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              zIndex: 10,
+            }}
+          >
+            <Link
+              href={`/game/${game.id}?mode=demo`}
+              onClick={e => e.stopPropagation()}
+              className="flex-1 flex items-center justify-center text-white text-sm font-light hover:bg-white/10 transition-colors"
+            >
+              TRY FREE
+            </Link>
+            <Link
+              href={`/game/${game.id}`}
+              onClick={e => e.stopPropagation()}
+              className="flex-1 flex items-center justify-center text-white text-sm font-light hover:bg-white/10 transition-colors border-l border-white/10"
+            >
+              PLAY NOW
+            </Link>
+          </div>
+        </div>
+      </Link>
     </div>
   );
+}
+
+// ===== Mobile detection hook =====
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+  return isMobile;
 }
 
 export default function LobbyPage() {
@@ -133,6 +291,7 @@ function LobbyContent() {
   const { t } = useLang();
   const searchParams = useSearchParams();
   const providerParam = searchParams.get('provider');
+  const isMobile = useIsMobile();
 
   // Multi-select providers
   const [selectedProviders, setSelectedProviders] = useState<Set<string>>(() => {
@@ -213,7 +372,10 @@ function LobbyContent() {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [search, sortBy]);
 
-  const hotGames = GAMES.filter(g => g.isHot);
+  // HOT games = isHot true + has thumbnail
+  const hotGames = GAMES.filter(g => g.isHot && g.thumbnail && g.thumbnail.length > 0);
+  // COLD games = isHot false + has thumbnail
+  const coldGames = GAMES.filter(g => !g.isHot && g.thumbnail && g.thumbnail.length > 0).slice(0, 8);
 
   // Active filter chips
   const activeFilters: { label: string; onRemove: () => void }[] = [];
@@ -250,30 +412,31 @@ function LobbyContent() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        {/* Recent Plays (Your Games) */}
+
+        {/* HOT Games - 2x4 Grid */}
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">{'\u23F1\uFE0F'}</span>
-            <h2 className="text-xl font-light text-white">{t('recent_play')}</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-info/50 to-transparent ml-3" />
+            <span className="text-2xl">{'\uD83D\uDD25'}</span>
+            <h2 className="text-xl font-light text-white">HOT Games</h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-red-500/50 to-transparent ml-3" />
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
-            {RECENT_PLAYS.map(game => (
-              <RecentGameCard key={`recent-${game.id}`} game={game} />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {hotGames.slice(0, 8).map((game, index) => (
+              <PGStyleCard key={game.id} game={game} index={index} gradient={hotGradients[index % 8]} isMobile={isMobile} />
             ))}
           </div>
         </div>
 
-        {/* Hot Games */}
+        {/* COLD Games - 2x4 Grid */}
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">{'\uD83D\uDD25'}</span>
-            <h2 className="text-xl font-light text-white">{t('hot_games')}</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-danger/50 to-transparent ml-3" />
+            <span className="text-2xl">{'\u2744\uFE0F'}</span>
+            <h2 className="text-xl font-light text-white">COLD Games</h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent ml-3" />
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
-            {hotGames.map(game => (
-              <HotGameCard key={game.id} game={game} />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {coldGames.map((game, index) => (
+              <PGStyleCard key={game.id} game={game} index={index} gradient={coldGradients[index % 8]} isMobile={isMobile} />
             ))}
           </div>
         </div>
@@ -299,7 +462,7 @@ function LobbyContent() {
             )}
           </div>
 
-          {/* Provider multi-select (checkbox style) */}
+          {/* Provider multi-select */}
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {PROVIDER_LIST.map(p => {
               const isSelected = selectedProviders.has(p);
@@ -313,7 +476,6 @@ function LobbyContent() {
                       : 'bg-transparent text-white/50 hover:text-white border border-white/5'
                   }`}
                 >
-                  {/* Checkbox indicator */}
                   <span className={`w-4 h-4 rounded border-2 flex items-center justify-center text-[10px] transition-all ${
                     isSelected ? 'border-black bg-black/20' : 'border-text-muted'
                   }`}>
@@ -324,7 +486,6 @@ function LobbyContent() {
               );
             })}
             <div className="flex-shrink-0 border-l border-white/10 ml-2 pl-2 flex gap-2">
-              {/* Sort select */}
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as 'default' | 'rtp' | 'name')}
@@ -359,7 +520,7 @@ function LobbyContent() {
           )}
         </div>
 
-        {/* Game Grid */}
+        {/* All Games Grid (PGStyleCard) */}
         <div className="mt-6">
           <div className="flex items-center justify-between mb-4">
             <p className="text-text-secondary text-sm">
@@ -381,9 +542,15 @@ function LobbyContent() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                 {visibleGames.map((game, index) => (
-                  <GameCard key={game.id} game={game} index={index} total={filtered.length} />
+                  <PGStyleCard
+                    key={game.id}
+                    game={game}
+                    index={index}
+                    gradient={getAllGameGradient(index, filtered.length)}
+                    isMobile={isMobile}
+                  />
                 ))}
               </div>
 
@@ -391,7 +558,7 @@ function LobbyContent() {
               {hasMore && (
                 <div ref={loaderRef} className="mt-6">
                   {loadingMore && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                       {Array.from({ length: Math.min(ITEMS_PER_LOAD, filtered.length - visibleCount) }).map((_, i) => (
                         <SkeletonCard key={`skel-${i}`} />
                       ))}
@@ -409,132 +576,6 @@ function LobbyContent() {
           )}
         </div>
       </div>
-    </div>
-  );
-}
-
-function RecentGameCard({ game }: { game: Game }) {
-  const { t } = useLang();
-  const [imgError, setImgError] = useState(false);
-  if (imgError) return null;
-  return (
-    <Link
-      href={`/game/${game.id}`}
-      className="snap-start flex-shrink-0 w-40 md:w-48 group"
-    >
-      <div className="relative rounded-2xl overflow-hidden border-2 border-info/30 group-hover:border-info transition-all shadow-lg shadow-info/10 group-hover:shadow-info/25">
-        <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-110 transition-transform duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
-        <div className="absolute top-2 left-2">
-          <span className="px-2 py-0.5 bg-info text-white text-[10px] font-light rounded-full">
-            {'\uD83D\uDD04'} {t('recent_label')}
-          </span>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-3">
-          <p className="text-white font-light text-sm truncate">{game.name}</p>
-          <p className="text-text-secondary text-[11px]">{game.provider}</p>
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function HotGameCard({ game }: { game: Game }) {
-  const [imgError, setImgError] = useState(false);
-  if (imgError) return null;
-  return (
-    <Link
-      href={`/game/${game.id}`}
-      className="snap-start flex-shrink-0 w-48 md:w-56 group"
-    >
-      <div className="relative rounded-2xl overflow-hidden border-2 border-danger/30 group-hover:border-danger transition-all shadow-lg shadow-danger/10 group-hover:shadow-danger/25">
-        <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-110 transition-transform duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
-        <div className="absolute top-2 left-2">
-          <span className="px-2 py-0.5 bg-danger text-white text-[10px] font-light rounded-full uppercase tracking-wider animate-pulse">
-            HOT
-          </span>
-        </div>
-        <div className="absolute top-2 right-2">
-          <span className="px-2 py-0.5 bg-dark-bg/60 text-white/70 text-[10px] font-light rounded-full">
-            {game.maxWin}
-          </span>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-3">
-          <p className="text-white font-light text-sm truncate">{game.name}</p>
-          <p className="text-text-secondary text-[11px]">{game.provider}</p>
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function GameCard({ game, index, total }: { game: Game; index: number; total: number }) {
-  const { t } = useLang();
-  const [imgError, setImgError] = useState(false);
-  if (imgError) return null;
-  return (
-    <div className="group relative">
-      <Link href={`/game/${game.id}`} className="block">
-        <div className="relative overflow-hidden hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow" style={{ borderRadius: '14px', background: getCardGradient(index, total) }}>
-          {/* Thumbnail */}
-          <div className="relative overflow-hidden">
-            <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] transition-transform duration-700" />
-            {/* Badges */}
-            <div className="absolute top-2 left-2 flex gap-1 z-10">
-              {game.isHot && (
-                <span className="px-1.5 py-0.5 bg-danger text-white text-[9px] font-light rounded-md">{'\uD83D\uDD25'} HOT</span>
-              )}
-              {game.isNew && (
-                <span className="px-1.5 py-0.5 bg-success text-dark-bg text-[9px] font-light rounded-md">NEW</span>
-              )}
-            </div>
-
-            {/* Max Win */}
-            <div className="absolute top-2 right-2 z-10">
-              <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/70 text-[9px] font-light rounded-md backdrop-blur-sm">
-                {game.maxWin}
-              </span>
-            </div>
-
-            {/* Hover Overlay — play text + buttons */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20" style={{ background: 'rgba(0,0,0,0.7)' }}>
-              <span className="text-white font-light text-lg tracking-wider mb-4">{'\u25B6'} PLAY</span>
-              <div className="flex flex-col gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <Link
-                  href={`/game/${game.id}`}
-                  onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 border border-white text-white font-light rounded-xl text-xs hover:bg-white hover:text-black transition-all text-center flex items-center justify-center gap-1"
-                >
-                  <span>{'\u25B6'}</span> {t('real_play')}
-                </Link>
-                <Link
-                  href={`/game/${game.id}?mode=demo`}
-                  onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 border border-white/30 text-white/70 font-light rounded-xl text-xs hover:bg-white hover:text-black transition-all text-center"
-                >
-                  {t('free_trial')}
-                </Link>
-              </div>
-            </div>
-
-            {/* Game Info - overlay at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent z-10">
-              <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
-              <div className="flex items-center justify-between mt-1.5">
-                <span className="text-white/50 text-[11px]">{game.provider}</span>
-                <span className="text-[11px] font-medium text-success/80">RTP {game.rtp}%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Link>
     </div>
   );
 }
