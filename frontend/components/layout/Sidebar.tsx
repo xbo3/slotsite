@@ -345,6 +345,8 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
   activeSub: string | null;
   setActiveSub: (id: string | null) => void;
 }) {
+  const [isAnimating, setIsAnimating] = useState(false);
+
   // all 항목 분리 + 나머지 알파벳순 정렬
   const allItem = cat.subs.find(s => s.id === 'all');
   const restSorted = cat.subs
@@ -363,6 +365,8 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
             : getGradientColor(idx - (allItem ? 1 : 0), restSorted.length);
 
           const handleClick = (e: React.MouseEvent) => {
+            if (isAnimating) return; // 애니메이션 중 재클릭 차단
+
             setActiveSub(isActive ? null : sub.id);
             const el = e.currentTarget as HTMLElement;
             // 테두리 플래시
@@ -374,13 +378,15 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
             // 로고 팝업
             const img = el.querySelector('.provider-logo') as HTMLImageElement;
             if (img) {
+              setIsAnimating(true); // 락 ON
               img.style.height = '48px';
               img.style.filter = `drop-shadow(0 0 8px ${colors.glow}) drop-shadow(0 0 16px ${colors.color}) brightness(1.4)`;
-              img.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+              img.style.transition = 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)';
               setTimeout(() => {
                 img.style.height = '20px';
                 img.style.filter = 'none';
                 img.style.transition = 'all 0.4s ease';
+                setTimeout(() => setIsAnimating(false), 450); // 락 OFF
               }, 1500);
             }
           };
