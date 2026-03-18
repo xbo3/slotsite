@@ -46,6 +46,7 @@ const TIERS = [
 ];
 const CURRENT_TIER = 2; // Gold
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const BONUS_TYPES = [
   { img: '/0box.png', name: 'Emergency Bonus', desc: 'Emergency support', badge: 'Available', badgeClass: 'bg-[rgba(34,197,94,0.25)] text-[#4ade80]' },
   { img: '/1box.png', name: 'Grade Benefits', desc: 'Auto bonus by level', badge: 'VIP Only', badgeClass: 'bg-[rgba(245,158,11,0.25)] text-[#fbbf24]' },
