@@ -293,47 +293,9 @@ export default function MyCouponsPage() {
         ))}
       </div>
 
-      {/* ===== BONUS TYPES (image cards) ===== */}
-      <SectionTitle title={t('bonus_types')} />
-      <div className="grid gap-2.5 mb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))' }}>
-        {BONUS_TYPES.map((bt, i) => (
-          <div
-            key={bt.name}
-            className="cursor-pointer overflow-hidden rounded-xl transition-all hover:-translate-y-1 hover:border-white/[0.14] relative"
-            style={{
-              background: '#151519',
-              border: '1px solid rgba(255,255,255,0.06)',
-              animation: `cardUp 0.5s ease both`,
-              animationDelay: `${i * 0.06}s`,
-            }}
-            onClick={() => {
-              if (bt.badge === 'Available' || bt.badge === 'Apply') {
-                showToast(`${bt.name} activated`, bt.badge === 'Apply'
-                  ? 'linear-gradient(135deg,#0284c7,#38bdf8)'
-                  : 'linear-gradient(135deg,#ff4757,#ff6b81)');
-              }
-            }}
-          >
-            {/* Badge */}
-            <span className={`absolute top-2 right-2 z-10 text-[7px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded backdrop-blur-sm ${bt.badgeClass}`}>
-              {bt.badge}
-            </span>
-            {/* Image */}
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <img src={bt.img} alt={bt.name} className="w-full h-full object-cover" />
-            </div>
-            {/* Info */}
-            <div className="p-3">
-              <p className="text-[11px] font-medium text-white">{bt.name}</p>
-              <p className="text-[9px] font-extralight" style={{ color: '#5e5e70' }}>{bt.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* ===== MY COUPONS (unified) ===== */}
       <SectionTitle title={t('my_bonuses')} count={COUPONS.length} />
-      <div className="grid gap-2.5 mb-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))' }}>
+      <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-2.5 mb-2">
         {COUPONS.map((cpn, i) => (
           <CouponCard key={cpn.id} cpn={cpn} index={i} onUse={(msg, bg) => showToast(msg, bg)} />
         ))}
