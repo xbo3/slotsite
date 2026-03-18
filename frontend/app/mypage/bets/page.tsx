@@ -230,7 +230,7 @@ export default function BetsPage() {
                 onClick={() => setFilterPeriod(opt.value)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   filterPeriod === opt.value
-                    ? 'bg-accent-blue/20 text-accent-blue border border-accent-blue/30'
+                    ? 'bg-info/20 text-info border border-info/30'
                     : 'bg-dark-bg text-text-muted hover:text-white border border-white/5'
                 }`}
               >
@@ -456,7 +456,7 @@ export default function BetsPage() {
                 {selectedBet.roundId && (
                   <div className="flex justify-between">
                     <span className="text-sm text-text-muted">라운드 ID</span>
-                    <span className="text-sm text-accent-blue font-mono">{selectedBet.roundId}</span>
+                    <span className="text-sm text-info font-mono">{selectedBet.roundId}</span>
                   </div>
                 )}
               </div>

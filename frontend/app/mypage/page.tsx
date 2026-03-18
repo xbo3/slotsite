@@ -117,7 +117,7 @@ export default function ProfilePage() {
                       <div className="flex items-center gap-2">
                         <div className="flex-1 h-1.5 bg-dark-input rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-accent-blue rounded-full"
+                            className="h-full bg-info rounded-full"
                             style={{ width: `${(m.progress / m.total) * 100}%` }}
                           />
                         </div>
@@ -283,8 +283,8 @@ export default function ProfilePage() {
                   <td className="px-4 py-3">
                     <span className={`text-xs px-2 py-1 rounded-full font-medium ${
                       log.device === 'PC'
-                        ? 'bg-accent-blue/20 text-accent-blue'
-                        : 'bg-accent-purple/20 text-accent-purple'
+                        ? 'bg-info/20 text-info'
+                        : 'bg-amber-500/20 text-amber-500'
                     }`}>
                       {log.device}
                     </span>
@@ -304,8 +304,8 @@ export default function ProfilePage() {
                 <span className="text-sm text-white">{log.date}</span>
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                   log.device === 'PC'
-                    ? 'bg-accent-blue/20 text-accent-blue'
-                    : 'bg-accent-purple/20 text-accent-purple'
+                    ? 'bg-info/20 text-info'
+                    : 'bg-amber-500/20 text-amber-500'
                 }`}>
                   {log.device}
                 </span>

@@ -192,7 +192,7 @@ export const PROVIDERS = [
   { name: 'Nolimit City', slug: 'nolimit', gameCount: 8, color: '#E8593C' },
   { name: 'NetEnt', slug: 'netent', gameCount: 4, color: '#00C853' },
   { name: 'Red Tiger', slug: 'redtiger', gameCount: 2, color: '#FF6D00' },
-  { name: 'Big Time Gaming', slug: 'btg', gameCount: 2, color: '#FFD700' },
+  { name: 'Big Time Gaming', slug: 'btg', gameCount: 2, color: '#D4AF37' },
 ];
 
 // 카테고리 목록

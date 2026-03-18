@@ -40,8 +40,8 @@ const DUMMY_COUPONS: Coupon[] = [
   { id: 2, code: 'FREESPIN50', type: 'free_spin', amount: 50, min_deposit: 0, max_uses: 100, used_count: 88, status: 'active', start_date: '2026-03-01', end_date: '2026-03-31', description: '3월 프리스핀 이벤트', created_at: '2026-02-28' },
   { id: 3, code: 'VIP10K', type: 'bonus_money', amount: 10000, min_deposit: 100000, max_uses: 50, used_count: 50, status: 'inactive', start_date: '2026-02-01', end_date: '2026-02-28', description: 'VIP 전용 보너스 머니', created_at: '2026-01-25' },
   { id: 4, code: 'MARCH20', type: 'deposit_bonus', amount: 20, min_deposit: 30000, max_uses: 500, used_count: 134, status: 'active', start_date: '2026-03-01', end_date: '2026-03-31', description: '3월 입금 보너스 20%', created_at: '2026-02-27' },
-  { id: 5, code: 'CASHBACK5K', type: 'bonus_money', amount: 5000, min_deposit: 0, max_uses: 200, used_count: 78, status: 'active', start_date: '2026-03-10', end_date: '2026-04-10', description: '주간 캐시백 쿠폰', created_at: '2026-03-09' },
-  { id: 6, code: 'NEWYEAR2026', type: 'bonus_money', amount: 20000, min_deposit: 200000, max_uses: 30, used_count: 30, status: 'expired', start_date: '2026-01-01', end_date: '2026-01-07', description: '새해 이벤트 쿠폰', created_at: '2025-12-31' },
+  { id: 5, code: 'CASHBACK5K', type: 'bonus_money', amount: 5000, min_deposit: 0, max_uses: 200, used_count: 78, status: 'active', start_date: '2026-03-10', end_date: '2026-04-10', description: '주간 캐시백 보너스', created_at: '2026-03-09' },
+  { id: 6, code: 'NEWYEAR2026', type: 'bonus_money', amount: 20000, min_deposit: 200000, max_uses: 30, used_count: 30, status: 'expired', start_date: '2026-01-01', end_date: '2026-01-07', description: '새해 이벤트 보너스', created_at: '2025-12-31' },
   { id: 7, code: 'SPIN100', type: 'free_spin', amount: 100, min_deposit: 50000, max_uses: 0, used_count: 312, status: 'active', start_date: '2026-03-01', end_date: '2026-06-30', description: '프리스핀 100회 대방출', created_at: '2026-02-28' },
   { id: 8, code: 'LOYALTY3K', type: 'bonus_money', amount: 3000, min_deposit: 0, max_uses: 1, used_count: 0, status: 'active', start_date: '2026-03-15', end_date: '2026-03-20', description: '충성 고객 전용 (user:1042)', target_user_id: 1042, created_at: '2026-03-14' },
 ];
@@ -72,8 +72,8 @@ const STATUS_COLORS: Record<CouponStatus, string> = {
 
 const TYPE_COLORS: Record<CouponType, string> = {
   bonus_money: 'bg-accent-gold/20 text-accent-gold',
-  free_spin: 'bg-accent-purple/20 text-accent-purple',
-  deposit_bonus: 'bg-accent-blue/20 text-accent-blue',
+  free_spin: 'bg-amber-500/20 text-amber-500',
+  deposit_bonus: 'bg-info/20 text-info',
 };
 
 function generateCode(length = 8): string {
@@ -177,7 +177,7 @@ export default function AdminCouponsPage() {
       status: 'active' as CouponStatus,
       start_date: new Date().toISOString().split('T')[0],
       end_date: '2026-12-31',
-      description: `벌크 생성 쿠폰 #${i + 1}`,
+      description: `벌크 생성 보너스 #${i + 1}`,
       created_at: new Date().toISOString().split('T')[0],
     }));
     setCoupons(prev => [...newCoupons, ...prev]);
@@ -208,13 +208,13 @@ export default function AdminCouponsPage() {
     <div className="animate-fade-in">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-white">쿠폰 관리</h1>
+        <h1 className="text-2xl font-bold text-white">보너스 관리</h1>
         <div className="flex gap-2">
           <button onClick={() => setShowBulk(true)} className="px-4 py-2.5 bg-dark-elevated hover:bg-white/10 text-white text-sm font-medium rounded-lg transition-colors">
             벌크 생성
           </button>
           <button onClick={() => setShowCreate(true)} className="px-4 py-2.5 btn-cta text-sm rounded-lg">
-            쿠폰 생성
+            보너스 생성
           </button>
         </div>
       </div>
@@ -281,7 +281,7 @@ export default function AdminCouponsPage() {
                 <td className="px-4 py-3">
                   <span className="font-mono text-sm text-white font-medium">{coupon.code}</span>
                   {coupon.target_user_id && (
-                    <span className="ml-2 text-[10px] bg-accent-purple/20 text-accent-purple px-1.5 py-0.5 rounded">
+                    <span className="ml-2 text-[10px] bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded">
                       user:{coupon.target_user_id}
                     </span>
                   )}
@@ -311,7 +311,7 @@ export default function AdminCouponsPage() {
                     <button onClick={() => setShowUsage(coupon)} className="px-2 py-1 text-xs text-text-secondary hover:text-white hover:bg-white/5 rounded transition-colors">
                       내역
                     </button>
-                    <button onClick={() => setShowEdit(coupon)} className="px-2 py-1 text-xs text-accent-blue hover:bg-accent-blue/10 rounded transition-colors">
+                    <button onClick={() => setShowEdit(coupon)} className="px-2 py-1 text-xs text-info hover:bg-info/10 rounded transition-colors">
                       수정
                     </button>
                     <button onClick={() => handleToggleStatus(coupon)} className="px-2 py-1 text-xs text-warning hover:bg-warning/10 rounded transition-colors">
@@ -367,7 +367,7 @@ export default function AdminCouponsPage() {
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
 
       {/* ===== Create Modal ===== */}
-      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="쿠폰 생성" size="md">
+      <Modal isOpen={showCreate} onClose={() => setShowCreate(false)} title="보너스 생성" size="md">
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-text-secondary mb-1">코드</label>
@@ -471,19 +471,19 @@ export default function AdminCouponsPage() {
             <input
               value={createForm.description}
               onChange={e => setCreateForm(f => ({ ...f, description: e.target.value }))}
-              placeholder="쿠폰 설명"
+              placeholder="보너스 설명"
               className="w-full px-3 py-2.5 bg-dark-input border border-white/5 rounded-lg text-white text-sm focus:outline-none focus:border-accent/50"
             />
           </div>
 
           <button onClick={handleCreate} className="w-full py-3 btn-cta text-sm rounded-lg mt-2">
-            쿠폰 생성
+            보너스 생성
           </button>
         </div>
       </Modal>
 
       {/* ===== Bulk Create Modal ===== */}
-      <Modal isOpen={showBulk} onClose={() => setShowBulk(false)} title="벌크 쿠폰 생성" size="sm">
+      <Modal isOpen={showBulk} onClose={() => setShowBulk(false)} title="벌크 보너스 생성" size="sm">
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-text-secondary mb-1">생성 수량</label>
@@ -553,7 +553,7 @@ export default function AdminCouponsPage() {
       </Modal>
 
       {/* ===== Edit Modal ===== */}
-      <Modal isOpen={!!showEdit} onClose={() => setShowEdit(null)} title={`쿠폰 수정 - ${showEdit?.code}`} size="md">
+      <Modal isOpen={!!showEdit} onClose={() => setShowEdit(null)} title={`보너스 수정 - ${showEdit?.code}`} size="md">
         {showEdit && (
           <div className="space-y-4">
             <div>

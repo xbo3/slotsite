@@ -4,9 +4,10 @@ import { useState, useMemo, useEffect, useRef, useCallback, Suspense } from 'rea
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { SkeletonCard } from '@/components/ui/Skeleton';
+import { DEMO_GAMES } from '@/lib/gameData';
 
 // ===== Dummy Game Data =====
-const PROVIDER_LIST = ['Pragmatic Play', 'PG Soft', 'Evolution', 'NetEnt', 'Microgaming', "Play'n GO"] as const;
+const PROVIDER_LIST = ['Pragmatic Play', 'PG Soft', 'Evolution', 'NetEnt', 'Microgaming', "Play'n GO", 'Nolimit City', 'Red Tiger', 'Big Time Gaming'] as const;
 
 interface Game {
   id: string;
@@ -17,6 +18,7 @@ interface Game {
   isHot: boolean;
   isNew: boolean;
   maxWin: string;
+  thumbnail?: string;
 }
 
 const GAMES: Game[] = [
@@ -50,6 +52,18 @@ const GAMES: Game[] = [
   { id: 'reactoonz', name: 'Reactoonz', provider: "Play'n GO", category: 'SLOT', rtp: 96.51, isHot: false, isNew: false, maxWin: 'x4570' },
   { id: 'fire-joker', name: 'Fire Joker', provider: "Play'n GO", category: 'SLOT', rtp: 96.15, isHot: false, isNew: true, maxWin: 'x800' },
   { id: 'moon-princess', name: 'Moon Princess', provider: "Play'n GO", category: 'SLOT', rtp: 96.5, isHot: false, isNew: false, maxWin: 'x5000' },
+  // DEMO_GAMES (CDN 이미지 포함)
+  ...DEMO_GAMES.filter(dg => !['dead-or-alive-2'].includes(dg.id)).map(dg => ({
+    id: dg.id,
+    name: dg.name,
+    provider: dg.provider,
+    category: dg.category === 'slots' ? 'SLOT' : dg.category.toUpperCase(),
+    rtp: dg.rtp,
+    isHot: dg.isHot,
+    isNew: dg.isNew,
+    maxWin: dg.maxWin,
+    thumbnail: dg.thumbnail,
+  })),
 ];
 
 // Dummy recent plays (shown when "logged in" — always show for demo)
@@ -61,27 +75,38 @@ const RECENT_PLAYS: Game[] = [
 ];
 
 const PROVIDER_COLORS: Record<string, { from: string; to: string; emoji: string }> = {
-  'Pragmatic Play': { from: '#1475E1', to: '#5CA8FF', emoji: '\uD83C\uDFB0' },
-  'PG Soft': { from: '#8B5CF6', to: '#A78BFA', emoji: '\uD83D\uDC2F' },
-  'Evolution': { from: '#00E701', to: '#34D399', emoji: '\uD83C\uDFB2' },
-  'NetEnt': { from: '#F0443C', to: '#FB7185', emoji: '\uD83D\uDC8E' },
-  'Microgaming': { from: '#FFD700', to: '#FDE68A', emoji: '\uD83E\uDD81' },
-  "Play'n GO": { from: '#1475E1', to: '#60A5FA', emoji: '\uD83D\uDCD6' },
+  'Pragmatic Play': { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' },
+  'PG Soft': { from: '#C9A94E', to: '#D4AF37', emoji: '\uD83D\uDC2F' },
+  'Evolution': { from: '#4CAF50', to: '#66BB6A', emoji: '\uD83C\uDFB2' },
+  'NetEnt': { from: '#E53935', to: '#EF5350', emoji: '\uD83D\uDC8E' },
+  'Microgaming': { from: '#D4AF37', to: '#F0D78C', emoji: '\uD83E\uDD81' },
+  "Play'n GO": { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83D\uDCD6' },
+  'Nolimit City': { from: '#E53935', to: '#EF5350', emoji: '\uD83D\uDD25' },
+  'Red Tiger': { from: '#FFB300', to: '#FFCA28', emoji: '\uD83D\uDC2F' },
+  'Big Time Gaming': { from: '#D4AF37', to: '#F0D78C', emoji: '\uD83D\uDCA3' },
 };
 
 const ITEMS_PER_PAGE = 12;
 const ITEMS_PER_LOAD = 6;
 
 function GameThumbnail({ game, className = '' }: { game: Game; className?: string }) {
-  const colors = PROVIDER_COLORS[game.provider] || { from: '#1475E1', to: '#5CA8FF', emoji: '\uD83C\uDFB0' };
+  const colors = PROVIDER_COLORS[game.provider] || { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' };
+
+  if (game.thumbnail) {
+    return (
+      <div className={`w-full aspect-square relative overflow-hidden ${className}`}>
+        <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" loading="lazy" />
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`w-full aspect-[4/3] flex flex-col items-center justify-center relative overflow-hidden ${className}`}
+      className={`w-full aspect-square flex flex-col items-center justify-center relative overflow-hidden ${className}`}
       style={{ background: `linear-gradient(135deg, ${colors.from} 0%, ${colors.to} 100%)` }}
     >
-      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 30% 40%, white 1px, transparent 1px), radial-gradient(circle at 70% 60%, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
-      <span className="text-4xl md:text-5xl mb-2 drop-shadow-lg">{colors.emoji}</span>
-      <span className="text-white font-bold text-xs md:text-sm text-center px-3 drop-shadow-md leading-tight max-w-[90%] truncate">{game.name}</span>
+      <span className="text-white font-medium text-xs md:text-sm text-center px-3 leading-tight max-w-[90%] truncate">{game.name}</span>
+      <span className="text-white/50 text-[10px] mt-1">{game.provider}</span>
     </div>
   );
 }
@@ -197,7 +222,7 @@ function LobbyContent() {
   return (
     <div className="min-h-screen">
       {/* Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-accent/5 via-dark-bg to-accent-blue/5">
+      <div className="relative overflow-hidden bg-gradient-to-r from-accent/5 via-dark-bg to-info/5">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-accent-gold/8 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '1s' }} />
@@ -205,7 +230,7 @@ function LobbyContent() {
         <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-2 h-8 bg-accent rounded-full" />
-            <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">{'\uD83C\uDFAE'} {'\uAC8C\uC784'} {'\uB85C\uBE44'}</h1>
+            <h1 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">{'\uD83C\uDFAE'} {'\uAC8C\uC784'} {'\uB85C\uBE44'}</h1>
           </div>
           <p className="text-text-secondary ml-5">
             <span className="text-accent font-bold">{GAMES.length}</span>개의 프리미엄 게임이 당신을 기다립니다
@@ -219,7 +244,7 @@ function LobbyContent() {
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl">{'\u23F1\uFE0F'}</span>
             <h2 className="text-xl font-bold text-white">최근 플레이</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-accent-blue/50 to-transparent ml-3" />
+            <div className="h-px flex-1 bg-gradient-to-r from-info/50 to-transparent ml-3" />
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
             {RECENT_PLAYS.map(game => (
@@ -228,11 +253,11 @@ function LobbyContent() {
                 href={`/game/${game.id}`}
                 className="snap-start flex-shrink-0 w-40 md:w-48 group"
               >
-                <div className="relative rounded-2xl overflow-hidden border-2 border-accent-blue/30 group-hover:border-accent-blue transition-all shadow-lg shadow-accent-blue/10 group-hover:shadow-accent-blue/25">
+                <div className="relative rounded-2xl overflow-hidden border-2 border-info/30 group-hover:border-info transition-all shadow-lg shadow-info/10 group-hover:shadow-info/25">
                   <GameThumbnail game={game} className="group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
                   <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 bg-accent-blue text-white text-[10px] font-bold rounded-full">
+                    <span className="px-2 py-0.5 bg-info text-white text-[10px] font-bold rounded-full">
                       {'\uD83D\uDD04'} 최근
                     </span>
                   </div>
@@ -240,7 +265,7 @@ function LobbyContent() {
                     <p className="text-white font-bold text-sm truncate">{game.name}</p>
                     <p className="text-text-secondary text-[11px]">{game.provider}</p>
                   </div>
-                  <div className="absolute inset-0 bg-accent-blue/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-info/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="px-6 py-2.5 bg-white text-dark-bg font-bold rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
                       이어하기 {'\u25B6'}
                     </span>
@@ -329,7 +354,7 @@ function LobbyContent() {
                       ? 'text-white shadow-lg'
                       : 'bg-dark-card text-text-secondary hover:text-white hover:bg-white/10 border border-white/5'
                   }`}
-                  style={isSelected ? { background: `linear-gradient(135deg, ${colors?.from || '#1475E1'}, ${colors?.to || '#5CA8FF'})` } : undefined}
+                  style={isSelected ? { background: `linear-gradient(135deg, ${colors?.from || '#42A5F5'}, ${colors?.to || '#64B5F6'})` } : undefined}
                 >
                   {/* Checkbox indicator */}
                   <span className={`w-4 h-4 rounded border-2 flex items-center justify-center text-[10px] transition-all ${
@@ -436,10 +461,10 @@ function GameCard({ game }: { game: Game }) {
   return (
     <div className="group relative">
       <Link href={`/game/${game.id}`} className="block">
-        <div className="relative rounded-2xl overflow-hidden bg-dark-card border border-white/5 hover:border-accent/30 transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 card-hover">
+        <div className="relative rounded-2xl overflow-hidden card-matte hover:border-accent/30 transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 card-hover card-glow">
           {/* Thumbnail */}
           <div className="relative overflow-hidden">
-            <GameThumbnail game={game} className="group-hover:scale-110 transition-transform duration-700" />
+            <GameThumbnail game={game} className="group-hover:scale-[1.08] transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
 
             {/* Badges */}

@@ -73,9 +73,9 @@ export default function Sidebar() {
 
   return (
     <aside className={cn(
-      'hidden lg:flex flex-col fixed left-0 top-16 bottom-0 z-40 bg-dark-card border-r border-white/5 transition-all duration-200',
+      'hidden lg:flex flex-col sticky top-16 h-[calc(100vh-4rem)] z-40 border-r transition-all duration-200 flex-shrink-0',
       collapsed ? 'w-16' : 'w-60'
-    )}>
+    )} style={{ background: '#161616', borderColor: 'rgba(255,255,255,0.06)' }}>
       {/* Toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
@@ -98,9 +98,10 @@ export default function Sidebar() {
                 className={cn(
                   'group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm',
                   isActive
-                    ? 'bg-accent/10 text-accent font-medium'
-                    : 'text-text-secondary hover:text-white hover:bg-white/5'
+                    ? 'font-medium'
+                    : 'hover:text-white hover:bg-white/5'
                 )}
+                style={isActive ? { background: 'rgba(201,169,78,0.1)', color: '#C9A94E' } : { color: '#888888' }}
               >
                 <span className="flex-shrink-0 w-6 flex justify-center">{item.icon}</span>
                 {!collapsed && (
@@ -176,10 +177,11 @@ export default function Sidebar() {
         <div className="p-3">
           <Link
             href="/support"
-            className="flex items-center gap-3 px-4 py-3 bg-accent-blue/10 border border-accent-blue/20 rounded-xl hover:bg-accent-blue/20 transition-all"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
+            style={{ background: 'rgba(66,165,245,0.1)', border: '1px solid rgba(66,165,245,0.2)' }}
           >
-            <div className="w-8 h-8 bg-accent-blue/20 rounded-lg flex items-center justify-center">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1475E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(66,165,245,0.2)' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#42A5F5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
@@ -192,7 +194,7 @@ export default function Sidebar() {
       )}
       {collapsed && (
         <div className="p-2 flex justify-center">
-          <Link href="/support" className="group relative p-2 text-accent-blue hover:text-white transition-colors">
+          <Link href="/support" className="group relative p-2 hover:text-white transition-colors" style={{ color: '#42A5F5' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>

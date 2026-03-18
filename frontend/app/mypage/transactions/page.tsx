@@ -22,21 +22,21 @@ const TYPE_LABELS: Record<TxType, string> = {
   deposit: '입금',
   withdraw: '출금',
   bonus: '보너스',
-  coupon: '쿠폰',
+  coupon: '보너스쿠폰',
 };
 
 const TYPE_COLORS: Record<TxType, string> = {
   deposit: 'text-success',
   withdraw: 'text-danger',
   bonus: 'text-accent-gold',
-  coupon: 'text-accent-purple',
+  coupon: 'text-amber-500',
 };
 
 const TYPE_BG: Record<TxType, string> = {
   deposit: 'bg-success/10',
   withdraw: 'bg-danger/10',
   bonus: 'bg-accent-gold/10',
-  coupon: 'bg-accent-purple/10',
+  coupon: 'bg-amber-500/10',
 };
 
 const TYPE_ICON_BG: Record<TxType, string> = {
@@ -70,17 +70,17 @@ const DUMMY_TRANSACTIONS: Transaction[] = [
   { id: 2, date: '2026-03-18 10:15', type: 'withdraw', amount: 2000, status: 'completed', memo: 'USDT 출금', tx_hash: 'TxH4sh...def456' },
   { id: 3, date: '2026-03-17 22:40', type: 'bonus', amount: 500, status: 'completed', memo: '일일 보너스' },
   { id: 4, date: '2026-03-17 18:00', type: 'deposit', amount: 10000, status: 'completed', memo: '은행 입금' },
-  { id: 5, date: '2026-03-16 14:20', type: 'coupon', amount: 1000, status: 'completed', memo: 'WELCOME2026 쿠폰' },
+  { id: 5, date: '2026-03-16 14:20', type: 'coupon', amount: 1000, status: 'completed', memo: 'WELCOME2026 보너스' },
   { id: 6, date: '2026-03-16 09:10', type: 'withdraw', amount: 3000, status: 'pending', memo: 'USDT 출금 처리중', tx_hash: 'TxH4sh...ghi789' },
   { id: 7, date: '2026-03-15 20:30', type: 'deposit', amount: 8000, status: 'completed', memo: 'USDT TRC20 입금', tx_hash: 'TxH4sh...jkl012' },
   { id: 8, date: '2026-03-15 16:45', type: 'bonus', amount: 250, status: 'completed', memo: '주간 캐시백' },
   { id: 9, date: '2026-03-14 12:00', type: 'withdraw', amount: 1500, status: 'cancelled', memo: '출금 취소됨' },
-  { id: 10, date: '2026-03-14 08:30', type: 'coupon', amount: 2000, status: 'completed', memo: 'VIP10K 쿠폰' },
+  { id: 10, date: '2026-03-14 08:30', type: 'coupon', amount: 2000, status: 'completed', memo: 'VIP10K 보너스' },
   { id: 11, date: '2026-03-13 19:20', type: 'deposit', amount: 3000, status: 'completed', memo: 'USDT TRC20 입금', tx_hash: 'TxH4sh...mno345' },
   { id: 12, date: '2026-03-12 15:40', type: 'bonus', amount: 300, status: 'completed', memo: '첫 충전 보너스' },
   { id: 13, date: '2026-03-11 10:05', type: 'withdraw', amount: 5000, status: 'completed', memo: 'USDT 출금', tx_hash: 'TxH4sh...pqr678' },
   { id: 14, date: '2026-03-10 22:15', type: 'deposit', amount: 6000, status: 'completed', memo: '은행 입금' },
-  { id: 15, date: '2026-03-09 14:50', type: 'coupon', amount: 500, status: 'completed', memo: 'FREESPIN50 쿠폰' },
+  { id: 15, date: '2026-03-09 14:50', type: 'coupon', amount: 500, status: 'completed', memo: 'FREESPIN50 보너스' },
 ];
 
 type FilterType = 'all' | TxType;
@@ -92,7 +92,7 @@ const TYPE_TABS: { value: FilterType; label: string }[] = [
   { value: 'deposit', label: '입금' },
   { value: 'withdraw', label: '출금' },
   { value: 'bonus', label: '보너스' },
-  { value: 'coupon', label: '쿠폰' },
+  { value: 'coupon', label: '보너스쿠폰' },
 ];
 
 const PERIOD_OPTIONS: { value: FilterPeriod; label: string }[] = [
@@ -282,7 +282,7 @@ export default function TransactionsPage() {
                 onClick={() => setFilterPeriod(opt.value)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   filterPeriod === opt.value
-                    ? 'bg-accent-blue/20 text-accent-blue border border-accent-blue/30'
+                    ? 'bg-info/20 text-info border border-info/30'
                     : 'bg-dark-bg text-text-muted hover:text-white border border-white/5'
                 }`}
               >
@@ -443,7 +443,7 @@ export default function TransactionsPage() {
               {selectedTx.tx_hash && (
                 <div className="flex justify-between">
                   <span className="text-sm text-text-muted">TX Hash</span>
-                  <span className="text-sm text-accent-blue font-mono">{selectedTx.tx_hash}</span>
+                  <span className="text-sm text-info font-mono">{selectedTx.tx_hash}</span>
                 </div>
               )}
             </div>

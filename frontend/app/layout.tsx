@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -7,7 +7,7 @@ import MobileNav from '@/components/layout/MobileNav';
 import Sidebar from '@/components/layout/Sidebar';
 import FingerprintCollector from '@/components/FingerprintCollector';
 
-const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['200', '300', '400', '500', '600'] });
 
 export const metadata: Metadata = {
   title: 'SlotSite - 최고의 온라인 슬롯',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#00E701',
+  themeColor: '#C9A94E',
 };
 
 export default function RootLayout({
@@ -26,7 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${inter.className} antialiased flex flex-col min-h-screen`}>
+      <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+      </head>
+      <body className={`${poppins.className} antialiased flex flex-col min-h-screen`}>
         <Header />
         <div className="flex flex-1">
           <Sidebar />

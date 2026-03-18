@@ -94,11 +94,11 @@ export default function RegisterPage() {
     <div className="min-h-[calc(100vh-4rem)] flex items-stretch animate-fade-in">
       {/* Left side — decorative (md+) */}
       <div className="hidden md:flex md:w-1/2 relative overflow-hidden items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-dark-bg to-accent-blue/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-dark-bg to-info/10" />
         <div className="absolute inset-0" style={{ filter: 'blur(60px)' }}>
           <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-accent/20 rounded-full" />
           <div className="absolute bottom-1/4 right-1/3 w-48 h-48 bg-accent-gold/15 rounded-full" />
-          <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-accent-blue/15 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-info/15 rounded-full" />
         </div>
         <div className="relative z-10 text-center px-12">
           <div className="text-7xl mb-6">{'\uD83C\uDFB0'}</div>
@@ -123,7 +123,7 @@ export default function RegisterPage() {
               즉시 출금
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-accent-blue rounded-full" />
+              <span className="w-2 h-2 bg-info rounded-full" />
               24/7 지원
             </div>
           </div>

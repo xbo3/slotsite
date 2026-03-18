@@ -27,7 +27,7 @@ const TABS = [
   { href: '/mypage', label: '프로필', icon: ProfileIcon },
   { href: '/mypage/transactions', label: '거래내역', icon: TransactionIcon },
   { href: '/mypage/bets', label: '베팅내역', icon: BetIcon },
-  { href: '/mypage/coupons', label: '내 쿠폰', icon: CouponIcon },
+  { href: '/mypage/coupons', label: '내 보너스', icon: CouponIcon },
 ];
 
 export default function MyPageLayout({ children }: { children: React.ReactNode }) {
@@ -85,13 +85,13 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           scrolled ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
         )}
       >
-        <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-          <span className="text-accent text-sm font-bold">
+        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(201,169,78,0.2)' }}>
+          <span className="text-sm font-medium" style={{ color: '#C9A94E' }}>
             {DUMMY_USER.nickname.charAt(0).toUpperCase()}
           </span>
         </div>
         <span className="text-sm font-semibold text-white truncate">{DUMMY_USER.nickname}</span>
-        <span className="text-sm font-bold text-accent ml-auto whitespace-nowrap">
+        <span className="text-sm font-medium ml-auto whitespace-nowrap" style={{ color: '#C9A94E' }}>
           {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 0 })} USDT
         </span>
       </div>
@@ -100,13 +100,13 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
       <div className="md:hidden bg-gradient-to-br from-dark-bg to-dark-card rounded-2xl border border-white/5 p-5 mb-6">
         {/* Avatar + Name + Balance */}
         <div className="flex flex-col items-center mb-5">
-          <div className="w-20 h-20 rounded-full bg-accent/20 flex items-center justify-center border-2 border-accent shadow-[0_0_20px_rgba(0,231,1,0.3)] mb-3">
-            <span className="text-accent text-3xl font-bold">
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(201,169,78,0.2)', border: '2px solid #C9A94E', boxShadow: '0 0 20px rgba(201,169,78,0.2)' }}>
+            <span className="text-3xl font-medium" style={{ color: '#C9A94E' }}>
               {DUMMY_USER.nickname.charAt(0).toUpperCase()}
             </span>
           </div>
           <h1 className="text-xl font-bold text-white mb-1">{DUMMY_USER.nickname}</h1>
-          <p className="text-3xl font-black text-accent">
+          <p className="text-3xl font-medium" style={{ color: '#C9A94E' }}>
             {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} <span className="text-sm font-semibold">USDT</span>
           </p>
         </div>
@@ -140,7 +140,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           </div>
           <div className="w-full h-2 bg-dark-input rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-accent to-accent-blue rounded-full transition-all duration-1000 ease-out"
+              className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000 ease-out"
               style={{ width: `${(DUMMY_USER.xp / DUMMY_USER.nextLevelXp) * 100}%` }}
             />
           </div>
@@ -151,10 +151,10 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
 
         {/* CTA Buttons */}
         <div className="flex gap-3">
-          <Link href="/wallet" className="btn-cta rounded-full flex-1 py-3 text-center text-sm font-bold">
+          <Link href="/wallet" className="btn-cta rounded-full flex-1 py-3 text-center text-sm font-medium">
             충전하기
           </Link>
-          <Link href="/wallet" className="border border-accent text-accent rounded-full flex-1 py-3 text-center text-sm font-bold hover:bg-accent/10 transition-colors">
+          <Link href="/wallet" className="rounded-full flex-1 py-3 text-center text-sm font-medium transition-colors" style={{ border: '1px solid rgba(255,255,255,0.12)', color: '#FFFFFF' }}>
             출금하기
           </Link>
         </div>
@@ -163,8 +163,8 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
       {/* === Desktop User Summary Card (unchanged) === */}
       <div className="hidden md:block bg-dark-card rounded-2xl border border-white/5 p-5 md:p-6 mb-6">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-accent/20 flex items-center justify-center flex-shrink-0">
-            <span className="text-accent text-2xl md:text-3xl font-bold">
+          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(201,169,78,0.2)' }}>
+            <span className="text-2xl md:text-3xl font-medium" style={{ color: '#C9A94E' }}>
               {DUMMY_USER.nickname.charAt(0).toUpperCase()}
             </span>
           </div>
@@ -174,7 +174,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           </div>
           <div className="text-right flex-shrink-0">
             <p className="text-xs text-text-muted mb-0.5">보유 잔액</p>
-            <p className="text-xl md:text-2xl font-bold text-accent">{DUMMY_USER.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
+            <p className="text-xl md:text-2xl font-medium" style={{ color: '#C9A94E' }}>{DUMMY_USER.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
           </div>
         </div>
 
@@ -187,7 +187,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           <div className="flex-1">
             <div className="w-full h-2 bg-dark-input rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-accent to-accent-blue rounded-full transition-all duration-1000 ease-out"
+                className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000 ease-out"
                 style={{ width: `${(DUMMY_USER.xp / DUMMY_USER.nextLevelXp) * 100}%` }}
               />
             </div>
@@ -208,7 +208,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">총 당첨</p>
-            <p className="text-sm md:text-base font-semibold text-accent">{DUMMY_USER.totalWin.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
+            <p className="text-sm md:text-base font-medium" style={{ color: '#C9A94E' }}>{DUMMY_USER.totalWin.toLocaleString()} <span className="text-xs" style={{ color: '#555555' }}>USDT</span></p>
           </div>
         </div>
       </div>
@@ -228,8 +228,8 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                   className={cn(
                     'flex items-center gap-3 px-4 py-3.5 text-sm font-medium transition-all border-l-[3px]',
                     isActive
-                      ? 'border-l-accent bg-accent/5 text-accent'
-                      : 'border-l-transparent text-text-secondary hover:text-white hover:bg-white/5'
+                      ? 'border-l-amber-500 bg-amber-500/5 text-amber-500'
+                      : 'border-l-transparent text-gray-400 hover:text-white hover:bg-white/5'
                   )}
                 >
                   <tab.icon active={!!isActive} />
@@ -256,9 +256,10 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                     className={cn(
                       'flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all flex-shrink-0',
                       isActive
-                        ? 'bg-accent text-dark-bg'
-                        : 'bg-dark-card text-text-secondary border border-white/5 hover:text-white'
+                        ? 'text-white'
+                        : 'text-gray-400 border border-white/5 hover:text-white'
                     )}
+                    style={isActive ? { background: '#C9A94E', color: '#0A0A0A' } : { background: '#111111' }}
                   >
                     <tab.icon active={!!isActive} />
                     <span>{tab.label}</span>
@@ -268,8 +269,8 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
             </div>
             {/* Slide Indicator */}
             <div
-              className="absolute bottom-0 h-0.5 bg-accent rounded-full transition-all duration-300 ease-out"
-              style={{ left: indicatorStyle.left, width: indicatorStyle.width }}
+              className="absolute bottom-0 h-0.5 rounded-full transition-all duration-300 ease-out"
+              style={{ left: indicatorStyle.left, width: indicatorStyle.width, background: '#C9A94E' }}
             />
           </div>
         </div>
@@ -286,7 +287,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
 // Tab Icons
 function ProfileIcon({ active }: { active: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#557086'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#55555F'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
     </svg>
@@ -295,7 +296,7 @@ function ProfileIcon({ active }: { active: boolean }) {
 
 function TransactionIcon({ active }: { active: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#557086'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#55555F'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
     </svg>
   );
@@ -303,7 +304,7 @@ function TransactionIcon({ active }: { active: boolean }) {
 
 function BetIcon({ active }: { active: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#557086'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#55555F'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="6" width="20" height="12" rx="2" />
       <circle cx="12" cy="12" r="3" />
     </svg>
@@ -312,7 +313,7 @@ function BetIcon({ active }: { active: boolean }) {
 
 function CouponIcon({ active }: { active: boolean }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#557086'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#55555F'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6" />
       <rect x="2" y="7" width="20" height="5" rx="1" />
       <path d="M12 22V7" />

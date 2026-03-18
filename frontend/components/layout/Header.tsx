@@ -19,6 +19,14 @@ export default function Header() {
   const [walletOpen, setWalletOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifCount] = useState(3);
+  const [onlineCount, setOnlineCount] = useState(2847);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setOnlineCount(Math.floor(Math.random() * (3200 - 2500 + 1)) + 2500);
+    }, 10000);
+    return () => clearInterval(timer);
+  }, []);
 
   const walletRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -60,27 +68,27 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-dark-card/95 backdrop-blur-xl border-b border-white/5">
+    <header className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ background: 'rgba(22,22,22,0.95)', borderColor: 'rgba(255,255,255,0.06)' }}>
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Logo + Online count */}
         <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-            <span className="text-dark-bg font-black text-sm">S</span>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#C9A94E' }}>
+            <span className="font-black text-sm" style={{ color: '#0A0A0A' }}>S</span>
           </div>
-          <span className="text-xl font-bold hidden sm:block">
-            <span className="text-accent">Slot</span>
+          <span className="text-xl font-medium hidden sm:block">
+            <span style={{ color: '#C9A94E' }}>Slot</span>
             <span className="text-white">Site</span>
           </span>
           <div className="hidden sm:flex items-center gap-1 ml-2">
-            <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-            <span className="text-xs text-text-muted">2,847 online</span>
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
+            <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} online</span>
           </div>
         </Link>
 
         {/* Desktop Search */}
         <div className="hidden md:flex flex-1 max-w-md mx-4" ref={searchRef}>
           <div className="relative w-full">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#555555' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -89,20 +97,22 @@ export default function Header() {
               onChange={e => setSearchQuery(e.target.value)}
               onFocus={() => setSearchFocused(true)}
               placeholder="게임 검색..."
-              className={`pl-10 pr-4 py-2 bg-dark-bg border border-white/5 rounded-lg text-sm text-white placeholder:text-text-muted focus:outline-none focus:border-accent/30 transition-all ${searchFocused ? 'w-full' : 'w-64'}`}
+              className={`pl-10 pr-4 py-2 border rounded-lg text-sm text-white focus:outline-none transition-all ${searchFocused ? 'w-full' : 'w-64'}`}
+              style={{ background: '#0A0A0A', borderColor: 'rgba(255,255,255,0.06)', }}
             />
             {/* Recent searches dropdown */}
             {searchFocused && !searchQuery && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-dark-card border border-white/10 rounded-xl shadow-xl z-50 overflow-hidden dropdown-enter">
+              <div className="absolute top-full left-0 right-0 mt-2 border rounded-xl shadow-xl z-50 overflow-hidden dropdown-enter" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}>
                 <div className="p-2">
-                  <p className="text-[10px] text-text-muted uppercase tracking-wider px-2 py-1">최근 검색어</p>
+                  <p className="text-[10px] uppercase tracking-wider px-2 py-1" style={{ color: '#555555' }}>최근 검색어</p>
                   {RECENT_SEARCHES.map(s => (
                     <button
                       key={s}
                       onClick={() => { setSearchQuery(s); setSearchFocused(false); }}
-                      className="w-full flex items-center gap-2 px-2 py-2 text-sm text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-2 py-2 text-sm hover:text-white hover:bg-white/5 rounded-lg transition-colors text-left"
+                      style={{ color: '#888888' }}
                     >
-                      <svg className="w-3.5 h-3.5 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3.5 h-3.5" style={{ color: '#555555' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       {s}
@@ -116,13 +126,13 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
-          <Link href="/lobby" className="px-3 py-2 text-sm text-text-secondary hover:text-white rounded-lg hover:bg-white/5 transition-all">
+          <Link href="/lobby" className="px-3 py-2 text-sm rounded-lg hover:bg-white/5 transition-all" style={{ color: '#888888' }}>
             게임
           </Link>
-          <Link href="/mypage/coupons" className="px-3 py-2 text-sm text-text-secondary hover:text-white rounded-lg hover:bg-white/5 transition-all">
+          <Link href="/mypage/coupons" className="px-3 py-2 text-sm rounded-lg hover:bg-white/5 transition-all" style={{ color: '#888888' }}>
             보너스
           </Link>
-          <Link href="/support" className="px-3 py-2 text-sm text-text-secondary hover:text-white rounded-lg hover:bg-white/5 transition-all">
+          <Link href="/support" className="px-3 py-2 text-sm rounded-lg hover:bg-white/5 transition-all" style={{ color: '#888888' }}>
             고객센터
           </Link>
         </nav>
@@ -132,12 +142,12 @@ export default function Header() {
           {loggedIn ? (
             <>
               {/* Notification Bell */}
-              <button className="relative p-2 text-text-secondary hover:text-white transition-colors rounded-lg hover:bg-white/5">
+              <button className="relative p-2 hover:text-white transition-colors rounded-lg hover:bg-white/5" style={{ color: '#888888' }}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
                 {notifCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-danger rounded-full flex items-center justify-center text-[9px] font-bold text-white">
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-medium text-white" style={{ background: '#E53935' }}>
                     {notifCount}
                   </span>
                 )}
@@ -147,34 +157,36 @@ export default function Header() {
               <div className="relative" ref={walletRef}>
                 <button
                   onClick={() => setWalletOpen(!walletOpen)}
-                  className="flex items-center gap-2 bg-dark-bg px-4 py-2 rounded-lg hover:bg-white/5 transition-colors border border-white/5"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white/5 transition-colors border"
+                  style={{ background: '#0A0A0A', borderColor: 'rgba(255,255,255,0.06)' }}
                 >
-                  <svg className="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" style={{ color: '#C9A94E' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
-                  <span className="text-accent font-semibold text-sm">{formatKRW(balance)}</span>
-                  <svg className={`w-3 h-3 text-text-muted transition-transform ${walletOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="font-medium text-sm" style={{ color: '#C9A94E' }}>{formatKRW(balance)}</span>
+                  <svg className={`w-3 h-3 transition-transform ${walletOpen ? 'rotate-180' : ''}`} style={{ color: '#555555' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 {walletOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-60 bg-dark-card border border-white/10 rounded-xl shadow-xl z-50 dropdown-enter">
+                  <div className="absolute top-full right-0 mt-2 w-60 border rounded-xl shadow-xl z-50 dropdown-enter" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}>
                     <div className="p-4">
-                      <p className="text-text-muted text-xs mb-1">보유 잔액</p>
-                      <p className="text-2xl font-black text-accent">{formatKRW(balance)}</p>
+                      <p className="text-xs mb-1" style={{ color: '#555555' }}>보유 잔액</p>
+                      <p className="text-2xl font-medium" style={{ color: '#C9A94E' }}>{formatKRW(balance)}</p>
                     </div>
-                    <div className="border-t border-white/5 p-3 flex gap-2">
+                    <div className="border-t p-3 flex gap-2" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
                       <Link
                         href="/wallet?tab=deposit"
                         onClick={() => setWalletOpen(false)}
-                        className="flex-1 text-center py-2.5 bg-accent text-dark-bg font-bold text-sm rounded-lg hover:brightness-110 transition-all touch-active"
+                        className="flex-1 text-center py-2.5 font-medium text-sm rounded-lg hover:brightness-110 transition-all touch-active"
+                        style={{ background: '#C9A94E', color: '#0A0A0A' }}
                       >
                         충전
                       </Link>
                       <Link
                         href="/wallet?tab=withdraw"
                         onClick={() => setWalletOpen(false)}
-                        className="flex-1 text-center py-2.5 bg-white/10 text-white font-bold text-sm rounded-lg hover:bg-white/20 transition-all touch-active"
+                        className="flex-1 text-center py-2.5 bg-white/10 text-white font-medium text-sm rounded-lg hover:bg-white/20 transition-all touch-active"
                       >
                         출금
                       </Link>
@@ -187,23 +199,25 @@ export default function Header() {
               <div className="relative" ref={profileRef}>
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-white rounded-lg hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-white/5 transition-colors"
+                  style={{ color: '#888888' }}
                 >
-                  <div className="w-7 h-7 bg-accent/20 rounded-full flex items-center justify-center text-accent text-xs font-bold">
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium" style={{ background: 'rgba(201,169,78,0.2)', color: '#C9A94E' }}>
                     {nickname ? nickname.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <span className="hidden lg:inline">{nickname}</span>
-                  <svg className={`w-3 h-3 text-text-muted transition-transform ${profileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-3 h-3 transition-transform ${profileOpen ? 'rotate-180' : ''}`} style={{ color: '#555555' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
                 {profileOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-dark-card border border-white/10 rounded-xl shadow-xl z-50 overflow-hidden dropdown-enter">
+                  <div className="absolute top-full right-0 mt-2 w-48 border rounded-xl shadow-xl z-50 overflow-hidden dropdown-enter" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}>
                     <div className="p-1">
                       <Link
                         href="/mypage"
                         onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2.5 text-sm text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                        className="flex items-center gap-2 px-3 py-2.5 text-sm hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                        style={{ color: '#888888' }}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -213,7 +227,8 @@ export default function Header() {
                       <Link
                         href="/mypage/settings"
                         onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2.5 text-sm text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                        className="flex items-center gap-2 px-3 py-2.5 text-sm hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                        style={{ color: '#888888' }}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -221,10 +236,11 @@ export default function Header() {
                         </svg>
                         설정
                       </Link>
-                      <div className="my-1 mx-2 border-t border-white/5" />
+                      <div className="my-1 mx-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }} />
                       <button
                         onClick={() => { setProfileOpen(false); logout(); }}
-                        className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-danger hover:bg-danger/5 rounded-lg transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2.5 text-sm rounded-lg transition-colors text-left"
+                        style={{ color: '#E53935' }}
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -240,7 +256,8 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm text-text-secondary hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                className="px-4 py-2 text-sm hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                style={{ color: '#888888' }}
               >
                 로그인
               </Link>
@@ -258,7 +275,8 @@ export default function Header() {
         <div className="flex md:hidden items-center gap-2">
           <button
             onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 text-text-secondary hover:text-white"
+            className="p-2 hover:text-white"
+            style={{ color: '#888888' }}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -278,38 +296,40 @@ export default function Header() {
 
       {/* Mobile Search Dropdown */}
       {searchOpen && (
-        <div className="md:hidden px-4 pb-3 border-b border-white/5">
+        <div className="md:hidden px-4 pb-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
           <input
             type="text"
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             placeholder="게임 검색..."
             autoFocus
-            className="w-full px-4 py-2.5 bg-dark-bg border border-white/5 rounded-lg text-sm text-white placeholder:text-text-muted focus:outline-none focus:border-accent/30"
+            className="w-full px-4 py-2.5 border rounded-lg text-sm text-white focus:outline-none"
+            style={{ background: '#0A0A0A', borderColor: 'rgba(255,255,255,0.06)', color: '#FFFFFF' }}
           />
         </div>
       )}
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden bg-dark-card border-t border-white/5 px-4 py-4 space-y-1 animate-fade-in">
+        <div className="md:hidden border-t px-4 py-4 space-y-1 animate-fade-in" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.06)' }}>
           {loggedIn ? (
             <>
-              <div className="flex items-center justify-between py-3 px-2 bg-dark-bg rounded-lg mb-2">
-                <span className="text-text-secondary text-sm">{nickname}</span>
-                <span className="text-accent font-semibold text-sm">{formatKRW(balance)}</span>
+              <div className="flex items-center justify-between py-3 px-2 rounded-lg mb-2" style={{ background: '#0A0A0A' }}>
+                <span className="text-sm" style={{ color: '#888888' }}>{nickname}</span>
+                <span className="font-medium text-sm" style={{ color: '#C9A94E' }}>{formatKRW(balance)}</span>
               </div>
               {[
                 { href: '/lobby', label: '게임' },
                 { href: '/wallet', label: '지갑' },
                 { href: '/mypage', label: '마이페이지' },
-                { href: '/mypage/coupons', label: '쿠폰' },
+                { href: '/mypage/coupons', label: '보너스' },
                 { href: '/support', label: '고객센터' },
               ].map(item => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block py-2.5 px-2 text-sm text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  className="block py-2.5 px-2 text-sm hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  style={{ color: '#888888' }}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
@@ -317,7 +337,8 @@ export default function Header() {
               ))}
               <button
                 onClick={logout}
-                className="block w-full text-left py-2.5 px-2 text-sm text-danger hover:bg-danger/5 rounded-lg"
+                className="block w-full text-left py-2.5 px-2 text-sm rounded-lg"
+                style={{ color: '#E53935' }}
               >
                 로그아웃
               </button>
@@ -331,7 +352,8 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block py-2.5 px-2 text-sm text-text-secondary hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  className="block py-2.5 px-2 text-sm hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                  style={{ color: '#888888' }}
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
@@ -340,7 +362,8 @@ export default function Header() {
               <div className="flex gap-3 pt-3">
                 <Link
                   href="/login"
-                  className="flex-1 text-center py-2.5 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5"
+                  className="flex-1 text-center py-2.5 border rounded-lg text-white text-sm hover:bg-white/5"
+                  style={{ borderColor: 'rgba(255,255,255,0.1)' }}
                   onClick={() => setMenuOpen(false)}
                 >
                   로그인
