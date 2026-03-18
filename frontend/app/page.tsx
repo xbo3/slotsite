@@ -94,13 +94,27 @@ const LEADERBOARD_DATA = [
   { rank: 10, nick: 'wi**n', amount: 7600000, game: 'Sugar Rush' },
 ];
 
-function getCardGradient(index: number, total: number): string {
-  const hue = (index / total) * 360;
-  const saturation = 60 + (index % 3) * 10;
-  const lightness = 15 + (index % 3) * 3;
-  const hue2 = hue + 30;
-  return `linear-gradient(135deg, hsl(${hue}, ${saturation}%, ${lightness}%) 0%, hsl(${hue2}, ${saturation - 10}%, ${lightness + 5}%) 100%)`;
-}
+const popularGradients = [
+  { border: '#FF6B35', glow: 'rgba(255,107,53,0.4)', overlay: 'linear-gradient(135deg, rgba(255,107,53,0.2), rgba(255,71,87,0.2))', bg: 'linear-gradient(135deg, #c0392b, #e74c3c)' },
+  { border: '#FF4757', glow: 'rgba(255,71,87,0.4)', overlay: 'linear-gradient(135deg, rgba(255,71,87,0.2), rgba(255,107,157,0.2))', bg: 'linear-gradient(135deg, #8e44ad, #9b59b6)' },
+  { border: '#FF7F00', glow: 'rgba(255,127,0,0.4)', overlay: 'linear-gradient(135deg, rgba(255,127,0,0.2), rgba(255,69,0,0.2))', bg: 'linear-gradient(135deg, #e67e22, #f39c12)' },
+  { border: '#FF2D55', glow: 'rgba(255,45,85,0.4)', overlay: 'linear-gradient(135deg, rgba(255,45,85,0.2), rgba(255,107,53,0.2))', bg: 'linear-gradient(135deg, #c0392b, #e74c3c)' },
+  { border: '#FF416C', glow: 'rgba(255,65,108,0.4)', overlay: 'linear-gradient(135deg, rgba(255,65,108,0.2), rgba(255,75,43,0.2))', bg: 'linear-gradient(135deg, #d35400, #e74c3c)' },
+  { border: '#F7971E', glow: 'rgba(247,151,30,0.4)', overlay: 'linear-gradient(135deg, rgba(247,151,30,0.2), rgba(255,210,0,0.2))', bg: 'linear-gradient(135deg, #f39c12, #f1c40f)' },
+  { border: '#FF6B6B', glow: 'rgba(255,107,107,0.4)', overlay: 'linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,230,109,0.2))', bg: 'linear-gradient(135deg, #e74c3c, #c0392b)' },
+  { border: '#FC5C7D', glow: 'rgba(252,92,125,0.4)', overlay: 'linear-gradient(135deg, rgba(252,92,125,0.2), rgba(106,48,147,0.2))', bg: 'linear-gradient(135deg, #8e44ad, #6a3093)' },
+];
+
+const newGradients = [
+  { border: '#00B4DB', glow: 'rgba(0,180,219,0.4)', overlay: 'linear-gradient(135deg, rgba(0,180,219,0.2), rgba(0,131,176,0.2))', bg: 'linear-gradient(135deg, #0083B0, #00B4DB)' },
+  { border: '#667EEA', glow: 'rgba(102,126,234,0.4)', overlay: 'linear-gradient(135deg, rgba(102,126,234,0.2), rgba(118,75,162,0.2))', bg: 'linear-gradient(135deg, #667EEA, #764BA2)' },
+  { border: '#4ECDC4', glow: 'rgba(78,205,196,0.4)', overlay: 'linear-gradient(135deg, rgba(78,205,196,0.2), rgba(68,160,141,0.2))', bg: 'linear-gradient(135deg, #4ECDC4, #44A08D)' },
+  { border: '#6A11CB', glow: 'rgba(106,17,203,0.4)', overlay: 'linear-gradient(135deg, rgba(106,17,203,0.2), rgba(37,117,252,0.2))', bg: 'linear-gradient(135deg, #6A11CB, #2575FC)' },
+  { border: '#48C6EF', glow: 'rgba(72,198,239,0.4)', overlay: 'linear-gradient(135deg, rgba(72,198,239,0.2), rgba(111,134,214,0.2))', bg: 'linear-gradient(135deg, #48C6EF, #6F86D6)' },
+  { border: '#89F7FE', glow: 'rgba(137,247,254,0.3)', overlay: 'linear-gradient(135deg, rgba(137,247,254,0.15), rgba(102,166,255,0.15))', bg: 'linear-gradient(135deg, #89F7FE, #66A6FF)' },
+  { border: '#A8EDEA', glow: 'rgba(168,237,234,0.3)', overlay: 'linear-gradient(135deg, rgba(168,237,234,0.15), rgba(254,214,227,0.15))', bg: 'linear-gradient(135deg, #A8EDEA, #FED6E3)' },
+  { border: '#5EE7DF', glow: 'rgba(94,231,223,0.4)', overlay: 'linear-gradient(135deg, rgba(94,231,223,0.2), rgba(180,144,202,0.2))', bg: 'linear-gradient(135deg, #5EE7DF, #B490CA)' },
+];
 
 // ===== Hook: Intersection Observer =====
 function useInView(threshold = 0.15) {
@@ -388,9 +402,9 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {TOP_GAMES.map((game, i) => (
-              <GameCard key={game.id} game={game} rank={i + 1} index={i} total={TOP_GAMES.length} />
+              <PGStyleCard key={game.id} game={game} gradient={popularGradients[i % popularGradients.length]} />
             ))}
           </div>
 
@@ -417,9 +431,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
-            {NEW_GAMES.map((game, i) => (
-              <NewGameCard key={game.id} game={game} index={i} total={NEW_GAMES.length} />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {NEW_GAMES.slice(0, 8).map((game, i) => (
+              <PGStyleCard key={game.id} game={game} gradient={newGradients[i % newGradients.length]} />
             ))}
           </div>
         </section>
@@ -632,110 +646,70 @@ export default function Home() {
   );
 }
 
-// ===== GameCard Component =====
-function GameCard({ game, rank, index, total }: { game: typeof TOP_GAMES[0]; rank: number; index: number; total: number }) {
-  const { t } = useLang();
+// ===== PGStyleCard Component =====
+function PGStyleCard({ game, gradient }: { game: { id: number | string; name: string; provider: string; thumbnail?: string; rtp?: string; maxWin?: string }; gradient: { border: string; glow: string; overlay: string; bg: string } }) {
   const [imgError, setImgError] = useState(false);
-  if (imgError) return null;
+  const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handler = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, []);
+
+  const cardH = isMobile ? 300 : 400;
+  const imgH = isMobile ? 140 : 180;
+
+  if (imgError || !game.thumbnail) return null;
+
   return (
-    <Link href={`/game/${game.id}`} className="group">
-      <div className="relative overflow-hidden hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow" style={{ borderRadius: '14px', background: getCardGradient(index, total) }}>
-        <div className="relative overflow-hidden">
-          <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] group-hover:brightness-110 transition-all duration-700" />
-
-          {/* Rank badge */}
-          <div className="absolute top-2 left-2">
-            <span className={`flex items-center justify-center w-7 h-7 text-[11px] font-light rounded-lg ${rank === 1 ? 'rank-gold' : rank === 2 ? 'rank-silver' : rank === 3 ? 'rank-bronze' : 'bg-white/90 text-dark-bg'}`}>
-              #{rank}
-            </span>
+    <div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <Link href={`/game/${game.id}`}>
+        <div className="relative overflow-hidden transition-all duration-300" style={{
+          height: `${cardH}px`, borderRadius: '14px',
+          border: `2px solid ${gradient.border}`,
+          boxShadow: isHovered ? `0 30px 20px -20px rgba(14,6,23,0.3), 0 0 20px ${gradient.glow}` : '0 4px 15px rgba(0,0,0,0.3)',
+          transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
+        }}>
+          {/* Top: Game cover image */}
+          <div className="relative w-full" style={{ height: `${imgH}px` }}>
+            <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
           </div>
-
-          {/* Max win */}
-          <div className="absolute top-2 right-2">
-            <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/80 text-[9px] font-light rounded-md backdrop-blur-sm">
-              {game.maxWin}
-            </span>
-          </div>
-
-          {/* Hover overlay */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
-            <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent game-card-overlay z-10">
-            <div className="flex gap-2">
-              <button className="flex-1 py-2 border border-white text-white text-xs font-light rounded-lg hover:bg-white hover:text-black transition-all touch-active flex items-center justify-center gap-1">
-                <span>{'\u25B6'}</span> {t('real_play')}
-              </button>
-              <button className="flex-1 py-2 border border-white/30 text-white/70 text-xs font-light rounded-lg hover:bg-white hover:text-black transition-all touch-active">
-                {t('free_trial')}
-              </button>
+          {/* Reflection image */}
+          <div className="absolute w-full" style={{
+            height: `${imgH}px`, top: `${imgH}px`, left: 0,
+            backgroundImage: `url(${game.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center',
+            transform: 'rotate(180deg) scaleX(-1)',
+            maskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
+            opacity: 0.4, zIndex: 1,
+          }} />
+          {/* Bottom gradient background */}
+          <div className="absolute w-full bottom-0 left-0" style={{ height: `calc(100% - ${imgH}px)`, background: gradient.bg, zIndex: 2 }} />
+          {/* Color overlay */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: gradient.overlay, zIndex: 3 }} />
+          {/* Game info */}
+          <div className="absolute w-full left-0 p-4 md:p-5 transition-all duration-300" style={{ bottom: isHovered ? '50px' : '0px', zIndex: 5 }}>
+            <p className="text-white font-medium text-sm md:text-lg leading-6 truncate">{game.name}</p>
+            <p className="text-white/70 text-[10px] md:text-xs font-light mt-1">{game.provider}</p>
+            <div className="flex justify-between mt-3 md:mt-4">
+              <div><p className="text-white text-[10px] md:text-sm">MEDIUM</p><p className="text-white/50 text-[8px] md:text-xs mt-1">Volatility</p></div>
+              <div><p className="text-white text-[10px] md:text-sm">{game.rtp}</p><p className="text-white/50 text-[8px] md:text-xs mt-1">RTP</p></div>
+              <div><p className="text-white text-[10px] md:text-sm">{game.maxWin}</p><p className="text-white/50 text-[8px] md:text-xs mt-1">Max Win</p></div>
             </div>
           </div>
-          {/* Game Info overlay */}
-          <div className="absolute bottom-12 left-0 right-0 px-3 z-10">
-            <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
-            <div className="flex items-center justify-between mt-1">
-              <p className="text-white/50 text-[11px] font-light">{game.provider}</p>
-              {game.rtp && <span className="text-[10px] text-white/40 font-light">RTP {game.rtp}</span>}
-            </div>
+          {/* Hover buttons */}
+          <div className="absolute w-full flex transition-all duration-300" style={{
+            height: '50px', bottom: isHovered ? '0px' : '-50px', left: 0,
+            background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', zIndex: 10,
+          }}>
+            <span className="flex-1 flex items-center justify-center text-white text-xs md:text-sm font-light hover:bg-white/10">TRY FREE</span>
+            <span className="flex-1 flex items-center justify-center text-white text-xs md:text-sm font-light hover:bg-white/10 border-l border-white/10">PLAY NOW</span>
           </div>
         </div>
-      </div>
-    </Link>
-  );
-}
-
-// ===== NewGameCard Component =====
-function NewGameCard({ game, index, total }: { game: typeof NEW_GAMES[0]; index: number; total: number }) {
-  const [imgError, setImgError] = useState(false);
-  if (imgError) return null;
-  return (
-    <Link href={`/game/${game.id}`} className="snap-start flex-shrink-0 w-44 md:w-52 group">
-      <div className="relative overflow-hidden group-hover:border-white/20 transition-all shadow-lg card-hover card-glow" style={{ borderRadius: '14px', background: getCardGradient(index, total) }}>
-        <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] transition-transform duration-700" />
-        <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
-        <div className="absolute top-2 left-2">
-          <span className="px-2 py-0.5 bg-success text-dark-bg text-[10px] font-medium rounded-md">NEW</span>
-        </div>
-        <div className="absolute top-2 right-2">
-          <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/80 text-[9px] font-light rounded-md backdrop-blur-sm">
-            {game.maxWin}
-          </span>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent z-10">
-          <p className="text-white font-light text-sm truncate">{game.name}</p>
-          <p className="text-white/50 text-[11px] font-light">{game.provider}</p>
-        </div>
-        {/* Hover overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" style={{ background: 'rgba(0,0,0,0.7)' }}>
-          <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ===== GameThumb Component =====
-function GameThumb({ name, provider, thumbnail, onImgError, className = '' }: { name: string; provider: string; thumbnail?: string; onImgError?: () => void; className?: string }) {
-  const colors = PROVIDER_COLORS[provider] || { from: '#42A5F5', to: '#64B5F6', pattern: 'svg-pattern-dots' };
-
-  if (thumbnail) {
-    return (
-      <div className={`w-full aspect-square relative overflow-hidden ${className}`}>
-        <img src={thumbnail} alt={name} className="w-full h-full object-cover" loading="lazy" onError={onImgError} />
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={`w-full aspect-square flex flex-col items-center justify-center relative overflow-hidden ${className}`}
-      style={{ background: `linear-gradient(135deg, ${colors.from} 0%, ${colors.to} 100%)` }}
-    >
-      <span className="relative text-lg md:text-xl font-light text-white text-center px-3 leading-tight">
-        {name}
-      </span>
-      <span className="relative mt-1 text-white/50 text-[10px] font-light tracking-wider uppercase">{provider}</span>
+      </Link>
     </div>
   );
 }
