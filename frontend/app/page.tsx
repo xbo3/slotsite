@@ -659,9 +659,9 @@ function PGStyleCard({ game, gradient }: { game: { id: number | string; name: st
     return () => window.removeEventListener('resize', handler);
   }, []);
 
-  const cardH = isMobile ? 280 : 400;
-  const imgH = isMobile ? 130 : 180;
-  const btnH = isMobile ? 40 : 50;
+  const cardH = isMobile ? 260 : 360;
+  const imgH = isMobile ? 180 : 250;
+  const btnH = isMobile ? 36 : 44;
   const showButtons = isMobile || isHovered;
 
   if (imgError || !game.thumbnail) return null;
@@ -679,27 +679,27 @@ function PGStyleCard({ game, gradient }: { game: { id: number | string; name: st
           <div className="relative w-full" style={{ height: `${imgH}px` }}>
             <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
           </div>
-          {/* Reflection image */}
-          <div className="absolute w-full" style={{
-            height: `${imgH}px`, top: `${imgH}px`, left: 0,
-            backgroundImage: `url(${game.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center',
+          {/* Reflection — 작게 */}
+          <div className="absolute w-full pointer-events-none" style={{
+            height: '60px', top: `${imgH}px`, left: 0,
+            backgroundImage: `url(${game.thumbnail})`, backgroundSize: 'cover', backgroundPosition: 'center bottom',
             transform: 'rotate(180deg) scaleX(-1)',
-            maskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
-            opacity: isMobile ? 0.25 : 0.4, zIndex: 1,
+            maskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
+            opacity: 0.15, zIndex: 1,
           }} />
-          {/* Bottom gradient background */}
+          {/* Bottom gradient */}
           <div className="absolute w-full bottom-0 left-0" style={{ height: `calc(100% - ${imgH}px)`, background: gradient.bg, zIndex: 2 }} />
-          {/* Color overlay */}
           <div className="absolute inset-0 pointer-events-none" style={{ background: gradient.overlay, zIndex: 3 }} />
-          {/* Game info */}
-          <div className="absolute w-full left-0 p-3 md:p-5 transition-all duration-300" style={{ bottom: showButtons ? `${btnH}px` : '0px', zIndex: 5 }}>
-            <p className="text-white font-medium text-xs md:text-lg leading-5 md:leading-6 truncate">{game.name}</p>
-            <p className="text-white/70 text-[9px] md:text-xs font-light mt-0.5 md:mt-1">{game.provider}</p>
-            <div className="flex justify-between mt-2 md:mt-4">
-              <div><p className="text-white text-[9px] md:text-sm">MEDIUM</p><p className="text-white/50 text-[7px] md:text-xs mt-0.5">Volatility</p></div>
-              <div><p className="text-white text-[9px] md:text-sm">{game.rtp}</p><p className="text-white/50 text-[7px] md:text-xs mt-0.5">RTP</p></div>
-              <div><p className="text-white text-[9px] md:text-sm">{game.maxWin}</p><p className="text-white/50 text-[7px] md:text-xs mt-0.5">Max Win</p></div>
+          {/* Game info — 컴팩트 + 반투명 배경 */}
+          <div className="absolute w-full left-0 bottom-0" style={{ zIndex: 5 }}>
+            <div style={{ padding: isMobile ? '8px 10px' : '12px 16px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}>
+              <p className={`text-white font-medium leading-tight truncate ${isMobile ? 'text-[11px]' : 'text-sm'}`}>{game.name}</p>
+              <p className={`text-white/60 font-light ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.provider}</p>
+              <div className={`flex justify-between ${isMobile ? 'mt-1' : 'mt-2'}`}>
+                <span className={`text-white/80 ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.rtp} RTP</span>
+                <span className={`text-white/80 ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.maxWin}</span>
+              </div>
             </div>
           </div>
           {/* Buttons - always visible on mobile, hover on desktop */}

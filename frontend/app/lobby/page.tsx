@@ -125,10 +125,10 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
 
   if (imgError || !game.thumbnail) return null;
 
-  const cardHeight = isMobile ? '280px' : '400px';
-  const imgHeight = isMobile ? '130px' : '180px';
-  const infoHeight = isMobile ? '150px' : '220px';
-  const btnHeight = isMobile ? '40px' : '50px';
+  const cardHeight = isMobile ? '260px' : '360px';
+  const imgHeight = isMobile ? '180px' : '250px';  // 이미지 70% 차지
+  const infoHeight = isMobile ? '80px' : '110px';   // 설명 30%만
+  const btnHeight = isMobile ? '36px' : '44px';     // 버튼 1/3 크기
   const showButtons = isMobile || isHovered;
 
   return (
@@ -161,20 +161,20 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
             />
           </div>
 
-          {/* Reflection image */}
+          {/* Reflection image — 작게, 살짝만 */}
           <div
             className="absolute w-full pointer-events-none"
             style={{
-              height: imgHeight,
+              height: '60px',
               top: imgHeight,
               left: 0,
               backgroundImage: `url(${game.thumbnail})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundPosition: 'center bottom',
               transform: 'rotate(180deg) scaleX(-1)',
-              maskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
-              opacity: isMobile ? 0.25 : 0.4,
+              maskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 30%, black 100%)',
+              opacity: 0.15,
               zIndex: 1,
             }}
           />
@@ -198,52 +198,46 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
             }}
           />
 
-          {/* Game info panel */}
+          {/* Game info panel — 컴팩트 + 반투명 배경으로 가독성 */}
           <div
-            className="absolute w-full left-0 transition-all duration-300"
+            className="absolute w-full left-0 bottom-0 transition-all duration-300"
             style={{
-              bottom: showButtons ? btnHeight : '0px',
-              height: infoHeight,
+              height: `calc(${infoHeight} + ${showButtons ? btnHeight : '0px'})`,
               zIndex: 5,
-              padding: isMobile ? '10px' : '20px',
             }}
           >
-            {/* Game name + provider */}
-            <div className="relative z-10" style={{ height: isMobile ? '38px' : '60px' }}>
-              <p className={`text-white font-medium leading-5 md:leading-6 truncate ${isMobile ? 'text-xs' : 'text-lg'}`}>
+            <div
+              className="w-full h-full"
+              style={{
+                padding: isMobile ? '8px 10px' : '12px 16px',
+                background: 'rgba(0,0,0,0.65)',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              {/* Game name + provider */}
+              <p className={`text-white font-medium leading-tight truncate ${isMobile ? 'text-[11px]' : 'text-sm'}`}>
                 {game.name}
               </p>
-              <p className={`text-white/70 font-light mt-0.5 md:mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>
+              <p className={`text-white/60 font-light ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>
                 {game.provider}
               </p>
-            </div>
 
-            {/* Stats */}
-            <div className={`flex justify-between relative z-10 ${isMobile ? 'mt-1' : 'mt-4'}`}>
-              <div>
-                <p className={`text-white ${isMobile ? 'text-[9px]' : 'text-sm'}`}>MEDIUM</p>
-                <p className={`text-white/50 mt-0.5 ${isMobile ? 'text-[7px]' : 'text-xs'}`}>Volatility</p>
-              </div>
-              <div>
-                <p className={`text-white ${isMobile ? 'text-[9px]' : 'text-sm'}`}>{game.rtp}%</p>
-                <p className={`text-white/50 mt-0.5 ${isMobile ? 'text-[7px]' : 'text-xs'}`}>RTP</p>
-              </div>
-              <div>
-                <p className={`text-white ${isMobile ? 'text-[9px]' : 'text-sm'}`}>{game.maxWin}</p>
-                <p className={`text-white/50 mt-0.5 ${isMobile ? 'text-[7px]' : 'text-xs'}`}>Max Win</p>
+              {/* Stats — 한 줄로 컴팩트 */}
+              <div className={`flex justify-between ${isMobile ? 'mt-1' : 'mt-2'}`}>
+                <span className={`text-white/80 ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.rtp}% RTP</span>
+                <span className={`text-white/80 ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.maxWin}</span>
               </div>
             </div>
           </div>
 
-          {/* Buttons - always visible on mobile, hover on desktop */}
+          {/* Buttons */}
           <div
             className="absolute w-full flex transition-all duration-300"
             style={{
               height: btnHeight,
               bottom: showButtons ? '0px' : `-${btnHeight}`,
               left: 0,
-              background: 'rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(10px)',
+              background: 'rgba(255,255,255,0.08)',
               zIndex: 10,
             }}
           >
@@ -377,7 +371,10 @@ function LobbyContent() {
   // HOT games = isHot true + has thumbnail
   const hotGames = GAMES.filter(g => g.isHot && g.thumbnail && g.thumbnail.length > 0);
   // COLD games = isHot false + has thumbnail
-  const coldGames = GAMES.filter(g => !g.isHot && g.thumbnail && g.thumbnail.length > 0).slice(0, 8);
+  // COLD: isHot false 먼저, 부족하면 나머지에서 채워서 8개 맞춤
+  const coldCandidates = GAMES.filter(g => !g.isHot && g.thumbnail && g.thumbnail.length > 0);
+  const coldExtra = GAMES.filter(g => g.isHot && g.thumbnail && g.thumbnail.length > 0).slice(8); // HOT 8개 이후 나머지
+  const coldGames = [...coldCandidates, ...coldExtra].slice(0, 8);
 
   // Active filter chips
   const activeFilters: { label: string; onRemove: () => void }[] = [];
