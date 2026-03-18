@@ -193,12 +193,33 @@ export default function Sidebar() {
             const isExpanded = expandedCat === cat.id;
             return (
               <div key={cat.id}>
-                {/* Category button */}
+                {/* Category button — 호버 0.5s 딜레이 복귀 */}
                 <button
                   onClick={() => handleCatClick(cat.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all ${
-                    isExpanded ? 'bg-white/[0.08] text-white' : 'text-white/60 hover:bg-white/[0.04] hover:text-white'
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl group/cat ${
+                    isExpanded ? 'bg-white/[0.08] text-white' : 'text-white/60'
                   }`}
+                  style={{
+                    transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isExpanded) {
+                      e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
+                      e.currentTarget.style.color = '#fff';
+                      e.currentTarget.style.transform = 'translateX(3px)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget;
+                    if (!isExpanded) {
+                      // 0.5초 딜레이 후 원상복귀
+                      setTimeout(() => {
+                        el.style.background = 'transparent';
+                        el.style.color = 'rgba(255,255,255,0.6)';
+                        el.style.transform = 'translateX(0)';
+                      }, 500);
+                    }
+                  }}
                 >
                   <span className="flex-shrink-0 w-6 flex justify-center">{cat.icon}</span>
                   {!collapsed && (
