@@ -675,14 +675,20 @@ a.sub-item {
   border: 1px solid transparent;
   position: relative;
   overflow: visible !important;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity, padding, border-color, box-shadow;
 }
 
 a.sub-item:hover {
   border-color: var(--item-color, rgba(255,255,255,0.3)) !important;
-  box-shadow: 0 0 6px var(--item-glow, rgba(255,255,255,0.2)),
-              0 0 10px var(--item-glow, rgba(255,255,255,0.2)),
-              inset 0 0 3px var(--item-glow, rgba(255,255,255,0.2)) !important;
+  box-shadow: 0 0 5px var(--item-glow, rgba(255,255,255,0.15)),
+              0 0 10px var(--item-glow, rgba(255,255,255,0.08)) !important;
+  background: rgba(255,255,255,0.03);
+}
+
+a.sub-item:active {
+  transform: scale(0.97);
+  transition-duration: 0.1s;
 }
 
 a.sub-item.border-click {
@@ -722,10 +728,11 @@ a.sub-item.border-click {
 .sub-item:nth-child(20) { transition-delay: 570ms; }
 .sub-item:nth-child(21) { transition-delay: 600ms; }
 
-/* 접힐 때는 stagger 없이 일괄 */
+/* 접힐 때는 stagger 없이 부드럽게 */
 .subcategory-grid:not(.expanded) .sub-item {
   transition-delay: 0ms !important;
-  transition-duration: 0.15s;
+  transition-duration: 0.25s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @layer utilities {
