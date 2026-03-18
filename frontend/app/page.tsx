@@ -646,62 +646,48 @@ export default function Home() {
   );
 }
 
-// ===== PGStyleCard Component =====
+// ===== PGStyleCard Component — 심플 버전 =====
 function PGStyleCard({ game, gradient }: { game: { id: number | string; name: string; provider: string; thumbnail?: string; rtp?: string; maxWin?: string }; gradient: { border: string; glow: string; overlay: string; bg: string } }) {
   const [imgError, setImgError] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
-
-  const cardH = isMobile ? 220 : 360;
-  const imgH = isMobile ? 220 : 250; // 모바일: 이미지가 카드 전체 채움
-  const btnH = isMobile ? 32 : 44;
-  const showButtons = isMobile || isHovered;
 
   if (imgError || !game.thumbnail) return null;
 
   return (
-    <div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-      <Link href={`/game/${game.id}`}>
-        <div className="relative overflow-hidden transition-all duration-300" style={{
-          height: `${cardH}px`, borderRadius: isMobile ? '10px' : '14px',
-          border: `2px solid ${gradient.border}`,
-          boxShadow: isHovered && !isMobile ? `0 30px 20px -20px rgba(14,6,23,0.3), 0 0 20px ${gradient.glow}` : '0 4px 15px rgba(0,0,0,0.3)',
-          transform: isHovered && !isMobile ? 'translateY(-15px)' : 'translateY(0)',
-        }}>
-          {/* Top: Game cover image */}
-          <div className="relative w-full" style={{ height: `${imgH}px` }}>
-            <img src={game.thumbnail} alt={game.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+    <Link href={`/game/${game.id}`} className="group block">
+      <div className="relative overflow-hidden rounded-xl md:rounded-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+        style={{ border: `1px solid ${gradient.border}30` }}>
+        {/* 이미지 — aspect-ratio로 비율 유지 */}
+        <div className="relative aspect-square overflow-hidden">
+          <img
+            src={game.thumbnail}
+            alt={game.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            onError={() => setImgError(true)}
+          />
+          {/* 하단 그라데이션 — 이미지 하단에만 */}
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent" />
+          {/* maxWin 뱃지 */}
+          <div className="absolute top-2 right-2">
+            <span className="px-1.5 py-0.5 text-[9px] md:text-[10px] font-light text-white/80 bg-black/50 rounded backdrop-blur-sm">
+              {game.maxWin}
+            </span>
           </div>
-          {/* 이미지 위 오버레이 없음 — 원본 이미지 그대로 */}
-          {/* Game info — 컴팩트 + 반투명 배경 */}
-          <div className="absolute w-full left-0 bottom-0" style={{ zIndex: 5 }}>
-            <div style={{ padding: isMobile ? '8px 10px' : '12px 16px', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(8px)' }}>
-              <p className={`text-white font-medium leading-tight truncate ${isMobile ? 'text-[11px]' : 'text-sm'}`}>{game.name}</p>
-              <p className={`text-white/60 font-light ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.provider}</p>
-              <div className={`flex justify-between ${isMobile ? 'mt-1' : 'mt-2'}`}>
-                <span className={`text-white/80 ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.rtp} RTP</span>
-                <span className={`text-white/80 ${isMobile ? 'text-[8px]' : 'text-[10px]'}`}>{game.maxWin}</span>
-              </div>
-            </div>
-          </div>
-          {/* Buttons - always visible on mobile, hover on desktop */}
-          <div className="absolute w-full flex transition-all duration-300" style={{
-            height: `${btnH}px`, bottom: showButtons ? '0px' : `-${btnH}px`, left: 0,
-            background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', zIndex: 10,
-          }}>
-            <span className="flex-1 flex items-center justify-center text-white text-[10px] md:text-sm font-light hover:bg-white/10 min-h-[44px]">TRY FREE</span>
-            <span className="flex-1 flex items-center justify-center text-white text-[10px] md:text-sm font-light hover:bg-white/10 border-l border-white/10 min-h-[44px]">PLAY NOW</span>
+          {/* 호버 오버레이 — 데스크톱만 */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 hidden md:flex">
+            <span className="text-white font-light text-sm tracking-wider">▶ PLAY</span>
           </div>
         </div>
-      </Link>
-    </div>
+        {/* 게임 정보 — 이미지 아래 */}
+        <div className="p-2 md:p-3 bg-[#111]">
+          <p className="text-white font-light text-[11px] md:text-sm truncate">{game.name}</p>
+          <div className="flex items-center justify-between mt-0.5 md:mt-1">
+            <span className="text-white/40 text-[9px] md:text-[11px] font-light">{game.provider}</span>
+            <span className="text-white/40 text-[9px] md:text-[11px] font-light">{game.rtp}</span>
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 }
 
