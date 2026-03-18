@@ -29,6 +29,7 @@ const TABS = [
   { href: '/mypage/transactions', labelKey: 'tab_transactions', icon: TransactionIcon },
   { href: '/mypage/bets', labelKey: 'tab_bets', icon: BetIcon },
   { href: '/mypage/coupons', labelKey: 'tab_coupons', icon: CouponIcon },
+  { href: '/mypage/vip', labelKey: 'tab_vip', icon: VipIcon },
 ];
 
 export default function MyPageLayout({ children }: { children: React.ReactNode }) {
@@ -321,6 +322,14 @@ function CouponIcon({ active }: { active: boolean }) {
       <path d="M12 22V7" />
       <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
       <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+    </svg>
+  );
+}
+
+function VipIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? 'currentColor' : '#55555F'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
     </svg>
   );
 }

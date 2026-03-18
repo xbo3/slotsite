@@ -318,6 +318,7 @@ const translations = {
     'tab_transactions': '거래내역',
     'tab_bets': '베팅내역',
     'tab_coupons': '내 보너스',
+    'tab_vip': 'VIP',
 
     // Coupons page
     'my_bonuses': '내 보너스',
@@ -792,6 +793,7 @@ const translations = {
     'tab_transactions': 'Transactions',
     'tab_bets': 'Bets',
     'tab_coupons': 'My Bonus',
+    'tab_vip': 'VIP',
 
     // Coupons page
     'my_bonuses': 'My Bonuses',

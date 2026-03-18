@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIP Membership</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bk:#060608;--bk2:#0c0c0f;--bk3:#131316;--bk4:#1a1a1f;--bk5:#222228;
+  --wt:#ffffff;--wt2:#e8e8ed;--wt3:#a0a0b0;--wt4:#606070;--wt5:#404050;--wt6:#2a2a35;
+  --r:10px;--r2:14px;
+  --silver-1:#c0c0c0;--silver-2:#e8e8e8;--silver-3:linear-gradient(135deg,#8a8a9a,#c0c0c0,#e8e8e8,#c0c0c0);
+  --gold-1:#c9a84c;--gold-2:#f0d878;--gold-3:linear-gradient(135deg,#8a6d2b,#c9a84c,#f0d878,#c9a84c);
+  --diamond-1:#b8cce0;--diamond-2:#e8f0ff;--diamond-3:linear-gradient(135deg,#6080a0,#a0b8d0,#e0ecff,#a0b8d0);
+  --plat-1:#8888aa;--plat-2:#b8b8d8;--plat-3:linear-gradient(135deg,#505068,#8888aa,#b8b8d8,#8888aa);
+}
+body{
+  background:var(--bk);font-family:'Poppins',sans-serif;color:var(--wt2);
+  min-height:100vh;padding:20px 12px;-webkit-font-smoothing:antialiased;
+}
+.page{max-width:840px;margin:0 auto}
+
+/* ===== HEADER ===== */
+.hd{text-align:center;margin-bottom:40px;padding-top:20px}
+.hd-label{
+  font-size:10px;font-weight:400;letter-spacing:4px;text-transform:uppercase;
+  color:var(--wt4);margin-bottom:8px;
+}
+.hd h1{
+  font-size:28px;font-weight:200;letter-spacing:6px;text-transform:uppercase;
+  color:var(--wt);margin-bottom:6px;
+}
+.hd h1 b{font-weight:700}
+.hd-line{
+  width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--wt4),transparent);
+  margin:12px auto;
+}
+.hd-sub{font-size:11px;font-weight:200;color:var(--wt4);letter-spacing:1px}
+
+/* ===== PLAY CARDS ===== */
+.cards-section{margin-bottom:48px}
+.sec-title{
+  font-size:11px;font-weight:400;letter-spacing:3px;text-transform:uppercase;
+  color:var(--wt4);margin-bottom:16px;padding-left:4px;
+}
+
+.cards-grid{display:flex;gap:16px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.cards-grid::-webkit-scrollbar{display:none}
+
+.play-card{
+  min-width:280px;flex:1;
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r2);
+  overflow:hidden;transition:all .4s cubic-bezier(0.4,0,0.2,1);
+  position:relative;cursor:pointer;
+}
+.play-card:hover{
+  border-color:rgba(255,255,255,0.15);
+  transform:translateY(-4px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+
+/* Card Visual */
+.card-visual{
+  height:170px;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.card-visual::before{
+  content:'';position:absolute;inset:0;opacity:0.12;
+}
+.card-silver .card-visual::before{background:var(--silver-3)}
+.card-gold .card-visual::before{background:var(--gold-3)}
+.card-diamond .card-visual::before{background:var(--diamond-3)}
+
+/* Card chip design */
+.card-chip{
+  width:220px;height:138px;border-radius:10px;position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  transition:transform .4s;
+}
+.play-card:hover .card-chip{transform:scale(1.03)}
+.card-silver .card-chip{background:linear-gradient(145deg,#2a2a30,#3a3a42,#2a2a30);border:1px solid rgba(192,192,192,0.2)}
+.card-gold .card-chip{background:linear-gradient(145deg,#2a2518,#3a3220,#2a2518);border:1px solid rgba(201,168,76,0.25)}
+.card-diamond .card-chip{background:linear-gradient(145deg,#1a2030,#253040,#1a2030);border:1px solid rgba(184,204,224,0.2)}
+
+.card-chip::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent,rgba(255,255,255,0.03),transparent,rgba(255,255,255,0.06),transparent);
+  animation:cardShine 6s linear infinite;
+}
+@keyframes cardShine{to{transform:rotate(360deg)}}
+
+.card-chip::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%,rgba(255,255,255,0.04) 100%);
+}
+
+.chip-content{position:relative;z-index:1;padding:16px 18px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.chip-top{display:flex;justify-content:space-between;align-items:flex-start}
+.chip-logo{font-size:10px;font-weight:300;letter-spacing:3px;text-transform:uppercase}
+.card-silver .chip-logo{color:var(--silver-1)}
+.card-gold .chip-logo{color:var(--gold-1)}
+.card-diamond .chip-logo{color:var(--diamond-1)}
+.chip-tier{
+  font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;
+}
+.card-silver .chip-tier{background:rgba(192,192,192,0.1);color:var(--silver-1)}
+.card-gold .chip-tier{background:rgba(201,168,76,0.12);color:var(--gold-1)}
+.card-diamond .chip-tier{background:rgba(184,204,224,0.1);color:var(--diamond-1)}
+
+.chip-emv{
+  width:32px;height:24px;border-radius:4px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:linear-gradient(135deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02));
+  margin:8px 0;
+}
+.chip-number{
+  font-size:13px;font-weight:300;letter-spacing:3px;color:rgba(255,255,255,0.5);
+}
+.chip-bottom{display:flex;justify-content:space-between;align-items:flex-end}
+.chip-holder{font-size:9px;font-weight:300;color:rgba(255,255,255,0.35);letter-spacing:1px;text-transform:uppercase}
+.chip-brand{font-size:10px;font-weight:600;letter-spacing:2px}
+.card-silver .chip-brand{color:var(--silver-1)}
+.card-gold .chip-brand{color:var(--gold-1)}
+.card-diamond .chip-brand{color:var(--diamond-1)}
+
+/* Card Body */
+.card-body{padding:20px}
+.card-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:2px}
+.card-price{font-size:26px;font-weight:700;letter-spacing:-1px}
+.card-silver .card-price{color:var(--silver-2)}
+.card-gold .card-price{color:var(--gold-2)}
+.card-diamond .card-price{color:var(--diamond-2)}
+.card-unit{font-size:11px;font-weight:300;color:var(--wt4)}
+
+.card-points{font-size:11px;font-weight:300;margin-bottom:14px}
+.card-silver .card-points{color:var(--silver-1)}
+.card-gold .card-points{color:var(--gold-1)}
+.card-diamond .card-points{color:var(--diamond-1)}
+.card-points b{font-weight:600}
+
+.card-features{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.cf{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:200;color:var(--wt3)}
+.cf-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.card-silver .cf-dot{background:var(--silver-1)}
+.card-gold .cf-dot{background:var(--gold-1)}
+.card-diamond .cf-dot{background:var(--diamond-1)}
+
+.card-btn{
+  width:100%;padding:12px;border:none;border-radius:8px;
+  font-family:'Poppins',sans-serif;font-size:11px;font-weight:500;
+  letter-spacing:1px;cursor:pointer;transition:all .3s;
+  position:relative;overflow:hidden;
+}
+.card-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12),transparent 60%);
+}
+.card-btn:hover{transform:translateY(-1px)}
+.card-silver .card-btn{background:linear-gradient(135deg,#6a6a78,#9a9aaa);color:#000}
+.card-silver .card-btn:hover{box-shadow:0 4px 20px rgba(192,192,192,0.15)}
+.card-gold .card-btn{background:linear-gradient(135deg,#a07830,#d0a848);color:#000}
+.card-gold .card-btn:hover{box-shadow:0 4px 20px rgba(201,168,76,0.2)}
+.card-diamond .card-btn{background:linear-gradient(135deg,#5070a0,#90b0d0);color:#000}
+.card-diamond .card-btn:hover{box-shadow:0 4px 20px rgba(160,184,210,0.2)}
+
+/* Popular tag */
+.popular{
+  position:absolute;top:14px;right:14px;z-index:2;
+  font-size:7px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 10px;border-radius:4px;
+  background:rgba(255,255,255,0.08);color:var(--wt3);
+  backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.06);
+}
+
+/* ===== FREE SPIN COUPONS ===== */
+.spin-section{margin-bottom:48px}
+.spin-grid{display:flex;flex-direction:column;gap:12px}
+
+.spin-card{
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r2);
+  display:flex;overflow:hidden;transition:all .3s;
+}
+.spin-card:hover{border-color:rgba(255,255,255,0.1);transform:translateY(-2px)}
+
+.spin-accent{width:3px;flex-shrink:0}
+.card-silver .spin-accent,.spin-s{background:var(--silver-3)}
+.spin-g{background:var(--gold-3)}
+.spin-d{background:var(--diamond-3)}
+
+.spin-left{flex:1;padding:18px 20px}
+.spin-right{
+  width:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border-left:1px solid rgba(255,255,255,0.04);padding:14px;
+  position:relative;
+}
+.spin-right::before,.spin-right::after{
+  content:'';position:absolute;left:-7px;width:14px;height:14px;
+  border-radius:50%;background:var(--bk);
+}
+.spin-right::before{top:-7px}
+.spin-right::after{bottom:-7px}
+
+.spin-tier{
+  font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;display:inline-block;margin-bottom:8px;
+}
+.st-s{background:rgba(192,192,192,0.08);color:var(--silver-1)}
+.st-g{background:rgba(201,168,76,0.08);color:var(--gold-1)}
+.st-d{background:rgba(184,204,224,0.08);color:var(--diamond-1)}
+
+.spin-name{font-size:14px;font-weight:500;color:var(--wt);margin-bottom:4px;letter-spacing:-0.3px}
+.spin-desc{font-size:10px;font-weight:200;color:var(--wt4);line-height:1.6;margin-bottom:10px}
+.spin-desc b{font-weight:400;color:var(--wt3)}
+
+.spin-guarantee{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:6px;margin-bottom:10px;
+}
+.sg-s{background:rgba(192,192,192,0.04);border:1px solid rgba(192,192,192,0.08)}
+.sg-g{background:rgba(201,168,76,0.04);border:1px solid rgba(201,168,76,0.08)}
+.sg-d{background:rgba(184,204,224,0.04);border:1px solid rgba(184,204,224,0.08)}
+.sg-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:700}
+.sg-s .sg-icon{background:rgba(192,192,192,0.1);color:var(--silver-1)}
+.sg-g .sg-icon{background:rgba(201,168,76,0.1);color:var(--gold-1)}
+.sg-d .sg-icon{background:rgba(184,204,224,0.1);color:var(--diamond-1)}
+.sg-text{font-size:10px;font-weight:300;color:var(--wt3)}
+.sg-text b{font-weight:500;color:var(--wt)}
+
+.spin-conds{display:flex;gap:4px;flex-wrap:wrap}
+.spin-conds span{
+  font-size:8px;font-weight:300;color:var(--wt5);
+  padding:3px 7px;border-radius:3px;background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.04);
+}
+
+.spin-val{font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:2px}
+.sv-s{color:var(--silver-2)}
+.sv-g{color:var(--gold-2)}
+.sv-d{color:var(--diamond-2)}
+.spin-label{font-size:7px;font-weight:300;color:var(--wt5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+
+.spin-btn{
+  padding:8px 20px;border:none;border-radius:6px;
+  font-family:'Poppins',sans-serif;font-size:9px;font-weight:500;
+  letter-spacing:0.5px;cursor:pointer;transition:.2s;
+}
+.spin-btn:hover{transform:scale(1.03)}
+.sb-s{background:rgba(192,192,192,0.1);color:var(--silver-1)}
+.sb-g{background:rgba(201,168,76,0.1);color:var(--gold-1)}
+.sb-d{background:rgba(184,204,224,0.1);color:var(--diamond-1)}
+
+/* ===== BENEFITS TABLE ===== */
+.table-section{margin-bottom:48px}
+.benefits-table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.06);
+  border-radius:var(--r2);overflow:hidden;
+}
+.benefits-table th,.benefits-table td{
+  padding:12px 14px;text-align:center;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:10px;
+}
+.benefits-table thead th{
+  background:var(--bk3);font-weight:500;letter-spacing:1px;
+  text-transform:uppercase;color:var(--wt4);font-size:9px;
+  padding:16px 14px;
+}
+.benefits-table thead th:first-child{text-align:left;padding-left:20px}
+
+/* Tier header cells */
+.th-silver{color:var(--silver-1) !important;border-bottom:2px solid rgba(192,192,192,0.2) !important}
+.th-gold{color:var(--gold-1) !important;border-bottom:2px solid rgba(201,168,76,0.2) !important}
+.th-diamond{color:var(--diamond-1) !important;border-bottom:2px solid rgba(184,204,224,0.2) !important}
+
+.th-card{
+  display:inline-block;width:36px;height:22px;border-radius:3px;margin-bottom:4px;
+  position:relative;overflow:hidden;
+}
+.th-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
+}
+.th-card.tc-s{border:1px solid rgba(192,192,192,0.3);background:rgba(192,192,192,0.05)}
+.th-card.tc-g{border:1px solid rgba(201,168,76,0.3);background:rgba(201,168,76,0.05)}
+.th-card.tc-d{border:1px solid rgba(184,204,224,0.3);background:rgba(184,204,224,0.05)}
+
+.benefits-table tbody td{
+  font-weight:200;color:var(--wt4);
+  transition:background .2s;
+}
+.benefits-table tbody tr:hover td{background:rgba(255,255,255,0.015)}
+.benefits-table tbody td:first-child{
+  text-align:left;padding-left:20px;color:var(--wt3);font-weight:300;
+}
+
+/* Check / value cells */
+.ck{
+  width:16px;height:16px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;font-size:8px;font-weight:700;
+}
+.ck-s{background:rgba(192,192,192,0.1);color:var(--silver-1)}
+.ck-g{background:rgba(201,168,76,0.1);color:var(--gold-1)}
+.ck-d{background:rgba(184,204,224,0.1);color:var(--diamond-1)}
+.val-s{color:var(--silver-1);font-weight:400}
+.val-g{color:var(--gold-1);font-weight:400}
+.val-d{color:var(--diamond-1);font-weight:400}
+.na{color:var(--wt6);font-size:14px}
+
+.benefits-table tbody tr:last-child td{border-bottom:none}
+
+/* ===== ROLLING REWARD ===== */
+.rolling-section{margin-bottom:48px}
+.rolling-card{
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r2);
+  padding:28px;position:relative;overflow:hidden;
+}
+.rolling-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.02),transparent 60%);
+  pointer-events:none;
+}
+.rc-title{font-size:16px;font-weight:500;color:var(--wt);margin-bottom:4px;letter-spacing:-0.3px}
+.rc-sub{font-size:10px;font-weight:200;color:var(--wt4);margin-bottom:20px}
+
+.rolling-flow{
+  display:flex;gap:8px;align-items:stretch;margin-bottom:20px;flex-wrap:wrap;
+}
+.rf-step{
+  flex:1;min-width:130px;
+  background:var(--bk);border:1px solid rgba(255,255,255,0.04);border-radius:10px;
+  padding:16px;text-align:center;
+}
+.rf-num{
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(255,255,255,0.05);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:500;color:var(--wt4);margin-bottom:8px;
+}
+.rf-title{font-size:11px;font-weight:400;color:var(--wt);margin-bottom:3px}
+.rf-desc{font-size:9px;font-weight:200;color:var(--wt4);line-height:1.5}
+.rf-arrow{display:flex;align-items:center;color:var(--wt6);font-size:14px;flex-shrink:0}
+
+.rolling-example{
+  background:var(--bk);border:1px solid rgba(255,255,255,0.04);border-radius:10px;
+  padding:16px 20px;
+}
+.re-title{font-size:9px;font-weight:400;color:var(--wt5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
+.re-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.re-row:last-child{border:none}
+.re-label{font-size:10px;font-weight:200;color:var(--wt4)}
+.re-val{font-size:10px;font-weight:400;color:var(--wt)}
+.re-val.hl{color:var(--gold-1);font-weight:500}
+
+/* ===== NOTES ===== */
+.notes{
+  border-top:1px solid rgba(255,255,255,0.04);
+  padding-top:20px;margin-top:16px;
+}
+.notes p{
+  font-size:9px;font-weight:200;color:var(--wt5);line-height:1.8;
+  padding-left:10px;position:relative;margin-bottom:1px;
+}
+.notes p::before{content:'*';position:absolute;left:0;color:var(--wt6)}
+
+/* Toast + Modal */
+.toast{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-40px);
+  padding:12px 28px;border-radius:10px;font-size:11px;font-weight:400;color:var(--wt);
+  opacity:0;transition:all .3s;pointer-events:none;z-index:99;
+  background:var(--bk4);border:1px solid rgba(255,255,255,0.1);
+  box-shadow:0 8px 30px rgba(0,0,0,0.6);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+}
+.modal-overlay.show{display:flex}
+.modal{
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.08);border-radius:16px;
+  padding:28px;max-width:400px;width:100%;animation:mIn .3s ease;
+}
+@keyframes mIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-x{
+  float:right;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.04);
+  border:none;color:var(--wt4);cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+.modal h3{font-size:15px;font-weight:500;color:var(--wt);margin-bottom:16px;padding-right:30px}
+.m-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.03)}
+.m-row:last-child{border:none}
+.m-label{font-size:10px;font-weight:200;color:var(--wt4)}
+.m-val{font-size:10px;font-weight:400;color:var(--wt)}
+.m-val.hl{font-weight:500}
+.m-btn{
+  width:100%;padding:14px;border:none;border-radius:10px;margin-top:16px;
+  font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.5px;
+  cursor:pointer;transition:.2s;color:#000;
+}
+.m-btn:hover{transform:translateY(-1px)}
+
+@media(max-width:600px){
+  .cards-grid{flex-direction:column}
+  .play-card{min-width:100%}
+  .benefits-table{font-size:9px}
+  .benefits-table th,.benefits-table td{padding:8px 6px}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeM()">&#x2715;</button>
+    <h3 id="mTitle"></h3>
+    <div id="mBody"></div>
+    <button class="m-btn" id="mBtn" onclick="confirmM()">Purchase</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="hd">
+    <div class="hd-label">Exclusive Membership</div>
+    <h1><b>VIP</b> Play Card</h1>
+    <div class="hd-line"></div>
+    <div class="hd-sub">Purchase &middot; Split &middot; Play &middot; Earn Rolling Rewards</div>
+  </div>
+
+  <!-- ===== PLAY CARDS ===== -->
+  <div class="cards-section">
+    <div class="sec-title">Membership Cards</div>
+    <div class="cards-grid">
+
+      <!-- Silver: 500K -->
+      <div class="play-card card-silver">
+        <div class="card-visual">
+          <div class="card-chip">
+            <div class="chip-content">
+              <div class="chip-top">
+                <span class="chip-logo">DR.SLOT</span>
+                <span class="chip-tier">Silver</span>
+              </div>
+              <div class="chip-emv"></div>
+              <div class="chip-number">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 7821</div>
+              <div class="chip-bottom">
+                <span class="chip-holder">Member Since 2026</span>
+                <span class="chip-brand">PLAY CARD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-price-row">
+            <span class="card-price">500,000</span>
+            <span class="card-unit">KRW</span>
+          </div>
+          <div class="card-points">Receive <b>650,000 Points</b> (30% Bonus)</div>
+          <div class="card-features">
+            <div class="cf"><div class="cf-dot"></div>Split into any amount &middot; use like cash</div>
+            <div class="cf"><div class="cf-dot"></div>Stackable with other bonuses</div>
+            <div class="cf"><div class="cf-dot"></div>Rolling 600% clear = +30 Points reward</div>
+          </div>
+          <button class="card-btn" onclick="openM('Silver Play Card','500,000','650,000','30%','silver')">Purchase Silver Card</button>
+        </div>
+      </div>
+
+      <!-- Gold: 1,000K -->
+      <div class="play-card card-gold">
+        <span class="popular">POPULAR</span>
+        <div class="card-visual">
+          <div class="card-chip">
+            <div class="chip-content">
+              <div class="chip-top">
+                <span class="chip-logo">DR.SLOT</span>
+                <span class="chip-tier">Gold</span>
+              </div>
+              <div class="chip-emv"></div>
+              <div class="chip-number">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 5542</div>
+              <div class="chip-bottom">
+                <span class="chip-holder">Member Since 2026</span>
+                <span class="chip-brand">PLAY CARD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-price-row">
+            <span class="card-price">1,000,000</span>
+            <span class="card-unit">KRW</span>
+          </div>
+          <div class="card-points">Receive <b>1,300,000 Points</b> (30% Bonus)</div>
+          <div class="card-features">
+            <div class="cf"><div class="cf-dot"></div>Split into any amount &middot; use like cash</div>
+            <div class="cf"><div class="cf-dot"></div>Stackable with other bonuses</div>
+            <div class="cf"><div class="cf-dot"></div>Rolling 600% clear = +30 Points reward</div>
+            <div class="cf"><div class="cf-dot"></div>Priority VIP support channel</div>
+          </div>
+          <button class="card-btn" onclick="openM('Gold Play Card','1,000,000','1,300,000','30%','gold')">Purchase Gold Card</button>
+        </div>
+      </div>
+
+      <!-- Diamond: invite only -->
+      <div class="play-card card-diamond">
+        <span class="popular">INVITE ONLY</span>
+        <div class="card-visual">
+          <div class="card-chip">
+            <div class="chip-content">
+              <div class="chip-top">
+                <span class="chip-logo">DR.SLOT</span>
+                <span class="chip-tier">Diamond</span>
+              </div>
+              <div class="chip-emv"></div>
+              <div class="chip-number">&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 0001</div>
+              <div class="chip-bottom">
+                <span class="chip-holder">Elite Member</span>
+                <span class="chip-brand">PLAY CARD</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-price-row">
+            <span class="card-price">3,000,000</span>
+            <span class="card-unit">KRW</span>
+          </div>
+          <div class="card-points">Receive <b>4,500,000 Points</b> (50% Bonus)</div>
+          <div class="card-features">
+            <div class="cf"><div class="cf-dot"></div>All Gold benefits included</div>
+            <div class="cf"><div class="cf-dot"></div>Exclusive cashback + weekly rewards</div>
+            <div class="cf"><div class="cf-dot"></div>Rolling 600% clear = +30 Points reward</div>
+            <div class="cf"><div class="cf-dot"></div>Personal VIP host &middot; luxury perks</div>
+          </div>
+          <button class="card-btn" onclick="showToast('Diamond cards are by invitation only')">Request Invitation</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== FREE SPIN COUPONS ===== -->
+  <div class="spin-section">
+    <div class="sec-title">Free Spin Guarantee Coupons</div>
+    <div class="spin-grid">
+
+      <div class="spin-card">
+        <div class="spin-accent spin-s"></div>
+        <div class="spin-left">
+          <span class="spin-tier st-s">Silver</span>
+          <div class="spin-name">100K Free Spin Coupon</div>
+          <div class="spin-desc">Purchase <b>100,000 KRW</b> free spins with this coupon. Minimum return guaranteed.</div>
+          <div class="spin-guarantee sg-s">
+            <div class="sg-icon">S</div>
+            <div class="sg-text">Win below <b>10% (10,000 KRW)</b> = Full <b>100,000 KRW</b> refund</div>
+          </div>
+          <div class="spin-conds"><span>Free Spin Only</span><span>1 Use</span><span>Rolling x1</span></div>
+        </div>
+        <div class="spin-right">
+          <div class="spin-val sv-s">100K</div>
+          <div class="spin-label">Guarantee</div>
+          <button class="spin-btn sb-s" onclick="showToast('Silver coupon purchased')">BUY</button>
+        </div>
+      </div>
+
+      <div class="spin-card">
+        <div class="spin-accent spin-g"></div>
+        <div class="spin-left">
+          <span class="spin-tier st-g">Gold</span>
+          <div class="spin-name">200K Free Spin Coupon</div>
+          <div class="spin-desc">Purchase <b>200,000 KRW</b> free spins. Higher guarantee threshold.</div>
+          <div class="spin-guarantee sg-g">
+            <div class="sg-icon">G</div>
+            <div class="sg-text">Win below <b>18% (36,000 KRW)</b> = Full <b>200,000 KRW</b> refund</div>
+          </div>
+          <div class="spin-conds"><span>Free Spin Only</span><span>1 Use</span><span>Rolling x1</span></div>
+        </div>
+        <div class="spin-right">
+          <div class="spin-val sv-g">200K</div>
+          <div class="spin-label">Guarantee</div>
+          <button class="spin-btn sb-g" onclick="showToast('Gold coupon purchased')">BUY</button>
+        </div>
+      </div>
+
+      <div class="spin-card">
+        <div class="spin-accent spin-d"></div>
+        <div class="spin-left">
+          <span class="spin-tier st-d">Diamond</span>
+          <div class="spin-name">300K Free Spin Coupon</div>
+          <div class="spin-desc">Purchase <b>300,000 KRW</b> free spins. Maximum protection.</div>
+          <div class="spin-guarantee sg-d">
+            <div class="sg-icon">D</div>
+            <div class="sg-text">Win below <b>25% (75,000 KRW)</b> = Full <b>300,000 KRW</b> refund</div>
+          </div>
+          <div class="spin-conds"><span>Free Spin Only</span><span>1 Use</span><span>Rolling x1</span></div>
+        </div>
+        <div class="spin-right">
+          <div class="spin-val sv-d">300K</div>
+          <div class="spin-label">Guarantee</div>
+          <button class="spin-btn sb-d" onclick="showToast('Diamond coupon purchased')">BUY</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== BENEFITS TABLE ===== -->
+  <div class="table-section">
+    <div class="sec-title">Membership Benefits</div>
+    <table class="benefits-table">
+      <thead>
+        <tr>
+          <th style="width:40%">Benefits</th>
+          <th class="th-silver"><div class="th-card tc-s"></div><br>Silver</th>
+          <th class="th-gold"><div class="th-card tc-g"></div><br>Gold</th>
+          <th class="th-diamond"><div class="th-card tc-d"></div><br>Diamond</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Purchase Price</td>
+          <td class="val-s">500,000</td>
+          <td class="val-g">1,000,000</td>
+          <td class="val-d">3,000,000</td>
+        </tr>
+        <tr>
+          <td>Points Received</td>
+          <td class="val-s">650,000</td>
+          <td class="val-g">1,300,000</td>
+          <td class="val-d">4,500,000</td>
+        </tr>
+        <tr>
+          <td>Bonus Rate</td>
+          <td class="val-s">30%</td>
+          <td class="val-g">30%</td>
+          <td class="val-d">50%</td>
+        </tr>
+        <tr>
+          <td>Split & Use as Cash</td>
+          <td><span class="ck ck-s">&#10003;</span></td>
+          <td><span class="ck ck-g">&#10003;</span></td>
+          <td><span class="ck ck-d">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td>Stackable with Bonuses</td>
+          <td><span class="ck ck-s">&#10003;</span></td>
+          <td><span class="ck ck-g">&#10003;</span></td>
+          <td><span class="ck ck-d">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td>Rolling Reward (600%)</td>
+          <td class="val-s">+30 Pts</td>
+          <td class="val-g">+30 Pts</td>
+          <td class="val-d">+30 Pts</td>
+        </tr>
+        <tr>
+          <td>Daily Deposit Bonus</td>
+          <td class="val-s">Up to 10%</td>
+          <td class="val-g">Up to 15%</td>
+          <td class="val-d">Up to 25%</td>
+        </tr>
+        <tr>
+          <td>Weekly Cashback</td>
+          <td><span class="na">&mdash;</span></td>
+          <td class="val-g">5%</td>
+          <td class="val-d">10%</td>
+        </tr>
+        <tr>
+          <td>Free Spin Coupon Access</td>
+          <td class="val-s">Silver</td>
+          <td class="val-g">Silver + Gold</td>
+          <td class="val-d">All Tiers</td>
+        </tr>
+        <tr>
+          <td>Priority Support</td>
+          <td><span class="na">&mdash;</span></td>
+          <td><span class="ck ck-g">&#10003;</span></td>
+          <td><span class="ck ck-d">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td>Personal VIP Host</td>
+          <td><span class="na">&mdash;</span></td>
+          <td><span class="na">&mdash;</span></td>
+          <td><span class="ck ck-d">&#10003;</span></td>
+        </tr>
+        <tr>
+          <td>Exclusive Event Access</td>
+          <td><span class="na">&mdash;</span></td>
+          <td><span class="na">&mdash;</span></td>
+          <td><span class="ck ck-d">&#10003;</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== ROLLING REWARD ===== -->
+  <div class="rolling-section">
+    <div class="sec-title">Rolling Reward System</div>
+    <div class="rolling-card">
+      <div class="rc-title">600% Rolling Clear Reward</div>
+      <div class="rc-sub">Achieve 600% rolling on your coupon amount to earn +30 Points automatically</div>
+
+      <div class="rolling-flow">
+        <div class="rf-step">
+          <div class="rf-num">1</div>
+          <div class="rf-title">Purchase Card</div>
+          <div class="rf-desc">Buy Silver or Gold play card</div>
+        </div>
+        <div class="rf-arrow">&rarr;</div>
+        <div class="rf-step">
+          <div class="rf-num">2</div>
+          <div class="rf-title">Split & Play</div>
+          <div class="rf-desc">Use points in any amount</div>
+        </div>
+        <div class="rf-arrow">&rarr;</div>
+        <div class="rf-step">
+          <div class="rf-num">3</div>
+          <div class="rf-title">Reach 600%</div>
+          <div class="rf-desc">Total bets = coupon x 600%</div>
+        </div>
+        <div class="rf-arrow">&rarr;</div>
+        <div class="rf-step">
+          <div class="rf-num">4</div>
+          <div class="rf-title">Get Reward</div>
+          <div class="rf-desc">+30 Points auto-credited</div>
+        </div>
+      </div>
+
+      <div class="rolling-example">
+        <div class="re-title">Example &mdash; Gold Card</div>
+        <div class="re-row"><span class="re-label">Card Purchase</span><span class="re-val">1,000,000 KRW</span></div>
+        <div class="re-row"><span class="re-label">Points Received</span><span class="re-val">1,300,000 Points</span></div>
+        <div class="re-row"><span class="re-label">Rolling Target (600%)</span><span class="re-val">7,800,000 KRW in total bets</span></div>
+        <div class="re-row"><span class="re-label">Reward on Completion</span><span class="re-val hl">+30 Points</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="notes">
+    <p>Play Card points can be split into any denomination and used like cash across all games</p>
+    <p>Play Card bonuses are stackable with daily deposit bonuses and other promotions</p>
+    <p>Rolling is calculated based on the coupon purchase amount, not the bonus points</p>
+    <p>Diamond membership is by invitation only based on cumulative activity</p>
+    <p>Free Spin Guarantee Coupons are single-use and valid for 30 days from purchase</p>
+    <p>All rewards and points are subject to terms and conditions</p>
+  </div>
+
+</div>
+
+<script>
+function showToast(m){
+  const t=document.getElementById('toast');t.textContent=m;
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);
+}
+function openM(name,price,points,rate,tier){
+  document.getElementById('mTitle').textContent=name+' Purchase';
+  const colors={silver:'linear-gradient(135deg,#6a6a78,#9a9aaa)',gold:'linear-gradient(135deg,#a07830,#d0a848)',diamond:'linear-gradient(135deg,#5070a0,#90b0d0)'};
+  document.getElementById('mBody').innerHTML=`
+    <div class="m-row"><span class="m-label">Card Tier</span><span class="m-val">${name}</span></div>
+    <div class="m-row"><span class="m-label">Purchase Price</span><span class="m-val">${price} KRW</span></div>
+    <div class="m-row"><span class="m-label">Points Received</span><span class="m-val hl">${points} Points (${rate} bonus)</span></div>
+    <div class="m-row"><span class="m-label">Usage</span><span class="m-val">Split freely, use as cash</span></div>
+    <div class="m-row"><span class="m-label">Rolling Target</span><span class="m-val">600% of coupon amount</span></div>
+    <div class="m-row"><span class="m-label">Rolling Reward</span><span class="m-val hl">+30 Points</span></div>
+    <div class="m-row"><span class="m-label">Stacking</span><span class="m-val">Compatible with other bonuses</span></div>
+  `;
+  document.getElementById('mBtn').style.background=colors[tier];
+  document.getElementById('mBtn').setAttribute('data-t',tier);
+  document.getElementById('modal').classList.add('show');
+}
+function closeM(){document.getElementById('modal').classList.remove('show')}
+function confirmM(){
+  const t=document.getElementById('mBtn').getAttribute('data-t');
+  closeM();showToast(t.charAt(0).toUpperCase()+t.slice(1)+' Play Card purchased successfully');
+}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeM()});
+</script>
+</body>
+</html>
