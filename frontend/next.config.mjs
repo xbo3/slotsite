@@ -11,6 +11,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.pgsoft.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'imgxcut.com',
+        pathname: '/**',
+      },
     ],
   },
 };
