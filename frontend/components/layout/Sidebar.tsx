@@ -313,7 +313,31 @@ export default function Sidebar() {
   );
 }
 
-// 서브카테고리 리스트 — 텍스트 좌측, 로고 우측 (30% 숨김 → 선택시 100% 보임)
+// 그라데이션 컬러 함수 — 인덱스별 초록→청록→보라 그라데이션
+function getGradientColor(index: number, total: number) {
+  const ratio = index / Math.max(total - 1, 1);
+  if (ratio < 0.33) {
+    const t = ratio / 0.33;
+    const r = Math.round(168 + (56 - 168) * t);
+    const g = Math.round(255 + (249 - 255) * t);
+    const b = Math.round(120 + (215 - 120) * t);
+    return { color: `rgb(${r},${g},${b})`, glow: `rgba(${Math.min(255,r+40)},${Math.min(255,g+20)},${Math.min(255,b+40)},0.5)` };
+  } else if (ratio < 0.66) {
+    const t = (ratio - 0.33) / 0.33;
+    const r = Math.round(56 + (21 - 56) * t);
+    const g = Math.round(249 + (101 - 249) * t);
+    const b = Math.round(215 + (192 - 215) * t);
+    return { color: `rgb(${r},${g},${b})`, glow: `rgba(${Math.min(255,r+40)},${Math.min(255,g+40)},${Math.min(255,b+30)},0.5)` };
+  } else {
+    const t = (ratio - 0.66) / 0.34;
+    const r = Math.round(79 + (255 - 79) * t);
+    const g = Math.round(172 + (107 - 172) * t);
+    const b = Math.round(254 + (107 - 254) * t);
+    return { color: `rgb(${r},${g},${b})`, glow: `rgba(${Math.min(255,r+30)},${Math.min(255,g+30)},${Math.min(255,b+30)},0.5)` };
+  }
+}
+
+// 서브카테고리 리스트 — 그라데이션 컬러 + 로고 클릭 애니메이션
 function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
   cat: { subs: { id: string; labelKey?: string; label?: string; href: string; img?: string }[] };
   isExpanded: boolean;
@@ -321,55 +345,89 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
   activeSub: string | null;
   setActiveSub: (id: string | null) => void;
 }) {
+  // all 항목 분리 + 나머지 알파벳순 정렬
+  const allItem = cat.subs.find(s => s.id === 'all');
+  const restSorted = cat.subs
+    .filter(s => s.id !== 'all')
+    .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+  const sortedSubs = allItem ? [allItem, ...restSorted] : restSorted;
+
   return (
     <div className={`subcategory-grid ${isExpanded ? 'expanded' : ''}`}>
       <div className="subcategory-inner">
-        {cat.subs.map((sub) => {
+        {sortedSubs.map((sub, idx) => {
           const isActive = activeSub === sub.id;
+          // all 항목은 컬러 없이 기본 흰색
+          const colors = sub.id === 'all'
+            ? { color: 'rgba(255,255,255,0.8)', glow: 'rgba(255,255,255,0.3)' }
+            : getGradientColor(idx - (allItem ? 1 : 0), restSorted.length);
+
+          const handleClick = (e: React.MouseEvent) => {
+            setActiveSub(isActive ? null : sub.id);
+            const el = e.currentTarget as HTMLElement;
+            // 테두리 플래시
+            el.classList.remove('border-click');
+            void el.offsetWidth;
+            el.classList.add('border-click');
+            setTimeout(() => el.classList.remove('border-click'), 2000);
+
+            // 로고 팝업
+            const img = el.querySelector('.provider-logo') as HTMLImageElement;
+            if (img) {
+              img.style.height = '48px';
+              img.style.filter = `drop-shadow(0 0 8px ${colors.glow}) drop-shadow(0 0 16px ${colors.color}) brightness(1.4)`;
+              img.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+              setTimeout(() => {
+                img.style.height = '20px';
+                img.style.filter = 'none';
+                img.style.transition = 'all 0.4s ease';
+              }, 1500);
+            }
+          };
+
           return (
             <Link
               key={sub.id}
               href={sub.href}
-              onClick={() => setActiveSub(isActive ? null : sub.id)}
-              className={`sub-item relative flex items-center overflow-hidden rounded-md transition-all duration-300 ${
-                isActive
-                  ? 'bg-white/[0.08] text-white pl-5 pr-2'
-                  : 'text-white/40 hover:text-white hover:bg-white/[0.03] pl-7 pr-3'
-              }`}
-              style={{ height: '32px' }}
+              onClick={handleClick}
+              className="sub-item flex items-center rounded-md transition-all duration-300"
+              style={{
+                '--item-color': colors.color,
+                '--item-glow': colors.glow,
+                height: '32px',
+                paddingLeft: isActive ? '12px' : '28px',
+                paddingRight: '8px',
+              } as React.CSSProperties}
             >
-              {/* 텍스트 — 좌측 정렬 */}
-              <span className="text-xs font-light truncate flex-1 relative z-10">
+              {/* 좌측 인디케이터 */}
+              {isActive && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 rounded-full" style={{ background: colors.color }} />
+              )}
+
+              {/* 게임사 이름 — 그라데이션 컬러 */}
+              <span className="text-xs font-light truncate flex-1" style={{ color: isActive ? colors.color : `${colors.color}80` }}>
                 {sub.labelKey ? t(sub.labelKey) : sub.label}
               </span>
 
-              {/* 로고 이미지 — 우측 정렬, 비선택시 30% 숨김 */}
+              {/* 로고 이미지 — 우측, 원본 컬러 유지 */}
               {sub.img && (
-                <div
-                  className="absolute top-0 bottom-0 flex items-center transition-all duration-300"
-                  style={{
-                    right: isActive ? '8px' : '-6px',  // 비선택: 우측으로 밀려서 30% 숨김
-                  }}
-                >
+                <div className="flex items-center" style={{ transition: 'all 0.3s ease' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={sub.img}
-                    alt={sub.label || ''}
-                    className="h-5 w-auto object-contain transition-all duration-300"
+                    alt=""
+                    className="provider-logo object-contain"
                     style={{
-                      opacity: isActive ? 1 : 0.3,
-                      border: isActive ? '1px solid rgba(255,255,255,0.3)' : 'none',
-                      borderRadius: '4px',
-                      padding: isActive ? '1px' : '0',
+                      height: '20px',
+                      width: 'auto',
+                      opacity: isActive ? 1 : 0.4,
+                      isolation: 'isolate',
+                      mixBlendMode: 'normal',
+                      transition: 'all 0.3s ease',
                     }}
                     onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                   />
                 </div>
-              )}
-
-              {/* 선택시 좌측 인디케이터 */}
-              {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 bg-white rounded-full" />
               )}
             </Link>
           );

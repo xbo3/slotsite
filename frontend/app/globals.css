@@ -664,6 +664,31 @@ input:-webkit-autofill:focus {
   min-height: 0;
 }
 
+/* 사이드바 게임사 클릭 테두리 빛 → 2초 소멸 */
+@keyframes border-click-fade {
+  0%   { border-color: var(--item-color); box-shadow: 0 0 16px var(--item-glow), 0 0 32px var(--item-color), inset 0 0 8px var(--item-glow); }
+  60%  { border-color: var(--item-color); box-shadow: 0 0 8px var(--item-glow), 0 0 16px var(--item-color); }
+  100% { border-color: transparent; box-shadow: none; }
+}
+
+a.sub-item {
+  border: 1px solid transparent;
+  position: relative;
+  overflow: visible !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+a.sub-item:hover {
+  border-color: var(--item-color, rgba(255,255,255,0.3)) !important;
+  box-shadow: 0 0 6px var(--item-glow, rgba(255,255,255,0.2)),
+              0 0 10px var(--item-glow, rgba(255,255,255,0.2)),
+              inset 0 0 3px var(--item-glow, rgba(255,255,255,0.2)) !important;
+}
+
+a.sub-item.border-click {
+  animation: border-click-fade 2s ease forwards;
+}
+
 /* 서브카테고리 항목 stagger 등장 */
 .sub-item {
   opacity: 0;
