@@ -8,9 +8,12 @@ const adminMenu = [
   { href: '/admin', label: '대시보드', icon: DashboardIcon },
   { href: '/admin/users', label: '회원관리', icon: UsersIcon },
   { href: '/admin/finance', label: '입출금관리', icon: FinanceIcon },
+  { href: '/admin/deposits', label: '입금관리', icon: DepositIcon },
   { href: '/admin/withdraws', label: '출금관리', icon: WithdrawIcon },
   { href: '/admin/coupons', label: '보너스관리', icon: CouponIcon },
   { href: '/admin/games', label: '게임관리', icon: GamesIcon },
+  { href: '/admin/settings', label: '설정', icon: SettingsIcon },
+  { href: '/admin/logs', label: '로그', icon: LogsIcon },
 ];
 
 export default function AdminLayout({
@@ -173,6 +176,36 @@ function GamesIcon({ active }: { active: boolean }) {
       <rect x="2" y="6" width="20" height="12" rx="2" />
       <circle cx="8" cy="12" r="2" />
       <circle cx="16" cy="12" r="2" />
+    </svg>
+  );
+}
+
+function DepositIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 5v14M5 12l7 7 7-7" />
+      <path d="M3 3h18" />
+    </svg>
+  );
+}
+
+function SettingsIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12.22 2h-.44a2 2 0 00-2 2v.18a2 2 0 01-1 1.73l-.43.25a2 2 0 01-2 0l-.15-.08a2 2 0 00-2.73.73l-.22.38a2 2 0 00.73 2.73l.15.1a2 2 0 011 1.72v.51a2 2 0 01-1 1.74l-.15.09a2 2 0 00-.73 2.73l.22.38a2 2 0 002.73.73l.15-.08a2 2 0 012 0l.43.25a2 2 0 011 1.73V20a2 2 0 002 2h.44a2 2 0 002-2v-.18a2 2 0 011-1.73l.43-.25a2 2 0 012 0l.15.08a2 2 0 002.73-.73l.22-.39a2 2 0 00-.73-2.73l-.15-.08a2 2 0 01-1-1.74v-.5a2 2 0 011-1.74l.15-.09a2 2 0 00.73-2.73l-.22-.38a2 2 0 00-2.73-.73l-.15.08a2 2 0 01-2 0l-.43-.25a2 2 0 01-1-1.73V4a2 2 0 00-2-2z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function LogsIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
     </svg>
   );
 }
