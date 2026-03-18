@@ -71,11 +71,34 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ background: 'rgba(22,22,22,0.95)', borderColor: 'rgba(255,255,255,0.06)' }}>
-      <div className="flex items-center h-16">
+      {/* ===== 모바일 헤더 (md 미만) ===== */}
+      <div className="flex md:hidden items-center justify-between h-14 px-3">
+        <Link href="/" className="flex items-center">
+          <span className="text-base tracking-[0.15em]">
+            <span className="text-white font-light">DR.</span>
+            <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
+          </span>
+        </Link>
+        <div className="flex items-center gap-1">
+          <button onClick={() => setSearchOpen(!searchOpen)} className="p-2" style={{ color: '#888888' }}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+          <button className="flex flex-col gap-1.5 p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label={t('menu')}>
+            <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`w-5 h-0.5 bg-white transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          </button>
+        </div>
+      </div>
+
+      {/* ===== 데스크톱 헤더 (md 이상) ===== */}
+      <div className="hidden md:flex items-center h-16">
         {/* Logo area — matches sidebar width (240px) on lg+ */}
         <div className="hidden lg:flex items-center w-60 flex-shrink-0 px-4">
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-lg md:text-xl tracking-[0.15em]">
+            <span className="text-xl tracking-[0.15em]">
               <span className="text-white font-light">DR.</span>
               <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
@@ -85,22 +108,18 @@ export default function Header() {
             </div>
           </Link>
         </div>
-        {/* Mobile logo — shown below lg */}
-        <div className="flex lg:hidden items-center px-3 md:px-4 flex-shrink-0">
+        {/* Tablet logo (md~lg) */}
+        <div className="flex lg:hidden items-center px-4 flex-shrink-0">
           <Link href="/" className="flex items-center gap-1.5">
-            <span className="text-base md:text-xl tracking-[0.15em]">
+            <span className="text-xl tracking-[0.15em]">
               <span className="text-white font-light">DR.</span>
               <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
-            <div className="hidden sm:flex items-center gap-1 ml-2">
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
-              <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} online</span>
-            </div>
           </Link>
         </div>
 
-        {/* Right area — main content zone on lg+ */}
-        <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 px-2 md:px-4 overflow-hidden">
+        {/* Right area */}
+        <div className="flex-1 flex items-center justify-between gap-4 px-4">
         {/* Desktop Search */}
         <div className="hidden md:flex flex-1 max-w-md" ref={searchRef}>
           <div className="relative w-full">
@@ -286,29 +305,8 @@ export default function Header() {
           )}
         </div>
 
-        {/* Mobile: search + hamburger — 우측 끝 정렬 */}
-        <div className="flex md:hidden items-center gap-1 flex-shrink-0">
-          <button
-            onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 hover:text-white"
-            style={{ color: '#888888' }}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
-          <button
-            className="flex flex-col gap-1.5 p-2"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={t('menu')}
-          >
-            <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-5 h-0.5 bg-white transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-          </button>
-        </div>
         </div>{/* end right area */}
-      </div>
+      </div>{/* end desktop header */}
 
       {/* Mobile Search Dropdown */}
       {searchOpen && (
