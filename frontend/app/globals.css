@@ -583,6 +583,73 @@ input:-webkit-autofill:focus {
   }
 }
 
+/* ===== 쿠폰 카드 펼침 — 알리바바 돌문 컨셉 ===== */
+@keyframes card-unfold-smooth {
+  0%   { transform: scaleY(0); opacity: 0; transform-origin: top; }
+  20%  { transform: scaleY(0.2); opacity: 0.6; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes card-unfold-with-catch {
+  0%   { transform: scaleY(0); opacity: 0; transform-origin: top; }
+  20%  { transform: scaleY(0.2); opacity: 0.6; }
+  48%  { transform: scaleY(0.48); }
+  52%  { transform: scaleY(0.47) translateX(1.5px); }
+  55%  { transform: scaleY(0.48) translateX(-1px); }
+  58%  { transform: scaleY(0.50); }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes card-unfold-overshoot {
+  0%   { transform: scaleY(0); opacity: 0; transform-origin: top; }
+  20%  { transform: scaleY(0.2); opacity: 0.6; }
+  90%  { transform: scaleY(1.03); }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes container-shake {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-0.5px); }
+  75% { transform: translateY(0.5px); }
+}
+
+.card-unfold-1 {
+  animation: card-unfold-smooth 600ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: 0ms;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.card-unfold-2 {
+  animation: card-unfold-with-catch 650ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 120ms;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.card-unfold-3 {
+  animation: card-unfold-smooth 600ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: 250ms;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.card-unfold-4 {
+  animation: card-unfold-overshoot 580ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation-delay: 380ms;
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.container-shake-effect {
+  animation: container-shake 50ms ease-in-out;
+}
+
+/* 카드 펼침 시 그림자 증가 */
+.card-unfold-1, .card-unfold-2, .card-unfold-3, .card-unfold-4 {
+  transition: box-shadow 600ms ease;
+}
+.card-unfolded {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

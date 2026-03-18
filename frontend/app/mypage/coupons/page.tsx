@@ -51,6 +51,8 @@ export default function MyCouponsPage() {
   const [applyResult, setApplyResult] = useState<{ success: boolean; message: string } | null>(null);
   const [applyLoading, setApplyLoading] = useState(false);
   const [glowId, setGlowId] = useState<number | null>(null);
+  const [isUnfolded, setIsUnfolded] = useState(false);
+  const [unfoldKey, setUnfoldKey] = useState(0);
 
   const handleApplyCoupon = async () => {
     if (!couponCode.trim()) return;
@@ -125,44 +127,51 @@ export default function MyCouponsPage() {
 
       {/* ===== Bonus Categories ===== */}
       <div className="mb-10">
-        <h2 className="text-lg font-medium text-white mb-4">{t('bonus_types')}</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          <BonusCategoryCard
-            icon="🚨"
-            name={t('emergency_bonus')}
-            desc={t('emergency_bonus_desc')}
-            borderColor="border-danger/40"
-            available={true}
-          />
-          <BonusCategoryCard
-            icon="🔮"
-            name={t('derived_bonus')}
-            desc={t('derived_bonus_desc')}
-            borderColor="border-white/20"
-            available={false}
-          />
-          <BonusCategoryCard
-            icon="🔗"
-            name={t('linked_bonus')}
-            desc={t('linked_bonus_desc')}
-            borderColor="border-blue-400/40"
-            available={true}
-          />
-          <BonusCategoryCard
-            icon="🏃"
-            name={t('relay_bonus')}
-            desc={t('relay_bonus_desc')}
-            borderColor="border-white/20"
-            available={false}
-          />
-          <BonusCategoryCard
-            icon="✋"
-            name={t('request_bonus')}
-            desc={t('request_bonus_desc')}
-            borderColor="border-green-500/40"
-            available={true}
-          />
+        <div
+          onClick={() => {
+            if (!isUnfolded) {
+              setUnfoldKey(prev => prev + 1);
+            }
+            setIsUnfolded(!isUnfolded);
+          }}
+          className="cursor-pointer select-none"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-medium text-white">{t('bonus_types')}</h2>
+            <div className="flex items-center gap-2">
+              <span className="text-white font-light text-sm">Bonus Cards</span>
+              <svg
+                className={`w-4 h-4 text-white/50 transition-transform duration-300 ${isUnfolded ? 'rotate-180' : ''}`}
+                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
         </div>
+        <div className={`space-y-3 transition-all duration-300 ${isUnfolded ? '' : 'max-h-16 overflow-hidden'}`}>
+          {[
+            { icon: '🚨', nameKey: 'emergency_bonus', descKey: 'emergency_bonus_desc', borderColor: 'border-danger/40', available: true },
+            { icon: '🔮', nameKey: 'derived_bonus', descKey: 'derived_bonus_desc', borderColor: 'border-white/20', available: false },
+            { icon: '🔗', nameKey: 'linked_bonus', descKey: 'linked_bonus_desc', borderColor: 'border-blue-400/40', available: true },
+            { icon: '🏃', nameKey: 'relay_bonus', descKey: 'relay_bonus_desc', borderColor: 'border-white/20', available: false },
+            { icon: '✋', nameKey: 'request_bonus', descKey: 'request_bonus_desc', borderColor: 'border-green-500/40', available: true },
+          ].map((card, i) => (
+            <div
+              key={`${i}-${unfoldKey}`}
+              className={`${isUnfolded && i < 4 ? `card-unfold-${i + 1}` : isUnfolded ? 'animate-fade-in' : ''}`}
+            >
+              <BonusCategoryCard
+                icon={card.icon}
+                name={t(card.nameKey)}
+                desc={t(card.descKey)}
+                borderColor={card.borderColor}
+                available={card.available}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="mb-6" />
 
         {/* Grade Benefit - card-pearl large */}
         <div className="card-pearl rounded-2xl p-6 mb-4" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>

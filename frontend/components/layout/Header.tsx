@@ -71,24 +71,44 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ background: 'rgba(22,22,22,0.95)', borderColor: 'rgba(255,255,255,0.06)' }}>
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-        {/* Logo + Online count */}
-        <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#FFFFFF' }}>
-            <span className="font-black text-sm" style={{ color: '#0A0A0A' }}>S</span>
-          </div>
-          <span className="text-xl font-light hidden sm:block tracking-wider">
-            <span className="text-white">Slot</span>
-            <span style={{ color: '#888888' }}>Site</span>
-          </span>
-          <div className="hidden sm:flex items-center gap-1 ml-2">
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
-            <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} online</span>
-          </div>
-        </Link>
+      <div className="flex items-center h-16">
+        {/* Logo area — matches sidebar width (240px) on lg+ */}
+        <div className="hidden lg:flex items-center w-60 flex-shrink-0 px-4">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#FFFFFF' }}>
+              <span className="font-black text-sm" style={{ color: '#0A0A0A' }}>S</span>
+            </div>
+            <span className="text-xl font-light tracking-wider">
+              <span className="text-white">Slot</span>
+              <span style={{ color: '#888888' }}>Site</span>
+            </span>
+            <div className="flex items-center gap-1 ml-2">
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
+              <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} online</span>
+            </div>
+          </Link>
+        </div>
+        {/* Mobile logo — shown below lg */}
+        <div className="flex lg:hidden items-center px-4 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#FFFFFF' }}>
+              <span className="font-black text-sm" style={{ color: '#0A0A0A' }}>S</span>
+            </div>
+            <span className="text-xl font-light hidden sm:block tracking-wider">
+              <span className="text-white">Slot</span>
+              <span style={{ color: '#888888' }}>Site</span>
+            </span>
+            <div className="hidden sm:flex items-center gap-1 ml-2">
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
+              <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} online</span>
+            </div>
+          </Link>
+        </div>
 
+        {/* Right area — main content zone on lg+ */}
+        <div className="flex-1 flex items-center justify-between gap-4 px-4">
         {/* Desktop Search */}
-        <div className="hidden md:flex flex-1 max-w-md mx-4" ref={searchRef}>
+        <div className="hidden md:flex flex-1 max-w-md" ref={searchRef}>
           <div className="relative w-full">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#555555' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -283,7 +303,7 @@ export default function Header() {
         </div>
 
         {/* Mobile: search + hamburger */}
-        <div className="flex md:hidden items-center gap-2">
+        <div className="flex md:hidden items-center gap-2 ml-auto">
           <button
             onClick={toggleLang}
             className="px-2 py-1 text-[10px] font-medium rounded border transition-all"
@@ -310,6 +330,7 @@ export default function Header() {
             <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
           </button>
         </div>
+        </div>{/* end right area */}
       </div>
 
       {/* Mobile Search Dropdown */}
