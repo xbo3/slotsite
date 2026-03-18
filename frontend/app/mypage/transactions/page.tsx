@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useCallback } from 'react';
 import Pagination from '@/components/ui/Pagination';
 import EmptyState from '@/components/ui/EmptyState';
 import BottomSheet from '@/components/ui/BottomSheet';
+import { useLang } from '@/hooks/useLang';
 
 type TxType = 'deposit' | 'withdraw' | 'bonus' | 'coupon';
 type TxStatus = 'completed' | 'pending' | 'cancelled';
@@ -18,11 +19,11 @@ interface Transaction {
   tx_hash?: string;
 }
 
-const TYPE_LABELS: Record<TxType, string> = {
-  deposit: '입금',
-  withdraw: '출금',
-  bonus: '보너스',
-  coupon: '보너스쿠폰',
+const TYPE_LABEL_KEYS: Record<TxType, string> = {
+  deposit: 'tx_deposit',
+  withdraw: 'tx_withdraw',
+  bonus: 'tx_bonus',
+  coupon: 'tx_coupon',
 };
 
 const TYPE_COLORS: Record<TxType, string> = {
@@ -53,10 +54,10 @@ const TYPE_ICON_TEXT: Record<TxType, string> = {
   coupon: 'text-blue-400',
 };
 
-const STATUS_LABELS: Record<TxStatus, string> = {
-  completed: '완료',
-  pending: '대기',
-  cancelled: '취소',
+const STATUS_LABEL_KEYS: Record<TxStatus, string> = {
+  completed: 'tx_status_completed',
+  pending: 'tx_status_pending',
+  cancelled: 'tx_status_cancelled',
 };
 
 const STATUS_COLORS: Record<TxStatus, string> = {
@@ -87,19 +88,19 @@ type FilterType = 'all' | TxType;
 type FilterStatus = 'all' | TxStatus;
 type FilterPeriod = 'today' | '7d' | '30d' | 'custom';
 
-const TYPE_TABS: { value: FilterType; label: string }[] = [
-  { value: 'all', label: '전체' },
-  { value: 'deposit', label: '입금' },
-  { value: 'withdraw', label: '출금' },
-  { value: 'bonus', label: '보너스' },
-  { value: 'coupon', label: '보너스쿠폰' },
+const TYPE_TABS: { value: FilterType; labelKey: string }[] = [
+  { value: 'all', labelKey: 'all' },
+  { value: 'deposit', labelKey: 'tx_deposit' },
+  { value: 'withdraw', labelKey: 'tx_withdraw' },
+  { value: 'bonus', labelKey: 'tx_bonus' },
+  { value: 'coupon', labelKey: 'tx_coupon' },
 ];
 
-const PERIOD_OPTIONS: { value: FilterPeriod; label: string }[] = [
-  { value: 'today', label: '오늘' },
-  { value: '7d', label: '7일' },
-  { value: '30d', label: '30일' },
-  { value: 'custom', label: '직접입력' },
+const PERIOD_OPTIONS: { value: FilterPeriod; labelKey: string }[] = [
+  { value: 'today', labelKey: 'today' },
+  { value: '7d', labelKey: '7days' },
+  { value: '30d', labelKey: '30days' },
+  { value: 'custom', labelKey: 'custom_input' },
 ];
 
 // Deposit icon SVG
@@ -121,6 +122,7 @@ function WithdrawIcon() {
 }
 
 export default function TransactionsPage() {
+  const { t } = useLang();
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
   const [filterPeriod, setFilterPeriod] = useState<FilterPeriod>('30d');
@@ -214,15 +216,15 @@ export default function TransactionsPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">총 입금</p>
+          <p className="text-xs text-text-muted mb-1">{t('total_deposit')}</p>
           <p className="text-lg md:text-xl font-bold text-success">{totalDeposit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
         </div>
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">총 출금</p>
+          <p className="text-xs text-text-muted mb-1">{t('total_withdraw_label')}</p>
           <p className="text-lg md:text-xl font-bold text-danger">{totalWithdraw.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
         </div>
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">순수익</p>
+          <p className="text-xs text-text-muted mb-1">{t('net_profit')}</p>
           <p className={`text-lg md:text-xl font-bold ${netProfit >= 0 ? 'text-success' : 'text-danger'}`}>
             {netProfit >= 0 ? '+' : ''}{netProfit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span>
           </p>
@@ -242,7 +244,7 @@ export default function TransactionsPage() {
                   : 'bg-dark-input text-text-secondary'
               }`}
             >
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           ))}
           <button
@@ -268,7 +270,7 @@ export default function TransactionsPage() {
                   : 'bg-dark-bg text-text-secondary hover:text-white border border-white/5'
               }`}
             >
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           ))}
         </div>
@@ -286,7 +288,7 @@ export default function TransactionsPage() {
                     : 'bg-dark-bg text-text-muted hover:text-white border border-white/5'
                 }`}
               >
-                {opt.label}
+                {t(opt.labelKey)}
               </button>
             ))}
           </div>
@@ -312,10 +314,10 @@ export default function TransactionsPage() {
             onChange={e => { setFilterStatus(e.target.value as FilterStatus); setCurrentPage(1); }}
             className="px-3 py-1.5 bg-dark-bg border border-white/5 rounded-lg text-white text-xs focus:outline-none focus:border-accent/50 ml-auto"
           >
-            <option value="all">전체 상태</option>
-            <option value="completed">완료</option>
-            <option value="pending">대기</option>
-            <option value="cancelled">취소</option>
+            <option value="all">{t('all_status')}</option>
+            <option value="completed">{t('tx_status_completed')}</option>
+            <option value="pending">{t('tx_status_pending')}</option>
+            <option value="cancelled">{t('tx_status_cancelled')}</option>
           </select>
         </div>
       </div>
@@ -324,9 +326,9 @@ export default function TransactionsPage() {
       {paginated.length === 0 ? (
         <EmptyState
           icon="💳"
-          title="아직 거래내역이 없습니다"
-          description="입금하여 게임을 시작해보세요"
-          actionLabel="지금 충전하기"
+          title={t('no_transactions_yet')}
+          description={t('no_transactions_desc')}
+          actionLabel={t('deposit_now')}
           actionHref="/wallet"
         />
       ) : (
@@ -336,11 +338,11 @@ export default function TransactionsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5">
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">날짜</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">유형</th>
-                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">금액</th>
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-text-muted uppercase">상태</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">메모</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('date')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('type_label')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('amount_label')}</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('status')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('memo')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -349,7 +351,7 @@ export default function TransactionsPage() {
                     <td className="px-4 py-3 text-sm text-text-secondary">{tx.date}</td>
                     <td className="px-4 py-3">
                       <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${TYPE_BG[tx.type]} ${TYPE_COLORS[tx.type]}`}>
-                        {TYPE_LABELS[tx.type]}
+                        {t(TYPE_LABEL_KEYS[tx.type])}
                       </span>
                     </td>
                     <td className={`px-4 py-3 text-sm font-semibold text-right ${tx.type === 'withdraw' ? 'text-danger' : 'text-success'}`}>
@@ -357,7 +359,7 @@ export default function TransactionsPage() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span className={`text-[11px] px-2.5 py-1 rounded-full font-medium ${STATUS_COLORS[tx.status]}`}>
-                        {STATUS_LABELS[tx.status]}
+                        {t(STATUS_LABEL_KEYS[tx.status])}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-sm text-text-muted">{tx.memo}</td>
@@ -384,7 +386,7 @@ export default function TransactionsPage() {
                   {/* Center */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-white">{TYPE_LABELS[tx.type]}</span>
+                      <span className="text-sm font-semibold text-white">{t(TYPE_LABEL_KEYS[tx.type])}</span>
                       <span className={`text-sm font-bold ${tx.type === 'withdraw' ? 'text-red-400' : 'text-green-400'}`}>
                         {tx.type === 'withdraw' ? '-' : '+'}{tx.amount.toLocaleString()} USDT
                       </span>
@@ -392,7 +394,7 @@ export default function TransactionsPage() {
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-text-muted">{tx.date}</span>
                       <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${STATUS_COLORS[tx.status]}`}>
-                        {STATUS_LABELS[tx.status]}
+                        {t(STATUS_LABEL_KEYS[tx.status])}
                       </span>
                     </div>
                   </div>
@@ -409,7 +411,7 @@ export default function TransactionsPage() {
       <BottomSheet
         isOpen={!!selectedTx}
         onClose={() => setSelectedTx(null)}
-        title="거래 상세"
+        title={t('tx_detail')}
       >
         {selectedTx && (
           <div className="space-y-4">
@@ -418,7 +420,7 @@ export default function TransactionsPage() {
                 {renderMobileIcon(selectedTx.type)}
               </div>
               <div>
-                <p className="text-lg font-bold text-white">{TYPE_LABELS[selectedTx.type]}</p>
+                <p className="text-lg font-bold text-white">{t(TYPE_LABEL_KEYS[selectedTx.type])}</p>
                 <p className={`text-xl font-black ${selectedTx.type === 'withdraw' ? 'text-red-400' : 'text-green-400'}`}>
                   {selectedTx.type === 'withdraw' ? '-' : '+'}{selectedTx.amount.toLocaleString()} USDT
                 </p>
@@ -427,17 +429,17 @@ export default function TransactionsPage() {
 
             <div className="bg-dark-bg rounded-xl p-4 space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-text-muted">상태</span>
+                <span className="text-sm text-text-muted">{t('status')}</span>
                 <span className={`text-sm font-medium px-2.5 py-0.5 rounded-full ${STATUS_COLORS[selectedTx.status]}`}>
-                  {STATUS_LABELS[selectedTx.status]}
+                  {t(STATUS_LABEL_KEYS[selectedTx.status])}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-text-muted">날짜</span>
+                <span className="text-sm text-text-muted">{t('date')}</span>
                 <span className="text-sm text-white">{selectedTx.date}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-text-muted">메모</span>
+                <span className="text-sm text-text-muted">{t('memo')}</span>
                 <span className="text-sm text-white">{selectedTx.memo}</span>
               </div>
               {selectedTx.tx_hash && (
@@ -455,7 +457,7 @@ export default function TransactionsPage() {
       <BottomSheet
         isOpen={showDateSheet}
         onClose={() => setShowDateSheet(false)}
-        title="기간 선택"
+        title={t('period_select')}
       >
         <div className="space-y-3">
           {PERIOD_OPTIONS.filter(o => o.value !== 'custom').map(opt => (
@@ -471,11 +473,11 @@ export default function TransactionsPage() {
                   : 'bg-dark-bg text-text-secondary hover:text-white'
               }`}
             >
-              {opt.label}
+              {t(opt.labelKey)}
             </button>
           ))}
           <div className="border-t border-white/5 pt-3">
-            <p className="text-xs text-text-muted mb-2">직접 입력</p>
+            <p className="text-xs text-text-muted mb-2">{t('direct_input')}</p>
             <div className="flex gap-2 items-center">
               <input
                 type="date"
@@ -495,7 +497,7 @@ export default function TransactionsPage() {
               onClick={() => { setFilterPeriod('custom'); setShowDateSheet(false); }}
               className="w-full mt-3 py-3 btn-cta text-sm rounded-xl"
             >
-              적용
+              {t('apply_btn')}
             </button>
           </div>
         </div>

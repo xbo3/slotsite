@@ -68,7 +68,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [providersOpen, setProvidersOpen] = useState(false);
-  const { t } = useLang();
+  const { t, lang, setLang } = useLang();
 
   const categories = categoryDefs.map(c => ({ ...c, label: t(c.labelKey) }));
 
@@ -175,6 +175,49 @@ export default function Sidebar() {
           </div>
         )}
       </div>
+
+      {/* Language Toggle */}
+      {!collapsed && (
+        <div className="px-3 pb-2">
+          <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
+            <button
+              onClick={() => setLang('ko')}
+              className={`flex-1 py-2 text-xs font-light transition-all ${
+                lang === 'ko'
+                  ? 'bg-white text-dark-bg'
+                  : 'text-text-muted hover:text-white'
+              }`}
+              style={lang !== 'ko' ? { background: 'rgba(255,255,255,0.03)' } : undefined}
+            >
+              한국어
+            </button>
+            <button
+              onClick={() => setLang('en')}
+              className={`flex-1 py-2 text-xs font-light transition-all ${
+                lang === 'en'
+                  ? 'bg-white text-dark-bg'
+                  : 'text-text-muted hover:text-white'
+              }`}
+              style={lang !== 'en' ? { background: 'rgba(255,255,255,0.03)' } : undefined}
+            >
+              English
+            </button>
+          </div>
+        </div>
+      )}
+      {collapsed && (
+        <div className="px-2 pb-2 flex justify-center">
+          <button
+            onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}
+            className="group relative px-2 py-1.5 text-[10px] font-light text-text-muted hover:text-white transition-colors rounded-lg hover:bg-white/5"
+          >
+            {lang === 'ko' ? 'KO' : 'EN'}
+            <div className="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-dark-elevated text-white text-sm rounded-md whitespace-nowrap z-50 shadow-lg">
+              {lang === 'ko' ? 'English' : '한국어'}
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Bottom: 24/7 Support */}
       {!collapsed && (

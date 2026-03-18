@@ -1,8 +1,13 @@
+'use client';
+
+import { useLang } from '@/hooks/useLang';
+
 export default function WalletPage() {
+  const { t } = useLang();
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-white mb-6">내 지갑</h1>
-      <p className="text-text-secondary">충전/환전 기능이 여기에 표시됩니다.</p>
+      <h1 className="text-2xl font-bold text-white mb-6">{t('my_wallet')}</h1>
+      <p className="text-text-secondary">{t('wallet_desc')}</p>
     </div>
   );
 }

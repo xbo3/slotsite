@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useLang } from '@/hooks/useLang';
 
 type CouponType = 'bonus_money' | 'free_spin' | 'deposit_bonus';
 type CouponStatus = 'available' | 'used' | 'expired';
@@ -44,6 +45,7 @@ const TYPE_ACCENT_COLORS: Record<CouponType, string> = {
 };
 
 export default function MyCouponsPage() {
+  const { t } = useLang();
   const [coupons, setCoupons] = useState<UserCoupon[]>(DUMMY_MY_COUPONS);
   const [couponCode, setCouponCode] = useState('');
   const [applyResult, setApplyResult] = useState<{ success: boolean; message: string } | null>(null);
@@ -73,7 +75,7 @@ export default function MyCouponsPage() {
 
     setCoupons(prev => [newCoupon, ...prev]);
     setGlowId(newCoupon.id);
-    setApplyResult({ success: true, message: '보너스가 적용되었습니다!' });
+    setApplyResult({ success: true, message: t('bonus_applied') });
     setCouponCode('');
     setApplyLoading(false);
 
@@ -88,18 +90,18 @@ export default function MyCouponsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
-      <h1 className="text-2xl font-light text-white mb-6">내 보너스</h1>
+      <h1 className="text-2xl font-light text-white mb-6">{t('my_bonuses')}</h1>
 
       {/* Coupon Code Input */}
       <div className="bg-dark-card rounded-xl border border-white/5 p-5 mb-8">
-        <h2 className="text-sm font-light text-text-secondary mb-3">보너스 코드 입력</h2>
+        <h2 className="text-sm font-light text-text-secondary mb-3">{t('bonus_code_input')}</h2>
         <div className="flex gap-2">
           <input
             type="text"
             value={couponCode}
             onChange={e => setCouponCode(e.target.value.toUpperCase())}
             onKeyDown={e => e.key === 'Enter' && handleApplyCoupon()}
-            placeholder="보너스 코드를 입력하세요"
+            placeholder={t('enter_bonus_code')}
             className="flex-1 px-4 py-3 bg-dark-input border border-white/5 rounded-lg text-white text-sm font-mono placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
           />
           <button
@@ -107,7 +109,7 @@ export default function MyCouponsPage() {
             disabled={applyLoading || !couponCode.trim()}
             className="px-6 py-3 btn-cta text-sm rounded-lg whitespace-nowrap"
           >
-            {applyLoading ? '확인 중...' : '적용'}
+            {applyLoading ? t('checking') : t('apply')}
           </button>
         </div>
         {applyResult && (
@@ -123,40 +125,40 @@ export default function MyCouponsPage() {
 
       {/* ===== Bonus Categories ===== */}
       <div className="mb-10">
-        <h2 className="text-lg font-medium text-white mb-4">보너스 종류</h2>
+        <h2 className="text-lg font-medium text-white mb-4">{t('bonus_types')}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
           <BonusCategoryCard
             icon="🚨"
-            name="이멀전시 보너스"
-            desc="긴급 지원 보너스"
+            name={t('emergency_bonus')}
+            desc={t('emergency_bonus_desc')}
             borderColor="border-danger/40"
             available={true}
           />
           <BonusCategoryCard
             icon="🔮"
-            name="파생 보너스"
-            desc="기존 보너스에서 파생"
+            name={t('derived_bonus')}
+            desc={t('derived_bonus_desc')}
             borderColor="border-white/20"
             available={false}
           />
           <BonusCategoryCard
             icon="🔗"
-            name="연계 보너스"
-            desc="조건 달성 시 연계 지급"
+            name={t('linked_bonus')}
+            desc={t('linked_bonus_desc')}
             borderColor="border-blue-400/40"
             available={true}
           />
           <BonusCategoryCard
             icon="🏃"
-            name="릴레이 보너스"
-            desc="단계별 달성 보너스"
+            name={t('relay_bonus')}
+            desc={t('relay_bonus_desc')}
             borderColor="border-white/20"
             available={false}
           />
           <BonusCategoryCard
             icon="✋"
-            name="요청 보너스"
-            desc="직접 요청하여 받는 보너스"
+            name={t('request_bonus')}
+            desc={t('request_bonus_desc')}
             borderColor="border-green-500/40"
             available={true}
           />
@@ -169,11 +171,11 @@ export default function MyCouponsPage() {
               👑
             </div>
             <div className="flex-1">
-              <h3 className="text-white font-medium text-base">그레이드 혜택</h3>
-              <p className="text-text-secondary text-sm font-light">등급별 자동 지급 보너스</p>
+              <h3 className="text-white font-medium text-base">{t('grade_benefits_title')}</h3>
+              <p className="text-text-secondary text-sm font-light">{t('grade_auto_bonus')}</p>
             </div>
             <span className="px-4 py-1.5 text-xs font-medium rounded-full" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)', color: '#0A0A0A' }}>
-              VIP 전용
+              {t('vip_only')}
             </span>
           </div>
         </div>
@@ -185,11 +187,11 @@ export default function MyCouponsPage() {
               💳
             </div>
             <div className="flex-1">
-              <h3 className="text-white font-medium text-base">보너스 대출</h3>
-              <p className="text-text-secondary text-sm font-light">선지급 후 롤링 차감</p>
+              <h3 className="text-white font-medium text-base">{t('bonus_loan_title')}</h3>
+              <p className="text-text-secondary text-sm font-light">{t('advance_rolling')}</p>
             </div>
             <span className="px-4 py-1.5 btn-outline text-xs rounded-full">
-              신청하기
+              {t('apply_loan')}
             </span>
           </div>
         </div>
@@ -202,13 +204,13 @@ export default function MyCouponsPage() {
             🎫
           </div>
           <div>
-            <h3 className="text-white font-medium text-base">7만원 전환 쿠폰</h3>
-            <p className="text-text-secondary text-sm font-light">777% 롤링 달성 시 전환 가능</p>
+            <h3 className="text-white font-medium text-base">{t('conversion_coupon_70k')}</h3>
+            <p className="text-text-secondary text-sm font-light">{t('rolling_777_desc')}</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between text-sm mb-2">
-          <span className="text-text-secondary font-light">현재 롤링</span>
+          <span className="text-text-secondary font-light">{t('current_rolling_label')}</span>
           <span className="text-white font-medium">234% / 777%</span>
         </div>
 
@@ -225,7 +227,7 @@ export default function MyCouponsPage() {
 
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-text-muted text-xs font-light">쿠폰 금액</p>
+            <p className="text-text-muted text-xs font-light">{t('coupon_amount')}</p>
             <p className="text-white text-xl font-medium">₩70,000</p>
             <p className="text-text-muted text-xs font-light mt-0.5">최대 전환 ₩770,000</p>
           </div>
@@ -234,7 +236,7 @@ export default function MyCouponsPage() {
             className="px-6 py-3 rounded-xl text-sm font-medium opacity-50 cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)', color: '#0A0A0A' }}
           >
-            전환하기
+            {t('convert_btn')}
           </button>
         </div>
       </div>
@@ -243,7 +245,7 @@ export default function MyCouponsPage() {
       {availableCoupons.length > 0 ? (
         <>
           <h2 className="text-lg font-light text-white mb-4">
-            사용 가능한 보너스 <span className="text-white ml-1">{availableCoupons.length}</span>
+            {t('available_bonuses')} <span className="text-white ml-1">{availableCoupons.length}</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-10">
             {availableCoupons.map(coupon => (
@@ -254,10 +256,10 @@ export default function MyCouponsPage() {
       ) : (
         <div className="flex flex-col items-center justify-center py-16 text-center mb-10">
           <span className="text-5xl mb-4">{'\uD83C\uDF9F\uFE0F'}</span>
-          <h3 className="text-lg font-light text-white mb-1">보유 중인 보너스가 없습니다</h3>
-          <p className="text-text-secondary text-sm mb-4">프로모션 페이지에서 보너스를 받아보세요</p>
+          <h3 className="text-lg font-light text-white mb-1">{t('no_bonuses')}</h3>
+          <p className="text-text-secondary text-sm mb-4">{t('no_bonuses_desc')}</p>
           <Link href="/lobby" className="px-6 py-2.5 btn-cta text-sm rounded-lg">
-            프로모션 보기
+            {t('view_promotions')}
           </Link>
         </div>
       )}
@@ -265,7 +267,7 @@ export default function MyCouponsPage() {
       {/* Past Coupons */}
       {pastCoupons.length > 0 && (
         <>
-          <h2 className="text-lg font-light text-text-muted mb-4">사용/만료된 보너스</h2>
+          <h2 className="text-lg font-light text-text-muted mb-4">{t('past_bonuses')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {pastCoupons.map(coupon => (
               <CouponCard key={coupon.id} coupon={coupon} disabled />
@@ -278,6 +280,7 @@ export default function MyCouponsPage() {
 }
 
 function BonusCategoryCard({ icon, name, desc, borderColor, available }: { icon: string; name: string; desc: string; borderColor: string; available: boolean }) {
+  const { t } = useLang();
   return (
     <div className={`card-glossy rounded-xl p-4 transition-all duration-300 ${borderColor} ${available ? 'card-hover' : 'opacity-50'}`} style={{ borderLeftWidth: '3px' }}>
       <div className="flex items-center gap-3">
@@ -290,7 +293,7 @@ function BonusCategoryCard({ icon, name, desc, borderColor, available }: { icon:
         </div>
         {available && (
           <span className="px-2.5 py-1 text-[10px] font-medium rounded-full glow-gold" style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
-            받기 가능
+            {t('available')}
           </span>
         )}
       </div>
@@ -299,6 +302,7 @@ function BonusCategoryCard({ icon, name, desc, borderColor, available }: { icon:
 }
 
 function CouponCard({ coupon, isGlowing = false, disabled = false }: { coupon: UserCoupon; isGlowing?: boolean; disabled?: boolean }) {
+  const { t } = useLang();
   return (
     <div className={`relative bg-dark-card rounded-xl border-l-4 ${TYPE_ACCENT_COLORS[coupon.type]} border border-white/5 overflow-hidden transition-all duration-300 ${
       isGlowing ? 'glow-gold border-white/20' : ''
@@ -330,12 +334,12 @@ function CouponCard({ coupon, isGlowing = false, disabled = false }: { coupon: U
 
           {coupon.status === 'available' ? (
             <button className="px-4 py-1.5 btn-cta text-xs rounded-lg">
-              사용하기
+              {t('use_coupon')}
             </button>
           ) : coupon.status === 'used' ? (
-            <span className="px-3 py-1 bg-dark-elevated text-text-muted text-xs rounded-lg">사용완료</span>
+            <span className="px-3 py-1 bg-dark-elevated text-text-muted text-xs rounded-lg">{t('used_complete')}</span>
           ) : (
-            <span className="px-3 py-1 bg-danger/10 text-danger text-xs rounded-lg">만료</span>
+            <span className="px-3 py-1 bg-danger/10 text-danger text-xs rounded-lg">{t('expired')}</span>
           )}
         </div>
       </div>

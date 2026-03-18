@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { SkeletonCard } from '@/components/ui/Skeleton';
 import { DEMO_GAMES } from '@/lib/gameData';
+import { useLang } from '@/hooks/useLang';
 
 // ===== Dummy Game Data =====
 const PROVIDER_LIST = ['Pragmatic Play', 'PG Soft', 'Evolution', 'NetEnt', 'Microgaming', "Play'n GO", 'Nolimit City', 'Red Tiger', 'Big Time Gaming'] as const;
@@ -112,14 +113,16 @@ function GameThumbnail({ game, className = '' }: { game: Game; className?: strin
 }
 
 export default function LobbyPage() {
+  const { t } = useLang();
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-text-muted">로딩 중...</div></div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-text-muted">{t('loading')}</div></div>}>
       <LobbyContent />
     </Suspense>
   );
 }
 
 function LobbyContent() {
+  const { t } = useLang();
   const searchParams = useSearchParams();
   const providerParam = searchParams.get('provider');
 
@@ -214,7 +217,7 @@ function LobbyContent() {
   });
   if (sortBy !== 'default') {
     activeFilters.push({
-      label: sortBy === 'rtp' ? 'RTP순' : '이름순',
+      label: sortBy === 'rtp' ? t('rtp_sort_label') : t('name_sort_label'),
       onRemove: () => setSortBy('default'),
     });
   }
@@ -229,11 +232,11 @@ function LobbyContent() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-2 h-8 bg-whiterounded-full" />
-            <h1 className="text-3xl md:text-4xl font-light text-white tracking-tight">{'\uD83C\uDFAE'} {'\uAC8C\uC784'} {'\uB85C\uBE44'}</h1>
+            <div className="w-2 h-8 bg-white rounded-full" />
+            <h1 className="text-3xl md:text-4xl font-light text-white tracking-tight">{'\uD83C\uDFAE'} {t('game_lobby_title')}</h1>
           </div>
           <p className="text-text-secondary ml-5">
-            <span className="text-whitefont-light">{GAMES.length}</span>개의 프리미엄 게임이 당신을 기다립니다
+            <span className="text-white font-light">{GAMES.length}</span>{t('premium_games_waiting')}
           </p>
         </div>
       </div>
@@ -243,7 +246,7 @@ function LobbyContent() {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl">{'\u23F1\uFE0F'}</span>
-            <h2 className="text-xl font-light text-white">최근 플레이</h2>
+            <h2 className="text-xl font-light text-white">{t('recent_play')}</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-info/50 to-transparent ml-3" />
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
@@ -258,7 +261,7 @@ function LobbyContent() {
                   <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
                   <div className="absolute top-2 left-2">
                     <span className="px-2 py-0.5 bg-info text-white text-[10px] font-light rounded-full">
-                      {'\uD83D\uDD04'} 최근
+                      {'\uD83D\uDD04'} {t('recent_label')}
                     </span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
@@ -267,7 +270,7 @@ function LobbyContent() {
                   </div>
                   <div className="absolute inset-0 bg-info/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="px-6 py-2.5 bg-white text-dark-bg font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
-                      이어하기 {'\u25B6'}
+                      {t('continue_play')} {'\u25B6'}
                     </span>
                   </div>
                 </div>
@@ -280,7 +283,7 @@ function LobbyContent() {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl">{'\uD83D\uDD25'}</span>
-            <h2 className="text-xl font-light text-white">HOT 게임</h2>
+            <h2 className="text-xl font-light text-white">{t('hot_games')}</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-danger/50 to-transparent ml-3" />
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
@@ -310,7 +313,7 @@ function LobbyContent() {
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="px-6 py-2.5 bg-white text-dark-bg font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
-                      지금 플레이 {'\u25B6'}
+                      {t('play_now_icon')} {'\u25B6'}
                     </span>
                   </div>
                 </div>
@@ -330,7 +333,7 @@ function LobbyContent() {
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="게임 이름, 프로바이더 검색..."
+              placeholder={t('search_game_provider')}
               className="w-full pl-12 pr-4 py-3.5 bg-dark-card border border-white/5 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/30 transition-all"
             />
             {search && (
@@ -374,9 +377,9 @@ function LobbyContent() {
                 className="px-3 py-2 rounded-full text-xs font-medium bg-dark-card text-text-secondary border border-white/30 hover:border-white/60 focus:outline-none focus:border-white/30 cursor-pointer appearance-none pr-7 transition-all"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23557086' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}
               >
-                <option value="default">기본 정렬</option>
-                <option value="rtp">RTP 높은순</option>
-                <option value="name">이름순</option>
+                <option value="default">{t('default_sort')}</option>
+                <option value="rtp">{t('rtp_sort')}</option>
+                <option value="name">{t('name_sort')}</option>
               </select>
             </div>
           </div>
@@ -385,7 +388,7 @@ function LobbyContent() {
           {activeFilters.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {activeFilters.map(f => (
-                <span key={f.label} className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/20 text-whitetext-xs font-medium rounded-full">
+                <span key={f.label} className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/20 text-white text-xs font-medium rounded-full">
                   {f.label}
                   <button onClick={f.onRemove} className="hover:text-white transition-colors">{'\u2715'}</button>
                 </span>
@@ -395,7 +398,7 @@ function LobbyContent() {
                   onClick={() => { clearProviders(); setSortBy('default'); }}
                   className="px-3 py-1 text-xs text-text-muted hover:text-white transition-colors"
                 >
-                  전체 초기화
+                  {t('reset_all')}
                 </button>
               )}
             </div>
@@ -407,19 +410,19 @@ function LobbyContent() {
           <div className="flex items-center justify-between mb-4">
             <p className="text-text-secondary text-sm">
               {selectedProviders.size > 0 && (
-                <span className="text-whitefont-medium">{Array.from(selectedProviders).join(', ')}</span>
+                <span className="text-white font-medium">{Array.from(selectedProviders).join(', ')}</span>
               )}
               {selectedProviders.size > 0 && ' \u00B7 '}
-              {filtered.length}개 게임
+              {filtered.length}{t('games_count_suffix')}
             </p>
           </div>
 
           {filtered.length === 0 ? (
             <div className="text-center py-20">
               <div className="text-5xl mb-4">{'\uD83C\uDFB0'}</div>
-              <p className="text-text-secondary text-lg">검색 결과가 없습니다</p>
-              <button onClick={() => { setSearch(''); clearProviders(); }} className="mt-4 text-whitehover:underline">
-                필터 초기화
+              <p className="text-text-secondary text-lg">{t('no_search_results')}</p>
+              <button onClick={() => { setSearch(''); clearProviders(); }} className="mt-4 text-white hover:underline">
+                {t('reset_filters')}
               </button>
             </div>
           ) : (
@@ -445,7 +448,7 @@ function LobbyContent() {
 
               {!hasMore && visibleGames.length > ITEMS_PER_PAGE && (
                 <p className="text-center text-text-muted text-sm mt-8">
-                  모든 게임을 불러왔습니다 ({filtered.length}개)
+                  {t('all_games_loaded')} ({filtered.length})
                 </p>
               )}
             </>
@@ -457,6 +460,7 @@ function LobbyContent() {
 }
 
 function GameCard({ game }: { game: Game }) {
+  const { t } = useLang();
   const providerColors = PROVIDER_COLORS[game.provider];
   return (
     <div className="group relative">
@@ -496,14 +500,14 @@ function GameCard({ game }: { game: Game }) {
                   onClick={e => e.stopPropagation()}
                   className="px-6 py-2 border-2 border-white/60 text-white font-light rounded-xl text-xs hover:bg-white/10 transition-colors text-center"
                 >
-                  무료 체험
+                  {t('free_trial')}
                 </Link>
                 <Link
                   href={`/game/${game.id}`}
                   onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 bg-whitetext-dark-bg font-light rounded-xl text-xs hover:shadow-lg hover:shadow-white/40 transition-all text-center"
+                  className="px-6 py-2 bg-white text-dark-bg font-light rounded-xl text-xs hover:shadow-lg hover:shadow-white/40 transition-all text-center"
                 >
-                  실전 플레이 {'\u25B6'}
+                  {t('real_play')} {'\u25B6'}
                 </Link>
               </div>
             </div>

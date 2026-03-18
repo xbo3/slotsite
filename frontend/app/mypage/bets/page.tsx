@@ -4,6 +4,7 @@ import { useState, useMemo, useRef, useCallback } from 'react';
 import Pagination from '@/components/ui/Pagination';
 import EmptyState from '@/components/ui/EmptyState';
 import BottomSheet from '@/components/ui/BottomSheet';
+import { useLang } from '@/hooks/useLang';
 
 type GameType = 'slot' | 'live_casino' | 'table';
 type BetResult = 'win' | 'lose';
@@ -39,18 +40,18 @@ type FilterGameType = 'all' | GameType;
 type FilterResult = 'all' | BetResult;
 type FilterPeriod = 'today' | '7d' | '30d' | 'custom';
 
-const GAME_TYPE_TABS: { value: FilterGameType; label: string }[] = [
-  { value: 'all', label: '전체' },
-  { value: 'slot', label: '슬롯' },
-  { value: 'live_casino', label: '라이브카지노' },
-  { value: 'table', label: '테이블게임' },
+const GAME_TYPE_TABS: { value: FilterGameType; labelKey: string }[] = [
+  { value: 'all', labelKey: 'all' },
+  { value: 'slot', labelKey: 'slot_label' },
+  { value: 'live_casino', labelKey: 'live_casino' },
+  { value: 'table', labelKey: 'table_game' },
 ];
 
-const PERIOD_OPTIONS: { value: FilterPeriod; label: string }[] = [
-  { value: 'today', label: '오늘' },
-  { value: '7d', label: '7일' },
-  { value: '30d', label: '30일' },
-  { value: 'custom', label: '직접입력' },
+const PERIOD_OPTIONS: { value: FilterPeriod; labelKey: string }[] = [
+  { value: 'today', labelKey: 'today' },
+  { value: '7d', labelKey: '7days' },
+  { value: '30d', labelKey: '30days' },
+  { value: 'custom', labelKey: 'custom_input' },
 ];
 
 // Arrow icon for bet -> win display
@@ -63,6 +64,7 @@ function ArrowRightIcon() {
 }
 
 export default function BetsPage() {
+  const { t } = useLang();
   const [filterGameType, setFilterGameType] = useState<FilterGameType>('all');
   const [filterResult, setFilterResult] = useState<FilterResult>('all');
   const [filterPeriod, setFilterPeriod] = useState<FilterPeriod>('30d');
@@ -151,19 +153,19 @@ export default function BetsPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">총 베팅횟수</p>
-          <p className="text-lg md:text-xl font-bold text-white">{totalBetCount}<span className="text-xs text-text-muted ml-1">회</span></p>
+          <p className="text-xs text-text-muted mb-1">{t('total_bet_count')}</p>
+          <p className="text-lg md:text-xl font-bold text-white">{totalBetCount}<span className="text-xs text-text-muted ml-1">{t('count_suffix')}</span></p>
         </div>
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">총 베팅금액</p>
+          <p className="text-xs text-text-muted mb-1">{t('total_bet_amount')}</p>
           <p className="text-lg md:text-xl font-bold text-white">{totalBetAmount.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
         </div>
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">총 당첨금액</p>
+          <p className="text-xs text-text-muted mb-1">{t('total_win_amount')}</p>
           <p className="text-lg md:text-xl font-bold text-accent">{totalWinAmount.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
         </div>
         <div className="bg-dark-card rounded-xl border border-white/5 p-4">
-          <p className="text-xs text-text-muted mb-1">순수익</p>
+          <p className="text-xs text-text-muted mb-1">{t('net_profit')}</p>
           <p className={`text-lg md:text-xl font-bold ${netProfit >= 0 ? 'text-success' : 'text-danger'}`}>
             {netProfit >= 0 ? '+' : ''}{netProfit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span>
           </p>
@@ -183,7 +185,7 @@ export default function BetsPage() {
                   : 'bg-dark-input text-text-secondary'
               }`}
             >
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           ))}
           <button
@@ -197,9 +199,9 @@ export default function BetsPage() {
             onChange={e => { setFilterResult(e.target.value as FilterResult); setCurrentPage(1); }}
             className="px-3 py-1.5 rounded-full text-sm bg-dark-input text-text-secondary border-0 focus:outline-none"
           >
-            <option value="all">전체결과</option>
-            <option value="win">승리</option>
-            <option value="lose">패배</option>
+            <option value="all">{t('all_results')}</option>
+            <option value="win">{t('win')}</option>
+            <option value="lose">{t('lose')}</option>
           </select>
         </div>
       </div>
@@ -217,7 +219,7 @@ export default function BetsPage() {
                   : 'bg-dark-bg text-text-secondary hover:text-white border border-white/5'
               }`}
             >
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           ))}
         </div>
@@ -234,7 +236,7 @@ export default function BetsPage() {
                     : 'bg-dark-bg text-text-muted hover:text-white border border-white/5'
                 }`}
               >
-                {opt.label}
+                {t(opt.labelKey)}
               </button>
             ))}
           </div>
@@ -260,9 +262,9 @@ export default function BetsPage() {
             onChange={e => { setFilterResult(e.target.value as FilterResult); setCurrentPage(1); }}
             className="px-3 py-1.5 bg-dark-bg border border-white/5 rounded-lg text-white text-xs focus:outline-none focus:border-accent/50 ml-auto"
           >
-            <option value="all">전체 결과</option>
-            <option value="win">승리</option>
-            <option value="lose">패배</option>
+            <option value="all">{t('all_result_option')}</option>
+            <option value="win">{t('win')}</option>
+            <option value="lose">{t('lose')}</option>
           </select>
         </div>
       </div>
@@ -271,9 +273,9 @@ export default function BetsPage() {
       {paginated.length === 0 ? (
         <EmptyState
           icon="🎲"
-          title="아직 플레이한 게임이 없습니다"
-          description="게임 로비에서 게임을 선택해보세요"
-          actionLabel="게임 둘러보기"
+          title={t('no_bets_yet')}
+          description={t('no_bets_desc')}
+          actionLabel={t('browse_games_btn')}
           actionHref="/lobby"
         />
       ) : (
@@ -283,13 +285,13 @@ export default function BetsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-white/5">
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">날짜</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">게임명</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">프로바이더</th>
-                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">베팅액</th>
-                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">당첨액</th>
-                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">수익</th>
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-text-muted uppercase">결과</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('date')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('game_col')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('providers')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('bet_amount')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('win_amount_label')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('profit')}</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('result')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -329,11 +331,11 @@ export default function BetsPage() {
                           </span>
                         ) : bet.result === 'win' ? (
                           <span className="text-[11px] px-2.5 py-1 rounded-full font-medium bg-success/20 text-success">
-                            승리
+                            {t('win')}
                           </span>
                         ) : (
                           <span className="text-[11px] px-2.5 py-1 rounded-full font-medium bg-danger/20 text-danger">
-                            패배
+                            {t('lose')}
                           </span>
                         )}
                       </td>
@@ -401,7 +403,7 @@ export default function BetsPage() {
       <BottomSheet
         isOpen={!!selectedBet}
         onClose={() => setSelectedBet(null)}
-        title="베팅 상세"
+        title={t('bet_detail')}
       >
         {selectedBet && (() => {
           const profit = selectedBet.winAmount - selectedBet.betAmount;
@@ -421,17 +423,17 @@ export default function BetsPage() {
 
               <div className="bg-dark-bg rounded-xl p-4 space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-muted">베팅액</span>
+                  <span className="text-sm text-text-muted">{t('bet_amount')}</span>
                   <span className="text-sm text-white font-semibold">₮ {selectedBet.betAmount.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-muted">당첨액</span>
+                  <span className="text-sm text-text-muted">{t('win_amount_label')}</span>
                   <span className={`text-sm font-semibold ${selectedBet.winAmount > 0 ? 'text-accent' : 'text-text-muted'}`}>
                     ₮ {selectedBet.winAmount.toLocaleString()}
                   </span>
                 </div>
                 <div className="border-t border-white/5 pt-3 flex justify-between">
-                  <span className="text-sm text-text-muted">수익</span>
+                  <span className="text-sm text-text-muted">{t('profit')}</span>
                   <span className={`text-base font-bold ${profit >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {profit >= 0 ? '+' : ''}{profit.toLocaleString()} USDT
                   </span>
@@ -440,22 +442,22 @@ export default function BetsPage() {
 
               <div className="bg-dark-bg rounded-xl p-4 space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-muted">날짜</span>
+                  <span className="text-sm text-text-muted">{t('date')}</span>
                   <span className="text-sm text-white">{selectedBet.date}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-text-muted">결과</span>
+                  <span className="text-sm text-text-muted">{t('result')}</span>
                   {bigWin ? (
                     <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-white/20 text-white">BIG WIN</span>
                   ) : selectedBet.result === 'win' ? (
-                    <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-success/20 text-success">승리</span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-success/20 text-success">{t('win')}</span>
                   ) : (
-                    <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-danger/20 text-danger">패배</span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-danger/20 text-danger">{t('lose')}</span>
                   )}
                 </div>
                 {selectedBet.roundId && (
                   <div className="flex justify-between">
-                    <span className="text-sm text-text-muted">라운드 ID</span>
+                    <span className="text-sm text-text-muted">{t('round_id')}</span>
                     <span className="text-sm text-info font-mono">{selectedBet.roundId}</span>
                   </div>
                 )}
@@ -469,7 +471,7 @@ export default function BetsPage() {
       <BottomSheet
         isOpen={showDateSheet}
         onClose={() => setShowDateSheet(false)}
-        title="기간 선택"
+        title={t('period_select')}
       >
         <div className="space-y-3">
           {PERIOD_OPTIONS.filter(o => o.value !== 'custom').map(opt => (
@@ -485,11 +487,11 @@ export default function BetsPage() {
                   : 'bg-dark-bg text-text-secondary hover:text-white'
               }`}
             >
-              {opt.label}
+              {t(opt.labelKey)}
             </button>
           ))}
           <div className="border-t border-white/5 pt-3">
-            <p className="text-xs text-text-muted mb-2">직접 입력</p>
+            <p className="text-xs text-text-muted mb-2">{t('direct_input')}</p>
             <div className="flex gap-2 items-center">
               <input
                 type="date"
@@ -509,7 +511,7 @@ export default function BetsPage() {
               onClick={() => { setFilterPeriod('custom'); setShowDateSheet(false); }}
               className="w-full mt-3 py-3 btn-cta text-sm rounded-xl"
             >
-              적용
+              {t('apply_btn')}
             </button>
           </div>
         </div>

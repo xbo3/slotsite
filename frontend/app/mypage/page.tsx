@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLang } from '@/hooks/useLang';
 
 // Dummy login history
 const DUMMY_LOGIN_HISTORY = [
@@ -12,6 +13,7 @@ const DUMMY_LOGIN_HISTORY = [
 ];
 
 export default function ProfilePage() {
+  const { t } = useLang();
   const [nickname, setNickname] = useState('player_kim');
   const [currentPw, setCurrentPw] = useState('');
   const [newPw, setNewPw] = useState('');
@@ -23,27 +25,27 @@ export default function ProfilePage() {
 
   const handleNicknameChange = () => {
     if (!nickname.trim() || nickname.length < 2) {
-      setNicknameMsg({ type: 'error', text: '닉네임은 2자 이상 입력해주세요.' });
+      setNicknameMsg({ type: 'error', text: t('nickname_min_2') });
       return;
     }
-    setNicknameMsg({ type: 'success', text: '닉네임이 변경되었습니다.' });
+    setNicknameMsg({ type: 'success', text: t('nickname_changed') });
     setTimeout(() => setNicknameMsg(null), 3000);
   };
 
   const handlePasswordChange = () => {
     if (!currentPw) {
-      setPwMsg({ type: 'error', text: '현재 비밀번호를 입력해주세요.' });
+      setPwMsg({ type: 'error', text: t('enter_current_pw') });
       return;
     }
     if (newPw.length < 6) {
-      setPwMsg({ type: 'error', text: '새 비밀번호는 6자 이상이어야 합니다.' });
+      setPwMsg({ type: 'error', text: t('new_pw_min_6') });
       return;
     }
     if (newPw !== confirmPw) {
-      setPwMsg({ type: 'error', text: '새 비밀번호가 일치하지 않습니다.' });
+      setPwMsg({ type: 'error', text: t('new_pw_mismatch') });
       return;
     }
-    setPwMsg({ type: 'success', text: '비밀번호가 변경되었습니다.' });
+    setPwMsg({ type: 'success', text: t('pw_changed') });
     setCurrentPw('');
     setNewPw('');
     setConfirmPw('');
@@ -52,19 +54,19 @@ export default function ProfilePage() {
 
   const handleSecurityPw = () => {
     if (!/^\d{4,6}$/.test(securityPw)) {
-      setSecMsg({ type: 'error', text: '4~6자리 숫자를 입력해주세요.' });
+      setSecMsg({ type: 'error', text: t('enter_4_6_digits') });
       return;
     }
-    setSecMsg({ type: 'success', text: '2차 비밀번호가 설정되었습니다.' });
+    setSecMsg({ type: 'success', text: t('secondary_pw_set') });
     setSecurityPw('');
     setTimeout(() => setSecMsg(null), 3000);
   };
 
   // Dummy daily missions
   const missions = [
-    { id: 1, title: '오늘 3게임 플레이', progress: 2, total: 3, reward: 5, completed: false },
-    { id: 2, title: '첫 충전하기', progress: 1, total: 1, reward: 10, completed: true },
-    { id: 3, title: '프로필 완성하기', progress: 0, total: 1, reward: 3, completed: false },
+    { id: 1, title: t('play_3_games'), progress: 2, total: 3, reward: 5, completed: false },
+    { id: 2, title: t('first_deposit_mission'), progress: 1, total: 1, reward: 10, completed: true },
+    { id: 3, title: t('complete_profile'), progress: 0, total: 1, reward: 3, completed: false },
   ];
   const completedCount = missions.filter(m => m.completed).length;
 
@@ -75,10 +77,10 @@ export default function ProfilePage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="text-xl">{'\uD83C\uDFAF'}</span>
-            <h2 className="text-base font-semibold text-white">일일 미션</h2>
+            <h2 className="text-base font-semibold text-white">{t('daily_missions')}</h2>
           </div>
           <span className="text-xs text-text-muted bg-dark-bg px-3 py-1 rounded-full">
-            {completedCount}/{missions.length} 완료
+            {completedCount}/{missions.length} {t('completed')}
           </span>
         </div>
 
@@ -139,12 +141,12 @@ export default function ProfilePage() {
 
       {/* Basic Info */}
       <div className="bg-dark-card rounded-xl border border-white/5 p-5">
-        <h2 className="text-base font-semibold text-white mb-4">기본 정보 수정</h2>
+        <h2 className="text-base font-semibold text-white mb-4">{t('basic_info_edit')}</h2>
 
         <div className="space-y-4">
           {/* Nickname */}
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">닉네임</label>
+            <label className="block text-sm text-text-secondary mb-1.5">{t('nickname')}</label>
             <div className="flex gap-2">
               <input
                 type="text"
@@ -157,7 +159,7 @@ export default function ProfilePage() {
                 onClick={handleNicknameChange}
                 className="px-4 py-2.5 bg-dark-elevated hover:bg-white/10 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
               >
-                변경
+                {t('change')}
               </button>
             </div>
             {nicknameMsg && (
@@ -169,49 +171,49 @@ export default function ProfilePage() {
 
           {/* Email (read-only, masked) */}
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">이메일</label>
+            <label className="block text-sm text-text-secondary mb-1.5">{t('email')}</label>
             <input
               type="text"
               value="te***@gmail.com"
               disabled
               className="w-full px-4 py-2.5 bg-dark-input border border-white/5 rounded-lg text-text-muted text-sm cursor-not-allowed"
             />
-            <p className="mt-1 text-[11px] text-text-muted">보안을 위해 이메일은 변경할 수 없습니다.</p>
+            <p className="mt-1 text-[11px] text-text-muted">{t('email_no_change')}</p>
           </div>
         </div>
       </div>
 
       {/* Password Change */}
       <div className="bg-dark-card rounded-xl border border-white/5 p-5">
-        <h2 className="text-base font-semibold text-white mb-4">비밀번호 변경</h2>
+        <h2 className="text-base font-semibold text-white mb-4">{t('change_pw')}</h2>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">현재 비밀번호</label>
+            <label className="block text-sm text-text-secondary mb-1.5">{t('current_password')}</label>
             <input
               type="password"
               value={currentPw}
               onChange={e => setCurrentPw(e.target.value)}
-              placeholder="현재 비밀번호 입력"
+              placeholder={t('current_pw_placeholder')}
               className="w-full px-4 py-2.5 bg-dark-input border border-white/5 rounded-lg text-white text-sm placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
             />
           </div>
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">새 비밀번호</label>
+            <label className="block text-sm text-text-secondary mb-1.5">{t('new_password')}</label>
             <input
               type="password"
               value={newPw}
               onChange={e => setNewPw(e.target.value)}
-              placeholder="6자 이상"
+              placeholder={t('new_pw_6plus')}
               className="w-full px-4 py-2.5 bg-dark-input border border-white/5 rounded-lg text-white text-sm placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
             />
           </div>
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">비밀번호 확인</label>
+            <label className="block text-sm text-text-secondary mb-1.5">{t('confirm_pw')}</label>
             <input
               type="password"
               value={confirmPw}
               onChange={e => setConfirmPw(e.target.value)}
-              placeholder="새 비밀번호 다시 입력"
+              placeholder={t('new_pw_reenter')}
               className="w-full px-4 py-2.5 bg-dark-input border border-white/5 rounded-lg text-white text-sm placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
             />
           </div>
@@ -224,23 +226,23 @@ export default function ProfilePage() {
             onClick={handlePasswordChange}
             className="w-full py-3 btn-cta text-sm rounded-lg mt-1"
           >
-            변경하기
+            {t('submit_change')}
           </button>
         </div>
       </div>
 
       {/* Security Password */}
       <div className="bg-dark-card rounded-xl border border-white/5 p-5">
-        <h2 className="text-base font-semibold text-white mb-1">보안 설정</h2>
-        <p className="text-xs text-text-muted mb-4">출금 시 사용되는 2차 비밀번호입니다.</p>
+        <h2 className="text-base font-semibold text-white mb-1">{t('security_settings')}</h2>
+        <p className="text-xs text-text-muted mb-4">{t('security_pw_desc')}</p>
         <div className="space-y-3">
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">2차 비밀번호 (4~6자리 숫자)</label>
+            <label className="block text-sm text-text-secondary mb-1.5">{t('secondary_pw_label')}</label>
             <input
               type="password"
               value={securityPw}
               onChange={e => setSecurityPw(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              placeholder="숫자 4~6자리"
+              placeholder={t('digits_4_6')}
               maxLength={6}
               inputMode="numeric"
               className="w-full px-4 py-2.5 bg-dark-input border border-white/5 rounded-lg text-white text-sm placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
@@ -255,24 +257,24 @@ export default function ProfilePage() {
             onClick={handleSecurityPw}
             className="w-full py-3 bg-dark-elevated hover:bg-white/10 text-white text-sm font-medium rounded-lg transition-colors"
           >
-            설정하기
+            {t('set_button')}
           </button>
         </div>
       </div>
 
       {/* Login History */}
       <div className="bg-dark-card rounded-xl border border-white/5 p-5">
-        <h2 className="text-base font-semibold text-white mb-4">최근 로그인 기록</h2>
+        <h2 className="text-base font-semibold text-white mb-4">{t('recent_login')}</h2>
 
         {/* Desktop Table */}
         <div className="hidden md:block overflow-hidden rounded-lg border border-white/5">
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/5 bg-dark-bg/50">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">날짜</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">IP</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">기기</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">브라우저</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('date')}</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('ip')}</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('device')}</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-text-muted uppercase">{t('browser')}</th>
               </tr>
             </thead>
             <tbody>

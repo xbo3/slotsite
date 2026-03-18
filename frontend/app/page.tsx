@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { DEMO_GAMES } from '@/lib/gameData';
+import { useLang } from '@/hooks/useLang';
 
 // ===== Data =====
 const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: string }> = {
@@ -35,26 +36,26 @@ const NEW_GAMES = DEMO_GAMES.filter(g => g.isNew).map(g => ({
   rtp: g.rtp,
 }));
 
-const BANNER_SLIDES = [
+const BANNER_SLIDES_KEYS = [
   {
-    title: '첫 충전 보너스',
-    highlight: '최대 200%',
-    desc: '지금 가입하고 첫 충전 시 최대 200% 보너스를 받으세요!',
-    cta: '보너스 받기',
+    titleKey: 'first_deposit_bonus',
+    highlightKey: 'up_to_200',
+    descKey: 'first_deposit_desc',
+    ctaKey: 'get_bonus',
     ctaHref: '/register',
   },
   {
-    title: '매일 캐시백',
-    highlight: '최대 15%',
-    desc: '매일 플레이할수록 돌아오는 캐시백! 놓치지 마세요.',
-    cta: '자세히 보기',
+    titleKey: 'daily_cashback',
+    highlightKey: 'up_to_15',
+    descKey: 'daily_cashback_desc',
+    ctaKey: 'see_details',
     ctaHref: '/mypage/coupons',
   },
   {
-    title: 'VIP 전용 혜택',
-    highlight: '무제한',
-    desc: 'VIP 등급이 올라갈수록 더 큰 혜택과 독점 게임이 열립니다.',
-    cta: 'VIP 혜택 보기',
+    titleKey: 'vip_benefits',
+    highlightKey: 'unlimited',
+    descKey: 'vip_benefits_desc',
+    ctaKey: 'view_vip_benefits',
     ctaHref: '/mypage',
   },
 ];
@@ -114,6 +115,7 @@ function useInView(threshold = 0.15) {
 
 // ===== Main Page =====
 export default function Home() {
+  const { t } = useLang();
   // Banner slider
   const [bannerIdx, setBannerIdx] = useState(0);
   const [bannerAnim, setBannerAnim] = useState<'enter' | 'exit'>('enter');
@@ -122,7 +124,7 @@ export default function Home() {
   const nextBanner = useCallback(() => {
     setBannerAnim('exit');
     setTimeout(() => {
-      setBannerIdx(prev => (prev + 1) % BANNER_SLIDES.length);
+      setBannerIdx(prev => (prev + 1) % BANNER_SLIDES_KEYS.length);
       setBannerAnim('enter');
     }, 500);
   }, []);
@@ -166,7 +168,7 @@ export default function Home() {
   const leaderboardSection = useInView();
   const ctaSection = useInView();
 
-  const banner = BANNER_SLIDES[bannerIdx];
+  const bannerKeys = BANNER_SLIDES_KEYS[bannerIdx];
   const feedItem = BETTING_FEED_DATA[feedIdx];
 
   return (
@@ -186,26 +188,26 @@ export default function Home() {
             <div className={`flex-1 text-center md:text-left ${bannerAnim === 'enter' ? 'banner-enter' : 'banner-exit'}`}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#FFFFFF' }} />
-                <span className="text-sm font-light text-white/80">지금 {onlineCount.toLocaleString()}명이 플레이 중</span>
+                <span className="text-sm font-light text-white/80">{t('now_playing_count').replace('{count}', onlineCount.toLocaleString())}</span>
               </div>
 
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-extralight leading-[0.95] tracking-tight">
-                <span className="text-white">{banner.title}</span>
+                <span className="text-white">{t(bannerKeys.titleKey)}</span>
                 <br />
                 <span className="text-white font-thin">
-                  {banner.highlight}
+                  {t(bannerKeys.highlightKey)}
                 </span>
               </h1>
               <p className="mt-4 text-base md:text-lg text-text-secondary max-w-lg leading-relaxed font-light">
-                {banner.desc}
+                {t(bannerKeys.descKey)}
               </p>
 
               <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                 <Link
-                  href={banner.ctaHref}
+                  href={bannerKeys.ctaHref}
                   className="group inline-flex items-center justify-center gap-2 px-8 py-3.5 text-lg font-light btn-cta"
                 >
-                  <span>{banner.cta}</span>
+                  <span>{t(bannerKeys.ctaKey)}</span>
                   <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -215,13 +217,13 @@ export default function Home() {
                   className="inline-flex items-center justify-center px-8 py-3.5 text-lg font-light transition-all hover:scale-105 active:scale-95"
                   style={{ border: '1px solid rgba(255,255,255,0.12)', color: '#FFFFFF' }}
                 >
-                  게임 둘러보기
+                  {t('browse_games')}
                 </Link>
               </div>
 
               {/* Banner dots */}
               <div className="flex gap-2 mt-6 justify-center md:justify-start">
-                {BANNER_SLIDES.map((_, i) => (
+                {BANNER_SLIDES_KEYS.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => { setBannerAnim('exit'); setTimeout(() => { setBannerIdx(i); setBannerAnim('enter'); }, 500); }}
@@ -284,14 +286,14 @@ export default function Home() {
               <div className="flex-1 min-w-0">
                 <span className="text-white text-sm font-light">
                   <span className="font-medium">{feedItem.nick}</span>
-                  <span className="text-text-muted">님이 </span>
+                  <span className="text-text-muted">{t('nim')} </span>
                   <span className="font-light" style={{ color: '#42A5F5' }}>{feedItem.game}</span>
-                  <span className="text-text-muted">에서 </span>
+                  <span className="text-text-muted"> {t('at_game')} </span>
                   <span className={`font-medium text-white`}>
                     {feedItem.amount >= 1000000 ? '\uD83D\uDD25 ' : ''}
                     {'\u20AE'}{feedItem.amount.toLocaleString()}
                   </span>
-                  <span className="text-text-muted"> 당첨!</span>
+                  <span className="text-text-muted"> {t('won')}</span>
                 </span>
               </div>
             </div>
@@ -307,16 +309,16 @@ export default function Home() {
               <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
               <div>
                 <h2 className="text-2xl md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                  <span className="text-2xl">{'\uD83D\uDD25'}</span> 인기 게임
+                  <span className="text-2xl">{'\uD83D\uDD25'}</span> {t('popular_games_icon')}
                 </h2>
-                <p className="text-text-secondary text-sm mt-0.5 font-light">실시간 플레이어가 가장 많은 TOP 8</p>
+                <p className="text-text-secondary text-sm mt-0.5 font-light">{t('top8_realtime')}</p>
               </div>
             </div>
             <Link
               href="/lobby"
               className="hidden md:flex items-center gap-1 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-text-secondary hover:text-white text-sm font-light transition-all"
             >
-              전체보기
+              {t('view_all')}
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -331,7 +333,7 @@ export default function Home() {
 
           <div className="mt-6 text-center md:hidden">
             <Link href="/lobby" className="inline-flex items-center gap-1 text-white font-light hover:underline">
-              전체 게임 보기 {'\u2192'}
+              {t('view_all_games_arrow')} {'\u2192'}
             </Link>
           </div>
         </section>
@@ -344,9 +346,9 @@ export default function Home() {
             <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #42A5F5, rgba(66,165,245,0.3))' }} />
             <div>
               <h2 className="text-2xl md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                <span className="text-2xl">{'\u2B50'}</span> 신규 게임
+                <span className="text-2xl">{'\u2B50'}</span> {t('new_games_icon')}
               </h2>
-              <p className="text-text-secondary text-sm mt-0.5 font-light">새로 출시된 핫한 게임들</p>
+              <p className="text-text-secondary text-sm mt-0.5 font-light">{t('new_hot_games')}</p>
             </div>
           </div>
 
@@ -371,7 +373,7 @@ export default function Home() {
                   {/* Hover overlay */}
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(255,255,255,0.9)' }}>
                     <span className="px-6 py-2.5 font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform" style={{ background: '#0A0A0A', color: '#FFFFFF' }}>
-                      지금 플레이 {'\u25B6'}
+                      {t('play_now_icon')} {'\u25B6'}
                     </span>
                   </div>
                 </div>
@@ -388,9 +390,9 @@ export default function Home() {
             <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
             <div>
               <h2 className="text-2xl md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                <span className="text-2xl">{'\uD83C\uDFC6'}</span> BIG WIN
+                <span className="text-2xl">{'\uD83C\uDFC6'}</span> {t('big_win_title')}
               </h2>
-              <p className="text-text-secondary text-sm mt-0.5 font-light">최근 대박 당첨자</p>
+              <p className="text-text-secondary text-sm mt-0.5 font-light">{t('recent_big_winners')}</p>
             </div>
           </div>
 
@@ -424,7 +426,7 @@ export default function Home() {
       {/* ===== Provider Logos ===== */}
       <div ref={providerSection.ref} className={providerSection.inView ? 'section-visible' : 'section-hidden'}>
         <section className="max-w-7xl mx-auto px-4 py-16 md:py-24">
-          <h3 className="text-center text-text-muted text-sm font-light uppercase tracking-wider mb-6">공식 게임 프로바이더</h3>
+          <h3 className="text-center text-text-muted text-sm font-light uppercase tracking-wider mb-6">{t('official_providers')}</h3>
           <div className="overflow-hidden relative">
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-dark-bg to-transparent z-10" />
             <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-dark-bg to-transparent z-10" />
@@ -450,20 +452,20 @@ export default function Home() {
         <section className="max-w-7xl mx-auto px-4 py-16 md:py-24">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             <FeatureCard
-              title="300+ 프리미엄 게임"
-              description="Pragmatic Play, PG Soft, Evolution 등 세계 최고 프로바이더의 인기 슬롯과 라이브 게임."
+              title={t('300_premium_games')}
+              description={t('300_premium_games_desc')}
               icon={<SlotIcon />}
               gradient="from-white/[0.03] to-transparent"
             />
             <FeatureCard
-              title="즉시 입출금"
-              description="USDT 크립토, 은행 송금으로 빠르고 안전하게. 최소 10분 내 환전 처리."
+              title={t('instant_deposit_withdraw')}
+              description={t('instant_deposit_desc')}
               icon={<BoltIcon />}
               gradient="from-white/[0.03] to-transparent"
             />
             <FeatureCard
-              title="VIP 보너스"
-              description="첫 충전 15% 보너스, 매주 캐시백, 레벨업 리워드까지. 플레이할수록 혜택이."
+              title={t('vip_bonus')}
+              description={t('vip_bonus_desc')}
               icon={<CrownIcon />}
               gradient="from-white/[0.03] to-transparent"
             />
@@ -478,9 +480,9 @@ export default function Home() {
             <div className="w-1.5 h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
             <div>
               <h2 className="text-2xl md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
-                {'\uD83C\uDFC6'} 이번 주 TOP 10
+                {'\uD83C\uDFC6'} {t('weekly_top10')}
               </h2>
-              <p className="text-text-secondary text-sm mt-0.5 font-light">가장 많이 당첨된 플레이어</p>
+              <p className="text-text-secondary text-sm mt-0.5 font-light">{t('most_winners')}</p>
             </div>
           </div>
 
@@ -489,10 +491,10 @@ export default function Home() {
             <table className="w-full">
               <thead>
                 <tr className="bg-dark-card/80">
-                  <th className="text-left px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">순위</th>
-                  <th className="text-left px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">닉네임</th>
-                  <th className="text-left px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">게임</th>
-                  <th className="text-right px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">당첨 금액</th>
+                  <th className="text-left px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">{t('rank')}</th>
+                  <th className="text-left px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">{t('nickname_col')}</th>
+                  <th className="text-left px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">{t('game_col')}</th>
+                  <th className="text-right px-6 py-4 text-xs font-light text-text-muted uppercase tracking-wider">{t('win_amount')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -568,18 +570,18 @@ export default function Home() {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.04), rgba(255,255,255,0.02))' }} />
           <div className="relative max-w-7xl mx-auto px-4 py-16 md:py-24 text-center">
             <h2 className="text-3xl md:text-5xl font-extralight text-white leading-tight tracking-wide">
-              지금 가입하고
+              {t('join_now_and')}
               <br />
-              <span className="font-thin text-white">특별 보너스</span>를 받으세요
+              <span className="font-thin text-white">{t('get_special_bonus')}</span>
             </h2>
             <p className="mt-4 text-text-secondary text-lg font-light">
-              신규 회원 첫 충전 시 <span className="font-light text-white">최대 200%</span> 보너스 지급
+              {t('new_member_bonus')} <span className="font-light text-white">{t('up_to_200_bonus')}</span> {t('bonus_given')}
             </p>
             <Link
               href="/register"
               className="mt-10 inline-flex items-center justify-center px-10 py-4 text-lg font-light btn-cta"
             >
-              지금 가입하기
+              {t('join_now')}
             </Link>
           </div>
         </section>
@@ -590,6 +592,7 @@ export default function Home() {
 
 // ===== GameCard Component =====
 function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
+  const { t } = useLang();
   return (
     <Link href={`/game/${game.id}`} className="group">
       <div className="relative rounded-2xl overflow-hidden card-matte hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow">
@@ -615,10 +618,10 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
           <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-dark-bg via-dark-bg/90 to-transparent game-card-overlay">
             <div className="flex gap-2">
               <button className="flex-1 py-2 bg-white text-dark-bg text-xs font-light rounded-lg hover:brightness-110 transition-all touch-active">
-                실전 플레이
+                {t('real_play')}
               </button>
               <button className="flex-1 py-2 bg-white/10 text-white text-xs font-light rounded-lg hover:bg-white/20 transition-all touch-active">
-                무료 체험
+                {t('free_trial')}
               </button>
             </div>
           </div>

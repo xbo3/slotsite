@@ -3,13 +3,14 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useLang } from '@/hooks/useLang';
 
-const adminMenu = [
-  { href: '/admin', label: '대시보드', icon: DashboardIcon },
-  { href: '/admin/users', label: '회원관리', icon: UsersIcon },
-  { href: '/admin/finance', label: '입출금관리', icon: FinanceIcon },
-  { href: '/admin/coupons', label: '보너스관리', icon: CouponIcon },
-  { href: '/admin/games', label: '게임관리', icon: GamesIcon },
+const adminMenuDefs = [
+  { href: '/admin', labelKey: 'dashboard', icon: DashboardIcon },
+  { href: '/admin/users', labelKey: 'user_mgmt', icon: UsersIcon },
+  { href: '/admin/finance', labelKey: 'finance_mgmt', icon: FinanceIcon },
+  { href: '/admin/coupons', labelKey: 'bonus_mgmt', icon: CouponIcon },
+  { href: '/admin/games', labelKey: 'game_mgmt', icon: GamesIcon },
 ];
 
 export default function AdminLayout({
@@ -18,6 +19,8 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { t } = useLang();
+  const adminMenu = adminMenuDefs.map(m => ({ ...m, label: t(m.labelKey) }));
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
@@ -25,14 +28,14 @@ export default function AdminLayout({
       <aside className="hidden md:flex flex-col w-60 bg-dark-card border-r border-white/5 flex-shrink-0">
         <div className="px-5 py-5 border-b border-white/5">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-whiterounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
             </div>
             <div>
-              <p className="text-sm font-light text-white">관리자 패널</p>
+              <p className="text-sm font-light text-white">{t('admin_panel')}</p>
               <p className="text-[10px] text-text-muted">SlotSite Admin</p>
             </div>
           </div>
@@ -64,7 +67,7 @@ export default function AdminLayout({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            사이트로 돌아가기
+            {t('back_to_site')}
           </Link>
         </div>
       </aside>
@@ -96,7 +99,7 @@ export default function AdminLayout({
         {/* Top bar with notification */}
         <div className="flex items-center justify-between mb-6 md:mb-8">
           <div className="md:hidden">
-            <p className="text-sm font-light text-white">관리자 패널</p>
+            <p className="text-sm font-light text-white">{t('admin_panel')}</p>
           </div>
           <div className="flex items-center gap-2 ml-auto">
             <button className="relative p-2 text-text-muted hover:text-white rounded-lg hover:bg-white/5 transition-colors">

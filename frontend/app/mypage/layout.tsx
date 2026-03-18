@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { useCountUp } from '@/hooks/useCountUp';
+import { useLang } from '@/hooks/useLang';
 
 // Dummy user data
 const DUMMY_USER = {
@@ -24,13 +25,14 @@ const DUMMY_USER = {
 const LEVEL_ICONS = ['\u2B50', '\u2B50', '\uD83C\uDF1F', '\uD83C\uDF1F', '\uD83D\uDCAB', '\uD83D\uDCAB', '\uD83D\uDD25', '\uD83D\uDD25', '\uD83D\uDC51', '\uD83D\uDC51'];
 
 const TABS = [
-  { href: '/mypage', label: '프로필', icon: ProfileIcon },
-  { href: '/mypage/transactions', label: '거래내역', icon: TransactionIcon },
-  { href: '/mypage/bets', label: '베팅내역', icon: BetIcon },
-  { href: '/mypage/coupons', label: '내 보너스', icon: CouponIcon },
+  { href: '/mypage', labelKey: 'tab_profile', icon: ProfileIcon },
+  { href: '/mypage/transactions', labelKey: 'tab_transactions', icon: TransactionIcon },
+  { href: '/mypage/bets', labelKey: 'tab_bets', icon: BetIcon },
+  { href: '/mypage/coupons', labelKey: 'tab_coupons', icon: CouponIcon },
 ];
 
 export default function MyPageLayout({ children }: { children: React.ReactNode }) {
+  const { t } = useLang();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const tabRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -114,15 +116,15 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         {/* Mini Stats 3-col */}
         <div className="flex justify-between gap-2 mb-4">
           <div className="flex-1 bg-black/20 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-text-muted mb-0.5">총 입금</p>
+            <p className="text-[10px] text-text-muted mb-0.5">{t('total_deposit')}</p>
             <p className="text-sm font-light text-white">{animatedDeposit.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
           </div>
           <div className="flex-1 bg-black/20 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-text-muted mb-0.5">총 출금</p>
+            <p className="text-[10px] text-text-muted mb-0.5">{t('total_withdraw_label')}</p>
             <p className="text-sm font-light text-white">{animatedWithdraw.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
           </div>
           <div className="flex-1 bg-black/20 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-text-muted mb-0.5">총 베팅</p>
+            <p className="text-[10px] text-text-muted mb-0.5">{t('total_bet')}</p>
             <p className="text-sm font-light text-white">{animatedBet.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
           </div>
         </div>
@@ -132,7 +134,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <span className="text-lg">{LEVEL_ICONS[DUMMY_USER.level - 1] || '\u2B50'}</span>
-              <span className="text-sm font-light text-white">레벨 {DUMMY_USER.level}</span>
+              <span className="text-sm font-light text-white">{t('level')} {DUMMY_USER.level}</span>
             </div>
             <span className="text-[11px] text-text-muted">
               {DUMMY_USER.xp.toLocaleString()} / {DUMMY_USER.nextLevelXp.toLocaleString()} XP
@@ -145,17 +147,17 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
             />
           </div>
           <p className="text-[10px] text-text-muted mt-1.5">
-            다음 레벨까지 {(DUMMY_USER.nextLevelXp - DUMMY_USER.xp).toLocaleString()} XP
+            {t('next_level_xp')} {(DUMMY_USER.nextLevelXp - DUMMY_USER.xp).toLocaleString()} XP
           </p>
         </div>
 
         {/* CTA Buttons */}
         <div className="flex gap-3">
           <Link href="/wallet" className="btn-cta rounded-full flex-1 py-3 text-center text-sm font-medium">
-            충전하기
+            {t('deposit_action')}
           </Link>
           <Link href="/wallet" className="rounded-full flex-1 py-3 text-center text-sm font-medium transition-colors" style={{ border: '1px solid rgba(255,255,255,0.12)', color: '#FFFFFF' }}>
-            출금하기
+            {t('withdraw_action')}
           </Link>
         </div>
       </div>
@@ -170,10 +172,10 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           </div>
           <div className="flex-1 min-w-0">
             <h1 className="text-lg md:text-xl font-light text-white truncate">{DUMMY_USER.nickname}</h1>
-            <p className="text-xs text-text-muted">{DUMMY_USER.joinDate} 가입</p>
+            <p className="text-xs text-text-muted">{DUMMY_USER.joinDate} {t('joined')}</p>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="text-xs text-text-muted mb-0.5">보유 잔액</p>
+            <p className="text-xs text-text-muted mb-0.5">{t('held_amount')}</p>
             <p className="text-xl md:text-2xl font-medium" style={{ color: '#FFFFFF' }}>{DUMMY_USER.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
           </div>
         </div>
@@ -199,15 +201,15 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
 
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-dark-bg rounded-xl p-3 text-center">
-            <p className="text-xs text-text-muted mb-1">총 입금</p>
+            <p className="text-xs text-text-muted mb-1">{t('total_deposit')}</p>
             <p className="text-sm md:text-base font-light text-white">{DUMMY_USER.totalDeposit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
-            <p className="text-xs text-text-muted mb-1">총 베팅</p>
+            <p className="text-xs text-text-muted mb-1">{t('total_bet')}</p>
             <p className="text-sm md:text-base font-light text-white">{DUMMY_USER.totalBet.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
-            <p className="text-xs text-text-muted mb-1">총 당첨</p>
+            <p className="text-xs text-text-muted mb-1">{t('total_wins')}</p>
             <p className="text-sm md:text-base font-medium" style={{ color: '#FFFFFF' }}>{DUMMY_USER.totalWin.toLocaleString()} <span className="text-xs" style={{ color: '#555555' }}>USDT</span></p>
           </div>
         </div>
@@ -233,7 +235,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                   )}
                 >
                   <tab.icon active={!!isActive} />
-                  <span>{tab.label}</span>
+                  <span>{t(tab.labelKey)}</span>
                 </Link>
               );
             })}
@@ -262,7 +264,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                     style={isActive ? { background: '#FFFFFF', color: '#0A0A0A' } : { background: '#111111' }}
                   >
                     <tab.icon active={!!isActive} />
-                    <span>{tab.label}</span>
+                    <span>{t(tab.labelKey)}</span>
                   </Link>
                 );
               })}

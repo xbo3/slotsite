@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { getLang, setLang as saveLang, t as translate, Lang } from '@/lib/i18n';
 
 export function useLang() {
-  const [lang, setLangState] = useState<Lang>('ko');
+  const [lang, setLangState] = useState<Lang>('en');
 
   useEffect(() => {
     setLangState(getLang());

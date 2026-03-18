@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import Modal from '@/components/ui/Modal';
 import Pagination from '@/components/ui/Pagination';
+import { useLang } from '@/hooks/useLang';
 
 // ===== Types =====
 type CouponType = 'bonus_money' | 'free_spin' | 'deposit_bonus';
@@ -82,6 +83,7 @@ function generateCode(length = 8): string {
 }
 
 export default function AdminCouponsPage() {
+  const { t } = useLang();
   const [coupons, setCoupons] = useState<Coupon[]>(DUMMY_COUPONS);
   const [filterStatus, setFilterStatus] = useState<'all' | CouponStatus>('all');
   const [filterType, setFilterType] = useState<'all' | CouponType>('all');
@@ -208,13 +210,13 @@ export default function AdminCouponsPage() {
     <div className="animate-fade-in">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <h1 className="text-2xl font-bold text-white">보너스 관리</h1>
+        <h1 className="text-2xl font-bold text-white">{t('bonus_management_title')}</h1>
         <div className="flex gap-2">
           <button onClick={() => setShowBulk(true)} className="px-4 py-2.5 bg-dark-elevated hover:bg-white/10 text-white text-sm font-medium rounded-lg transition-colors">
-            벌크 생성
+            {t('bulk_create')}
           </button>
           <button onClick={() => setShowCreate(true)} className="px-4 py-2.5 btn-cta text-sm rounded-lg">
-            보너스 생성
+            {t('create_bonus')}
           </button>
         </div>
       </div>
@@ -229,7 +231,7 @@ export default function AdminCouponsPage() {
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="코드 또는 설명 검색..."
+            placeholder={t('search_code_desc')}
             className="w-full pl-10 pr-4 py-2.5 bg-dark-card border border-white/5 rounded-lg text-white text-sm placeholder:text-text-muted focus:outline-none focus:border-accent/50 transition-colors"
           />
         </div>
