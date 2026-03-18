@@ -8,8 +8,8 @@ export default function Footer() {
 
   return (
     <footer className="border-t mt-auto" style={{ background: '#161616', borderColor: 'rgba(255,255,255,0.06)' }}>
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-8">
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-6 md:gap-8">
           {/* Logo & Copyright */}
           <div>
             <span className="text-xl tracking-[0.15em]">

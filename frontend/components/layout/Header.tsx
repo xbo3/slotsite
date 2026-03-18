@@ -100,7 +100,7 @@ export default function Header() {
         </div>
 
         {/* Right area — main content zone on lg+ */}
-        <div className="flex-1 flex items-center justify-between gap-4 px-4">
+        <div className="flex-1 flex items-center justify-between gap-2 md:gap-4 px-2 md:px-4 overflow-hidden">
         {/* Desktop Search */}
         <div className="hidden md:flex flex-1 max-w-md" ref={searchRef}>
           <div className="relative w-full">
@@ -272,13 +272,13 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-light text-white transition-colors rounded-lg border border-white/30 hover:bg-white/10 min-h-[44px] flex items-center"
+                className="px-2 md:px-4 py-1 md:py-2 text-[10px] md:text-sm font-light text-white transition-colors rounded-lg border border-white/30 hover:bg-white/10 min-h-[36px] md:min-h-[44px] flex items-center whitespace-nowrap"
               >
                 {t('login')}
               </Link>
               <Link
                 href="/register"
-                className="px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-light text-white transition-colors rounded-lg border border-white hover:bg-white hover:text-black min-h-[44px] flex items-center"
+                className="px-2 md:px-4 py-1 md:py-2 text-[10px] md:text-sm font-light text-white transition-colors rounded-lg border border-white hover:bg-white hover:text-black min-h-[36px] md:min-h-[44px] flex items-center whitespace-nowrap"
               >
                 {t('register')}
               </Link>
