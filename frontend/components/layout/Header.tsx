@@ -278,14 +278,13 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-light hover:text-white transition-colors rounded-lg hover:bg-white/5"
-                style={{ color: '#888888' }}
+                className="px-4 py-2 text-sm font-light text-white transition-colors rounded-lg border border-white/30 hover:bg-white/10"
               >
                 {t('login')}
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 text-sm btn-cta"
+                className="px-4 py-2 text-sm font-light text-white transition-colors rounded-lg border border-white hover:bg-white hover:text-black"
               >
                 {t('register')}
               </Link>
@@ -393,7 +392,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/register"
-                  className="flex-1 text-center py-2.5 btn-cta text-sm"
+                  className="flex-1 text-center py-2.5 text-sm font-light text-white border border-white rounded-lg hover:bg-white hover:text-black transition-all"
                   onClick={() => setMenuOpen(false)}
                 >
                   {t('register')}

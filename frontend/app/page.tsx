@@ -18,7 +18,7 @@ const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: strin
   'Big Time Gaming': { from: '#555555', to: '#888888', pattern: 'svg-pattern-diagonal' },
 };
 
-const TOP_GAMES = DEMO_GAMES.slice(0, 8).map(g => ({
+const TOP_GAMES = DEMO_GAMES.slice(0, 8).filter(g => g.thumbnail && g.thumbnail.length > 0).map(g => ({
   id: g.id,
   name: g.name,
   provider: g.provider,
@@ -27,7 +27,7 @@ const TOP_GAMES = DEMO_GAMES.slice(0, 8).map(g => ({
   rtp: g.rtp,
 }));
 
-const NEW_GAMES = DEMO_GAMES.filter(g => g.isNew).map(g => ({
+const NEW_GAMES = DEMO_GAMES.filter(g => g.isNew && g.thumbnail && g.thumbnail.length > 0).map(g => ({
   id: g.id,
   name: g.name,
   provider: g.provider,
@@ -93,6 +93,14 @@ const LEADERBOARD_DATA = [
   { rank: 9, nick: 'bl**e', amount: 9800000, game: 'Starlight Princess' },
   { rank: 10, nick: 'wi**n', amount: 7600000, game: 'Sugar Rush' },
 ];
+
+function getCardGradient(index: number, total: number): string {
+  const hue = (index / total) * 360;
+  const saturation = 60 + (index % 3) * 10;
+  const lightness = 15 + (index % 3) * 3;
+  const hue2 = hue + 30;
+  return `linear-gradient(135deg, hsl(${hue}, ${saturation}%, ${lightness}%) 0%, hsl(${hue2}, ${saturation - 10}%, ${lightness + 5}%) 100%)`;
+}
 
 // ===== Hook: Intersection Observer =====
 function useInView(threshold = 0.15) {
@@ -383,7 +391,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {TOP_GAMES.map((game, i) => (
-              <GameCard key={game.id} game={game} rank={i + 1} />
+              <GameCard key={game.id} game={game} rank={i + 1} index={i} total={TOP_GAMES.length} />
             ))}
           </div>
 
@@ -411,8 +419,8 @@ export default function Home() {
           </div>
 
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
-            {NEW_GAMES.map(game => (
-              <NewGameCard key={game.id} game={game} />
+            {NEW_GAMES.map((game, i) => (
+              <NewGameCard key={game.id} game={game} index={i} total={NEW_GAMES.length} />
             ))}
           </div>
         </section>
@@ -626,16 +634,15 @@ export default function Home() {
 }
 
 // ===== GameCard Component =====
-function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
+function GameCard({ game, rank, index, total }: { game: typeof TOP_GAMES[0]; rank: number; index: number; total: number }) {
   const { t } = useLang();
   const [imgError, setImgError] = useState(false);
   if (imgError) return null;
   return (
     <Link href={`/game/${game.id}`} className="group">
-      <div className="relative rounded-2xl overflow-hidden card-matte hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow">
+      <div className="relative overflow-hidden hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow" style={{ borderRadius: '14px', background: getCardGradient(index, total) }}>
         <div className="relative overflow-hidden">
           <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] group-hover:brightness-110 transition-all duration-700" />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
 
           {/* Rank badge */}
           <div className="absolute top-2 left-2">
@@ -655,7 +662,7 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
             <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
           </div>
-          <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-dark-bg via-dark-bg/90 to-transparent game-card-overlay">
+          <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/80 to-transparent game-card-overlay z-10">
             <div className="flex gap-2">
               <button className="flex-1 py-2 border border-white text-white text-xs font-light rounded-lg hover:bg-white hover:text-black transition-all touch-active flex items-center justify-center gap-1">
                 <span>{'\u25B6'}</span> {t('real_play')}
@@ -665,12 +672,13 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
               </button>
             </div>
           </div>
-        </div>
-        <div className="p-3">
-          <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
-          <div className="flex items-center justify-between mt-1">
-            <p className="text-text-muted text-[11px] font-light">{game.provider}</p>
-            {game.rtp && <span className="text-[10px] text-white/40 font-light">RTP {game.rtp}</span>}
+          {/* Game Info overlay */}
+          <div className="absolute bottom-12 left-0 right-0 px-3 z-10">
+            <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
+            <div className="flex items-center justify-between mt-1">
+              <p className="text-white/50 text-[11px] font-light">{game.provider}</p>
+              {game.rtp && <span className="text-[10px] text-white/40 font-light">RTP {game.rtp}</span>}
+            </div>
           </div>
         </div>
       </div>
@@ -679,12 +687,12 @@ function GameCard({ game, rank }: { game: typeof TOP_GAMES[0]; rank: number }) {
 }
 
 // ===== NewGameCard Component =====
-function NewGameCard({ game }: { game: typeof NEW_GAMES[0] }) {
+function NewGameCard({ game, index, total }: { game: typeof NEW_GAMES[0]; index: number; total: number }) {
   const [imgError, setImgError] = useState(false);
   if (imgError) return null;
   return (
     <Link href={`/game/${game.id}`} className="snap-start flex-shrink-0 w-44 md:w-52 group">
-      <div className="relative rounded-2xl overflow-hidden card-matte group-hover:border-white/20 transition-all shadow-lg card-hover card-glow">
+      <div className="relative overflow-hidden group-hover:border-white/20 transition-all shadow-lg card-hover card-glow" style={{ borderRadius: '14px', background: getCardGradient(index, total) }}>
         <GameThumb name={game.name} provider={game.provider} thumbnail={game.thumbnail} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] transition-transform duration-700" />
         <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
         <div className="absolute top-2 left-2">
@@ -695,12 +703,12 @@ function NewGameCard({ game }: { game: typeof NEW_GAMES[0] }) {
             {game.maxWin}
           </span>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-3">
+        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent z-10">
           <p className="text-white font-light text-sm truncate">{game.name}</p>
-          <p className="text-text-secondary text-[11px] font-light">{game.provider}</p>
+          <p className="text-white/50 text-[11px] font-light">{game.provider}</p>
         </div>
         {/* Hover overlay */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" style={{ background: 'rgba(0,0,0,0.7)' }}>
           <span className="text-white font-light text-lg tracking-wider">{'\u25B6'} PLAY</span>
         </div>
       </div>

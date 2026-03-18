@@ -90,6 +90,14 @@ const PROVIDER_COLORS: Record<string, { from: string; to: string; emoji: string 
 const ITEMS_PER_PAGE = 12;
 const ITEMS_PER_LOAD = 6;
 
+function getCardGradient(index: number, total: number): string {
+  const hue = (index / total) * 360;
+  const saturation = 60 + (index % 3) * 10;
+  const lightness = 15 + (index % 3) * 3;
+  const hue2 = hue + 30;
+  return `linear-gradient(135deg, hsl(${hue}, ${saturation}%, ${lightness}%) 0%, hsl(${hue2}, ${saturation - 10}%, ${lightness + 5}%) 100%)`;
+}
+
 function GameThumbnail({ game, onImgError, className = '' }: { game: Game; onImgError?: () => void; className?: string }) {
   const colors = PROVIDER_COLORS[game.provider] || { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' };
 
@@ -164,7 +172,7 @@ function LobbyContent() {
   };
 
   const filtered = useMemo(() => {
-    let list = GAMES;
+    let list = GAMES.filter(g => g.thumbnail && g.thumbnail.length > 0);
     if (selectedProviders.size > 0) {
       list = list.filter(g => selectedProviders.has(g.provider));
     }
@@ -295,21 +303,19 @@ function LobbyContent() {
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {PROVIDER_LIST.map(p => {
               const isSelected = selectedProviders.has(p);
-              const colors = PROVIDER_COLORS[p];
               return (
                 <button
                   key={p}
                   onClick={() => toggleProvider(p)}
                   className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
                     isSelected
-                      ? 'text-white shadow-lg'
-                      : 'bg-dark-card text-text-secondary hover:text-white hover:bg-white/10 border border-white/5'
+                      ? 'bg-white text-black shadow-lg'
+                      : 'bg-transparent text-white/50 hover:text-white border border-white/5'
                   }`}
-                  style={isSelected ? { background: `linear-gradient(135deg, ${colors?.from || '#42A5F5'}, ${colors?.to || '#64B5F6'})` } : undefined}
                 >
                   {/* Checkbox indicator */}
                   <span className={`w-4 h-4 rounded border-2 flex items-center justify-center text-[10px] transition-all ${
-                    isSelected ? 'border-white bg-white/20' : 'border-text-muted'
+                    isSelected ? 'border-black bg-black/20' : 'border-text-muted'
                   }`}>
                     {isSelected && '\u2713'}
                   </span>
@@ -376,8 +382,8 @@ function LobbyContent() {
           ) : (
             <>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
-                {visibleGames.map(game => (
-                  <GameCard key={game.id} game={game} />
+                {visibleGames.map((game, index) => (
+                  <GameCard key={game.id} game={game} index={index} total={filtered.length} />
                 ))}
               </div>
 
@@ -469,21 +475,19 @@ function HotGameCard({ game }: { game: Game }) {
   );
 }
 
-function GameCard({ game }: { game: Game }) {
+function GameCard({ game, index, total }: { game: Game; index: number; total: number }) {
   const { t } = useLang();
   const [imgError, setImgError] = useState(false);
   if (imgError) return null;
   return (
     <div className="group relative">
       <Link href={`/game/${game.id}`} className="block">
-        <div className="relative rounded-2xl overflow-hidden card-matte hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow">
+        <div className="relative overflow-hidden hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow" style={{ borderRadius: '14px', background: getCardGradient(index, total) }}>
           {/* Thumbnail */}
           <div className="relative overflow-hidden">
             <GameThumbnail game={game} onImgError={() => setImgError(true)} className="group-hover:scale-[1.08] transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-dark-card via-transparent to-transparent" />
-
             {/* Badges */}
-            <div className="absolute top-2 left-2 flex gap-1">
+            <div className="absolute top-2 left-2 flex gap-1 z-10">
               {game.isHot && (
                 <span className="px-1.5 py-0.5 bg-danger text-white text-[9px] font-light rounded-md">{'\uD83D\uDD25'} HOT</span>
               )}
@@ -493,14 +497,14 @@ function GameCard({ game }: { game: Game }) {
             </div>
 
             {/* Max Win */}
-            <div className="absolute top-2 right-2">
+            <div className="absolute top-2 right-2 z-10">
               <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/70 text-[9px] font-light rounded-md backdrop-blur-sm">
                 {game.maxWin}
               </span>
             </div>
 
             {/* Hover Overlay — play text + buttons */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300" style={{ background: 'rgba(0,0,0,0.7)' }}>
+            <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20" style={{ background: 'rgba(0,0,0,0.7)' }}>
               <span className="text-white font-light text-lg tracking-wider mb-4">{'\u25B6'} PLAY</span>
               <div className="flex flex-col gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                 <Link
@@ -519,14 +523,14 @@ function GameCard({ game }: { game: Game }) {
                 </Link>
               </div>
             </div>
-          </div>
 
-          {/* Game Info */}
-          <div className="p-3">
-            <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
-            <div className="flex items-center justify-between mt-1.5">
-              <span className="text-text-muted text-[11px]">{game.provider}</span>
-              <span className="text-[11px] font-medium text-success/80">RTP {game.rtp}%</span>
+            {/* Game Info - overlay at bottom */}
+            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent z-10">
+              <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
+              <div className="flex items-center justify-between mt-1.5">
+                <span className="text-white/50 text-[11px]">{game.provider}</span>
+                <span className="text-[11px] font-medium text-success/80">RTP {game.rtp}%</span>
+              </div>
             </div>
           </div>
         </div>
