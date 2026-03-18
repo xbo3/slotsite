@@ -7,7 +7,7 @@ import MobileNav from '@/components/layout/MobileNav';
 import Sidebar from '@/components/layout/Sidebar';
 import FingerprintCollector from '@/components/FingerprintCollector';
 
-const poppins = Poppins({ subsets: ['latin'], weight: ['200', '300', '400', '500', '600'] });
+const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500'] });
 
 export const metadata: Metadata = {
   title: 'SlotSite - 최고의 온라인 슬롯',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#C9A94E',
+  themeColor: '#0A0A0A',
 };
 
 export default function RootLayout({

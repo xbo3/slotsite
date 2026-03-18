@@ -28,15 +28,15 @@ const TYPE_LABELS: Record<TxType, string> = {
 const TYPE_COLORS: Record<TxType, string> = {
   deposit: 'text-success',
   withdraw: 'text-danger',
-  bonus: 'text-accent-gold',
-  coupon: 'text-amber-500',
+  bonus: 'text-white',
+  coupon: 'text-white',
 };
 
 const TYPE_BG: Record<TxType, string> = {
   deposit: 'bg-success/10',
   withdraw: 'bg-danger/10',
-  bonus: 'bg-accent-gold/10',
-  coupon: 'bg-amber-500/10',
+  bonus: 'bg-white/10',
+  coupon: 'bg-white/10',
 };
 
 const TYPE_ICON_BG: Record<TxType, string> = {

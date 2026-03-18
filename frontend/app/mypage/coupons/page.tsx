@@ -38,8 +38,8 @@ const TYPE_LABELS: Record<CouponType, string> = {
 };
 
 const TYPE_ACCENT_COLORS: Record<CouponType, string> = {
-  bonus_money: 'border-l-amber-500',
-  free_spin: 'border-l-amber-400',
+  bonus_money: 'border-l-white/40',
+  free_spin: 'border-l-white/30',
   deposit_bonus: 'border-l-blue-400',
 };
 
@@ -88,11 +88,11 @@ export default function MyCouponsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
-      <h1 className="text-2xl font-bold text-white mb-6">내 보너스</h1>
+      <h1 className="text-2xl font-light text-white mb-6">내 보너스</h1>
 
       {/* Coupon Code Input */}
       <div className="bg-dark-card rounded-xl border border-white/5 p-5 mb-8">
-        <h2 className="text-sm font-semibold text-text-secondary mb-3">보너스 코드 입력</h2>
+        <h2 className="text-sm font-light text-text-secondary mb-3">보너스 코드 입력</h2>
         <div className="flex gap-2">
           <input
             type="text"
@@ -136,7 +136,7 @@ export default function MyCouponsPage() {
             icon="🔮"
             name="파생 보너스"
             desc="기존 보너스에서 파생"
-            borderColor="border-amber-400/40"
+            borderColor="border-white/20"
             available={false}
           />
           <BonusCategoryCard
@@ -150,7 +150,7 @@ export default function MyCouponsPage() {
             icon="🏃"
             name="릴레이 보너스"
             desc="단계별 달성 보너스"
-            borderColor="border-amber-500/40"
+            borderColor="border-white/20"
             available={false}
           />
           <BonusCategoryCard
@@ -163,16 +163,16 @@ export default function MyCouponsPage() {
         </div>
 
         {/* Grade Benefit - card-pearl large */}
-        <div className="card-pearl rounded-2xl p-6 mb-4" style={{ borderColor: 'rgba(212,175,55,0.3)' }}>
+        <div className="card-pearl rounded-2xl p-6 mb-4" style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full flex items-center justify-center text-2xl" style={{ background: 'linear-gradient(135deg, #D4AF37, #F0D78C)' }}>
+            <div className="w-14 h-14 rounded-full flex items-center justify-center text-2xl" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)' }}>
               👑
             </div>
             <div className="flex-1">
               <h3 className="text-white font-medium text-base">그레이드 혜택</h3>
               <p className="text-text-secondary text-sm font-light">등급별 자동 지급 보너스</p>
             </div>
-            <span className="px-4 py-1.5 text-xs font-medium rounded-full" style={{ background: 'linear-gradient(135deg, #D4AF37, #F0D78C)', color: '#0A0A0A' }}>
+            <span className="px-4 py-1.5 text-xs font-medium rounded-full" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)', color: '#0A0A0A' }}>
               VIP 전용
             </span>
           </div>
@@ -196,9 +196,9 @@ export default function MyCouponsPage() {
       </div>
 
       {/* ===== 7만원 전환 쿠폰 ===== */}
-      <div className="card-pearl rounded-2xl p-6 mb-10" style={{ borderWidth: '1px', borderColor: 'rgba(212,175,55,0.4)' }}>
+      <div className="card-pearl rounded-2xl p-6 mb-10" style={{ borderWidth: '1px', borderColor: 'rgba(255,255,255,0.20)' }}>
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl" style={{ background: 'linear-gradient(135deg, #D4AF37, #F0D78C)' }}>
+          <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl" style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)' }}>
             🎫
           </div>
           <div>
@@ -218,7 +218,7 @@ export default function MyCouponsPage() {
             className="h-full rounded-full transition-all duration-1000"
             style={{
               width: `${(234 / 777) * 100}%`,
-              background: 'linear-gradient(90deg, #D4AF37, #F0D78C)',
+              background: 'linear-gradient(90deg, #FFFFFF, #E0E0E0)',
             }}
           />
         </div>
@@ -232,7 +232,7 @@ export default function MyCouponsPage() {
           <button
             disabled
             className="px-6 py-3 rounded-xl text-sm font-medium opacity-50 cursor-not-allowed"
-            style={{ background: 'linear-gradient(135deg, #D4AF37, #F0D78C)', color: '#0A0A0A' }}
+            style={{ background: 'linear-gradient(135deg, #FFFFFF, #E0E0E0)', color: '#0A0A0A' }}
           >
             전환하기
           </button>
@@ -242,8 +242,8 @@ export default function MyCouponsPage() {
       {/* Available Coupons */}
       {availableCoupons.length > 0 ? (
         <>
-          <h2 className="text-lg font-semibold text-white mb-4">
-            사용 가능한 보너스 <span className="text-accent ml-1">{availableCoupons.length}</span>
+          <h2 className="text-lg font-light text-white mb-4">
+            사용 가능한 보너스 <span className="text-white ml-1">{availableCoupons.length}</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-10">
             {availableCoupons.map(coupon => (
@@ -254,7 +254,7 @@ export default function MyCouponsPage() {
       ) : (
         <div className="flex flex-col items-center justify-center py-16 text-center mb-10">
           <span className="text-5xl mb-4">{'\uD83C\uDF9F\uFE0F'}</span>
-          <h3 className="text-lg font-semibold text-white mb-1">보유 중인 보너스가 없습니다</h3>
+          <h3 className="text-lg font-light text-white mb-1">보유 중인 보너스가 없습니다</h3>
           <p className="text-text-secondary text-sm mb-4">프로모션 페이지에서 보너스를 받아보세요</p>
           <Link href="/lobby" className="px-6 py-2.5 btn-cta text-sm rounded-lg">
             프로모션 보기
@@ -265,7 +265,7 @@ export default function MyCouponsPage() {
       {/* Past Coupons */}
       {pastCoupons.length > 0 && (
         <>
-          <h2 className="text-lg font-semibold text-text-muted mb-4">사용/만료된 보너스</h2>
+          <h2 className="text-lg font-light text-text-muted mb-4">사용/만료된 보너스</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {pastCoupons.map(coupon => (
               <CouponCard key={coupon.id} coupon={coupon} disabled />
@@ -289,7 +289,7 @@ function BonusCategoryCard({ icon, name, desc, borderColor, available }: { icon:
           <p className="text-text-secondary text-xs font-light">{desc}</p>
         </div>
         {available && (
-          <span className="px-2.5 py-1 text-[10px] font-medium rounded-full glow-gold" style={{ background: 'rgba(201,169,78,0.15)', color: '#C9A94E', border: '1px solid rgba(201,169,78,0.3)' }}>
+          <span className="px-2.5 py-1 text-[10px] font-medium rounded-full glow-gold" style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)' }}>
             받기 가능
           </span>
         )}
@@ -301,19 +301,19 @@ function BonusCategoryCard({ icon, name, desc, borderColor, available }: { icon:
 function CouponCard({ coupon, isGlowing = false, disabled = false }: { coupon: UserCoupon; isGlowing?: boolean; disabled?: boolean }) {
   return (
     <div className={`relative bg-dark-card rounded-xl border-l-4 ${TYPE_ACCENT_COLORS[coupon.type]} border border-white/5 overflow-hidden transition-all duration-300 ${
-      isGlowing ? 'glow-gold border-amber-500/30' : ''
+      isGlowing ? 'glow-gold border-white/20' : ''
     } ${disabled ? 'opacity-60' : 'card-hover'}`}>
       <div className="p-4">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-2">
             <span className="text-2xl">{TYPE_ICONS[coupon.type]}</span>
             <div>
-              <h3 className="text-sm font-semibold text-white">{coupon.name}</h3>
+              <h3 className="text-sm font-light text-white">{coupon.name}</h3>
               <span className="text-[10px] text-text-muted font-mono">{coupon.code}</span>
             </div>
           </div>
           <div className="text-right">
-            <p className="text-lg font-bold text-white">
+            <p className="text-lg font-light text-white">
               {coupon.type === 'deposit_bonus' ? `${coupon.amount}%` : coupon.type === 'free_spin' ? `${coupon.amount}회` : `${coupon.amount.toLocaleString()}원`}
             </p>
             <span className="text-[10px] text-text-muted">{TYPE_LABELS[coupon.type]}</span>

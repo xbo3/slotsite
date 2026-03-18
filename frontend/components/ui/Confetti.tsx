@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const COLORS = ['#C9A94E', '#D4AF37', '#42A5F5', '#FFFFFF', '#E53935', '#FFB300'];
+const COLORS = ['#FFFFFF', '#E0E0E0', '#C0C0C0', '#F2F2F2', '#888888', '#FAFAFA'];
 
 interface Particle {
   id: number;

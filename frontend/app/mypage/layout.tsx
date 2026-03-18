@@ -85,13 +85,13 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           scrolled ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'
         )}
       >
-        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(201,169,78,0.2)' }}>
-          <span className="text-sm font-medium" style={{ color: '#C9A94E' }}>
+        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
+          <span className="text-sm font-medium" style={{ color: '#FFFFFF' }}>
             {DUMMY_USER.nickname.charAt(0).toUpperCase()}
           </span>
         </div>
-        <span className="text-sm font-semibold text-white truncate">{DUMMY_USER.nickname}</span>
-        <span className="text-sm font-medium ml-auto whitespace-nowrap" style={{ color: '#C9A94E' }}>
+        <span className="text-sm font-light text-white truncate">{DUMMY_USER.nickname}</span>
+        <span className="text-sm font-medium ml-auto whitespace-nowrap" style={{ color: '#FFFFFF' }}>
           {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 0 })} USDT
         </span>
       </div>
@@ -100,14 +100,14 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
       <div className="md:hidden bg-gradient-to-br from-dark-bg to-dark-card rounded-2xl border border-white/5 p-5 mb-6">
         {/* Avatar + Name + Balance */}
         <div className="flex flex-col items-center mb-5">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(201,169,78,0.2)', border: '2px solid #C9A94E', boxShadow: '0 0 20px rgba(201,169,78,0.2)' }}>
-            <span className="text-3xl font-medium" style={{ color: '#C9A94E' }}>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-3" style={{ background: 'rgba(255,255,255,0.1)', border: '2px solid rgba(255,255,255,0.3)', boxShadow: '0 0 20px rgba(255,255,255,0.06)' }}>
+            <span className="text-3xl font-medium" style={{ color: '#FFFFFF' }}>
               {DUMMY_USER.nickname.charAt(0).toUpperCase()}
             </span>
           </div>
-          <h1 className="text-xl font-bold text-white mb-1">{DUMMY_USER.nickname}</h1>
-          <p className="text-3xl font-medium" style={{ color: '#C9A94E' }}>
-            {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} <span className="text-sm font-semibold">USDT</span>
+          <h1 className="text-xl font-light text-white mb-1">{DUMMY_USER.nickname}</h1>
+          <p className="text-3xl font-medium" style={{ color: '#FFFFFF' }}>
+            {animatedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} <span className="text-sm font-light">USDT</span>
           </p>
         </div>
 
@@ -115,15 +115,15 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         <div className="flex justify-between gap-2 mb-4">
           <div className="flex-1 bg-black/20 rounded-lg p-3 text-center">
             <p className="text-[10px] text-text-muted mb-0.5">총 입금</p>
-            <p className="text-sm font-semibold text-white">{animatedDeposit.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+            <p className="text-sm font-light text-white">{animatedDeposit.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
           </div>
           <div className="flex-1 bg-black/20 rounded-lg p-3 text-center">
             <p className="text-[10px] text-text-muted mb-0.5">총 출금</p>
-            <p className="text-sm font-semibold text-white">{animatedWithdraw.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+            <p className="text-sm font-light text-white">{animatedWithdraw.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
           </div>
           <div className="flex-1 bg-black/20 rounded-lg p-3 text-center">
             <p className="text-[10px] text-text-muted mb-0.5">총 베팅</p>
-            <p className="text-sm font-semibold text-white">{animatedBet.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
+            <p className="text-sm font-light text-white">{animatedBet.toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <span className="text-lg">{LEVEL_ICONS[DUMMY_USER.level - 1] || '\u2B50'}</span>
-              <span className="text-sm font-bold text-white">레벨 {DUMMY_USER.level}</span>
+              <span className="text-sm font-light text-white">레벨 {DUMMY_USER.level}</span>
             </div>
             <span className="text-[11px] text-text-muted">
               {DUMMY_USER.xp.toLocaleString()} / {DUMMY_USER.nextLevelXp.toLocaleString()} XP
@@ -140,7 +140,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           </div>
           <div className="w-full h-2 bg-dark-input rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000 ease-out"
+              className="h-full bg-gradient-to-r from-white to-white/80 rounded-full transition-all duration-1000 ease-out"
               style={{ width: `${(DUMMY_USER.xp / DUMMY_USER.nextLevelXp) * 100}%` }}
             />
           </div>
@@ -163,18 +163,18 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
       {/* === Desktop User Summary Card (unchanged) === */}
       <div className="hidden md:block bg-dark-card rounded-2xl border border-white/5 p-5 md:p-6 mb-6">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(201,169,78,0.2)' }}>
-            <span className="text-2xl md:text-3xl font-medium" style={{ color: '#C9A94E' }}>
+          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,255,255,0.1)' }}>
+            <span className="text-2xl md:text-3xl font-medium" style={{ color: '#FFFFFF' }}>
               {DUMMY_USER.nickname.charAt(0).toUpperCase()}
             </span>
           </div>
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg md:text-xl font-bold text-white truncate">{DUMMY_USER.nickname}</h1>
+            <h1 className="text-lg md:text-xl font-light text-white truncate">{DUMMY_USER.nickname}</h1>
             <p className="text-xs text-text-muted">{DUMMY_USER.joinDate} 가입</p>
           </div>
           <div className="text-right flex-shrink-0">
             <p className="text-xs text-text-muted mb-0.5">보유 잔액</p>
-            <p className="text-xl md:text-2xl font-medium" style={{ color: '#C9A94E' }}>{DUMMY_USER.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
+            <p className="text-xl md:text-2xl font-medium" style={{ color: '#FFFFFF' }}>{DUMMY_USER.balance.toLocaleString()} <span className="text-sm">USDT</span></p>
           </div>
         </div>
 
@@ -182,12 +182,12 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         <div className="flex items-center gap-4 mb-4 bg-dark-bg rounded-xl p-3">
           <div className="flex items-center gap-2">
             <span className="text-xl">{LEVEL_ICONS[DUMMY_USER.level - 1] || '\u2B50'}</span>
-            <span className="text-sm font-bold text-white">Lv.{DUMMY_USER.level}</span>
+            <span className="text-sm font-light text-white">Lv.{DUMMY_USER.level}</span>
           </div>
           <div className="flex-1">
             <div className="w-full h-2 bg-dark-input rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-1000 ease-out"
+                className="h-full bg-gradient-to-r from-white to-white/80 rounded-full transition-all duration-1000 ease-out"
                 style={{ width: `${(DUMMY_USER.xp / DUMMY_USER.nextLevelXp) * 100}%` }}
               />
             </div>
@@ -200,15 +200,15 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">총 입금</p>
-            <p className="text-sm md:text-base font-semibold text-white">{DUMMY_USER.totalDeposit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
+            <p className="text-sm md:text-base font-light text-white">{DUMMY_USER.totalDeposit.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">총 베팅</p>
-            <p className="text-sm md:text-base font-semibold text-white">{DUMMY_USER.totalBet.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
+            <p className="text-sm md:text-base font-light text-white">{DUMMY_USER.totalBet.toLocaleString()} <span className="text-xs text-text-muted">USDT</span></p>
           </div>
           <div className="bg-dark-bg rounded-xl p-3 text-center">
             <p className="text-xs text-text-muted mb-1">총 당첨</p>
-            <p className="text-sm md:text-base font-medium" style={{ color: '#C9A94E' }}>{DUMMY_USER.totalWin.toLocaleString()} <span className="text-xs" style={{ color: '#555555' }}>USDT</span></p>
+            <p className="text-sm md:text-base font-medium" style={{ color: '#FFFFFF' }}>{DUMMY_USER.totalWin.toLocaleString()} <span className="text-xs" style={{ color: '#555555' }}>USDT</span></p>
           </div>
         </div>
       </div>
@@ -228,7 +228,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                   className={cn(
                     'flex items-center gap-3 px-4 py-3.5 text-sm font-medium transition-all border-l-[3px]',
                     isActive
-                      ? 'border-l-amber-500 bg-amber-500/5 text-amber-500'
+                      ? 'border-l-white bg-white/5 text-white'
                       : 'border-l-transparent text-gray-400 hover:text-white hover:bg-white/5'
                   )}
                 >
@@ -259,7 +259,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
                         ? 'text-white'
                         : 'text-gray-400 border border-white/5 hover:text-white'
                     )}
-                    style={isActive ? { background: '#C9A94E', color: '#0A0A0A' } : { background: '#111111' }}
+                    style={isActive ? { background: '#FFFFFF', color: '#0A0A0A' } : { background: '#111111' }}
                   >
                     <tab.icon active={!!isActive} />
                     <span>{tab.label}</span>
@@ -270,7 +270,7 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
             {/* Slide Indicator */}
             <div
               className="absolute bottom-0 h-0.5 rounded-full transition-all duration-300 ease-out"
-              style={{ left: indicatorStyle.left, width: indicatorStyle.width, background: '#C9A94E' }}
+              style={{ left: indicatorStyle.left, width: indicatorStyle.width, background: '#FFFFFF' }}
             />
           </div>
         </div>

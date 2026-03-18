@@ -3,29 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1A1A1A;
-  --bg-elevated: #222222;
-  --bg-surface: #161616;
+  /* 블랙 질감 계열 */
+  --bg-primary: #0A0A0A;        /* 무광 블랙 */
+  --bg-secondary: #111111;      /* 유광 블랙 */
+  --bg-tertiary: #1A1A1A;       /* 밝은 블랙 */
+  --bg-elevated: #222222;       /* 펄 블랙 */
+  --bg-surface: #161616;        /* 헤더/사이드바 */
 
-  --accent-primary: #C9A94E;
-  --accent-gold: #D4AF37;
-  --accent-secondary: #FFFFFF;
+  /* 화이트 질감 계열 */
+  --white-matte: #E8E8E8;       /* 무광 화이트 */
+  --white-glossy: #F2F2F2;      /* 유광 화이트 */
+  --white-pearl: #FAFAFA;       /* 펄 화이트 */
+  --white-pure: #FFFFFF;        /* 순수 화이트 */
 
+  /* 포인트 — 화이트가 포인트 */
+  --accent-primary: #FFFFFF;    /* 메인 포인트 = 화이트 */
+  --accent-secondary: #E0E0E0;  /* 서브 포인트 */
+
+  /* 텍스트 */
   --text-primary: #FFFFFF;
   --text-secondary: #888888;
   --text-muted: #555555;
-  --text-accent: #C9A94E;
 
+  /* 상태 */
   --success: #4CAF50;
   --danger: #E53935;
   --warning: #FFB300;
   --info: #42A5F5;
 
+  /* 보더 */
   --border-default: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.12);
-  --border-gold: rgba(201, 169, 78, 0.3);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-accent: rgba(255, 255, 255, 0.25);
 }
 
 body {
@@ -77,7 +86,7 @@ input:-webkit-autofill:focus {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* ===== Card Texture Classes ===== */
+/* ===== Black Texture Classes ===== */
 .matte-black {
   background: #0A0A0A;
 }
@@ -87,6 +96,21 @@ input:-webkit-autofill:focus {
 .pearl-black {
   background: linear-gradient(135deg, #111111 0%, #1C1C1C 30%, #141414 70%, #111111 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), inset 0 -1px 0 rgba(255,255,255,0.01);
+}
+
+/* ===== White Texture Classes ===== */
+.matte-white {
+  background: #E8E8E8;
+  color: #0A0A0A;
+}
+.glossy-white {
+  background: linear-gradient(135deg, #F2F2F2 0%, #FFFFFF 50%, #F2F2F2 100%);
+  color: #0A0A0A;
+}
+.pearl-white {
+  background: linear-gradient(135deg, #FAFAFA 0%, #FFFFFF 30%, #F5F5F5 70%, #FAFAFA 100%);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.02), inset 0 -1px 0 rgba(0,0,0,0.01);
+  color: #0A0A0A;
 }
 
 /* Legacy aliases for existing code */
@@ -205,34 +229,34 @@ input:-webkit-autofill:focus {
   animation: slideUp 0.3s ease-out;
 }
 
-/* Glow effect */
-.glow-gold {
-  box-shadow: 0 0 20px rgba(201, 169, 78, 0.15), 0 0 40px rgba(201, 169, 78, 0.05);
-}
-/* Legacy alias */
-.glow-green {
-  box-shadow: 0 0 20px rgba(201, 169, 78, 0.15), 0 0 40px rgba(201, 169, 78, 0.05);
+/* Glow effect — white glow */
+.glow-gold, .glow-green {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
 }
 
-/* CTA Button */
+/* CTA Button — white outline */
 .btn-cta {
   background: transparent;
-  border: 1px solid var(--accent-primary);
-  color: var(--accent-primary);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 0;
   transition: all 0.3s ease;
 }
 .btn-cta:hover {
-  background: var(--accent-primary);
+  background: #FFFFFF;
   color: #0A0A0A;
+  border-color: #FFFFFF;
 }
 .btn-cta:active {
   transform: scale(0.98);
 }
 .btn-cta:disabled {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
   transform: none;
 }
@@ -242,7 +266,7 @@ input:-webkit-autofill:focus {
   background: rgba(255,255,255,0.05);
   color: #FFFFFF;
   border: 1px solid rgba(255,255,255,0.1);
-  font-weight: 400;
+  font-weight: 300;
 }
 .btn-outline:hover {
   border-color: var(--border-hover);
@@ -308,7 +332,7 @@ input:-webkit-autofill:focus {
   filter: brightness(1.1);
 }
 
-/* ===== Hero Particles ===== */
+/* ===== Hero Particles — white/gray ===== */
 @keyframes particleFloat1 {
   0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
   25% { transform: translate(30px, -40px) scale(1.2); opacity: 1; }
@@ -334,28 +358,28 @@ input:-webkit-autofill:focus {
 .hero-particles::before {
   width: 6px; height: 6px;
   top: 60%; left: 20%;
-  background: var(--accent-primary);
+  background: #FFFFFF;
   box-shadow:
-    80px -40px 0 2px rgba(201,169,78,0.5),
-    200px -100px 0 1px rgba(212,175,55,0.6),
-    320px -60px 0 3px rgba(201,169,78,0.4),
+    80px -40px 0 2px rgba(255,255,255,0.5),
+    200px -100px 0 1px rgba(255,255,255,0.6),
+    320px -60px 0 3px rgba(255,255,255,0.4),
     450px -120px 0 1px rgba(255,255,255,0.3),
-    100px -180px 0 2px rgba(201,169,78,0.3),
-    280px -200px 0 2px rgba(212,175,55,0.4),
+    100px -180px 0 2px rgba(255,255,255,0.3),
+    280px -200px 0 2px rgba(255,255,255,0.4),
     400px -30px 0 1px rgba(255,255,255,0.2);
   animation: particleFloat1 8s ease-in-out infinite;
 }
 .hero-particles::after {
   width: 4px; height: 4px;
   top: 40%; right: 15%;
-  background: var(--accent-gold);
+  background: #E0E0E0;
   box-shadow:
-    -60px 30px 0 2px rgba(212,175,55,0.5),
-    -150px 80px 0 1px rgba(201,169,78,0.4),
+    -60px 30px 0 2px rgba(255,255,255,0.5),
+    -150px 80px 0 1px rgba(255,255,255,0.4),
     -250px 20px 0 3px rgba(255,255,255,0.3),
-    -100px 120px 0 1px rgba(201,169,78,0.4),
-    -300px 60px 0 2px rgba(212,175,55,0.3),
-    -50px -40px 0 1px rgba(201,169,78,0.5),
+    -100px 120px 0 1px rgba(255,255,255,0.4),
+    -300px 60px 0 2px rgba(255,255,255,0.3),
+    -50px -40px 0 1px rgba(255,255,255,0.5),
     -200px -20px 0 2px rgba(255,255,255,0.2);
   animation: particleFloat2 10s ease-in-out infinite;
 }
@@ -419,10 +443,10 @@ input:-webkit-autofill:focus {
   transform: translateY(0);
 }
 
-/* Rank badge gradients */
-.rank-gold { background: linear-gradient(135deg, #D4AF37, #F0D78C); }
+/* Rank badge gradients — monochrome */
+.rank-gold { background: linear-gradient(135deg, #FFFFFF, #E0E0E0); color: #0A0A0A; }
 .rank-silver { background: linear-gradient(135deg, #C0C0C0, #A0A0A0); }
-.rank-bronze { background: linear-gradient(135deg, #CD7F32, #B8860B); }
+.rank-bronze { background: linear-gradient(135deg, #888888, #666666); }
 
 /* Provider SVG patterns */
 .svg-pattern-dots {
@@ -492,13 +516,13 @@ input:-webkit-autofill:focus {
   animation: providerScroll 20s linear infinite;
 }
 
-/* Big win shimmer */
+/* Shimmer — white */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-.shimmer-gold {
-  background: linear-gradient(90deg, #D4AF37 0%, #F0D78C 25%, #D4AF37 50%, #F0D78C 75%, #D4AF37 100%);
+.shimmer-gold, .shimmer-white {
+  background: linear-gradient(90deg, #FFFFFF 0%, #E0E0E0 25%, #FFFFFF 50%, #E0E0E0 75%, #FFFFFF 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

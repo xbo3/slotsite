@@ -97,7 +97,7 @@ export default function RegisterPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-dark-bg to-info/10" />
         <div className="absolute inset-0" style={{ filter: 'blur(60px)' }}>
           <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-accent/20 rounded-full" />
-          <div className="absolute bottom-1/4 right-1/3 w-48 h-48 bg-accent-gold/15 rounded-full" />
+          <div className="absolute bottom-1/4 right-1/3 w-48 h-48 bg-white/15 rounded-full" />
           <div className="absolute top-1/2 left-1/2 w-40 h-40 bg-info/15 rounded-full" />
         </div>
         <div className="relative z-10 text-center px-12">
@@ -105,7 +105,7 @@ export default function RegisterPage() {
           <h2 className="text-4xl font-black text-white mb-4 leading-tight">
             가입 보너스
             <br />
-            <span className="bg-gradient-to-r from-accent-gold to-accent bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
               {'\u20AE'}10 즉시 지급!
             </span>
           </h2>
@@ -119,7 +119,7 @@ export default function RegisterPage() {
               300+ 게임
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-accent-gold rounded-full" />
+              <span className="w-2 h-2 bg-white rounded-full" />
               즉시 출금
             </div>
             <div className="flex items-center gap-2">
@@ -320,7 +320,7 @@ export default function RegisterPage() {
 
             <p className="mt-6 text-center text-sm text-text-secondary">
               이미 계정이 있으신가요?{' '}
-              <Link href="/login" className="text-accent hover:text-accent-gold transition-colors">
+              <Link href="/login" className="text-white hover:text-white/80 transition-colors">
                 로그인
               </Link>
             </p>

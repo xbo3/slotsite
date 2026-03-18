@@ -76,14 +76,14 @@ const RECENT_PLAYS: Game[] = [
 
 const PROVIDER_COLORS: Record<string, { from: string; to: string; emoji: string }> = {
   'Pragmatic Play': { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83C\uDFB0' },
-  'PG Soft': { from: '#C9A94E', to: '#D4AF37', emoji: '\uD83D\uDC2F' },
+  'PG Soft': { from: '#888888', to: '#AAAAAA', emoji: '\uD83D\uDC2F' },
   'Evolution': { from: '#4CAF50', to: '#66BB6A', emoji: '\uD83C\uDFB2' },
   'NetEnt': { from: '#E53935', to: '#EF5350', emoji: '\uD83D\uDC8E' },
-  'Microgaming': { from: '#D4AF37', to: '#F0D78C', emoji: '\uD83E\uDD81' },
+  'Microgaming': { from: '#AAAAAA', to: '#CCCCCC', emoji: '\uD83E\uDD81' },
   "Play'n GO": { from: '#42A5F5', to: '#64B5F6', emoji: '\uD83D\uDCD6' },
   'Nolimit City': { from: '#E53935', to: '#EF5350', emoji: '\uD83D\uDD25' },
   'Red Tiger': { from: '#FFB300', to: '#FFCA28', emoji: '\uD83D\uDC2F' },
-  'Big Time Gaming': { from: '#D4AF37', to: '#F0D78C', emoji: '\uD83D\uDCA3' },
+  'Big Time Gaming': { from: '#AAAAAA', to: '#CCCCCC', emoji: '\uD83D\uDCA3' },
 };
 
 const ITEMS_PER_PAGE = 12;
@@ -224,16 +224,16 @@ function LobbyContent() {
       {/* Banner */}
       <div className="relative overflow-hidden bg-gradient-to-r from-accent/5 via-dark-bg to-info/5">
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-accent-gold/8 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-[100px] animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-white/5 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-2 h-8 bg-accent rounded-full" />
-            <h1 className="text-3xl md:text-4xl font-semibold text-white tracking-tight">{'\uD83C\uDFAE'} {'\uAC8C\uC784'} {'\uB85C\uBE44'}</h1>
+            <div className="w-2 h-8 bg-whiterounded-full" />
+            <h1 className="text-3xl md:text-4xl font-light text-white tracking-tight">{'\uD83C\uDFAE'} {'\uAC8C\uC784'} {'\uB85C\uBE44'}</h1>
           </div>
           <p className="text-text-secondary ml-5">
-            <span className="text-accent font-bold">{GAMES.length}</span>개의 프리미엄 게임이 당신을 기다립니다
+            <span className="text-whitefont-light">{GAMES.length}</span>개의 프리미엄 게임이 당신을 기다립니다
           </p>
         </div>
       </div>
@@ -243,7 +243,7 @@ function LobbyContent() {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl">{'\u23F1\uFE0F'}</span>
-            <h2 className="text-xl font-bold text-white">최근 플레이</h2>
+            <h2 className="text-xl font-light text-white">최근 플레이</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-info/50 to-transparent ml-3" />
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
@@ -257,16 +257,16 @@ function LobbyContent() {
                   <GameThumbnail game={game} className="group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
                   <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 bg-info text-white text-[10px] font-bold rounded-full">
+                    <span className="px-2 py-0.5 bg-info text-white text-[10px] font-light rounded-full">
                       {'\uD83D\uDD04'} 최근
                     </span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white font-bold text-sm truncate">{game.name}</p>
+                    <p className="text-white font-light text-sm truncate">{game.name}</p>
                     <p className="text-text-secondary text-[11px]">{game.provider}</p>
                   </div>
                   <div className="absolute inset-0 bg-info/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="px-6 py-2.5 bg-white text-dark-bg font-bold rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+                    <span className="px-6 py-2.5 bg-white text-dark-bg font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
                       이어하기 {'\u25B6'}
                     </span>
                   </div>
@@ -280,7 +280,7 @@ function LobbyContent() {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-2xl">{'\uD83D\uDD25'}</span>
-            <h2 className="text-xl font-bold text-white">HOT 게임</h2>
+            <h2 className="text-xl font-light text-white">HOT 게임</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-danger/50 to-transparent ml-3" />
           </div>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
@@ -294,22 +294,22 @@ function LobbyContent() {
                   <GameThumbnail game={game} className="group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/80 via-transparent to-transparent" />
                   <div className="absolute top-2 left-2">
-                    <span className="px-2 py-0.5 bg-danger text-white text-[10px] font-bold rounded-full uppercase tracking-wider animate-pulse">
+                    <span className="px-2 py-0.5 bg-danger text-white text-[10px] font-light rounded-full uppercase tracking-wider animate-pulse">
                       HOT
                     </span>
                   </div>
                   <div className="absolute top-2 right-2">
-                    <span className="px-2 py-0.5 bg-dark-bg/60 text-accent-gold text-[10px] font-bold rounded-full">
+                    <span className="px-2 py-0.5 bg-dark-bg/60 text-white/70 text-[10px] font-light rounded-full">
                       {game.maxWin}
                     </span>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <p className="text-white font-bold text-sm truncate">{game.name}</p>
+                    <p className="text-white font-light text-sm truncate">{game.name}</p>
                     <p className="text-text-secondary text-[11px]">{game.provider}</p>
                   </div>
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-accent/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span className="px-6 py-2.5 bg-white text-dark-bg font-bold rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+                  <div className="absolute inset-0 bg-white/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="px-6 py-2.5 bg-white text-dark-bg font-light rounded-xl text-sm shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
                       지금 플레이 {'\u25B6'}
                     </span>
                   </div>
@@ -331,7 +331,7 @@ function LobbyContent() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="게임 이름, 프로바이더 검색..."
-              className="w-full pl-12 pr-4 py-3.5 bg-dark-card border border-white/5 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/30 transition-all"
+              className="w-full pl-12 pr-4 py-3.5 bg-dark-card border border-white/5 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/30 transition-all"
             />
             {search && (
               <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-white transition-colors">
@@ -371,7 +371,7 @@ function LobbyContent() {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as 'default' | 'rtp' | 'name')}
-                className="px-3 py-2 rounded-full text-xs font-medium bg-dark-card text-text-secondary border border-accent/30 hover:border-accent/60 focus:outline-none focus:border-accent cursor-pointer appearance-none pr-7 transition-all"
+                className="px-3 py-2 rounded-full text-xs font-medium bg-dark-card text-text-secondary border border-white/30 hover:border-white/60 focus:outline-none focus:border-white/30 cursor-pointer appearance-none pr-7 transition-all"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23557086' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 8px center' }}
               >
                 <option value="default">기본 정렬</option>
@@ -385,7 +385,7 @@ function LobbyContent() {
           {activeFilters.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
               {activeFilters.map(f => (
-                <span key={f.label} className="inline-flex items-center gap-1.5 px-3 py-1 bg-accent/10 border border-accent/20 text-accent text-xs font-medium rounded-full">
+                <span key={f.label} className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 border border-white/20 text-whitetext-xs font-medium rounded-full">
                   {f.label}
                   <button onClick={f.onRemove} className="hover:text-white transition-colors">{'\u2715'}</button>
                 </span>
@@ -407,7 +407,7 @@ function LobbyContent() {
           <div className="flex items-center justify-between mb-4">
             <p className="text-text-secondary text-sm">
               {selectedProviders.size > 0 && (
-                <span className="text-accent font-medium">{Array.from(selectedProviders).join(', ')}</span>
+                <span className="text-whitefont-medium">{Array.from(selectedProviders).join(', ')}</span>
               )}
               {selectedProviders.size > 0 && ' \u00B7 '}
               {filtered.length}개 게임
@@ -418,7 +418,7 @@ function LobbyContent() {
             <div className="text-center py-20">
               <div className="text-5xl mb-4">{'\uD83C\uDFB0'}</div>
               <p className="text-text-secondary text-lg">검색 결과가 없습니다</p>
-              <button onClick={() => { setSearch(''); clearProviders(); }} className="mt-4 text-accent hover:underline">
+              <button onClick={() => { setSearch(''); clearProviders(); }} className="mt-4 text-whitehover:underline">
                 필터 초기화
               </button>
             </div>
@@ -461,7 +461,7 @@ function GameCard({ game }: { game: Game }) {
   return (
     <div className="group relative">
       <Link href={`/game/${game.id}`} className="block">
-        <div className="relative rounded-2xl overflow-hidden card-matte hover:border-accent/30 transition-all duration-300 hover:shadow-xl hover:shadow-accent/5 card-hover card-glow">
+        <div className="relative rounded-2xl overflow-hidden card-matte hover:border-white/15 transition-all duration-300 hover:shadow-xl hover:shadow-white/5 card-hover card-glow">
           {/* Thumbnail */}
           <div className="relative overflow-hidden">
             <GameThumbnail game={game} className="group-hover:scale-[1.08] transition-transform duration-700" />
@@ -470,16 +470,16 @@ function GameCard({ game }: { game: Game }) {
             {/* Badges */}
             <div className="absolute top-2 left-2 flex gap-1">
               {game.isHot && (
-                <span className="px-1.5 py-0.5 bg-danger text-white text-[9px] font-bold rounded-md">{'\uD83D\uDD25'} HOT</span>
+                <span className="px-1.5 py-0.5 bg-danger text-white text-[9px] font-light rounded-md">{'\uD83D\uDD25'} HOT</span>
               )}
               {game.isNew && (
-                <span className="px-1.5 py-0.5 bg-success text-dark-bg text-[9px] font-bold rounded-md">NEW</span>
+                <span className="px-1.5 py-0.5 bg-success text-dark-bg text-[9px] font-light rounded-md">NEW</span>
               )}
             </div>
 
             {/* Max Win */}
             <div className="absolute top-2 right-2">
-              <span className="px-1.5 py-0.5 bg-dark-bg/70 text-accent-gold text-[9px] font-bold rounded-md backdrop-blur-sm">
+              <span className="px-1.5 py-0.5 bg-dark-bg/70 text-white/70 text-[9px] font-light rounded-md backdrop-blur-sm">
                 {game.maxWin}
               </span>
             </div>
@@ -494,14 +494,14 @@ function GameCard({ game }: { game: Game }) {
                 <Link
                   href={`/game/${game.id}?mode=demo`}
                   onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 border-2 border-white/60 text-white font-bold rounded-xl text-xs hover:bg-white/10 transition-colors text-center"
+                  className="px-6 py-2 border-2 border-white/60 text-white font-light rounded-xl text-xs hover:bg-white/10 transition-colors text-center"
                 >
                   무료 체험
                 </Link>
                 <Link
                   href={`/game/${game.id}`}
                   onClick={e => e.stopPropagation()}
-                  className="px-6 py-2 bg-accent text-dark-bg font-bold rounded-xl text-xs hover:shadow-lg hover:shadow-accent/40 transition-all text-center"
+                  className="px-6 py-2 bg-whitetext-dark-bg font-light rounded-xl text-xs hover:shadow-lg hover:shadow-white/40 transition-all text-center"
                 >
                   실전 플레이 {'\u25B6'}
                 </Link>
@@ -511,7 +511,7 @@ function GameCard({ game }: { game: Game }) {
 
           {/* Game Info */}
           <div className="p-3">
-            <h3 className="text-white font-semibold text-sm truncate group-hover:text-accent transition-colors">{game.name}</h3>
+            <h3 className="text-white font-light text-sm truncate group-hover:text-white/80 transition-colors">{game.name}</h3>
             <div className="flex items-center justify-between mt-1.5">
               <span className="text-text-muted text-[11px]">{game.provider}</span>
               <span className="text-[11px] font-medium text-success/80">RTP {game.rtp}%</span>

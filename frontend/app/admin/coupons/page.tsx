@@ -71,8 +71,8 @@ const STATUS_COLORS: Record<CouponStatus, string> = {
 };
 
 const TYPE_COLORS: Record<CouponType, string> = {
-  bonus_money: 'bg-accent-gold/20 text-accent-gold',
-  free_spin: 'bg-amber-500/20 text-amber-500',
+  bonus_money: 'bg-white/20 text-white',
+  free_spin: 'bg-white/10 text-white',
   deposit_bonus: 'bg-info/20 text-info',
 };
 
@@ -281,7 +281,7 @@ export default function AdminCouponsPage() {
                 <td className="px-4 py-3">
                   <span className="font-mono text-sm text-white font-medium">{coupon.code}</span>
                   {coupon.target_user_id && (
-                    <span className="ml-2 text-[10px] bg-amber-500/20 text-amber-500 px-1.5 py-0.5 rounded">
+                    <span className="ml-2 text-[10px] bg-white/10 text-white px-1.5 py-0.5 rounded">
                       user:{coupon.target_user_id}
                     </span>
                   )}
@@ -542,7 +542,7 @@ export default function AdminCouponsPage() {
                     <span className="text-xs text-text-muted ml-2">ID: {u.user_id}</span>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-accent-gold font-medium">{u.amount_received.toLocaleString()}원</p>
+                    <p className="text-sm text-white font-medium">{u.amount_received.toLocaleString()}원</p>
                     <p className="text-[10px] text-text-muted">{u.used_at}</p>
                   </div>
                 </div>

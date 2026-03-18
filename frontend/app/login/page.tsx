@@ -122,7 +122,7 @@ export default function LoginPage() {
 
           {/* Links */}
           <div className="mt-5 flex items-center justify-between text-sm">
-            <Link href="/register" className="text-accent hover:text-accent-gold transition-colors">
+            <Link href="/register" className="text-white hover:text-white/80 transition-colors">
               아직 회원이 아니세요?
             </Link>
             <button className="text-text-muted hover:text-white transition-colors">

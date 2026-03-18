@@ -96,18 +96,18 @@ export default function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm',
+                  'group relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm font-light',
                   isActive
-                    ? 'font-medium'
+                    ? ''
                     : 'hover:text-white hover:bg-white/5'
                 )}
-                style={isActive ? { background: 'rgba(201,169,78,0.1)', color: '#C9A94E' } : { color: '#888888' }}
+                style={isActive ? { background: 'rgba(255,255,255,0.08)', color: '#FFFFFF' } : { color: '#888888' }}
               >
                 <span className="flex-shrink-0 w-6 flex justify-center">{item.icon}</span>
                 {!collapsed && (
                   <>
                     <span className="flex-1">{item.label}</span>
-                    <span className="px-1.5 py-0.5 bg-white/5 text-text-muted text-[10px] font-medium rounded-md">
+                    <span className="px-1.5 py-0.5 bg-white/5 text-text-muted text-[10px] font-light rounded-md">
                       {item.count}
                     </span>
                   </>
@@ -131,7 +131,7 @@ export default function Sidebar() {
           <div>
             <button
               onClick={() => setProvidersOpen(!providersOpen)}
-              className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-semibold text-text-muted uppercase tracking-wider hover:text-white transition-colors"
+              className="w-full flex items-center justify-between px-3 py-2 text-[10px] font-light text-text-muted uppercase tracking-wider hover:text-white transition-colors"
             >
               <span>프로바이더</span>
               <svg
@@ -147,7 +147,7 @@ export default function Sidebar() {
                   <Link
                     key={p}
                     href={`/lobby?provider=${encodeURIComponent(p)}`}
-                    className="block px-3 py-2 text-xs text-text-muted hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                    className="block px-3 py-2 text-xs font-light text-text-muted hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                   >
                     {p}
                   </Link>
@@ -178,23 +178,23 @@ export default function Sidebar() {
           <Link
             href="/support"
             className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
-            style={{ background: 'rgba(66,165,245,0.1)', border: '1px solid rgba(66,165,245,0.2)' }}
+            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
           >
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(66,165,245,0.2)' }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#42A5F5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.06)' }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
             <div>
-              <p className="text-white text-xs font-bold">24/7 고객지원</p>
-              <p className="text-text-muted text-[10px]">실시간 채팅 상담</p>
+              <p className="text-white text-xs font-light">24/7 고객지원</p>
+              <p className="text-text-muted text-[10px] font-light">실시간 채팅 상담</p>
             </div>
           </Link>
         </div>
       )}
       {collapsed && (
         <div className="p-2 flex justify-center">
-          <Link href="/support" className="group relative p-2 hover:text-white transition-colors" style={{ color: '#42A5F5' }}>
+          <Link href="/support" className="group relative p-2 hover:text-white transition-colors" style={{ color: '#888888' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>

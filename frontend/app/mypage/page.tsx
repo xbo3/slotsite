@@ -85,7 +85,7 @@ export default function ProfilePage() {
         {/* Overall progress */}
         <div className="w-full h-1.5 bg-dark-input rounded-full overflow-hidden mb-4">
           <div
-            className="h-full bg-gradient-to-r from-accent to-accent-gold rounded-full transition-all"
+            className="h-full bg-gradient-to-r from-accent to-white rounded-full transition-all"
             style={{ width: `${(completedCount / missions.length) * 100}%` }}
           />
         </div>
@@ -129,7 +129,7 @@ export default function ProfilePage() {
                   )}
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0">
-                  <span className="text-accent-gold text-sm font-bold">{'\u20AE'}{m.reward}</span>
+                  <span className="text-white text-sm font-bold">{'\u20AE'}{m.reward}</span>
                 </div>
               </div>
             </div>
@@ -284,7 +284,7 @@ export default function ProfilePage() {
                     <span className={`text-xs px-2 py-1 rounded-full font-medium ${
                       log.device === 'PC'
                         ? 'bg-info/20 text-info'
-                        : 'bg-amber-500/20 text-amber-500'
+                        : 'bg-white/10 text-white'
                     }`}>
                       {log.device}
                     </span>
@@ -305,7 +305,7 @@ export default function ProfilePage() {
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                   log.device === 'PC'
                     ? 'bg-info/20 text-info'
-                    : 'bg-amber-500/20 text-amber-500'
+                    : 'bg-white/10 text-white'
                 }`}>
                   {log.device}
                 </span>

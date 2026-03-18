@@ -301,7 +301,7 @@ export default function BetsPage() {
                       key={bet.id}
                       className={`border-b border-white/5 last:border-b-0 transition-colors ${
                         bigWin
-                          ? 'bg-accent-gold/5 hover:bg-accent-gold/10'
+                          ? 'bg-white/5 hover:bg-white/10'
                           : bet.result === 'win'
                           ? 'hover:bg-success/[0.03]'
                           : 'hover:bg-white/[0.02]'
@@ -316,7 +316,7 @@ export default function BetsPage() {
                       </td>
                       <td className="px-4 py-3 text-sm text-text-muted">{bet.provider}</td>
                       <td className="px-4 py-3 text-sm text-white text-right">{bet.betAmount.toLocaleString()}</td>
-                      <td className={`px-4 py-3 text-sm font-medium text-right ${bigWin ? 'text-accent-gold' : bet.winAmount > 0 ? 'text-success' : 'text-text-muted'}`}>
+                      <td className={`px-4 py-3 text-sm font-medium text-right ${bigWin ? 'text-white' : bet.winAmount > 0 ? 'text-success' : 'text-text-muted'}`}>
                         {bet.winAmount.toLocaleString()}
                       </td>
                       <td className={`px-4 py-3 text-sm font-semibold text-right ${profit >= 0 ? 'text-success' : 'text-danger'}`}>
@@ -324,7 +324,7 @@ export default function BetsPage() {
                       </td>
                       <td className="px-4 py-3 text-center">
                         {bigWin ? (
-                          <span className="text-[11px] px-2.5 py-1 rounded-full font-bold bg-accent-gold/20 text-accent-gold">
+                          <span className="text-[11px] px-2.5 py-1 rounded-full font-bold bg-white/20 text-white">
                             BIG WIN
                           </span>
                         ) : bet.result === 'win' ? (
@@ -413,7 +413,7 @@ export default function BetsPage() {
                 <p className="text-lg font-bold text-white">{selectedBet.gameName}</p>
                 <p className="text-sm text-text-muted">{selectedBet.provider}</p>
                 {bigWin && (
-                  <span className="inline-block mt-2 text-xs px-3 py-1 rounded-full font-bold bg-accent-gold/20 text-accent-gold">
+                  <span className="inline-block mt-2 text-xs px-3 py-1 rounded-full font-bold bg-white/20 text-white">
                     BIG WIN x{Math.floor(selectedBet.winAmount / selectedBet.betAmount)}
                   </span>
                 )}
@@ -446,7 +446,7 @@ export default function BetsPage() {
                 <div className="flex justify-between">
                   <span className="text-sm text-text-muted">결과</span>
                   {bigWin ? (
-                    <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-accent-gold/20 text-accent-gold">BIG WIN</span>
+                    <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-white/20 text-white">BIG WIN</span>
                   ) : selectedBet.result === 'win' ? (
                     <span className="text-xs px-2.5 py-0.5 rounded-full font-medium bg-success/20 text-success">승리</span>
                   ) : (

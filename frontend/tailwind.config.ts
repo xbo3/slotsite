@@ -10,12 +10,12 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#C9A94E',
-          dark: '#B89A3F',
+          DEFAULT: '#FFFFFF',
+          dark: '#E0E0E0',
         },
         accent: {
-          DEFAULT: '#C9A94E',
-          gold: '#D4AF37',
+          DEFAULT: '#FFFFFF',
+          secondary: '#E0E0E0',
         },
         dark: {
           bg: '#0A0A0A',
@@ -28,7 +28,6 @@ const config: Config = {
           primary: '#FFFFFF',
           secondary: '#888888',
           muted: '#555555',
-          accent: '#C9A94E',
         },
         success: '#4CAF50',
         danger: '#E53935',
@@ -36,7 +35,7 @@ const config: Config = {
         info: '#42A5F5',
         border: {
           DEFAULT: 'rgba(255,255,255,0.06)',
-          hover: 'rgba(255,255,255,0.12)',
+          hover: 'rgba(255,255,255,0.15)',
         },
       },
       fontFamily: {
