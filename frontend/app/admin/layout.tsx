@@ -8,6 +8,7 @@ const adminMenu = [
   { href: '/admin', label: '대시보드', icon: DashboardIcon },
   { href: '/admin/users', label: '회원관리', icon: UsersIcon },
   { href: '/admin/finance', label: '입출금관리', icon: FinanceIcon },
+  { href: '/admin/withdraws', label: '출금관리', icon: WithdrawIcon },
   { href: '/admin/coupons', label: '보너스관리', icon: CouponIcon },
   { href: '/admin/games', label: '게임관리', icon: GamesIcon },
 ];
@@ -153,6 +154,15 @@ function CouponIcon({ active }: { active: boolean }) {
       <path d="M12 22V7" />
       <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
       <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+    </svg>
+  );
+}
+
+function WithdrawIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 19V5M5 12l7-7 7 7" />
+      <path d="M3 21h18" />
     </svg>
   );
 }

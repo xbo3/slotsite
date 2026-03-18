@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLang } from '@/hooks/useLang';
+import { couponApi } from '@/lib/api';
 
 /* ──────────────────────────────────────────────
    TYPES & DATA
@@ -143,9 +144,29 @@ export default function MyCouponsPage() {
     }
   }, [isAuth]);
 
+  const [couponCode, setCouponCode] = useState('');
+  const [couponLoading, setCouponLoading] = useState(false);
+
   const showToast = (msg: string, bg: string) => {
     setToast({ msg, bg });
     setTimeout(() => setToast(null), 2000);
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    try {
+      const res = await couponApi.apply(couponCode.trim());
+      if (res.success) {
+        showToast(`${couponCode} coupon applied!`, 'linear-gradient(135deg,#22c55e,#4ade80)');
+        setCouponCode('');
+      } else {
+        showToast(res.error || 'Invalid coupon code', 'linear-gradient(135deg,#ff4757,#ff6b81)');
+      }
+    } catch {
+      showToast('Failed to apply coupon', 'linear-gradient(135deg,#ff4757,#ff6b81)');
+    }
+    setCouponLoading(false);
   };
 
   if (!isAuth) {
@@ -322,6 +343,28 @@ export default function MyCouponsPage() {
             </div>
           </button>
         ))}
+      </div>
+
+      {/* ===== COUPON CODE INPUT ===== */}
+      <SectionTitle title="Coupon Code" />
+      <div className="flex gap-2 mb-2">
+        <input
+          type="text"
+          value={couponCode}
+          onChange={e => setCouponCode(e.target.value.toUpperCase())}
+          placeholder="Enter coupon code"
+          className="flex-1 px-4 py-2.5 text-sm text-white rounded-xl focus:outline-none"
+          style={{ background: '#151519', border: '1px solid rgba(255,255,255,0.06)' }}
+          onKeyDown={e => e.key === 'Enter' && handleApplyCoupon()}
+        />
+        <button
+          onClick={handleApplyCoupon}
+          disabled={couponLoading || !couponCode.trim()}
+          className="px-5 py-2.5 rounded-xl text-sm font-medium transition-all disabled:opacity-40"
+          style={{ background: 'linear-gradient(135deg,#7c3aed,#ec4899)', color: '#fff' }}
+        >
+          {couponLoading ? '...' : 'Apply'}
+        </button>
       </div>
 
       {/* ===== MY COUPONS (unified) ===== */}

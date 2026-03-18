@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import Pagination from '@/components/ui/Pagination';
 import EmptyState from '@/components/ui/EmptyState';
 import BottomSheet from '@/components/ui/BottomSheet';
 import { useLang } from '@/hooks/useLang';
+import { useAuth } from '@/context/AuthContext';
+import { userApi } from '@/lib/api';
 
 type GameType = 'slot' | 'live_casino' | 'table';
 type BetResult = 'win' | 'lose';
@@ -65,6 +67,8 @@ function ArrowRightIcon() {
 
 export default function BetsPage() {
   const { t } = useLang();
+  const { isLoggedIn } = useAuth();
+  const [bets, setBets] = useState<Bet[]>(DUMMY_BETS);
   const [filterGameType, setFilterGameType] = useState<FilterGameType>('all');
   const [filterResult, setFilterResult] = useState<FilterResult>('all');
   const [filterPeriod, setFilterPeriod] = useState<FilterPeriod>('30d');
@@ -75,6 +79,18 @@ export default function BetsPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showDateSheet, setShowDateSheet] = useState(false);
   const perPage = 10;
+
+  // Fetch bets from API
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    userApi.getBets().then(res => {
+      try {
+        if (res.success && res.data) {
+          setBets(res.data);
+        }
+      } catch { /* keep dummy data */ }
+    }).catch(() => {});
+  }, [isLoggedIn]);
 
   // Pull-to-refresh
   const touchStartY = useRef(0);
@@ -114,20 +130,20 @@ export default function BetsPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    let list = [...DUMMY_BETS];
+    let list = [...bets];
     if (filterGameType !== 'all') list = list.filter(b => b.gameType === filterGameType);
     if (filterResult !== 'all') list = list.filter(b => b.result === filterResult);
     return list;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterGameType, filterResult]);
+  }, [filterGameType, filterResult, bets]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
   // Stats
-  const totalBetCount = DUMMY_BETS.length;
-  const totalBetAmount = DUMMY_BETS.reduce((s, b) => s + b.betAmount, 0);
-  const totalWinAmount = DUMMY_BETS.reduce((s, b) => s + b.winAmount, 0);
+  const totalBetCount = bets.length;
+  const totalBetAmount = bets.reduce((s, b) => s + b.betAmount, 0);
+  const totalWinAmount = bets.reduce((s, b) => s + b.winAmount, 0);
   const netProfit = totalWinAmount - totalBetAmount;
 
   // Check if big win (10x+)

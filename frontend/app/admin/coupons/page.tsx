@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Modal from '@/components/ui/Modal';
 import Pagination from '@/components/ui/Pagination';
+import { adminApi } from '@/lib/api';
 // admin pages: Korean only (no i18n)
 
 // ===== Types =====
@@ -114,6 +115,17 @@ export default function AdminCouponsPage() {
   // Bulk form
   const [bulkForm, setBulkForm] = useState({ count: 10, prefix: 'PROMO' });
 
+  // Fetch coupons from API
+  useEffect(() => {
+    adminApi.getCoupons().then(res => {
+      try {
+        if (res.success && res.data) {
+          setCoupons(res.data);
+        }
+      } catch { /* keep dummy */ }
+    }).catch(() => {});
+  }, []);
+
   const toggleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDir(d => d === 'asc' ? 'desc' : 'asc');
@@ -145,20 +157,24 @@ export default function AdminCouponsPage() {
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
-  const handleCreate = () => {
-    const newCoupon: Coupon = {
-      id: coupons.length + 1,
+  const handleCreate = async () => {
+    const payload = {
       code: createForm.code || generateCode(),
       type: createForm.type,
       amount: createForm.amount,
       min_deposit: createForm.min_deposit,
       max_uses: createForm.max_uses,
-      used_count: 0,
-      status: 'active',
       start_date: createForm.start_date,
       end_date: createForm.end_date,
       description: createForm.description,
       target_user_id: createForm.target_user_id ? parseInt(createForm.target_user_id) : undefined,
+    };
+    const res = await adminApi.createCoupon(payload).catch(() => null);
+    const newCoupon: Coupon = {
+      id: res?.data?.id || coupons.length + 1,
+      ...payload,
+      used_count: 0,
+      status: 'active',
       created_at: new Date().toISOString().split('T')[0],
     };
     setCoupons(prev => [newCoupon, ...prev]);
@@ -166,22 +182,29 @@ export default function AdminCouponsPage() {
     setCreateForm({ code: '', type: 'bonus_money', amount: 0, min_deposit: 0, max_uses: 0, start_date: '', end_date: '', target_user_id: '', description: '' });
   };
 
-  const handleBulkCreate = () => {
-    const newCoupons: Coupon[] = Array.from({ length: bulkForm.count }, (_, i) => ({
-      id: coupons.length + i + 1,
-      code: `${bulkForm.prefix}-${generateCode(6)}`,
-      type: 'bonus_money' as CouponType,
-      amount: 5000,
-      min_deposit: 0,
-      max_uses: 1,
-      used_count: 0,
-      status: 'active' as CouponStatus,
-      start_date: new Date().toISOString().split('T')[0],
-      end_date: '2026-12-31',
-      description: `벌크 생성 보너스 #${i + 1}`,
-      created_at: new Date().toISOString().split('T')[0],
-    }));
-    setCoupons(prev => [...newCoupons, ...prev]);
+  const handleBulkCreate = async () => {
+    const payload = { count: bulkForm.count, prefix: bulkForm.prefix };
+    const res = await adminApi.bulkCreateCoupons(payload).catch(() => null);
+    if (res?.success && res.data) {
+      setCoupons(prev => [...res.data, ...prev]);
+    } else {
+      // Fallback: local generation
+      const newCoupons: Coupon[] = Array.from({ length: bulkForm.count }, (_, i) => ({
+        id: coupons.length + i + 1,
+        code: `${bulkForm.prefix}-${generateCode(6)}`,
+        type: 'bonus_money' as CouponType,
+        amount: 5000,
+        min_deposit: 0,
+        max_uses: 1,
+        used_count: 0,
+        status: 'active' as CouponStatus,
+        start_date: new Date().toISOString().split('T')[0],
+        end_date: '2026-12-31',
+        description: `벌크 생성 보너스 #${i + 1}`,
+        created_at: new Date().toISOString().split('T')[0],
+      }));
+      setCoupons(prev => [...newCoupons, ...prev]);
+    }
     setShowBulk(false);
   };
 

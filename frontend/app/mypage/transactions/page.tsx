@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import Pagination from '@/components/ui/Pagination';
 import EmptyState from '@/components/ui/EmptyState';
 import BottomSheet from '@/components/ui/BottomSheet';
 import { useLang } from '@/hooks/useLang';
+import { useAuth } from '@/context/AuthContext';
+import { userApi } from '@/lib/api';
 
 type TxType = 'deposit' | 'withdraw' | 'bonus' | 'coupon';
 type TxStatus = 'completed' | 'pending' | 'cancelled';
@@ -123,6 +125,8 @@ function WithdrawIcon() {
 
 export default function TransactionsPage() {
   const { t } = useLang();
+  const { isLoggedIn } = useAuth();
+  const [transactions, setTransactions] = useState<Transaction[]>(DUMMY_TRANSACTIONS);
   const [filterType, setFilterType] = useState<FilterType>('all');
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
   const [filterPeriod, setFilterPeriod] = useState<FilterPeriod>('30d');
@@ -133,6 +137,18 @@ export default function TransactionsPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showDateSheet, setShowDateSheet] = useState(false);
   const perPage = 10;
+
+  // Fetch transactions from API
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    userApi.getTransactions().then(res => {
+      try {
+        if (res.success && res.data) {
+          setTransactions(res.data);
+        }
+      } catch { /* keep dummy data */ }
+    }).catch(() => {});
+  }, [isLoggedIn]);
 
   // Pull-to-refresh
   const pullRef = useRef<HTMLDivElement>(null);
@@ -173,19 +189,19 @@ export default function TransactionsPage() {
   }, []);
 
   const filtered = useMemo(() => {
-    let list = [...DUMMY_TRANSACTIONS];
+    let list = [...transactions];
     if (filterType !== 'all') list = list.filter(t => t.type === filterType);
     if (filterStatus !== 'all') list = list.filter(t => t.status === filterStatus);
     return list;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterType, filterStatus]);
+  }, [filterType, filterStatus, transactions]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
 
   // Summary calculations
-  const totalDeposit = DUMMY_TRANSACTIONS.filter(t => t.type === 'deposit' && t.status === 'completed').reduce((s, t) => s + t.amount, 0);
-  const totalWithdraw = DUMMY_TRANSACTIONS.filter(t => t.type === 'withdraw' && t.status === 'completed').reduce((s, t) => s + t.amount, 0);
+  const totalDeposit = transactions.filter(t => t.type === 'deposit' && t.status === 'completed').reduce((s, t) => s + t.amount, 0);
+  const totalWithdraw = transactions.filter(t => t.type === 'withdraw' && t.status === 'completed').reduce((s, t) => s + t.amount, 0);
   const netProfit = totalDeposit - totalWithdraw;
 
   const renderMobileIcon = (type: TxType) => {
