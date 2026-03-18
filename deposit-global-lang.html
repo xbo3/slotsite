@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deposit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bk:#0a0a0a;--bk2:#111;--bk3:#181818;--bk4:#222;
+  --wt:#fff;--wt2:#e0e0e0;--wt3:#999;--wt4:#555;
+  --glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.07);--glass3:rgba(255,255,255,0.12);
+  --shine:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%,rgba(255,255,255,0.05) 100%);
+  --r:10px;
+  --c1:#ff6b6b;--c2:#ffd43b;--c3:#51cf66;--c4:#339af0;--c5:#cc5de8;--c6:#ff922b;
+}
+body{
+  background:var(--bk);font-family:'Poppins',sans-serif;color:var(--wt2);
+  min-height:100vh;display:flex;justify-content:center;padding:24px 12px;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===== DEMO: site-wide lang switcher (remove in production) ===== */
+.demo-bar{
+  position:fixed;top:12px;right:12px;z-index:100;
+  display:flex;gap:2px;background:rgba(255,255,255,0.08);border-radius:6px;padding:2px;
+  border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(10px);
+}
+.demo-bar button{
+  padding:6px 14px;border:none;border-radius:4px;background:transparent;
+  font-family:'Poppins',sans-serif;font-size:11px;font-weight:400;
+  color:var(--wt4);cursor:pointer;transition:.2s;letter-spacing:0.5px;
+}
+.demo-bar button.on{background:var(--wt);color:var(--bk)}
+
+.wrap{
+  width:100%;max-width:420px;
+  background:var(--bk2);border:1px solid rgba(255,255,255,0.08);border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,0.06) inset,0 20px 60px rgba(0,0,0,0.6);
+}
+
+.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06)}
+.hd h2{font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--wt)}
+.x-btn{
+  width:28px;height:28px;border-radius:50%;background:var(--glass2);border:none;
+  color:var(--wt3);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.2s;
+}
+.x-btn:hover{background:var(--glass3);color:var(--wt)}
+
+.tabs{display:flex;padding:12px 20px 0;gap:3px}
+.tab{
+  flex:1;padding:11px 0;border:none;background:var(--glass);
+  border-radius:var(--r) var(--r) 0 0;font-family:'Poppins',sans-serif;
+  font-size:12px;font-weight:300;letter-spacing:1px;color:var(--wt4);
+  cursor:pointer;transition:all .25s;position:relative;overflow:hidden;
+}
+.tab::before{content:'';position:absolute;inset:0;background:var(--shine);opacity:0;transition:opacity .25s}
+.tab.on{background:var(--bk3);color:var(--wt);border:1px solid rgba(255,255,255,0.1);border-bottom:none}
+.tab.on::before{opacity:1}
+.tab:not(.on):hover{background:var(--glass2);color:var(--wt3)}
+
+.ct{display:none;padding:20px;animation:fd .3s ease}
+.ct.on{display:block}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Bonus */
+.bonus-title{font-size:10px;font-weight:300;color:var(--wt4);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.bonus-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.bonus{
+  display:flex;align-items:center;gap:12px;
+  background:var(--glass);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r);
+  padding:12px 14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+}
+.bonus::before{content:'';position:absolute;inset:0;background:var(--shine);pointer-events:none}
+.bonus:hover{border-color:rgba(255,255,255,0.15)}
+.bonus.selected{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.06)}
+.bonus-radio{
+  width:18px;height:18px;border-radius:50%;border:2px solid var(--wt4);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.2s;
+}
+.bonus.selected .bonus-radio{border-color:var(--wt)}
+.bonus.selected .bonus-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--wt)}
+.bonus-info{flex:1;min-width:0}
+.bonus-name{font-size:12px;font-weight:400;color:var(--wt);display:flex;align-items:center;gap:6px}
+.bonus-name .pct{font-size:9px;font-weight:500;letter-spacing:1px;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,0.1);color:var(--wt3)}
+.bonus-desc{font-size:10px;font-weight:200;color:var(--wt4);margin-top:2px}
+.bonus-warn{
+  font-size:10px;font-weight:200;color:var(--wt4);
+  background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);
+  border-radius:6px;padding:9px 12px;margin-bottom:16px;line-height:1.7;
+}
+.bonus-warn b{color:var(--wt3);font-weight:400}
+
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:10px;font-weight:300;color:var(--wt4);letter-spacing:0.5px;margin-bottom:5px}
+.fg input{
+  width:100%;padding:11px 14px;background:var(--bk);
+  border:1px solid rgba(255,255,255,0.08);border-radius:6px;
+  color:var(--wt);font-family:'Poppins',sans-serif;font-size:12px;font-weight:300;transition:border-color .2s;
+}
+.fg input:focus{outline:none;border-color:rgba(255,255,255,0.25)}
+.fg input::placeholder{color:var(--wt4);font-weight:200}
+
+.quick{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.quick button{
+  padding:7px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);
+  background:transparent;color:var(--wt3);font-family:'Poppins',sans-serif;
+  font-size:10px;font-weight:300;cursor:pointer;transition:.2s;
+}
+.quick button:hover{border-color:rgba(255,255,255,0.25);color:var(--wt)}
+
+.app-box{
+  background:var(--glass);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r);
+  padding:14px;display:flex;align-items:center;gap:14px;margin-bottom:16px;
+  position:relative;overflow:hidden;cursor:pointer;transition:border-color .2s;margin-top:16px;
+}
+.app-box:hover{border-color:rgba(255,255,255,0.15)}
+.app-box::before{content:'';position:absolute;inset:0;background:var(--shine);pointer-events:none}
+.app-txt{flex:1}
+.app-txt .t1{font-size:11px;font-weight:400;color:var(--wt);margin-bottom:3px}
+.app-txt .t2{font-size:10px;font-weight:200;color:var(--wt4)}
+.gp-badge{
+  width:110px;height:34px;border-radius:5px;overflow:hidden;flex-shrink:0;
+  background:#000;border:1px solid rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;gap:5px;padding:0 8px;
+}
+.gp-badge svg{width:16px;height:16px;flex-shrink:0}
+.gp-badge .gp-text{display:flex;flex-direction:column;align-items:flex-start}
+.gp-badge .gp-s{font-size:5.5px;font-weight:300;color:var(--wt3);letter-spacing:0.3px;line-height:1}
+.gp-badge .gp-l{font-size:9px;font-weight:400;color:var(--wt);letter-spacing:0.2px;line-height:1.3}
+
+.cta{
+  width:100%;padding:13px;border:none;border-radius:var(--r);
+  font-family:'Poppins',sans-serif;font-size:12px;font-weight:400;letter-spacing:1px;
+  cursor:pointer;transition:all .25s;position:relative;overflow:hidden;
+  background:var(--wt);color:var(--bk);
+}
+.cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.3) 0%,transparent 60%);pointer-events:none}
+.cta:hover{box-shadow:0 4px 24px rgba(255,255,255,0.15);transform:translateY(-1px)}
+.cta:active{transform:translateY(0)}
+
+/* Coin */
+.coins{display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap}
+.coin{
+  padding:7px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);background:transparent;
+  font-family:'Poppins',sans-serif;font-size:11px;font-weight:300;letter-spacing:0.5px;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;
+}
+.coin .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.coin:not(.on){color:var(--wt4)}
+.coin:not(.on):hover{border-color:rgba(255,255,255,0.2);color:var(--wt3)}
+.coin.on{font-weight:400}
+.coin[data-c="eth"].on{background:rgba(99,132,234,0.15);border-color:rgba(99,132,234,0.4);color:#8ca6f0}
+.coin[data-c="btc"].on{background:rgba(247,147,26,0.12);border-color:rgba(247,147,26,0.4);color:#f7a84a}
+.coin[data-c="usdt"].on{background:rgba(38,161,123,0.15);border-color:rgba(38,161,123,0.4);color:#4dd9a8}
+.coin[data-c="usdc"].on{background:rgba(39,117,202,0.15);border-color:rgba(39,117,202,0.4);color:#5fa8e8}
+.coin[data-c="d3"].on{background:rgba(204,93,232,0.12);border-color:rgba(204,93,232,0.4);color:#d88cee}
+
+.cbf{
+  background:var(--glass);border:1px solid rgba(255,255,255,0.06);border-radius:var(--r);
+  padding:12px 14px;margin-bottom:8px;position:relative;overflow:hidden;transition:border-color .2s;
+}
+.cbf::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.cbf:nth-child(1)::before{background:linear-gradient(180deg,var(--c1),var(--c6))}
+.cbf:nth-child(2)::before{background:linear-gradient(180deg,var(--c2),var(--c3))}
+.cbf:nth-child(3)::before{background:linear-gradient(180deg,var(--c4),var(--c5))}
+.cbf:hover{border-color:rgba(255,255,255,0.14)}
+.cbf-t{font-size:12px;font-weight:400;color:var(--wt);display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.ctag{font-size:8px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;padding:2px 7px;border-radius:3px}
+.ctag-r{background:rgba(255,107,107,0.15);color:var(--c1)}
+.ctag-y{background:rgba(255,212,59,0.15);color:var(--c2)}
+.ctag-b{background:rgba(51,154,240,0.15);color:var(--c4)}
+.cbf-d{font-size:10px;font-weight:200;color:var(--wt3);line-height:1.6}
+.cbf-d b{font-weight:400}
+.hl-r{color:var(--c1)}.hl-g{color:var(--c3)}.hl-y{color:var(--c2)}.hl-b{color:var(--c4)}.hl-p{color:var(--c5)}
+
+.net{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.net span{font-size:10px;font-weight:300;color:var(--wt4)}
+.net select{
+  flex:1;padding:8px 12px;background:var(--bk);border:1px solid rgba(255,255,255,0.08);border-radius:6px;
+  color:var(--wt2);font-family:'Poppins',sans-serif;font-size:11px;font-weight:300;
+  appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+
+.qr-box{
+  background:var(--glass);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r);
+  padding:20px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;
+}
+.qr-box::before{content:'';position:absolute;inset:0;background:var(--shine);pointer-events:none}
+.qr-img{
+  width:130px;height:130px;background:#fff;border-radius:8px;margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.qr-img canvas{border-radius:4px}
+.addr-label{font-size:9px;font-weight:300;color:var(--wt4);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.addr{
+  font-size:11px;font-weight:300;color:var(--wt);word-break:break-all;line-height:1.6;
+  background:var(--bk);padding:10px 36px 10px 12px;border-radius:6px;
+  border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all .2s;position:relative;text-align:left;
+}
+.addr:hover{border-color:rgba(255,255,255,0.2)}
+.addr .cp{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;opacity:0.4;transition:opacity .2s}
+.addr:hover .cp{opacity:0.8}
+
+.warn{
+  padding:10px 12px;border-radius:6px;background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);font-size:10px;font-weight:200;
+  color:var(--wt4);line-height:1.7;margin-bottom:14px;
+}
+.warn b{color:var(--wt3);font-weight:400}
+
+.rec{border-top:1px solid rgba(255,255,255,0.06);margin-top:14px;padding-top:12px}
+.rec-t{font-size:9px;font-weight:300;color:var(--wt4);letter-spacing:1.5px;margin-bottom:8px;text-transform:uppercase}
+.rec-i{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.rec-i:last-child{border:none}
+.rec-a{font-size:12px;font-weight:300;color:var(--wt)}
+.rec-d{font-size:9px;font-weight:200;color:var(--wt4)}
+.rec-s{font-size:10px;font-weight:300;color:var(--wt3)}
+
+.toast{
+  position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-40px);
+  background:var(--wt);color:var(--bk);padding:8px 20px;border-radius:20px;
+  font-size:11px;font-weight:400;opacity:0;transition:all .3s;pointer-events:none;z-index:99;
+  box-shadow:0 4px 20px rgba(255,255,255,0.15);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ====================================================
+  DEMO: 사이트 전역 언어 전환 시뮬레이션 (실제 운영 시 삭제)
+  실제 적용 시 사이트의 전역 언어 설정에서
+  window.setDepositLang('en') 또는 window.setDepositLang('ko') 호출
+==================================================== -->
+<div class="demo-bar">
+  <button class="on" onclick="window.setDepositLang('en')">EN</button>
+  <button onclick="window.setDepositLang('ko')">한국어</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="wrap" id="depositWidget">
+  <div class="hd">
+    <h2 data-en="Deposit" data-ko="입금">Deposit</h2>
+    <button class="x-btn">✕</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="sw('bank')" data-en="Bank" data-ko="은행입금">Bank</button>
+    <button class="tab" onclick="sw('coin')" data-en="Crypto" data-ko="코인입금">Crypto</button>
+  </div>
+
+  <!-- ===== BANK ===== -->
+  <div class="ct on" id="bank">
+    <div class="bonus-title" data-en="Select Bonus" data-ko="보너스 선택">Select Bonus</div>
+    <div class="bonus-list">
+      <div class="bonus" onclick="pickBonus(this)">
+        <div class="bonus-radio"></div>
+        <div class="bonus-info">
+          <div class="bonus-name" data-en="First Deposit <span class='pct'>100%</span>" data-ko="첫 입금 보너스 <span class='pct'>100%</span>">First Deposit <span class="pct">100%</span></div>
+          <div class="bonus-desc" data-en="Up to ₩500,000 · Rolling x3" data-ko="최대 50만원 · 롤링 3배">Up to ₩500,000 · Rolling x3</div>
+        </div>
+      </div>
+      <div class="bonus" onclick="pickBonus(this)">
+        <div class="bonus-radio"></div>
+        <div class="bonus-info">
+          <div class="bonus-name" data-en="Daily Bonus <span class='pct'>10%</span>" data-ko="매일 입금 보너스 <span class='pct'>10%</span>">Daily Bonus <span class="pct">10%</span></div>
+          <div class="bonus-desc" data-en="Every first deposit · Rolling x1" data-ko="매일 첫 입금 · 롤링 1배">Every first deposit · Rolling x1</div>
+        </div>
+      </div>
+      <div class="bonus" onclick="pickBonus(this)">
+        <div class="bonus-radio"></div>
+        <div class="bonus-info">
+          <div class="bonus-name" data-en="No Bonus" data-ko="보너스 없음">No Bonus</div>
+          <div class="bonus-desc" data-en="Deposit without bonus" data-ko="보너스 미적용 입금">Deposit without bonus</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bonus-warn" data-en="Only <b>1 bonus per deposit</b>. To apply a different bonus, you must <b>cancel or complete</b> the current bonus first." data-ko="입금 1회에 보너스는 <b>1개만 선택</b> 가능합니다. 다른 보너스 적용 시 현재 보너스를 <b>취소 또는 완료</b> 후 적용 가능합니다.">Only <b>1 bonus per deposit</b>. To apply a different bonus, you must <b>cancel or complete</b> the current bonus first.</div>
+
+    <div class="fg">
+      <label data-en="Deposit Amount" data-ko="입금 금액">Deposit Amount</label>
+      <input type="text" placeholder="₩ 10,000" id="amt">
+    </div>
+    <div class="quick">
+      <button onclick="setAmt(10000)">₩1만</button>
+      <button onclick="setAmt(30000)">₩3만</button>
+      <button onclick="setAmt(50000)">₩5만</button>
+      <button onclick="setAmt(100000)">₩10만</button>
+      <button onclick="setAmt(500000)">₩50만</button>
+    </div>
+
+    <button class="cta" data-en="Request Deposit" data-ko="입금 신청" onclick="alert(_L==='ko'?'입금 신청 완료':'Deposit requested')">Request Deposit</button>
+
+    <div class="app-box" onclick="window.open('#','_blank')">
+      <div class="app-txt">
+        <div class="t1" data-en="Arbitrary transaction records" data-ko="무통장 입금 거래기록">Arbitrary transaction records</div>
+        <div class="t2" data-en="Download 'Let's School' from Google Play" data-ko="Google Play에서 Let's School 앱을 설치해주세요">Download 'Let's School' from Google Play</div>
+      </div>
+      <div class="gp-badge">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3.61 1.814L13.793 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734c0-.382.218-.72.61-.92z" fill="#4285F4"/><path d="M17.091 8.703L5.045.87C4.542.576 3.97.51 3.61 1.814L13.793 12l3.298-3.297z" fill="#EA4335"/><path d="M3.61 22.186c.36 1.304.932 1.238 1.435.944l12.046-7.833L13.793 12 3.61 22.186z" fill="#34A853"/><path d="M20.807 10.545l-3.716-1.842L13.793 12l3.298 3.297 3.716-1.842c.942-.524.942-2.386 0-2.91z" fill="#FBBC05"/></svg>
+        <div class="gp-text">
+          <span class="gp-s">GET IT ON</span>
+          <span class="gp-l">Google Play</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec">
+      <div class="rec-t" data-en="Recent" data-ko="최근 입금">Recent</div>
+      <div class="rec-i">
+        <div><div class="rec-a">+₩100,000</div><div class="rec-d">2026.03.18  14:15</div></div>
+        <span class="rec-s">✓</span>
+      </div>
+      <div class="rec-i">
+        <div><div class="rec-a">+₩50,000</div><div class="rec-d">2026.03.17  11:30</div></div>
+        <span class="rec-s">✓</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== COIN ===== -->
+  <div class="ct" id="coin">
+    <div style="margin-bottom:14px">
+      <div class="cbf">
+        <div class="cbf-t" data-en="First Crypto Deposit <span class='ctag ctag-r'>150%</span>" data-ko="코인 첫 입금 <span class='ctag ctag-r'>150%</span>">First Crypto Deposit <span class="ctag ctag-r">150%</span></div>
+        <div class="cbf-d" data-en="<b class='hl-r'>150% bonus</b> — 50% more than bank deposit" data-ko="<b class='hl-r'>150% 보너스</b> — 은행보다 50% 더 높은 혜택"><b class="hl-r">150% bonus</b> — 50% more than bank deposit</div>
+      </div>
+      <div class="cbf">
+        <div class="cbf-t" data-en="Zero Fee · Instant <span class='ctag ctag-y'>Free</span>" data-ko="수수료 0% · 즉시 반영 <span class='ctag ctag-y'>Free</span>">Zero Fee · Instant <span class="ctag ctag-y">Free</span></div>
+        <div class="cbf-d" data-en="<b class='hl-y'>No fees</b> · Auto-credited in <b class='hl-g'>30s ~ 2min</b>" data-ko="<b class='hl-y'>수수료 없음</b> · <b class='hl-g'>30초~2분</b> 내 자동 입금"><b class="hl-y">No fees</b> · Auto-credited in <b class="hl-g">30s ~ 2min</b></div>
+      </div>
+      <div class="cbf">
+        <div class="cbf-t" data-en="Anonymous & Secure <span class='ctag ctag-b'>P2P</span>" data-ko="익명 & 안전 <span class='ctag ctag-b'>P2P</span>">Anonymous & Secure <span class="ctag ctag-b">P2P</span></div>
+        <div class="cbf-d" data-en="<b class='hl-b'>Zero</b> personal info exposure · <b class='hl-p'>Blockchain-secured</b>" data-ko="개인정보 노출 <b class='hl-b'>ZERO</b> · <b class='hl-p'>블록체인 기반 안전 전송</b>"><b class="hl-b">Zero</b> personal info exposure · <b class="hl-p">Blockchain-secured</b></div>
+      </div>
+    </div>
+
+    <div class="coins">
+      <button class="coin" data-c="eth" onclick="sc(this)"><span class="dot" style="background:#627eea"></span>ETH</button>
+      <button class="coin" data-c="btc" onclick="sc(this)"><span class="dot" style="background:#f7931a"></span>BTC</button>
+      <button class="coin on" data-c="usdt" onclick="sc(this)"><span class="dot" style="background:#26a17b"></span>USDT</button>
+      <button class="coin" data-c="usdc" onclick="sc(this)"><span class="dot" style="background:#2775ca"></span>USDC</button>
+      <button class="coin" data-c="d3" onclick="sc(this)"><span class="dot" style="background:#cc5de8"></span>D3</button>
+    </div>
+
+    <div class="net">
+      <span>Network</span>
+      <select>
+        <option>Tron (TRC20)</option>
+        <option>Ethereum (ERC20)</option>
+        <option>BNB Chain (BEP20)</option>
+      </select>
+    </div>
+
+    <div class="qr-box">
+      <div class="qr-img"><canvas id="qr" width="112" height="112"></canvas></div>
+      <div class="addr-label" data-en="Deposit Address" data-ko="입금 주소">Deposit Address</div>
+      <div class="addr" onclick="ca(this)">TWYeb6SX7YRCzD3RDEkUTTxWc5u1gwqfrF<span class="cp">⧉</span></div>
+    </div>
+
+    <div class="warn" data-en="Send only <b>USDT</b> to this address. Deposits under <b>1 USDT</b> will not be credited. Wrong network = unrecoverable." data-ko="이 주소로 <b>USDT</b>만 전송하세요. <b>1 USDT 이하</b> 송금은 반영되지 않습니다. 잘못된 네트워크 전송 시 복구 불가.">Send only <b>USDT</b> to this address. Deposits under <b>1 USDT</b> will not be credited. Wrong network = unrecoverable.</div>
+
+    <div class="rec">
+      <div class="rec-t" data-en="Recent" data-ko="최근 입금">Recent</div>
+      <div class="rec-i">
+        <div><div class="rec-a" style="color:#4dd9a8">+33 USDT</div><div class="rec-d">2026.03.18  17:48</div></div>
+        <span class="rec-s">✓</span>
+      </div>
+      <div class="rec-i">
+        <div><div class="rec-a" style="color:#4dd9a8">+70.846 USDT</div><div class="rec-d">2026.03.17  18:45</div></div>
+        <span class="rec-s">✓</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/**
+ * ========================================
+ *  전역 언어 API
+ * ========================================
+ *  사이트 어디서든 아래 함수를 호출하면
+ *  입금 위젯의 언어가 즉시 전환됩니다.
+ *
+ *  window.setDepositLang('en')  // English
+ *  window.setDepositLang('ko')  // 한국어
+ *
+ *  또는 사이트의 전역 언어 변수에 연동:
+ *  window.setDepositLang(window.SITE_LANG)
+ * ========================================
+ */
+let _L = 'en';
+
+window.setDepositLang = function(lang) {
+  _L = lang;
+  document.querySelectorAll('#depositWidget [data-' + lang + ']').forEach(el => {
+    el.innerHTML = el.getAttribute('data-' + lang);
+  });
+  // demo bar highlight
+  document.querySelectorAll('.demo-bar button').forEach(b => {
+    b.classList.toggle('on',
+      (lang === 'en' && b.textContent === 'EN') ||
+      (lang === 'ko' && b.textContent === '한국어')
+    );
+  });
+};
+
+// 초기 언어 설정 (사이트 전역 변수가 있으면 연동)
+// window.setDepositLang(window.SITE_LANG || 'en');
+
+function sw(t) {
+  document.querySelectorAll('.tab').forEach((e, i) => {
+    e.classList.toggle('on', (t === 'bank' && i === 0) || (t === 'coin' && i === 1));
+  });
+  document.getElementById('bank').classList.toggle('on', t === 'bank');
+  document.getElementById('coin').classList.toggle('on', t === 'coin');
+}
+
+function pickBonus(el) {
+  document.querySelectorAll('.bonus').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function setAmt(v) {
+  document.getElementById('amt').value = v.toLocaleString() + '원';
+}
+
+const a = document.getElementById('amt');
+if (a) a.addEventListener('input', function(e) {
+  let v = e.target.value.replace(/\D/g, '');
+  e.target.value = v ? Number(v).toLocaleString() + '원' : '';
+});
+
+function sc(e) {
+  document.querySelectorAll('.coin').forEach(c => c.classList.remove('on'));
+  e.classList.add('on');
+}
+
+function ca(el) {
+  const txt = el.textContent.replace('⧉', '').trim();
+  navigator.clipboard.writeText(txt);
+  const t = document.getElementById('toast');
+  t.textContent = _L === 'ko' ? '주소가 복사되었습니다' : 'Address copied';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// QR pattern
+(function() {
+  const c = document.getElementById('qr'); if (!c) return;
+  const ctx = c.getContext('2d'), s = 112, m = 4, g = Math.floor(s / m);
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, s, s); ctx.fillStyle = '#000';
+  let seed = 0; const addr = 'TWYeb6SX7YRCzD3RDEkUTTxWc5u1gwqfrF';
+  for (let i = 0; i < addr.length; i++) seed = (seed * 31 + addr.charCodeAt(i)) & 0xffffffff;
+  function rng() { seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5; return (seed >>> 0) / 4294967296; }
+  for (let y = 0; y < g; y++) for (let x = 0; x < g; x++) { if (rng() > 0.5) ctx.fillRect(x * m, y * m, m, m); }
+  function corner(ox, oy) {
+    ctx.fillStyle = '#000'; ctx.fillRect(ox, oy, 28, 28);
+    ctx.fillStyle = '#fff'; ctx.fillRect(ox + 4, oy + 4, 20, 20);
+    ctx.fillStyle = '#000'; ctx.fillRect(ox + 8, oy + 8, 12, 12);
+  }
+  corner(0, 0); corner(s - 28, 0); corner(0, s - 28);
+})();
+</script>
+</body>
+</html>
