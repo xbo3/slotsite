@@ -155,6 +155,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [expandedCat, setExpandedCat] = useState<string | null>(null);
+  const [activeSub, setActiveSub] = useState<string | null>(null);
   const { t, lang, setLang } = useLang();
 
   const switchLang = (newLang: 'ko' | 'en') => {
@@ -222,29 +223,7 @@ export default function Sidebar() {
 
                 {/* Subcategories — only when sidebar is expanded */}
                 {!collapsed && (
-                  <div className={`subcategory-grid ${isExpanded ? 'expanded' : ''}`}>
-                    <div className="subcategory-inner">
-                      {cat.subs.map((sub: { id: string; labelKey?: string; label?: string; href: string; img?: string }) => (
-                        <Link
-                          key={sub.id}
-                          href={sub.href}
-                          className="sub-item flex items-center gap-2 pl-7 pr-3 py-1.5 text-xs font-light text-white/40 hover:text-white hover:bg-white/[0.05] rounded-md transition-colors group/sub"
-                        >
-                          {sub.img ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={sub.img}
-                              alt={sub.label || ''}
-                              className="w-5 h-5 object-contain opacity-60 group-hover/sub:opacity-100 transition-opacity"
-                              style={{ filter: 'brightness(0) invert(1)' }}
-                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                            />
-                          ) : null}
-                          <span>{sub.labelKey ? t(sub.labelKey) : sub.label}</span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                  <SubCategoryList cat={cat} isExpanded={isExpanded} t={t} activeSub={activeSub} setActiveSub={setActiveSub} />
                 )}
               </div>
             );
@@ -331,5 +310,69 @@ export default function Sidebar() {
         </div>
       )}
     </aside>
+  );
+}
+
+// 서브카테고리 리스트 — 텍스트 좌측, 로고 우측 (30% 숨김 → 선택시 100% 보임)
+function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
+  cat: { subs: { id: string; labelKey?: string; label?: string; href: string; img?: string }[] };
+  isExpanded: boolean;
+  t: (key: string) => string;
+  activeSub: string | null;
+  setActiveSub: (id: string | null) => void;
+}) {
+  return (
+    <div className={`subcategory-grid ${isExpanded ? 'expanded' : ''}`}>
+      <div className="subcategory-inner">
+        {cat.subs.map((sub) => {
+          const isActive = activeSub === sub.id;
+          return (
+            <Link
+              key={sub.id}
+              href={sub.href}
+              onClick={() => setActiveSub(isActive ? null : sub.id)}
+              className={`sub-item relative flex items-center overflow-hidden rounded-md transition-all duration-300 ${
+                isActive
+                  ? 'bg-white/[0.08] text-white pl-5 pr-2'
+                  : 'text-white/40 hover:text-white hover:bg-white/[0.03] pl-7 pr-3'
+              }`}
+              style={{ height: '32px' }}
+            >
+              {/* 텍스트 — 좌측 정렬 */}
+              <span className="text-xs font-light truncate flex-1 relative z-10">
+                {sub.labelKey ? t(sub.labelKey) : sub.label}
+              </span>
+
+              {/* 로고 이미지 — 우측 정렬, 비선택시 30% 숨김 */}
+              {sub.img && (
+                <div
+                  className="absolute top-0 bottom-0 flex items-center transition-all duration-300"
+                  style={{
+                    right: isActive ? '8px' : '-6px',  // 비선택: 우측으로 밀려서 30% 숨김
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={sub.img}
+                    alt={sub.label || ''}
+                    className="h-5 w-auto object-contain transition-all duration-300"
+                    style={{
+                      filter: 'brightness(0) invert(1)',
+                      opacity: isActive ? 0.9 : 0.25,
+                    }}
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              )}
+
+              {/* 선택시 좌측 인디케이터 */}
+              {isActive && (
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-4 bg-white rounded-full" />
+              )}
+            </Link>
+          );
+        })}
+      </div>
+    </div>
   );
 }
