@@ -86,9 +86,9 @@ export default function Header() {
           </Link>
         </div>
         {/* Mobile logo — shown below lg */}
-        <div className="flex lg:hidden items-center px-4 flex-shrink-0">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-lg md:text-xl tracking-[0.15em]">
+        <div className="flex lg:hidden items-center px-3 md:px-4 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-1.5">
+            <span className="text-base md:text-xl tracking-[0.15em]">
               <span className="text-white font-light">DR.</span>
               <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
@@ -272,13 +272,13 @@ export default function Header() {
             <>
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-light text-white transition-colors rounded-lg border border-white/30 hover:bg-white/10"
+                className="px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-light text-white transition-colors rounded-lg border border-white/30 hover:bg-white/10 min-h-[44px] flex items-center"
               >
                 {t('login')}
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 text-sm font-light text-white transition-colors rounded-lg border border-white hover:bg-white hover:text-black"
+                className="px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-light text-white transition-colors rounded-lg border border-white hover:bg-white hover:text-black min-h-[44px] flex items-center"
               >
                 {t('register')}
               </Link>
@@ -375,10 +375,10 @@ export default function Header() {
                   {item.label}
                 </Link>
               ))}
-              <div className="flex gap-3 pt-3">
+              <div className="flex gap-2 pt-3">
                 <Link
                   href="/login"
-                  className="flex-1 text-center py-2.5 border rounded-lg text-white text-sm font-light hover:bg-white/5"
+                  className="flex-1 text-center py-2.5 border rounded-lg text-white text-xs font-light hover:bg-white/5 min-h-[44px] flex items-center justify-center"
                   style={{ borderColor: 'rgba(255,255,255,0.1)' }}
                   onClick={() => setMenuOpen(false)}
                 >
@@ -386,7 +386,7 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/register"
-                  className="flex-1 text-center py-2.5 text-sm font-light text-white border border-white rounded-lg hover:bg-white hover:text-black transition-all"
+                  className="flex-1 text-center py-2.5 text-xs font-light text-white border border-white rounded-lg hover:bg-white hover:text-black transition-all min-h-[44px] flex items-center justify-center"
                   onClick={() => setMenuOpen(false)}
                 >
                   {t('register')}

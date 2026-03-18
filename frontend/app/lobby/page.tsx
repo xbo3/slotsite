@@ -125,9 +125,11 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
 
   if (imgError || !game.thumbnail) return null;
 
-  const cardHeight = isMobile ? '300px' : '400px';
-  const imgHeight = isMobile ? '140px' : '180px';
-  const infoHeight = isMobile ? '160px' : '220px';
+  const cardHeight = isMobile ? '280px' : '400px';
+  const imgHeight = isMobile ? '130px' : '180px';
+  const infoHeight = isMobile ? '150px' : '220px';
+  const btnHeight = isMobile ? '40px' : '50px';
+  const showButtons = isMobile || isHovered;
 
   return (
     <div
@@ -140,12 +142,12 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
           className="relative overflow-hidden transition-all duration-300"
           style={{
             height: cardHeight,
-            borderRadius: '14px',
+            borderRadius: isMobile ? '10px' : '14px',
             border: `2px solid ${gradient.border}`,
-            boxShadow: isHovered
+            boxShadow: isHovered && !isMobile
               ? `0 30px 20px -20px rgba(14,6,23,0.3), 0 0 20px ${gradient.glow}`
               : '0 4px 15px rgba(0,0,0,0.3)',
-            transform: isHovered ? 'translateY(-15px)' : 'translateY(0)',
+            transform: isHovered && !isMobile ? 'translateY(-15px)' : 'translateY(0)',
           }}
         >
           {/* Top cover image */}
@@ -172,7 +174,7 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
               transform: 'rotate(180deg) scaleX(-1)',
               maskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
               WebkitMaskImage: 'linear-gradient(to bottom, transparent 60%, black 94%)',
-              opacity: 0.4,
+              opacity: isMobile ? 0.25 : 0.4,
               zIndex: 1,
             }}
           />
@@ -200,45 +202,45 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
           <div
             className="absolute w-full left-0 transition-all duration-300"
             style={{
-              bottom: isHovered ? '50px' : '0px',
+              bottom: showButtons ? btnHeight : '0px',
               height: infoHeight,
               zIndex: 5,
-              padding: isMobile ? '12px' : '20px',
+              padding: isMobile ? '10px' : '20px',
             }}
           >
             {/* Game name + provider */}
-            <div className="relative z-10" style={{ height: isMobile ? '45px' : '60px' }}>
-              <p className={`text-white font-medium leading-6 truncate ${isMobile ? 'text-sm' : 'text-lg'}`}>
+            <div className="relative z-10" style={{ height: isMobile ? '38px' : '60px' }}>
+              <p className={`text-white font-medium leading-5 md:leading-6 truncate ${isMobile ? 'text-xs' : 'text-lg'}`}>
                 {game.name}
               </p>
-              <p className={`text-white/70 font-light mt-1 ${isMobile ? 'text-[10px]' : 'text-xs'}`}>
+              <p className={`text-white/70 font-light mt-0.5 md:mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>
                 {game.provider}
               </p>
             </div>
 
             {/* Stats */}
-            <div className={`flex justify-between relative z-10 ${isMobile ? 'mt-2' : 'mt-4'}`}>
+            <div className={`flex justify-between relative z-10 ${isMobile ? 'mt-1' : 'mt-4'}`}>
               <div>
-                <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'}`}>MEDIUM</p>
-                <p className={`text-white/50 mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>Volatility</p>
+                <p className={`text-white ${isMobile ? 'text-[9px]' : 'text-sm'}`}>MEDIUM</p>
+                <p className={`text-white/50 mt-0.5 ${isMobile ? 'text-[7px]' : 'text-xs'}`}>Volatility</p>
               </div>
               <div>
-                <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'}`}>{game.rtp}%</p>
-                <p className={`text-white/50 mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>RTP</p>
+                <p className={`text-white ${isMobile ? 'text-[9px]' : 'text-sm'}`}>{game.rtp}%</p>
+                <p className={`text-white/50 mt-0.5 ${isMobile ? 'text-[7px]' : 'text-xs'}`}>RTP</p>
               </div>
               <div>
-                <p className={`text-white ${isMobile ? 'text-xs' : 'text-sm'}`}>{game.maxWin}</p>
-                <p className={`text-white/50 mt-1 ${isMobile ? 'text-[9px]' : 'text-xs'}`}>Max Win</p>
+                <p className={`text-white ${isMobile ? 'text-[9px]' : 'text-sm'}`}>{game.maxWin}</p>
+                <p className={`text-white/50 mt-0.5 ${isMobile ? 'text-[7px]' : 'text-xs'}`}>Max Win</p>
               </div>
             </div>
           </div>
 
-          {/* Buttons (slide up on hover) */}
+          {/* Buttons - always visible on mobile, hover on desktop */}
           <div
             className="absolute w-full flex transition-all duration-300"
             style={{
-              height: '50px',
-              bottom: isHovered ? '0px' : '-50px',
+              height: btnHeight,
+              bottom: showButtons ? '0px' : `-${btnHeight}`,
               left: 0,
               background: 'rgba(255,255,255,0.1)',
               backdropFilter: 'blur(10px)',
@@ -248,14 +250,14 @@ function PGStyleCard({ game, gradient, isMobile }: { game: Game; index?: number;
             <Link
               href={`/game/${game.id}?mode=demo`}
               onClick={e => e.stopPropagation()}
-              className="flex-1 flex items-center justify-center text-white text-sm font-light hover:bg-white/10 transition-colors"
+              className="flex-1 flex items-center justify-center text-white text-[10px] md:text-sm font-light hover:bg-white/10 transition-colors min-h-[44px]"
             >
               TRY FREE
             </Link>
             <Link
               href={`/game/${game.id}`}
               onClick={e => e.stopPropagation()}
-              className="flex-1 flex items-center justify-center text-white text-sm font-light hover:bg-white/10 transition-colors border-l border-white/10"
+              className="flex-1 flex items-center justify-center text-white text-[10px] md:text-sm font-light hover:bg-white/10 transition-colors border-l border-white/10 min-h-[44px]"
             >
               PLAY NOW
             </Link>
@@ -400,12 +402,12 @@ function LobbyContent() {
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-[100px] animate-pulse" />
           <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-white/5 rounded-full blur-[80px] animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-12">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-2 h-8 bg-white rounded-full" />
-            <h1 className="text-3xl md:text-4xl font-light text-white tracking-tight">{'\uD83C\uDFAE'} {t('game_lobby_title')}</h1>
+        <div className="relative max-w-7xl mx-auto px-4 py-5 md:py-12">
+          <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+            <div className="w-1.5 md:w-2 h-6 md:h-8 bg-white rounded-full" />
+            <h1 className="text-xl md:text-4xl font-light text-white tracking-tight">{'\uD83C\uDFAE'} {t('game_lobby_title')}</h1>
           </div>
-          <p className="text-text-secondary ml-5">
+          <p className="text-text-secondary ml-4 md:ml-5 text-sm md:text-base">
             <span className="text-white font-light">{GAMES.length}</span>{t('premium_games_waiting')}
           </p>
         </div>
@@ -415,12 +417,12 @@ function LobbyContent() {
 
         {/* HOT Games - 2x4 Grid */}
         <div className="mb-10">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">{'\uD83D\uDD25'}</span>
-            <h2 className="text-xl font-light text-white">HOT Games</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-red-500/50 to-transparent ml-3" />
+          <div className="flex items-center gap-2 mb-3 md:mb-4">
+            <span className="text-lg md:text-2xl">{'\uD83D\uDD25'}</span>
+            <h2 className="text-base md:text-xl font-light text-white">HOT Games</h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-red-500/50 to-transparent ml-2 md:ml-3" />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
             {hotGames.slice(0, 8).map((game, index) => (
               <PGStyleCard key={game.id} game={game} index={index} gradient={hotGradients[index % 8]} isMobile={isMobile} />
             ))}
@@ -429,12 +431,12 @@ function LobbyContent() {
 
         {/* COLD Games - 2x4 Grid */}
         <div className="mb-10">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-2xl">{'\u2744\uFE0F'}</span>
-            <h2 className="text-xl font-light text-white">COLD Games</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent ml-3" />
+          <div className="flex items-center gap-2 mb-3 md:mb-4">
+            <span className="text-lg md:text-2xl">{'\u2744\uFE0F'}</span>
+            <h2 className="text-base md:text-xl font-light text-white">COLD Games</h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent ml-2 md:ml-3" />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
             {coldGames.map((game, index) => (
               <PGStyleCard key={game.id} game={game} index={index} gradient={coldGradients[index % 8]} isMobile={isMobile} />
             ))}
@@ -463,14 +465,14 @@ function LobbyContent() {
           </div>
 
           {/* Provider multi-select */}
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+          <div className="flex gap-1.5 md:gap-2 overflow-x-auto pb-1 scrollbar-hide">
             {PROVIDER_LIST.map(p => {
               const isSelected = selectedProviders.has(p);
               return (
                 <button
                   key={p}
                   onClick={() => toggleProvider(p)}
-                  className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  className={`flex-shrink-0 flex items-center gap-1 md:gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-medium transition-all min-h-[44px] ${
                     isSelected
                       ? 'bg-white text-black shadow-lg'
                       : 'bg-transparent text-white/50 hover:text-white border border-white/5'
@@ -542,7 +544,7 @@ function LobbyContent() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
                 {visibleGames.map((game, index) => (
                   <PGStyleCard
                     key={game.id}
