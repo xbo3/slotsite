@@ -1,4 +1,4 @@
-// 실제 PG Soft 게임 데이터 39개
+// 실제 게임 데이터 (PG Soft 49개 + Nolimit City 44개)
 
 export const DEMO_GAMES = [
   // === 기본 15개 ===
@@ -57,19 +57,66 @@ export const DEMO_GAMES = [
   { id: 47, name: 'Knockout Riches', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/5e2fe7a0-e09f-483a-9f9d-a599a53c12b3.webp', rtp: '96.50%', maxWin: 'x5500', isNew: true, isHot: false },
   { id: 48, name: 'Doomsday Rampage', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/4bf3e0c1-9af6-41c2-9ade-7a4e5c9efcd7.jpg', rtp: '96.70%', maxWin: 'x8000', isNew: true, isHot: true },
   { id: 49, name: 'Graffiti Rush', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/e8aac80c-9be2-4df8-8d4d-227dd8abf4ce.webp', rtp: '96.55%', maxWin: 'x6000', isNew: true, isHot: false },
+
+  // === Nolimit City 44개 ===
+  { id: 50, name: 'Catfish Hunters', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Website_Icon_Catfish_Hunters_47ef66edfe.jpg', rtp: '96.06%', maxWin: 'x43210', isNew: true, isHot: true },
+  { id: 51, name: 'Duck Hunters', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_duck_hunters_logo2_813513f3fb.png', rtp: '96.08%', maxWin: 'x55500', isNew: true, isHot: true },
+  { id: 52, name: 'The Crypt', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_the_crypt_logo2_3276573b66.png', rtp: '96.09%', maxWin: 'x33333', isNew: true, isHot: false },
+  { id: 53, name: 'Fire In The Hole 3', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png', rtp: '96.02%', maxWin: 'x60000', isNew: true, isHot: true },
+  { id: 54, name: 'Fire In The Hole 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_fith_2_icon5_0f344179fa.png', rtp: '96.07%', maxWin: 'x55000', isNew: false, isHot: true },
+  { id: 55, name: 'Tanked', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_tanked_icon5_5917c5d4f7.png', rtp: '96.04%', maxWin: 'x41050', isNew: true, isHot: false },
+  { id: 56, name: 'Duck Hunters: Happy Hour', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Duck_Hunter_Happy_Hour_1fa7ba86e7.png', rtp: '96.06%', maxWin: 'x55500', isNew: true, isHot: false },
+  { id: 57, name: 'The Crypt 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_The_Crypt_2_b0697336d3.png', rtp: '96.05%', maxWin: 'x40000', isNew: true, isHot: false },
+  { id: 58, name: 'Seamen', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Icon_Seaman_4ee8891ff8.png', rtp: '96.08%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 59, name: 'Outsourced', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_outsourced_logo2_3da26f2a07.png', rtp: '96.04%', maxWin: 'x41050', isNew: false, isHot: true },
+  { id: 60, name: 'Nine to Five', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_nine_to_five_icon5_b36590ec14.png', rtp: '96.06%', maxWin: 'x33333', isNew: false, isHot: false },
+  { id: 61, name: 'Mental 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Mental_2_69663c454c.png', rtp: '96.09%', maxWin: 'x66666', isNew: true, isHot: true },
+  { id: 62, name: "Devil's Crossroad", provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/devils_crossroad_icon5_836437565b.png', rtp: '96.05%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 63, name: 'Jingle Balls', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/jingle_balls_icon5_1d7e1d71d6.png', rtp: '96.07%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 64, name: 'Karen Maneater', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/karen_maneater_icon5_8f23dbf83c.png', rtp: '96.08%', maxWin: 'x41050', isNew: false, isHot: true },
+  { id: 65, name: 'Tombstone: No Mercy', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/tombstone_no_mercy_icon5_c384ee5cdf.png', rtp: '96.09%', maxWin: 'x50000', isNew: false, isHot: true },
+  { id: 66, name: 'Outsourced: Payday', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/outsourced_payday_icon5_de0185a59b.png', rtp: '96.04%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 67, name: 'Loner', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/loner_icon5_6a5e2ef3fa.png', rtp: '96.06%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 68, name: 'The Rave', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/the_rave_icon5_0498c66e8d.png', rtp: '96.05%', maxWin: 'x36750', isNew: false, isHot: true },
+  { id: 69, name: 'xWays Hoarder 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/xways_hoarder_2_icon5_9ca2323758.png', rtp: '96.07%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 70, name: 'Kill Em All', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/Website_Icon_No_Text_Kill_Em_All_95e8fe9a9c.png', rtp: '96.06%', maxWin: 'x41050', isNew: true, isHot: true },
+  { id: 71, name: 'Das xBoot 2wei!', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/Website_Icon_Das_x_Boat2_No_Text_710005aad0.png', rtp: '96.08%', maxWin: 'x55500', isNew: true, isHot: false },
+  { id: 72, name: 'Golden Shower', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/Website_Icon_Golden_Shower_No_Text_067b3115ed.png', rtp: '96.04%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 73, name: 'Flight Mode', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/Website_Icon_No_Text_Flight_Mode_163ecd422a.png', rtp: '96.05%', maxWin: 'x33333', isNew: false, isHot: false },
+  { id: 74, name: 'D-Day', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/d_day_icon5_27ca1d6ba1.png', rtp: '96.07%', maxWin: 'x36750', isNew: false, isHot: true },
+  { id: 75, name: 'Disorder', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/Website_Icon_No_Text_Disorder_955087fd1a.png', rtp: '96.06%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 76, name: 'Brute Force', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/brute_force_icon5_03ab4217f7.png', rtp: '96.08%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 77, name: 'El Paso Gunfight xNudge', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/elpasogunfight_icon5_eceeb87b70.png', rtp: '96.01%', maxWin: 'x40960', isNew: false, isHot: true },
+  { id: 78, name: 'San Quentin 2: Death Row', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/sq_death_row_icon5_05a618afb5.png', rtp: '96.03%', maxWin: 'x50000', isNew: false, isHot: true },
+  { id: 79, name: 'Pearl Harbor', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/pearl_harbor_icon5_18c2f01b27.png', rtp: '96.06%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 80, name: 'Bounty Hunters', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/bounty_hunters_icon5_7ab3d6c33f.png', rtp: '96.04%', maxWin: 'x36750', isNew: false, isHot: false },
+  { id: 81, name: 'Tsar Wars', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/tsar_wars_icon5_bc0d43c0c4.png', rtp: '96.07%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 82, name: 'Blood & Shadow', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/blood_shadow_icon5_b6cb0b7ea2.png', rtp: '96.09%', maxWin: 'x43210', isNew: false, isHot: true },
+  { id: 83, name: 'Evil Goblins xBomb', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/evil_goblins_icon5_9ef9b8c613.png', rtp: '96.10%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 84, name: 'Apocalypse Super xNudge', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/apocalypse_icon5_6e20b2209f.png', rtp: '96.04%', maxWin: 'x36750', isNew: false, isHot: false },
+  { id: 85, name: 'Deadwood xNudge', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/deadwood_icon5_96f5b7cc6f.png', rtp: '96.03%', maxWin: 'x13950', isNew: false, isHot: true },
+  { id: 86, name: 'Blood & Shadow 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/blood_shadow_2_icon5_106712cc74.png', rtp: '96.06%', maxWin: 'x43210', isNew: true, isHot: false },
+  { id: 87, name: 'Beheaded', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/beheaded_icon5_e5ac3e6651.png', rtp: '96.08%', maxWin: 'x33333', isNew: false, isHot: false },
+  { id: 88, name: 'Ugliest Catch', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/ugliest_catch_ba69c1cb59.png', rtp: '96.05%', maxWin: 'x36750', isNew: false, isHot: false },
+  { id: 89, name: 'Kenneth Must Die', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/kenneth_must_die_icon5_54ea2c6b5e.png', rtp: '96.07%', maxWin: 'x41050', isNew: false, isHot: false },
+  { id: 90, name: 'Home of the Brave', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/home_of_the_brave_icon5_6cefd83187.png', rtp: '96.04%', maxWin: 'x33333', isNew: false, isHot: false },
+  { id: 91, name: 'Supersized', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Icon_Text_Supersized_ac779b1c58.png', rtp: '96.06%', maxWin: 'x41050', isNew: true, isHot: false },
+  { id: 92, name: 'Crazy Ex-Girlfriend', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Website_Icon_Crazy_Ex_GF_170a6daf84.png', rtp: '96.08%', maxWin: 'x33333', isNew: true, isHot: true },
+  { id: 93, name: 'Bizarre', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://fan-cdn.nolimitcity.com/small_Website_Icon_Bizzare_986f388490.png', rtp: '96.05%', maxWin: 'x43210', isNew: true, isHot: false },
 ];
 
 // 프로바이더 목록
 export const PROVIDERS = [
   { name: 'PG Soft', slug: 'pgsoft', gameCount: 49, color: '#E8593C' },
+  { name: 'Nolimit City', slug: 'nolimit', gameCount: 44, color: '#FF4444' },
 ];
 
 // 카테고리 목록
 export const CATEGORIES = [
-  { name: '전체', slug: 'all', icon: '\uD83C\uDFAE', count: 49 },
-  { name: '인기', slug: 'hot', icon: '\uD83D\uDD25', count: 20 },
-  { name: '신규', slug: 'new', icon: '\u2B50', count: 22 },
-  { name: '슬롯', slug: 'slots', icon: '\uD83C\uDFB0', count: 49 },
+  { name: '전체', slug: 'all', icon: '\uD83C\uDFAE', count: 93 },
+  { name: '인기', slug: 'hot', icon: '\uD83D\uDD25', count: 33 },
+  { name: '신규', slug: 'new', icon: '\u2B50', count: 34 },
+  { name: '슬롯', slug: 'slots', icon: '\uD83C\uDFB0', count: 93 },
   { name: '라이브', slug: 'live', icon: '\uD83C\uDFB2', count: 0 },
   { name: '테이블', slug: 'table', icon: '\u2660\uFE0F', count: 0 },
 ];
