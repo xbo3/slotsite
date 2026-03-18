@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
-import { setToken } from '@/lib/auth';
+import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/components/ui/Toast';
 import { useLang } from '@/hooks/useLang';
 
@@ -12,11 +11,19 @@ export default function LoginPage() {
   const router = useRouter();
   const { showToast } = useToast();
   const { t } = useLang();
+  const { login, isLoggedIn, isLoading: authLoading } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Already logged in -> redirect
+  useEffect(() => {
+    if (!authLoading && isLoggedIn) {
+      router.push('/');
+    }
+  }, [authLoading, isLoggedIn, router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,11 +36,10 @@ export default function LoginPage() {
 
     setLoading(true);
     try {
-      const res = await api.login(username, password);
-      if (res.data?.token) {
-        setToken(res.data.token);
+      const res = await login(username, password);
+      if (res.success) {
         showToast('success', `${username}님, 환영합니다!`);
-        router.push('/lobby');
+        router.push('/');
       } else {
         setError(res.error || t('login_failed'));
       }

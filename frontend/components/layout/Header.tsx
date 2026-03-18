@@ -2,17 +2,14 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import { isLoggedIn, decodeToken, getToken, logout } from '@/lib/auth';
-import { api } from '@/lib/api';
+import { useAuth } from '@/context/AuthContext';
 import { formatKRW } from '@/lib/utils';
 import { useLang } from '@/hooks/useLang';
 
 const RECENT_SEARCHES = ['Gates of Olympus', 'Sweet Bonanza', 'Fortune Tiger'];
 
 export default function Header() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [nickname, setNickname] = useState('');
-  const [balance, setBalance] = useState(0);
+  const { user, isLoggedIn, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,30 +31,6 @@ export default function Header() {
   const profileRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (isLoggedIn()) {
-        setLoggedIn(true);
-        const token = getToken();
-        if (token) {
-          const payload = decodeToken(token);
-          if (payload?.nickname) {
-            setNickname(String(payload.nickname));
-          }
-        }
-        try {
-          const res = await api.getBalance();
-          if (res.data?.balance !== undefined) {
-            setBalance(res.data.balance);
-          }
-        } catch {
-          // ignore
-        }
-      }
-    };
-    checkAuth();
-  }, []);
-
   // Close dropdowns on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -69,9 +42,12 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
+  const nickname = user?.nickname || '';
+  const balance = user ? Number(user.balance) || 0 : 0;
+
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ background: 'rgba(22,22,22,0.95)', borderColor: 'rgba(255,255,255,0.06)' }}>
-      {/* ===== 모바일 헤더 (md 미만) ===== */}
+      {/* ===== Mobile header (below md) ===== */}
       <div className="flex md:hidden items-center justify-between h-14 px-3">
         <Link href="/" className="flex items-center">
           <span className="text-base tracking-[0.15em]">
@@ -80,7 +56,7 @@ export default function Header() {
           </span>
         </Link>
         <div className="flex items-center gap-1">
-          {/* 입금 버튼 */}
+          {/* Deposit button */}
           <Link href="/wallet" className="px-3 py-1.5 text-[10px] font-light tracking-wider uppercase text-white border border-white/40 rounded hover:bg-white hover:text-black transition-all">
             {t('deposit')}
           </Link>
@@ -97,7 +73,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* ===== 데스크톱 헤더 (md 이상) ===== */}
+      {/* ===== Desktop header (md+) ===== */}
       <div className="hidden md:flex items-center h-16">
         {/* Logo area — matches sidebar width (240px) on lg+ */}
         <div className="hidden lg:flex items-center w-60 flex-shrink-0 px-4">
@@ -178,7 +154,7 @@ export default function Header() {
 
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center gap-2">
-          {loggedIn ? (
+          {isLoggedIn ? (
             <>
               {/* Notification Bell */}
               <button className="relative p-2 hover:text-white transition-colors rounded-lg hover:bg-white/5" style={{ color: '#888888' }}>
@@ -330,7 +306,7 @@ export default function Header() {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden border-t px-4 py-4 space-y-1 animate-fade-in" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.06)' }}>
-          {loggedIn ? (
+          {isLoggedIn ? (
             <>
               <div className="flex items-center justify-between py-3 px-2 rounded-lg mb-2" style={{ background: '#0A0A0A' }}>
                 <span className="text-sm font-light" style={{ color: '#888888' }}>{nickname}</span>

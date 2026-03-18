@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, FormEvent, useMemo } from 'react';
+import { useState, useEffect, FormEvent, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { api } from '@/lib/api';
-import { setToken } from '@/lib/auth';
+import { useAuth } from '@/context/AuthContext';
 import { useLang } from '@/hooks/useLang';
 
 function getPasswordStrength(pw: string): { level: number; labelKey: string; color: string } {
@@ -23,6 +22,7 @@ function getPasswordStrength(pw: string): { level: number; labelKey: string; col
 export default function RegisterPage() {
   const router = useRouter();
   const { t } = useLang();
+  const { register, isLoggedIn, isLoading: authLoading } = useAuth();
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -34,6 +34,13 @@ export default function RegisterPage() {
   const [showPwConfirm, setShowPwConfirm] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Already logged in -> redirect
+  useEffect(() => {
+    if (!authLoading && isLoggedIn) {
+      router.push('/');
+    }
+  }, [authLoading, isLoggedIn, router]);
 
   const updateForm = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -71,16 +78,15 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      const res = await api.register({
+      const res = await register({
         username: form.username,
         password: form.password,
         nickname: form.nickname || form.username,
         phone: form.phone || undefined,
       });
 
-      if (res.data?.token) {
-        setToken(res.data.token);
-        router.push('/lobby');
+      if (res.success) {
+        router.push('/');
       } else {
         setError(res.error || t('register_failed'));
       }

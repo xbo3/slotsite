@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer';
 import MobileNav from '@/components/layout/MobileNav';
 import Sidebar from '@/components/layout/Sidebar';
 import FingerprintCollector from '@/components/FingerprintCollector';
+import { AuthProvider } from '@/context/AuthContext';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['100', '200', '300', '400', '500'] });
 
@@ -30,14 +31,16 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
       </head>
       <body className={`${poppins.className} antialiased flex flex-col min-h-screen`}>
-        <Header />
-        <div className="flex flex-1">
-          <Sidebar />
-          <main className="flex-1 pb-16 md:pb-0 animate-fade-in">{children}</main>
-        </div>
-        <Footer />
-        <MobileNav />
-        <FingerprintCollector />
+        <AuthProvider>
+          <Header />
+          <div className="flex flex-1">
+            <Sidebar />
+            <main className="flex-1 pb-16 md:pb-0 animate-fade-in">{children}</main>
+          </div>
+          <Footer />
+          <MobileNav />
+          <FingerprintCollector />
+        </AuthProvider>
       </body>
     </html>
   );
