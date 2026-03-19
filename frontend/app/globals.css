@@ -654,7 +654,7 @@ input:-webkit-autofill:focus {
 .subcategory-grid {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .subcategory-grid.expanded {
   grid-template-rows: 1fr;
@@ -707,34 +707,34 @@ a.sub-item.border-click {
 .sub-item {
   opacity: 0;
   transform: translateY(-4px);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .subcategory-grid.expanded .sub-item {
   opacity: 1;
   transform: translateY(0);
 }
-/* stagger delays */
+/* stagger delays (20ms 간격) */
 .sub-item:nth-child(1) { transition-delay: 0ms; }
-.sub-item:nth-child(2) { transition-delay: 30ms; }
-.sub-item:nth-child(3) { transition-delay: 60ms; }
-.sub-item:nth-child(4) { transition-delay: 90ms; }
-.sub-item:nth-child(5) { transition-delay: 120ms; }
-.sub-item:nth-child(6) { transition-delay: 150ms; }
-.sub-item:nth-child(7) { transition-delay: 180ms; }
-.sub-item:nth-child(8) { transition-delay: 210ms; }
-.sub-item:nth-child(9) { transition-delay: 240ms; }
-.sub-item:nth-child(10) { transition-delay: 270ms; }
-.sub-item:nth-child(11) { transition-delay: 300ms; }
-.sub-item:nth-child(12) { transition-delay: 330ms; }
-.sub-item:nth-child(13) { transition-delay: 360ms; }
-.sub-item:nth-child(14) { transition-delay: 390ms; }
-.sub-item:nth-child(15) { transition-delay: 420ms; }
-.sub-item:nth-child(16) { transition-delay: 450ms; }
-.sub-item:nth-child(17) { transition-delay: 480ms; }
-.sub-item:nth-child(18) { transition-delay: 510ms; }
-.sub-item:nth-child(19) { transition-delay: 540ms; }
-.sub-item:nth-child(20) { transition-delay: 570ms; }
-.sub-item:nth-child(21) { transition-delay: 600ms; }
+.sub-item:nth-child(2) { transition-delay: 20ms; }
+.sub-item:nth-child(3) { transition-delay: 40ms; }
+.sub-item:nth-child(4) { transition-delay: 60ms; }
+.sub-item:nth-child(5) { transition-delay: 80ms; }
+.sub-item:nth-child(6) { transition-delay: 100ms; }
+.sub-item:nth-child(7) { transition-delay: 120ms; }
+.sub-item:nth-child(8) { transition-delay: 140ms; }
+.sub-item:nth-child(9) { transition-delay: 160ms; }
+.sub-item:nth-child(10) { transition-delay: 180ms; }
+.sub-item:nth-child(11) { transition-delay: 200ms; }
+.sub-item:nth-child(12) { transition-delay: 220ms; }
+.sub-item:nth-child(13) { transition-delay: 240ms; }
+.sub-item:nth-child(14) { transition-delay: 260ms; }
+.sub-item:nth-child(15) { transition-delay: 280ms; }
+.sub-item:nth-child(16) { transition-delay: 300ms; }
+.sub-item:nth-child(17) { transition-delay: 320ms; }
+.sub-item:nth-child(18) { transition-delay: 340ms; }
+.sub-item:nth-child(19) { transition-delay: 360ms; }
+.sub-item:nth-child(20) { transition-delay: 380ms; }
+.sub-item:nth-child(21) { transition-delay: 400ms; }
 
 /* 접힐 때는 stagger 없이 부드럽게 */
 .subcategory-grid:not(.expanded) .sub-item {

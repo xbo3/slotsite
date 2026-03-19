@@ -223,7 +223,7 @@ export default function Sidebar() {
                     isExpanded ? 'bg-white/[0.08] text-white' : 'text-white/60'
                   }`}
                   style={{
-                    transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
+                    transition: 'all 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
                     if (!isExpanded) {
@@ -235,12 +235,9 @@ export default function Sidebar() {
                   onMouseLeave={(e) => {
                     const el = e.currentTarget;
                     if (!isExpanded) {
-                      // 0.5초 딜레이 후 원상복귀
-                      setTimeout(() => {
-                        el.style.background = 'transparent';
-                        el.style.color = 'rgba(255,255,255,0.6)';
-                        el.style.transform = 'translateX(0)';
-                      }, 500);
+                      el.style.background = 'transparent';
+                      el.style.color = 'rgba(255,255,255,0.6)';
+                      el.style.transform = 'translateX(0)';
                     }
                   }}
                 >
