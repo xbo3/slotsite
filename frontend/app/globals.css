@@ -807,6 +807,54 @@ a.sub-item.border-click {
   }
 }
 
+/* ===== 게임 카드 효과 ===== */
+
+/* 호버 시 빛 스윕 (왼→오) */
+.game-card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.game-card-shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.45) 45%, rgba(255,255,255,0.1) 60%, transparent 80%);
+  filter: blur(0.6px);
+  transform: skewX(-10deg) translateX(-120%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+.game-card-shine:hover::before {
+  transform: skewX(-10deg) translateX(510%);
+}
+
+/* 3D 틸트 컨테이너 */
+.game-card-tilt {
+  perspective: 900px;
+}
+.game-card-tilt > * {
+  transform-style: preserve-3d;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+/* 카드 네온 펄스 (클릭 시 — 카드 보더색 사용) */
+.card-neon-pulse {
+  animation: cardNeonPulse 0.45s ease-in-out 6;
+}
+@keyframes cardNeonPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 1px transparent inset, 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.3) inset,
+                0 0 16px rgba(255,255,255,0.15),
+                0 0 32px rgba(255,255,255,0.08);
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

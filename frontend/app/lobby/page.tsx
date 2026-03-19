@@ -82,10 +82,46 @@ function PGStyleCard({ game, gradient }: { game: Game; index?: number; gradient:
 
   if (imgError || !game.thumbnail) return null;
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    const el = e.currentTarget as HTMLElement;
+    // 리플
+    const rect = el.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'click-ripple';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top = (e.clientY - rect.top) + 'px';
+    ripple.style.width = '10px';
+    ripple.style.height = '10px';
+    el.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 1100);
+    // 네온
+    el.classList.remove('card-neon-pulse');
+    void el.offsetWidth;
+    el.classList.add('card-neon-pulse');
+    const cleanup = () => { el.classList.remove('card-neon-pulse'); el.removeEventListener('animationend', cleanup); };
+    el.addEventListener('animationend', cleanup);
+  };
+
+  const handleTilt = (e: React.MouseEvent) => {
+    const card = e.currentTarget as HTMLElement;
+    const r = card.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const rx = ((e.clientY - cy) / r.height) * -6;
+    const ry = ((e.clientX - cx) / r.width) * 6;
+    card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+  };
+
+  const handleTiltReset = (e: React.MouseEvent) => {
+    (e.currentTarget as HTMLElement).style.transform = '';
+  };
+
   return (
-    <Link href={`/game/${game.id}`} className="group block">
-      <div className="relative overflow-hidden rounded-xl md:rounded-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-        style={{ border: `1px solid ${gradient.border}30` }}>
+    <Link href={`/game/${game.id}`} className="group block game-card-tilt">
+      <div className="relative overflow-hidden rounded-xl md:rounded-2xl transition-all duration-300 game-card-shine"
+        style={{ border: `1px solid ${gradient.border}30` }}
+        onClick={handleCardClick}
+        onMouseMove={handleTilt}
+        onMouseLeave={handleTiltReset}>
         {/* 이미지 — aspect-ratio로 비율 유지 */}
         <div className="relative aspect-square overflow-hidden">
           <img
