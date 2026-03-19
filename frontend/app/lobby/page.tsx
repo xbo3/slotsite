@@ -79,6 +79,7 @@ function getAllGameGradient(index: number, total: number): GradientStyle {
 // ===== PGSoft Style Card =====
 function PGStyleCard({ game, gradient }: { game: Game; index?: number; gradient: GradientStyle; isMobile?: boolean }) {
   const [imgError, setImgError] = useState(false);
+  const { t } = useLang();
 
   if (imgError || !game.thumbnail) return null;
 
@@ -141,7 +142,7 @@ function PGStyleCard({ game, gradient }: { game: Game; index?: number; gradient:
           </div>
           {/* 호버 오버레이 — 데스크톱만 */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 hidden md:flex">
-            <span className="text-white font-light text-sm tracking-wider">▶ PLAY</span>
+            <span className="text-white font-light text-sm tracking-wider">{t('play_btn')}</span>
           </div>
         </div>
         {/* 게임 정보 — 이미지 아래 */}
@@ -384,7 +385,7 @@ function LobbyContent() {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-3 md:mb-4">
             <span className="text-lg md:text-2xl">{'\uD83D\uDD25'}</span>
-            <h2 className="text-base md:text-xl font-light text-white">HOT Games</h2>
+            <h2 className="text-base md:text-xl font-light text-white">{t('hot_games_label')}</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-red-500/50 to-transparent ml-2 md:ml-3" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
@@ -398,7 +399,7 @@ function LobbyContent() {
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-3 md:mb-4">
             <span className="text-lg md:text-2xl">{'\u2744\uFE0F'}</span>
-            <h2 className="text-base md:text-xl font-light text-white">COLD Games</h2>
+            <h2 className="text-base md:text-xl font-light text-white">{t('cold_games_label')}</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent ml-2 md:ml-3" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">

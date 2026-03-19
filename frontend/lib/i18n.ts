@@ -502,6 +502,14 @@ const translations = {
     'save_btn': '저장',
     'confirm_delete': '정말 삭제하시겠습니까?',
 
+    // 추가 번역
+    'play_btn': '▶ 플레이',
+    'hot_games_label': 'HOT 게임',
+    'cold_games_label': 'COLD 게임',
+    'online_label': '온라인',
+    'coin_mobile_line1': '16종 코인 입금 지원!',
+    'coin_mobile_line2': '테더 3회 입금마다 누적 보너스!',
+
     // Language
     'lang_ko': '한국어',
     'lang_en': 'English',
@@ -997,6 +1005,14 @@ const translations = {
     'edit_bonus': 'Edit Bonus',
     'save_btn': 'Save',
     'confirm_delete': 'Are you sure you want to delete?',
+
+    // Additional
+    'play_btn': '▶ PLAY',
+    'hot_games_label': 'HOT Games',
+    'cold_games_label': 'COLD Games',
+    'online_label': 'online',
+    'coin_mobile_line1': '16 Coins Supported!',
+    'coin_mobile_line2': 'Bonus every 3rd USDT deposit!',
 
     // Language
     'lang_ko': '한국어',

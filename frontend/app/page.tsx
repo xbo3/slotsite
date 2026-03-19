@@ -302,8 +302,8 @@ export default function Home() {
               </p>
               {/* Mobile: two lines */}
               <p className="md:hidden text-white font-light text-[10px] leading-tight tracking-wide">
-                <span className="block">16 Coins Supported!</span>
-                <span className="block text-white/60">Bonus every 3rd USDT deposit!</span>
+                <span className="block">{t('coin_mobile_line1')}</span>
+                <span className="block text-white/60">{t('coin_mobile_line2')}</span>
               </p>
             </div>
           </div>
@@ -649,6 +649,7 @@ export default function Home() {
 // ===== PGStyleCard Component — 심플 버전 =====
 function PGStyleCard({ game, gradient }: { game: { id: number | string; name: string; provider: string; thumbnail?: string; rtp?: string; maxWin?: string }; gradient: { border: string; glow: string; overlay: string; bg: string } }) {
   const [imgError, setImgError] = useState(false);
+  const { t } = useLang();
 
   if (imgError || !game.thumbnail) return null;
 
@@ -709,7 +710,7 @@ function PGStyleCard({ game, gradient }: { game: { id: number | string; name: st
           </div>
           {/* 호버 오버레이 — 데스크톱만 */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/60 hidden md:flex">
-            <span className="text-white font-light text-sm tracking-wider">▶ PLAY</span>
+            <span className="text-white font-light text-sm tracking-wider">{t('play_btn')}</span>
           </div>
         </div>
         {/* 게임 정보 — 이미지 아래 */}

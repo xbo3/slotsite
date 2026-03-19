@@ -88,7 +88,7 @@ export default function Header() {
             </span>
             <div className="flex items-center gap-1 ml-2">
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#4CAF50' }} />
-              <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} online</span>
+              <span className="text-xs" style={{ color: '#555555' }}>{onlineCount.toLocaleString()} {t('online_label')}</span>
             </div>
           </Link>
         </div>
