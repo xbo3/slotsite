@@ -743,6 +743,70 @@ a.sub-item.border-click {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ===== 카테고리 버튼 Shine Sweep (호버 시 그라디언트 스윕) ===== */
+.cat-btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.cat-btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  translate: -120% 0;
+  transition: translate 0.6s ease;
+  pointer-events: none;
+}
+.cat-btn-shine:hover::after {
+  translate: 120% 0;
+}
+
+/* ===== 클릭 리플 ===== */
+.click-ripple {
+  position: absolute;
+  border-radius: 9999px;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0.7;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 40%, transparent 70%);
+  animation: clickRippleExpand 1s ease-out forwards;
+  mix-blend-mode: screen;
+}
+@keyframes clickRippleExpand {
+  to {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+  }
+}
+
+/* ===== 네온 펄스 (클릭 시 테두리 반짝) ===== */
+.neon-pulse-active {
+  animation: sidebarNeonPulse 0.5s ease-in-out 8;
+}
+@keyframes sidebarNeonPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,0) inset, 0 0 0 rgba(255,255,255,0);
+  }
+  50% {
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.25) inset, 0 0 12px rgba(255,255,255,0.15), 0 0 24px rgba(255,255,255,0.08);
+  }
+}
+
+/* 서브아이템 네온 펄스 — 아이템 고유색 사용 */
+.sub-neon-pulse {
+  animation: subNeonPulse 0.5s ease-in-out 8;
+}
+@keyframes subNeonPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 1px transparent inset, 0 0 0 transparent;
+  }
+  50% {
+    box-shadow: 0 0 0 1px var(--item-color, rgba(255,255,255,0.3)) inset,
+                0 0 12px var(--item-glow, rgba(255,255,255,0.2)),
+                0 0 24px var(--item-glow, rgba(255,255,255,0.1));
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

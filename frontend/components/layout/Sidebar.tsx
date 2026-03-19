@@ -164,8 +164,31 @@ export default function Sidebar() {
     window.location.reload();
   };
 
-  const handleCatClick = (catId: string) => {
+  const handleCatClick = (catId: string, e: React.MouseEvent) => {
     setExpandedCat(prev => prev === catId ? null : catId);
+    // 리플 + 네온 효과
+    addClickFX(e);
+  };
+
+  // 클릭 리플 + 네온 펄스
+  const addClickFX = (e: React.MouseEvent) => {
+    const el = e.currentTarget as HTMLElement;
+    const rect = el.getBoundingClientRect();
+    // 리플
+    const ripple = document.createElement('span');
+    ripple.className = 'click-ripple';
+    ripple.style.left = (e.clientX - rect.left) + 'px';
+    ripple.style.top = (e.clientY - rect.top) + 'px';
+    ripple.style.width = '10px';
+    ripple.style.height = '10px';
+    el.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 1100);
+    // 네온
+    el.classList.remove('neon-pulse-active');
+    void el.offsetWidth;
+    el.classList.add('neon-pulse-active');
+    const cleanup = () => { el.classList.remove('neon-pulse-active'); el.removeEventListener('animationend', cleanup); };
+    el.addEventListener('animationend', cleanup);
   };
 
   // Hide sidebar on admin pages and mobile
@@ -195,8 +218,8 @@ export default function Sidebar() {
               <div key={cat.id}>
                 {/* Category button — 호버 0.5s 딜레이 복귀 */}
                 <button
-                  onClick={() => handleCatClick(cat.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl group/cat ${
+                  onClick={(e) => handleCatClick(cat.id, e)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl group/cat cat-btn-shine ${
                     isExpanded ? 'bg-white/[0.08] text-white' : 'text-white/60'
                   }`}
                   style={{
@@ -390,6 +413,25 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
 
             setActiveSub(isActive ? null : sub.id);
             const el = e.currentTarget as HTMLElement;
+
+            // 리플
+            const rect = el.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            ripple.className = 'click-ripple';
+            ripple.style.left = (e.clientX - rect.left) + 'px';
+            ripple.style.top = (e.clientY - rect.top) + 'px';
+            ripple.style.width = '10px';
+            ripple.style.height = '10px';
+            el.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 1100);
+
+            // 네온 펄스 (아이템 고유색)
+            el.classList.remove('sub-neon-pulse');
+            void el.offsetWidth;
+            el.classList.add('sub-neon-pulse');
+            const cleanupNeon = () => { el.classList.remove('sub-neon-pulse'); el.removeEventListener('animationend', cleanupNeon); };
+            el.addEventListener('animationend', cleanupNeon);
+
             // 테두리 플래시
             el.classList.remove('border-click');
             void el.offsetWidth;
@@ -417,7 +459,7 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
               key={sub.id}
               href={sub.href}
               onClick={handleClick}
-              className="sub-item flex items-center rounded-md transition-all duration-300"
+              className="sub-item cat-btn-shine flex items-center rounded-md transition-all duration-300"
               style={{
                 '--item-color': colors.color,
                 '--item-glow': colors.glow,
