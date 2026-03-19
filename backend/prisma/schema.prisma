@@ -22,6 +22,10 @@ model User {
   updated_at        DateTime  @updatedAt
   last_login        DateTime?
 
+  // BiPays 연동
+  bipays_member_id      Int?      // BiPays 회원 번호 (member_no)
+  bipays_deposit_address String?  // BiPays USDT 입금 주소
+
   transactions      Transaction[]
   game_logs          GameLog[]
   user_bonuses       UserBonus[]
@@ -315,6 +319,7 @@ model DepositRequest {
   user           User      @relation(fields: [user_id], references: [id])
   @@index([user_id])
   @@index([status])
+  @@index([tx_hash])
 }
 
 model WithdrawRequest {

@@ -14,6 +14,7 @@ import depositRouter from './routes/deposit';
 import withdrawRouter from './routes/withdraw';
 import gamesRouter from './routes/games';
 import fingerprintRouter from './routes/fingerprint';
+import bipaysRouter from './routes/bipays';
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/deposit', depositRouter);
 app.use('/api/withdraw', withdrawRouter);
 app.use('/api/games', gamesRouter);
 app.use('/api/fingerprint', fingerprintRouter);
+app.use('/api/bipays', bipaysRouter);
 
 // 헬스체크
 app.get('/health', (_req: Request, res: Response) => {
