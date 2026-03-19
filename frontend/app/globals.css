@@ -743,6 +743,13 @@ a.sub-item.border-click {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ===== 카테고리 버튼 클릭 피드백 (CSS only, DOM 조작 없음) ===== */
+.cat-btn-shine:active {
+  transform: scale(0.97) !important;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.2) inset, 0 0 12px rgba(255,255,255,0.1);
+  transition: transform 0.1s, box-shadow 0.1s !important;
+}
+
 /* ===== 카테고리 버튼 Shine Sweep (호버 시 그라디언트 스윕) ===== */
 .cat-btn-shine {
   position: relative;
