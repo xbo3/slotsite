@@ -13,11 +13,27 @@ const navItemDefs = [
   { href: '/mypage', labelKey: 'profile', icon: ProfileIcon },
 ];
 
+const SLOT_PROVIDERS = [
+  { id: 'pragmatic', label: 'Pragmatic Play', href: '/lobby?provider=pragmatic' },
+  { id: 'pgsoft', label: 'PG Soft', href: '/lobby?provider=pgsoft' },
+  { id: 'evolution', label: 'Evolution', href: '/lobby?provider=evolution' },
+  { id: 'nolimit', label: 'NoLimitCity', href: '/lobby?provider=nolimit' },
+  { id: 'hacksaw', label: 'Hacksaw', href: '/lobby?provider=hacksaw' },
+  { id: 'netent', label: 'NetEnt', href: '/lobby?provider=netent' },
+  { id: 'redtiger', label: 'Red Tiger', href: '/lobby?provider=redtiger' },
+  { id: 'habanero', label: 'Habanero', href: '/lobby?provider=habanero' },
+  { id: 'bgaming', label: 'BGaming', href: '/lobby?provider=bgaming' },
+  { id: 'btg', label: 'Big Time Gaming', href: '/lobby?provider=btg' },
+  { id: 'jili', label: 'JILI', href: '/lobby?provider=jili' },
+  { id: 'spadegaming', label: 'Spadegaming', href: '/lobby?provider=spadegaming' },
+];
+
 export default function MobileNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [visible, setVisible] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [slotsOpen, setSlotsOpen] = useState(false);
   const lastScrollY = useRef(0);
   const isAdmin = pathname?.startsWith('/admin');
   const { t } = useLang();
@@ -99,38 +115,97 @@ export default function MobileNav() {
         </div>
       </nav>
 
-      {/* 메뉴 슬라이드 패널 */}
-      {menuOpen && (
-        <>
-          <div className="fixed inset-0 bg-black/60 z-[60] md:hidden" onClick={() => setMenuOpen(false)} />
-          <div className="fixed left-0 top-0 bottom-0 w-64 z-[61] md:hidden bottomsheet-enter" style={{ background: '#111111' }}>
-            <div className="p-4 border-b border-white/5">
-              <span className="text-white font-light tracking-wider">DR.SLOT</span>
+      {/* 푸시 사이드바 — 메인 콘텐츠를 오른쪽으로 밀기 */}
+      <div
+        className="fixed inset-0 bg-black/50 z-[60] md:hidden transition-opacity duration-300"
+        style={{ opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none' }}
+        onClick={() => setMenuOpen(false)}
+      />
+      <div
+        className="fixed left-0 top-0 bottom-0 w-72 z-[61] md:hidden overflow-y-auto transition-transform duration-300 ease-out"
+        style={{
+          background: '#0e0e0e',
+          transform: menuOpen ? 'translateX(0)' : 'translateX(-100%)',
+          borderRight: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        {/* 로고 */}
+        <div className="flex items-center justify-between p-4 border-b border-white/5">
+          <span className="text-white font-light tracking-wider text-lg">DR.SLOT</span>
+          <button onClick={() => setMenuOpen(false)} className="p-1 text-white/40 hover:text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="py-2">
+          {/* 슬롯 — 아코디언 (하위 게임사) */}
+          <button
+            onClick={() => setSlotsOpen(!slotsOpen)}
+            className="w-full flex items-center justify-between px-4 py-3.5 text-white/70 hover:text-white hover:bg-white/5 transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-lg">🎰</span>
+              <span className="text-sm font-light">{t('slots')}</span>
             </div>
-            <div className="py-2">
-              {[
-                { href: '/lobby?cat=slots', label: t('slots'), icon: '🎰' },
-                { href: '/lobby?cat=live', label: t('casino'), icon: '🎲' },
-                { href: '/lobby?cat=sports', label: t('sports'), icon: '⚽' },
-                { href: '/mypage/coupons', label: t('promotion'), icon: '🎁' },
-                { href: '/mypage/coupons', label: t('bonus'), icon: '💎' },
-                { href: '/support', label: t('partner'), icon: '🤝' },
-                { href: '/support', label: t('support_247'), icon: '💬' },
-              ].map((item, i) => (
-                <Link
-                  key={i}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-3 px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 transition-all touch-active"
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  <span className="text-sm font-light">{item.label}</span>
-                </Link>
-              ))}
-            </div>
+            <svg
+              className="w-4 h-4 transition-transform duration-300"
+              style={{ transform: slotsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {/* 슬롯 하위 게임사 — 부드럽게 열림 */}
+          <div
+            className="overflow-hidden transition-all duration-400 ease-out"
+            style={{
+              maxHeight: slotsOpen ? `${SLOT_PROVIDERS.length * 44 + 48}px` : '0px',
+              opacity: slotsOpen ? 1 : 0,
+            }}
+          >
+            <Link
+              href="/lobby?cat=slots"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-2 pl-12 pr-4 py-2.5 text-white/50 hover:text-white hover:bg-white/5 transition-all text-xs font-light"
+            >
+              {t('all')} {t('slots')}
+            </Link>
+            {SLOT_PROVIDERS.map(p => (
+              <Link
+                key={p.id}
+                href={p.href}
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 pl-12 pr-4 py-2.5 text-white/40 hover:text-white hover:bg-white/5 transition-all text-xs font-light"
+              >
+                {p.label}
+              </Link>
+            ))}
           </div>
-        </>
-      )}
+
+          {/* 나머지 메뉴 */}
+          {[
+            { href: '/lobby?cat=live', label: t('casino'), icon: '🎲' },
+            { href: '/lobby?cat=sports', label: t('sports'), icon: '⚽' },
+            { href: '/mypage/coupons', label: t('promotion'), icon: '🎁' },
+            { href: '/mypage/coupons', label: t('bonus'), icon: '💎' },
+            { href: '/support', label: t('partner'), icon: '🤝' },
+            { href: '/support', label: t('support_247'), icon: '💬' },
+          ].map((item, i) => (
+            <Link
+              key={i}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 px-4 py-3.5 text-white/70 hover:text-white hover:bg-white/5 transition-all"
+            >
+              <span className="text-lg">{item.icon}</span>
+              <span className="text-sm font-light">{item.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
     </>
   );
 }
