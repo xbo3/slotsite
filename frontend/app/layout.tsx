@@ -32,11 +32,11 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.className} antialiased flex flex-col min-h-screen`}>
         <AuthProvider>
-          <div id="app-wrapper" className="transition-transform duration-300 ease-out">
+          <div id="app-wrapper" className="transition-transform duration-300 ease-out overflow-x-hidden w-full max-w-full">
             <Header />
-            <div className="flex flex-1">
+            <div className="flex flex-1 min-w-0">
               <Sidebar />
-              <main className="flex-1 pb-16 md:pb-0 animate-fade-in">{children}</main>
+              <main className="flex-1 min-w-0 pb-16 md:pb-0 animate-fade-in overflow-x-hidden">{children}</main>
             </div>
             <Footer />
           </div>
