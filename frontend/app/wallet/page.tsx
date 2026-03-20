@@ -97,6 +97,21 @@ export default function WalletPage() {
     }).catch(() => {});
   }, [isLoggedIn]);
 
+  // 코인 탭 진입 시 BiPays 입금 주소 발급
+  const [addressLoading, setAddressLoading] = useState(false);
+  useEffect(() => {
+    if (!isLoggedIn || tab !== 'coin' || mainTab !== 'deposit') return;
+    setAddressLoading(true);
+    walletApi.requestDeposit({})
+      .then(res => {
+        if (res.success && res.data?.address) {
+          setDepositAddress(res.data.address);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setAddressLoading(false));
+  }, [isLoggedIn, tab, mainTab]);
+
   // Draw QR pattern
   useEffect(() => {
     const c = qrCanvasRef.current;
@@ -108,7 +123,7 @@ export default function WalletPage() {
     ctx.fillRect(0, 0, s, s);
     ctx.fillStyle = '#000';
     let seed = 0;
-    for (let i = 0; i < DEMO_ADDRESS.length; i++) seed = (seed * 31 + DEMO_ADDRESS.charCodeAt(i)) & 0xffffffff;
+    for (let i = 0; i < depositAddress.length; i++) seed = (seed * 31 + depositAddress.charCodeAt(i)) & 0xffffffff;
     function rng() { seed ^= seed << 13; seed ^= seed >> 17; seed ^= seed << 5; return (seed >>> 0) / 4294967296; }
     for (let y = 0; y < g; y++) for (let x = 0; x < g; x++) { if (rng() > 0.5) ctx.fillRect(x * m, y * m, m, m); }
     function corner(ox: number, oy: number) {
@@ -630,7 +645,7 @@ export default function WalletPage() {
                     onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)')}
                     onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}
                   >
-                    {depositAddress}
+                    {addressLoading ? '주소 발급 중...' : depositAddress}
                     <span className="absolute right-[10px] top-1/2 -translate-y-1/2 text-sm opacity-40 group-hover:opacity-80 transition-opacity duration-200">
                       ⧉
                     </span>

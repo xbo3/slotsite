@@ -4,16 +4,64 @@ import { authMiddleware } from '../middleware/auth';
 import { adminMiddleware } from '../middleware/admin';
 import { successResponse, errorResponse } from '../utils';
 import { addBalance } from '../services/balance';
+import * as bipaysService from '../services/bipays';
 
 const router = Router();
 const prisma = new PrismaClient();
 
 // ===== 유저 API =====
 
-// POST /api/deposit/request — 입금 요청 (미사용 주소 할당)
+// POST /api/deposit/request — 입금 요청 (BiPays 우선, 폴백: 수동 주소 할당)
 router.post('/request', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.user!.id;
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      res.status(404).json(errorResponse('유저를 찾을 수 없습니다'));
+      return;
+    }
+
+    // ── BiPays 연동 시도 ──
+    if (bipaysService.isConfigured()) {
+      try {
+        // 이미 BiPays 회원이면 기존 주소 반환
+        if (user.bipays_deposit_address) {
+          res.json(successResponse({
+            address: user.bipays_deposit_address,
+            method: 'bipays',
+            message: 'USDT 입금 주소입니다. 송금 후 자동으로 잔액에 반영됩니다.',
+          }));
+          return;
+        }
+
+        // BiPays에 회원 등록 → 입금 주소 발급
+        const result = await bipaysService.registerMember(userId, user.username, user.nickname);
+        const { deposit_address, member_id } = result.data;
+
+        // DB에 저장
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            bipays_member_id: member_id,
+            bipays_deposit_address: deposit_address,
+          },
+        });
+
+        console.log(`[Deposit] BiPays 회원 등록: user=${user.username}, address=${deposit_address}`);
+
+        res.json(successResponse({
+          address: deposit_address,
+          method: 'bipays',
+          message: 'USDT 입금 주소가 발급되었습니다. 송금 후 자동으로 잔액에 반영됩니다.',
+        }));
+        return;
+      } catch (bipaysErr: any) {
+        console.error('[Deposit] BiPays 실패, 수동 할당 폴백:', bipaysErr.message);
+        // BiPays 실패 시 아래 기존 방식으로 폴백
+      }
+    }
+
+    // ── 폴백: 기존 수동 지갑 주소 할당 ──
 
     // 이미 대기중인 입금 요청이 있는지 확인
     const existing = await prisma.depositRequest.findFirst({
@@ -26,7 +74,9 @@ router.post('/request', authMiddleware, async (req: Request, res: Response): Pro
 
     if (existing) {
       res.json(successResponse({
+        address: existing.wallet_address,
         deposit: existing,
+        method: 'manual',
         message: '이미 대기 중인 입금 요청이 있습니다',
       }));
       return;
@@ -65,7 +115,9 @@ router.post('/request', authMiddleware, async (req: Request, res: Response): Pro
     ]);
 
     res.status(201).json(successResponse({
+      address: wallet.address,
       deposit,
+      method: 'manual',
       message: '입금 주소가 할당되었습니다. 30분 내에 송금해주세요',
     }));
   } catch (err) {

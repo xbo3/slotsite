@@ -5,6 +5,7 @@ import { authMiddleware } from '../middleware/auth';
 import { adminMiddleware } from '../middleware/admin';
 import { successResponse, errorResponse } from '../utils';
 import { subtractBalance, addBalance } from '../services/balance';
+import * as bipaysService from '../services/bipays';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -142,11 +143,34 @@ router.put('/admin/:id/approve', authMiddleware, adminMiddleware, async (req: Re
       return;
     }
 
+    // BiPays 연동: 승인 시 자동 출금 실행
+    let bipaysResult = null;
+    let newStatus: 'APPROVED' | 'PROCESSING' = 'APPROVED';
+
+    if (bipaysService.isConfigured()) {
+      try {
+        // 유저의 bipays_member_id로 회원 출금
+        const user = await prisma.user.findUnique({ where: { id: withdraw.user_id } });
+        if (user?.bipays_member_id) {
+          bipaysResult = await bipaysService.requestMemberWithdraw(
+            user.bipays_member_id,
+            withdraw.to_address,
+            Number(withdraw.net_amount)
+          );
+          newStatus = 'PROCESSING'; // BiPays가 처리 중
+          console.log(`[Withdraw] BiPays 출금 요청: user=${user.username}, amount=${withdraw.net_amount}, address=${withdraw.to_address}`);
+        }
+      } catch (bipaysErr: any) {
+        console.error('[Withdraw] BiPays 출금 실패 (수동 처리 필요):', bipaysErr.message);
+        // BiPays 실패해도 APPROVED 상태로 — 관리자가 수동 처리
+      }
+    }
+
     const updated = await prisma.withdrawRequest.update({
       where: { id },
       data: {
-        status: 'APPROVED',
-        tx_hash: tx_hash || null,
+        status: newStatus,
+        tx_hash: bipaysResult?.data?.tx_hash || tx_hash || null,
         reviewed_by: req.user!.id,
         reviewed_at: new Date(),
       },
@@ -154,7 +178,8 @@ router.put('/admin/:id/approve', authMiddleware, adminMiddleware, async (req: Re
 
     res.json(successResponse({
       withdraw: updated,
-      message: '출금이 승인되었습니다',
+      bipays: bipaysResult ? 'auto' : 'manual',
+      message: bipaysResult ? '출금이 승인되었습니다 (BiPays 자동 처리 중)' : '출금이 승인되었습니다',
     }));
   } catch (err) {
     console.error('Withdraw approve error:', err);

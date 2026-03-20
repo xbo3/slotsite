@@ -179,7 +179,7 @@ router.get('/deposits', authMiddleware, async (req: Request, res: Response): Pro
 // GET /api/bipays/admin/balance — BiPays 업체 잔액 조회
 router.get('/admin/balance', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await bipaysService.getBalance();
+    const result = await bipaysService.getCompanyBalance();
     res.json(successResponse(result.data));
   } catch (err) {
     console.error('[BiPays Admin Balance] Error:', err);
