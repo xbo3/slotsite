@@ -282,13 +282,22 @@ export default function RegisterPage() {
                 {pwMismatch && <p className="mt-1 text-xs text-danger">{t('pw_mismatch')}</p>}
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className={`w-full py-3.5 btn-cta text-sm rounded-lg mt-2 ${loading ? 'btn-loading' : ''}`}
-              >
-                {loading ? t('registering') : t('register_btn')}
-              </button>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`w-full py-3.5 bg-white text-black text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-[0_0_15px_rgba(255,255,255,0.5),0_0_30px_rgba(255,255,255,0.2)] hover:border-white ${loading ? 'btn-loading' : ''}`}
+                  style={{ border: '1px solid rgba(255,255,255,0.8)' }}
+                >
+                  {loading ? t('registering') : t('register_btn')}
+                </button>
+                <Link
+                  href="/login"
+                  className="w-full py-3.5 text-sm font-medium rounded-lg text-center transition-all duration-300 border border-white/30 text-white/80 hover:text-white hover:border-white/70 hover:shadow-[0_0_15px_rgba(255,255,255,0.3),0_0_30px_rgba(255,255,255,0.1)] hover:bg-white/5 block"
+                >
+                  {t('login')}
+                </Link>
+              </div>
             </form>
 
             {/* Social Login Divider */}
@@ -326,11 +335,8 @@ export default function RegisterPage() {
               </button>
             </div>
 
-            <p className="mt-6 text-center text-sm text-text-secondary">
-              {t('already_have_account')}{' '}
-              <Link href="/login" className="text-white hover:text-white/80 transition-colors">
-                {t('login')}
-              </Link>
+            <p className="mt-6 text-center text-sm text-text-muted">
+              {t('already_have_account')}
             </p>
           </div>
         </div>
