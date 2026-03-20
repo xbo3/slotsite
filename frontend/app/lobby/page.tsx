@@ -388,7 +388,7 @@ function LobbyContent() {
             <h2 className="text-base md:text-xl font-light text-white">{t('hot_games_label')}</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-red-500/50 to-transparent ml-2 md:ml-3" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4">
             {hotGames.slice(0, 8).map((game, index) => (
               <PGStyleCard key={game.id} game={game} index={index} gradient={hotGradients[index % 8]} isMobile={isMobile} />
             ))}
@@ -402,7 +402,7 @@ function LobbyContent() {
             <h2 className="text-base md:text-xl font-light text-white">{t('cold_games_label')}</h2>
             <div className="h-px flex-1 bg-gradient-to-r from-blue-400/50 to-transparent ml-2 md:ml-3" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4">
             {coldGames.map((game, index) => (
               <PGStyleCard key={game.id} game={game} index={index} gradient={coldGradients[index % 8]} isMobile={isMobile} />
             ))}
@@ -510,7 +510,7 @@ function LobbyContent() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-4">
                 {visibleGames.map((game, index) => (
                   <PGStyleCard
                     key={game.id}
@@ -526,7 +526,7 @@ function LobbyContent() {
               {hasMore && (
                 <div ref={loaderRef} className="mt-6">
                   {loadingMore && (
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
                       {Array.from({ length: Math.min(ITEMS_PER_LOAD, filtered.length - visibleCount) }).map((_, i) => (
                         <SkeletonCard key={`skel-${i}`} />
                       ))}

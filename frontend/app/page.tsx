@@ -461,7 +461,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="hidden md:grid md:grid-cols-4 gap-4">
+          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-4">
             {TOP_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={popularGradients[i % popularGradients.length]} />
             ))}
@@ -511,7 +511,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hidden md:grid md:grid-cols-4 gap-4">
+          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-4">
             {NEW_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={newGradients[i % newGradients.length]} />
             ))}
