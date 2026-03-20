@@ -75,7 +75,26 @@ const BIG_WIN_DATA = [
   { nick: 'st**r', game: 'Dead or Alive 2', amount: 460, time: '8시간 전' },
 ];
 
-const PROVIDER_LIST = ['Pragmatic Play', 'PG Soft', 'Evolution', 'NetEnt', 'Microgaming', "Play'n GO", 'Nolimit City', 'Red Tiger', 'Big Time Gaming'];
+const PROVIDER_LIST = [
+  { name: 'Pragmatic Play', img: 'https://imgxcut.com/game/image/0ed1c4fe40.png' },
+  { name: 'PG Soft', img: 'https://imgxcut.com/game/image/128992a35d.png' },
+  { name: 'Evolution', img: 'https://imgxcut.com/game/image/9c40f44618.png' },
+  { name: 'NetEnt', img: 'https://imgxcut.com/game/image/50e7c80e3a.png' },
+  { name: 'Microgaming', img: 'https://imgxcut.com/game/image/5030317209.png' },
+  { name: 'Nolimit City', img: 'https://imgxcut.com/game/image/1f7914af40.png' },
+  { name: 'Red Tiger', img: 'https://imgxcut.com/game/image/651ed6cb08.png' },
+  { name: 'Big Time Gaming', img: 'https://imgxcut.com/game/image/dd8ef215f6.png' },
+  { name: 'Hacksaw', img: 'https://imgxcut.com/game/image/ccf8045f30.png' },
+  { name: 'Habanero', img: 'https://imgxcut.com/game/image/1600322b49.png' },
+  { name: 'BGaming', img: 'https://imgxcut.com/game/image/75b5d81876.png' },
+  { name: 'JILI', img: 'https://imgxcut.com/game/image/11dec4b4c5.png' },
+  { name: 'Spadegaming', img: 'https://imgxcut.com/game/image/408156443a.png' },
+  { name: 'BetSoft', img: 'https://imgxcut.com/game/image/e1162a0386.png' },
+  { name: 'Endorphina', img: 'https://imgxcut.com/game/image/311c691438.png' },
+  { name: 'Quickspin', img: 'https://imgxcut.com/game/image/3861400bec.png' },
+  { name: 'Relax Gaming', img: 'https://imgxcut.com/game/image/bf6887c12b.png' },
+  { name: 'Spinomenal', img: 'https://imgxcut.com/game/image/96e8551016.png' },
+];
 
 // 1등 $1,850 → 2등 50% → 3등 50% → 이후 ~10%씩 감소
 const LEADERBOARD_DATA = [
@@ -545,18 +564,17 @@ export default function Home() {
           <div className="overflow-hidden relative">
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-dark-bg to-transparent z-10" />
             <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-dark-bg to-transparent z-10" />
-            <div className="flex provider-scroll">
-              {[...PROVIDER_LIST, ...PROVIDER_LIST].map((p, i) => {
-                const colors = PROVIDER_COLORS[p];
-                return (
-                  <Link key={`${p}-${i}`} href={`/lobby?provider=${encodeURIComponent(p)}`} className="flex-shrink-0 mx-6 flex items-center gap-2 py-3 hover:opacity-80 transition-opacity">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${colors.from}, ${colors.to})` }}>
-                      <span className="text-white font-light text-xs">{p.charAt(0)}</span>
-                    </div>
-                    <span className="text-text-secondary text-sm font-light whitespace-nowrap">{p}</span>
+            <div className="flex provider-scroll items-center">
+              {[...PROVIDER_LIST, ...PROVIDER_LIST].map((p, i) => (
+                  <Link key={`${p.name}-${i}`} href={`/lobby?provider=${encodeURIComponent(p.name)}`} className="flex-shrink-0 mx-4 md:mx-6 py-3 hover:opacity-80 transition-opacity">
+                    <img
+                      src={p.img}
+                      alt={p.name}
+                      className="h-6 md:h-8 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
+                      loading="lazy"
+                    />
                   </Link>
-                );
-              })}
+              ))}
             </div>
           </div>
         </section>
