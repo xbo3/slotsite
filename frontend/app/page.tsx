@@ -56,37 +56,38 @@ const BANNER_SLIDES_KEYS = [
 ];
 
 const BETTING_FEED_DATA = [
-  { nick: 'lu**y', game: 'Gates of Olympus', amount: 2450000 },
-  { nick: 'ki**g', game: 'Sweet Bonanza', amount: 890000 },
-  { nick: 'pr**o', game: 'Mega Moolah', amount: 5200000 },
-  { nick: 'wi**n', game: 'Fortune Tiger', amount: 340000 },
-  { nick: 'go**d', game: 'Crazy Time', amount: 1750000 },
-  { nick: 'st**r', game: 'Dead or Alive 2', amount: 4100000 },
-  { nick: 'ac**e', game: 'Book of Dead', amount: 670000 },
-  { nick: 'di**a', game: 'Lightning Roulette', amount: 1200000 },
-  { nick: 'ro**k', game: 'Sugar Rush', amount: 8900000 },
-  { nick: 'bl**e', game: 'Starlight Princess', amount: 560000 },
+  { nick: 'lu**y', game: 'Gates of Olympus', amount: 245 },
+  { nick: 'ki**g', game: 'Sweet Bonanza', amount: 89 },
+  { nick: 'pr**o', game: 'Mega Moolah', amount: 520 },
+  { nick: 'wi**n', game: 'Fortune Tiger', amount: 34 },
+  { nick: 'go**d', game: 'Crazy Time', amount: 175 },
+  { nick: 'st**r', game: 'Dead or Alive 2', amount: 410 },
+  { nick: 'ac**e', game: 'Book of Dead', amount: 67 },
+  { nick: 'di**a', game: 'Lightning Roulette', amount: 120 },
+  { nick: 'ro**k', game: 'Sugar Rush', amount: 890 },
+  { nick: 'bl**e', game: 'Starlight Princess', amount: 56 },
 ];
 
 const BIG_WIN_DATA = [
-  { nick: 'ro**k', game: 'Mega Moolah', amount: 89000000, time: '2시간 전' },
-  { nick: 'pr**o', game: 'Gates of Olympus', amount: 52000000, time: '5시간 전' },
-  { nick: 'st**r', game: 'Dead or Alive 2', amount: 41000000, time: '8시간 전' },
+  { nick: 'ro**k', game: 'Mega Moolah', amount: 1850, time: '2시간 전' },
+  { nick: 'pr**o', game: 'Gates of Olympus', amount: 920, time: '5시간 전' },
+  { nick: 'st**r', game: 'Dead or Alive 2', amount: 460, time: '8시간 전' },
 ];
 
 const PROVIDER_LIST = ['Pragmatic Play', 'PG Soft', 'Evolution', 'NetEnt', 'Microgaming', "Play'n GO", 'Nolimit City', 'Red Tiger', 'Big Time Gaming'];
 
+// 1등 $1,850 → 2등 50% → 3등 50% → 이후 ~10%씩 감소
 const LEADERBOARD_DATA = [
-  { rank: 1, nick: 'ro**k', amount: 89000000, game: 'Mega Moolah' },
-  { rank: 2, nick: 'pr**o', amount: 52000000, game: 'Gates of Olympus' },
-  { rank: 3, nick: 'st**r', amount: 41000000, game: 'Dead or Alive 2' },
-  { rank: 4, nick: 'go**d', amount: 28500000, game: 'Sweet Bonanza' },
-  { rank: 5, nick: 'ki**g', amount: 21200000, game: 'Crazy Time' },
-  { rank: 6, nick: 'lu**y', amount: 18900000, game: 'Fortune Tiger' },
-  { rank: 7, nick: 'ac**e', amount: 15400000, game: 'Book of Dead' },
-  { rank: 8, nick: 'di**a', amount: 12300000, game: 'Lightning Roulette' },
-  { rank: 9, nick: 'bl**e', amount: 9800000, game: 'Starlight Princess' },
-  { rank: 10, nick: 'wi**n', amount: 7600000, game: 'Sugar Rush' },
+  { rank: 1, nick: 'ro**k', amount: 1850, game: 'Mega Moolah' },
+  { rank: 2, nick: 'pr**o', amount: 920, game: 'Gates of Olympus' },
+  { rank: 3, nick: 'st**r', amount: 460, game: 'Dead or Alive 2' },
+  { rank: 4, nick: 'go**d', amount: 415, game: 'Sweet Bonanza' },
+  { rank: 5, nick: 'ki**g', amount: 370, game: 'Crazy Time' },
+  { rank: 6, nick: 'lu**y', amount: 335, game: 'Fortune Tiger' },
+  { rank: 7, nick: 'ac**e', amount: 300, game: 'Book of Dead' },
+  { rank: 8, nick: 'di**a', amount: 270, game: 'Lightning Roulette' },
+  { rank: 9, nick: 'bl**e', amount: 245, game: 'Starlight Princess' },
+  { rank: 10, nick: 'wi**n', amount: 220, game: 'Sugar Rush' },
 ];
 
 const popularGradients = [
