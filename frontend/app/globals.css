@@ -862,17 +862,23 @@ a.sub-item.border-click {
   }
 }
 
-/* ===== 모바일 푸시 사이드바 — 콘텐츠가 줄어들며 나란히 ===== */
+/* ===== 모바일 푸시 사이드바 — 우측 넘어가지 않게 ===== */
 @media (max-width: 767px) {
+  body {
+    overflow-x: hidden;
+  }
   #app-wrapper {
-    transition: margin-left 0.3s ease-out, width 0.3s ease-out;
-    width: 100%;
-    margin-left: 0;
+    transition: transform 0.3s ease-out;
+    transform: translateX(0);
+    min-height: 100vh;
+  }
+  body.mobile-menu-open {
+    overflow: hidden;
   }
   body.mobile-menu-open #app-wrapper {
-    margin-left: 288px;
-    width: calc(100% - 288px);
+    transform: translateX(288px);
     overflow: hidden;
+    max-height: 100vh;
   }
 }
 
