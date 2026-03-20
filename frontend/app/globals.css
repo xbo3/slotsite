@@ -862,6 +862,16 @@ a.sub-item.border-click {
   }
 }
 
+/* ===== 모바일 푸시 사이드바 — #app-wrapper 전체 밀기 ===== */
+@media (max-width: 767px) {
+  body.mobile-menu-open #app-wrapper {
+    transform: translateX(288px);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: -10px 0 40px rgba(0,0,0,0.5);
+  }
+}
+
 /* VIP Progress Bar */
 .vip-progress {
   background: linear-gradient(90deg, #B8860B, #DAA520);

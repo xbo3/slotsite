@@ -102,6 +102,21 @@ export default function MobileNav() {
 
   const navItems = navItemDefs.map(n => ({ ...n, label: t(n.labelKey) }));
 
+  // 메뉴 열림 시 body 푸시
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.classList.add('mobile-menu-open');
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.classList.remove('mobile-menu-open');
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.classList.remove('mobile-menu-open');
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
+
   useEffect(() => {
     function handleScroll() {
       const currentY = window.scrollY;
@@ -177,12 +192,7 @@ export default function MobileNav() {
         </div>
       </nav>
 
-      {/* 푸시 사이드바 — 메인 콘텐츠를 오른쪽으로 밀기 */}
-      <div
-        className="fixed inset-0 bg-black/50 z-[60] md:hidden transition-opacity duration-300"
-        style={{ opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none' }}
-        onClick={() => setMenuOpen(false)}
-      />
+      {/* 푸시 사이드바 — 콘텐츠 전체가 오른쪽으로 밀림 (body 클래스로 제어) */}
       <div
         className="fixed left-0 top-0 bottom-0 w-72 z-[61] md:hidden overflow-y-auto transition-transform duration-300 ease-out"
         style={{
@@ -205,7 +215,7 @@ export default function MobileNav() {
           {/* 슬롯 — 아코디언 (하위 게임사) */}
           <button
             onClick={() => setSlotsOpen(!slotsOpen)}
-            className="w-full flex items-center justify-between px-4 py-3.5 text-white/70 hover:text-white hover:bg-white/5 transition-all"
+            className="w-full flex items-center justify-between px-4 py-3.5 text-white/70 hover:text-white hover:bg-white/5 transition-all cat-btn-shine"
           >
             <div className="flex items-center gap-3">
               <span className="text-lg">🎰</span>
@@ -235,12 +245,18 @@ export default function MobileNav() {
             >
               {t('all')} {t('slots')}
             </Link>
-            {SLOT_PROVIDERS.map(p => (
+            {SLOT_PROVIDERS.map((p, i) => (
               <Link
                 key={p.id}
                 href={p.href}
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 pl-12 pr-4 py-2.5 text-white/40 hover:text-white hover:bg-white/5 transition-all text-xs font-light"
+                className="flex items-center gap-2 pl-12 pr-4 py-2.5 text-white/40 hover:text-white hover:bg-white/5 cat-btn-shine text-xs font-light"
+                style={{
+                  transition: 'all 0.3s ease',
+                  transitionDelay: slotsOpen ? `${i * 15}ms` : '0ms',
+                  opacity: slotsOpen ? 1 : 0,
+                  transform: slotsOpen ? 'translateY(0)' : 'translateY(-4px)',
+                }}
               >
                 {p.label}
               </Link>
@@ -260,7 +276,7 @@ export default function MobileNav() {
               key={i}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-3.5 text-white/70 hover:text-white hover:bg-white/5 transition-all"
+              className="flex items-center gap-3 px-4 py-3.5 text-white/70 hover:text-white hover:bg-white/5 transition-all cat-btn-shine"
             >
               <span className="text-lg">{item.icon}</span>
               <span className="text-sm font-light">{item.label}</span>
