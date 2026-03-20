@@ -521,6 +521,20 @@ const translations = {
     'vip_gold': 'VIP GOLD',
     'to_platinum': 'PLATINUM까지',
 
+    // 사이드바/네비/프로필 패널
+    'menu_tab': '메뉴',
+    'casino': '카지노',
+    'sports': '스포츠',
+    'promotion': '프로모션',
+    'partner': '파트너',
+    'support_247': '지원 24/7',
+    'deposit_menu': '입금',
+    'withdraw_menu': '출금',
+    'tx_history': '거래내역',
+    'bet_history': '배팅내역',
+    'vip_club': 'VIP 클럽',
+    'global_setting': '글로벌 세팅',
+
     // Language
     'lang_ko': '한국어',
     'lang_en': 'English',
@@ -1035,6 +1049,20 @@ const translations = {
     'players': 'plays',
     'vip_gold': 'VIP GOLD',
     'to_platinum': 'to PLATINUM',
+
+    // Sidebar/Nav/Profile panel
+    'menu_tab': 'Menu',
+    'casino': 'Casino',
+    'sports': 'Sports',
+    'promotion': 'Promotion',
+    'partner': 'Partner',
+    'support_247': 'Support 24/7',
+    'deposit_menu': 'Deposit',
+    'withdraw_menu': 'Withdraw',
+    'tx_history': 'Transactions',
+    'bet_history': 'Bets',
+    'vip_club': 'VIP Club',
+    'global_setting': 'Global Settings',
 
     // Language
     'lang_ko': '한국어',

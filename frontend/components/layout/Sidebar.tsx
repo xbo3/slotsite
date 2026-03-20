@@ -96,8 +96,8 @@ const CATEGORIES = [
     ],
   },
   {
-    id: 'live',
-    labelKey: 'live',
+    id: 'casino',
+    labelKey: 'casino',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M23 7l-7 5 7 5V7z" />
@@ -111,43 +111,69 @@ const CATEGORIES = [
       { id: 'blackjack', label: 'Blackjack', href: '/lobby?cat=live&sub=blackjack' },
       { id: 'roulette', label: 'Roulette', href: '/lobby?cat=live&sub=roulette' },
       { id: 'gameshow', label: 'Game Show', href: '/lobby?cat=live&sub=gameshow' },
-    ],
-  },
-  {
-    id: 'table',
-    labelKey: 'table',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="2" />
-        <path d="M16 2v20M2 12h20" />
-        <path d="M6 6h.01M12 6h.01M6 18h.01M18 18h.01" />
-      </svg>
-    ),
-    href: '/lobby?cat=table',
-    subs: [
-      { id: 'all', labelKey: 'all', href: '/lobby?cat=table' },
       { id: 'poker', label: 'Poker', href: '/lobby?cat=table&sub=poker' },
-      { id: 'baccarat', label: 'Baccarat', href: '/lobby?cat=table&sub=baccarat' },
-      { id: 'blackjack', label: 'Blackjack', href: '/lobby?cat=table&sub=blackjack' },
     ],
   },
   {
-    id: 'mini',
-    labelKey: 'mini_games',
+    id: 'sports',
+    labelKey: 'sports',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
-        <circle cx="12" cy="12" r="3" />
-        <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+        <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
       </svg>
     ),
-    href: '/lobby?cat=mini',
-    subs: [
-      { id: 'all', labelKey: 'all', href: '/lobby?cat=mini' },
-      { id: 'crash', label: 'Crash', href: '/lobby?cat=mini&sub=crash' },
-      { id: 'dice', label: 'Dice', href: '/lobby?cat=mini&sub=dice' },
-      { id: 'hilo', label: 'Hi-Lo', href: '/lobby?cat=mini&sub=hilo' },
-    ],
+    href: '/lobby?cat=sports',
+    subs: [],
+  },
+  {
+    id: 'promotion',
+    labelKey: 'promotion',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6" />
+        <rect x="2" y="7" width="20" height="5" rx="1" />
+        <path d="M12 22V7" />
+      </svg>
+    ),
+    href: '/mypage/coupons',
+    subs: [],
+  },
+  {
+    id: 'bonus',
+    labelKey: 'bonus',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg>
+    ),
+    href: '/mypage/coupons',
+    subs: [],
+  },
+  {
+    id: 'partner',
+    labelKey: 'partner',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    href: '/support',
+    subs: [],
+  },
+  {
+    id: 'support247',
+    labelKey: 'support_247',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+    href: '/support',
+    subs: [],
   },
 ];
 
