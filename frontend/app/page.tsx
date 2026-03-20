@@ -204,9 +204,9 @@ export default function Home() {
         <div className="absolute bottom-20 left-20 w-20 h-20 rounded-full animate-spin hidden md:block" style={{ border: '1px solid rgba(255,255,255,0.05)', animationDuration: '15s', animationDirection: 'reverse' }} />
 
         <div className="relative max-w-7xl mx-auto px-3 md:px-4 h-full flex items-center">
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-center md:justify-between w-full">
             {/* Left: Text */}
-            <div className={`flex-1 text-center md:text-left ${bannerAnim === 'enter' ? 'banner-enter' : 'banner-exit'}`}>
+            <div className={`w-full md:flex-1 text-center md:text-left ${bannerAnim === 'enter' ? 'banner-enter' : 'banner-exit'}`}>
               <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full mb-2 md:mb-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full animate-pulse" style={{ background: '#FFFFFF' }} />
                 <span className="text-[10px] md:text-sm font-light text-white/80">{t('now_playing_count').replace('{count}', onlineCount.toLocaleString())}</span>
@@ -292,8 +292,8 @@ export default function Home() {
       </section>
 
       {/* ===== Mobile Balance Card ===== */}
-      <div className="md:hidden px-3 -mt-2 mb-4">
-        <div className="rounded-2xl p-4" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="md:hidden px-3 -mt-2 mb-4 overflow-hidden">
+        <div className="rounded-2xl p-3" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
           <p className="text-text-muted text-xs font-light uppercase tracking-wider">{t('total_balance')}</p>
           <p className="text-white text-3xl font-light mt-1">${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
           <div className="mt-3 flex items-center gap-2">
@@ -303,11 +303,11 @@ export default function Home() {
             </div>
             <span className="text-[10px] text-text-muted font-light">35% {t('to_platinum')}</span>
           </div>
-          <div className="flex gap-3 mt-4">
-            <Link href="/wallet" className="flex-1 py-2.5 rounded-xl text-center text-sm font-light text-black" style={{ background: '#FFFFFF' }}>
+          <div className="flex gap-2 mt-3">
+            <Link href="/wallet" className="flex-1 py-2.5 rounded-xl text-center text-xs font-light text-black" style={{ background: '#FFFFFF' }}>
               {t('deposit')}
             </Link>
-            <Link href="/wallet" className="flex-1 py-2.5 rounded-xl text-center text-sm font-light text-white border border-white/20">
+            <Link href="/wallet" className="flex-1 py-2.5 rounded-xl text-center text-xs font-light text-white border border-white/20">
               {t('withdraw')}
             </Link>
           </div>
