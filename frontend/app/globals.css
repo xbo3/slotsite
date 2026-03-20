@@ -880,6 +880,11 @@ a.sub-item.border-click {
     overflow: hidden;
     max-height: 100vh;
   }
+  /* 하단 고정바 + 사이드바 패널은 절대 밀리지 않음 */
+  .mobile-nav-fixed {
+    transform: none !important;
+    position: fixed !important;
+  }
 }
 
 /* VIP Progress Bar */
