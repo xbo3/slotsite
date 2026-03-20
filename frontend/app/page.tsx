@@ -461,30 +461,16 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="hidden md:grid md:grid-cols-3 xl:grid-cols-6 gap-4">
             {TOP_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={popularGradients[i % popularGradients.length]} />
             ))}
           </div>
 
-          {/* Mobile list view */}
-          <div className="md:hidden space-y-2">
-            {TOP_GAMES.slice(0, 6).map((game) => (
-              <Link key={game.id} href={`/game/${game.id}`} className="flex items-center gap-3 p-3 rounded-xl touch-active" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.04)' }}>
-                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0" style={{ background: '#222' }}>
-                  {game.thumbnail && <img src={game.thumbnail} alt="" className="w-full h-full object-cover" loading="lazy" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-light truncate">{game.name}</p>
-                  <p className="text-text-muted text-xs font-light">{game.provider}</p>
-                </div>
-                <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                  <span className="text-text-muted text-[10px] font-light">RTP {game.rtp}</span>
-                  <button className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21" /></svg>
-                  </button>
-                </div>
-              </Link>
+          {/* Mobile 3-column grid */}
+          <div className="md:hidden grid grid-cols-3 gap-2">
+            {TOP_GAMES.slice(0, 6).map((game, i) => (
+              <PGStyleCard key={game.id} game={game} gradient={popularGradients[i % popularGradients.length]} />
             ))}
           </div>
 
@@ -511,30 +497,16 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="hidden md:grid md:grid-cols-3 xl:grid-cols-6 gap-4">
             {NEW_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={newGradients[i % newGradients.length]} />
             ))}
           </div>
 
-          {/* Mobile list view */}
-          <div className="md:hidden space-y-2">
-            {NEW_GAMES.slice(0, 6).map((game) => (
-              <Link key={game.id} href={`/game/${game.id}`} className="flex items-center gap-3 p-3 rounded-xl touch-active" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.04)' }}>
-                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0" style={{ background: '#222' }}>
-                  {game.thumbnail && <img src={game.thumbnail} alt="" className="w-full h-full object-cover" loading="lazy" />}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-light truncate">{game.name}</p>
-                  <p className="text-text-muted text-xs font-light">{game.provider}</p>
-                </div>
-                <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                  <span className="text-text-muted text-[10px] font-light">RTP {game.rtp}</span>
-                  <button className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21" /></svg>
-                  </button>
-                </div>
-              </Link>
+          {/* Mobile 3-column grid */}
+          <div className="md:hidden grid grid-cols-3 gap-2">
+            {NEW_GAMES.slice(0, 6).map((game, i) => (
+              <PGStyleCard key={game.id} game={game} gradient={newGradients[i % newGradients.length]} />
             ))}
           </div>
         </section>
