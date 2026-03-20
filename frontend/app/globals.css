@@ -862,13 +862,17 @@ a.sub-item.border-click {
   }
 }
 
-/* ===== 모바일 푸시 사이드바 — #app-wrapper 전체 밀기 ===== */
+/* ===== 모바일 푸시 사이드바 — 콘텐츠가 줄어들며 나란히 ===== */
 @media (max-width: 767px) {
+  #app-wrapper {
+    transition: margin-left 0.3s ease-out, width 0.3s ease-out;
+    width: 100%;
+    margin-left: 0;
+  }
   body.mobile-menu-open #app-wrapper {
-    transform: translateX(288px);
-    border-radius: 12px;
+    margin-left: 288px;
+    width: calc(100% - 288px);
     overflow: hidden;
-    box-shadow: -10px 0 40px rgba(0,0,0,0.5);
   }
 }
 
