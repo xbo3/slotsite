@@ -194,7 +194,7 @@ export default function MobileNav() {
 
       {/* 푸시 사이드바 — 콘텐츠 전체가 오른쪽으로 밀림 (body 클래스로 제어) */}
       <div
-        className="fixed left-0 top-0 bottom-0 w-72 z-[61] md:hidden overflow-y-auto transition-transform duration-300 ease-out"
+        className="fixed left-0 top-0 bottom-0 w-72 z-[70] md:hidden overflow-y-auto transition-transform duration-300 ease-out"
         style={{
           background: '#0e0e0e',
           transform: menuOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -211,7 +211,7 @@ export default function MobileNav() {
           </button>
         </div>
 
-        <div className="py-2">
+        <div className="py-2 pb-20">
           {/* 슬롯 — 아코디언 (하위 게임사) */}
           <button
             onClick={() => setSlotsOpen(!slotsOpen)}
