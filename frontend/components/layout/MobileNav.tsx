@@ -7,10 +7,9 @@ import { cn } from '@/lib/utils';
 import { useLang } from '@/hooks/useLang';
 
 const navItemDefs = [
+  { href: '/lobby', labelKey: 'search_tab', icon: SearchIcon },
   { href: '/', labelKey: 'home', icon: HomeIcon },
-  { href: '/lobby', labelKey: 'games', icon: GameIcon },
   { href: '/mypage/coupons', labelKey: 'bonus', icon: BonusIcon },
-  { href: '/wallet', labelKey: 'wallet', icon: WalletIcon },
   { href: '/mypage', labelKey: 'profile', icon: ProfileIcon },
 ];
 
@@ -18,7 +17,6 @@ export default function MobileNav() {
   const pathname = usePathname();
   const router = useRouter();
   const [visible, setVisible] = useState(true);
-  const [bottomSheet, setBottomSheet] = useState(false);
   const lastScrollY = useRef(0);
   const isAdmin = pathname?.startsWith('/admin');
   const { t } = useLang();
@@ -44,157 +42,73 @@ export default function MobileNav() {
   if (isAdmin) return null;
 
   return (
-    <>
-      <nav className={cn(
-        'md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t safe-area-bottom transition-transform duration-300',
-        visible ? 'translate-y-0' : 'translate-y-full'
-      )} style={{ background: 'rgba(22,22,22,0.95)', borderColor: 'rgba(255,255,255,0.06)' }}>
-        <div className="flex items-center justify-around h-14" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
-          {navItems.map((item) => {
-            const isActive = item.href === '/'
-              ? pathname === '/'
-              : pathname?.startsWith(item.href);
+    <nav className={cn(
+      'md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t safe-area-bottom transition-transform duration-300',
+      visible ? 'translate-y-0' : 'translate-y-full'
+    )} style={{ background: 'rgba(22,22,22,0.95)', borderColor: 'rgba(255,255,255,0.06)' }}>
+      <div className="flex items-center justify-around h-14" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        {navItems.map((item) => {
+          const isActive = item.href === '/'
+            ? pathname === '/'
+            : pathname?.startsWith(item.href);
 
-            // Game tab opens bottom sheet
-            if (item.href === '/lobby') {
-              return (
-                <button
-                  key={item.href}
-                  onClick={() => setBottomSheet(true)}
-                  className={cn(
-                    'flex flex-col items-center gap-0.5 px-3 py-2 min-w-[56px] min-h-[48px] justify-center touch-active',
-                  )}
-                  style={{ color: isActive ? '#FFFFFF' : '#555555' }}
-                >
-                  {isActive && <span className="w-1 h-1 rounded-full absolute -top-0 mt-1" style={{ background: '#FFFFFF' }} />}
-                  <item.icon active={!!isActive} />
-                  <span className="text-[10px] font-light">{item.label}</span>
-                </button>
-              );
-            }
-
-            // Wallet tab shows balance
-            if (item.href === '/wallet') {
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex flex-col items-center gap-0.5 px-3 py-2 min-w-[56px] min-h-[48px] justify-center relative touch-active"
-                  style={{ color: isActive ? '#FFFFFF' : '#555555' }}
-                >
-                  {isActive && <span className="w-1 h-1 rounded-full absolute top-1" style={{ background: '#FFFFFF' }} />}
-                  <item.icon active={!!isActive} />
-                  <span className="text-[10px] font-light">{item.label}</span>
-                </Link>
-              );
-            }
-
-            // Bonus tab: redirect to /register if not logged in
-            if (item.href === '/mypage/coupons') {
-              return (
-                <button
-                  key={item.href}
-                  onClick={() => {
-                    const isLoggedIn = typeof window !== 'undefined' && !!localStorage.getItem('token');
-                    if (isLoggedIn) {
-                      router.push('/mypage/coupons');
-                    } else {
-                      router.push('/register');
-                    }
-                  }}
-                  className="flex flex-col items-center gap-0.5 px-3 py-2 min-w-[56px] min-h-[48px] justify-center relative touch-active"
-                  style={{ color: isActive ? '#FFFFFF' : '#555555' }}
-                >
-                  {isActive && <span className="w-1 h-1 rounded-full absolute top-1" style={{ background: '#FFFFFF' }} />}
-                  <item.icon active={!!isActive} />
-                  <span className="text-[10px] font-light">{item.label}</span>
-                </button>
-              );
-            }
-
+          // Bonus tab: redirect to /register if not logged in
+          if (item.href === '/mypage/coupons') {
             return (
-              <Link
+              <button
                 key={item.href}
-                href={item.href}
+                onClick={() => {
+                  const isLoggedIn = typeof window !== 'undefined' && !!localStorage.getItem('token');
+                  if (isLoggedIn) {
+                    router.push('/mypage/coupons');
+                  } else {
+                    router.push('/register');
+                  }
+                }}
                 className="flex flex-col items-center gap-0.5 px-3 py-2 min-w-[56px] min-h-[48px] justify-center relative touch-active"
                 style={{ color: isActive ? '#FFFFFF' : '#555555' }}
               >
                 {isActive && <span className="w-1 h-1 rounded-full absolute top-1" style={{ background: '#FFFFFF' }} />}
                 <item.icon active={!!isActive} />
                 <span className="text-[10px] font-light">{item.label}</span>
-              </Link>
+              </button>
             );
-          })}
-        </div>
-      </nav>
+          }
 
-      {/* Category Bottom Sheet */}
-      {bottomSheet && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/60 z-[60] animate-overlay"
-            onClick={() => setBottomSheet(false)}
-          />
-          <div className="fixed bottom-0 left-0 right-0 z-[61] rounded-t-2xl bottomsheet-enter safe-area-bottom" style={{ background: '#111111' }}>
-            <div className="flex justify-center pt-3 pb-2">
-              <div className="w-10 h-1 bg-white/20 rounded-full" />
-            </div>
-            <div className="px-4 pb-6">
-              <h3 className="text-white font-light text-lg mb-4 tracking-wide">{t('select_category')}</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { href: '/lobby?cat=slot', label: t('slots'), count: 142, icon: '\uD83C\uDFB0' },
-                  { href: '/lobby?cat=live', label: t('live'), count: 38, icon: '\uD83C\uDFB2' },
-                  { href: '/lobby?cat=table', label: t('table'), count: 25, icon: '\uD83C\uDCCF' },
-                  { href: '/lobby?cat=mini', label: t('mini_games'), count: 15, icon: '\uD83C\uDFAF' },
-                ].map(cat => (
-                  <Link
-                    key={cat.href}
-                    href={cat.href}
-                    onClick={() => setBottomSheet(false)}
-                    className="flex items-center gap-3 p-4 bg-dark-bg rounded-xl border border-white/5 hover:border-white/15 transition-all touch-active"
-                  >
-                    <span className="text-2xl">{cat.icon}</span>
-                    <div>
-                      <p className="text-white font-light text-sm">{cat.label}</p>
-                      <p className="text-text-muted text-xs font-light">{cat.count}{t('num_games')}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-              <Link
-                href="/lobby"
-                onClick={() => setBottomSheet(false)}
-                className="block w-full mt-4 py-3 text-center font-light rounded-xl text-sm touch-active border"
-                style={{ background: 'transparent', color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.8)' }}
-              >
-                {t('view_all_games')}
-              </Link>
-            </div>
-          </div>
-        </>
-      )}
-    </>
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex flex-col items-center gap-0.5 px-3 py-2 min-w-[56px] min-h-[48px] justify-center relative touch-active"
+              style={{ color: isActive ? '#FFFFFF' : '#555555' }}
+            >
+              {isActive && <span className="w-1 h-1 rounded-full absolute top-1" style={{ background: '#FFFFFF' }} />}
+              <item.icon active={!!isActive} />
+              <span className="text-[10px] font-light">{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
   );
 }
 
 // ===== Icon Components =====
+
+function SearchIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <path d="M21 21l-4.35-4.35" />
+    </svg>
+  );
+}
 
 function HomeIcon({ active }: { active: boolean }) {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
       <polyline points="9 22 9 12 15 12 15 22" />
-    </svg>
-  );
-}
-
-function GameIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="6" width="20" height="12" rx="2" />
-      <circle cx="8" cy="12" r="2" />
-      <circle cx="16" cy="12" r="2" />
     </svg>
   );
 }
@@ -207,16 +121,6 @@ function BonusIcon({ active }: { active: boolean }) {
       <path d="M12 22V7" />
       <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
       <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
-    </svg>
-  );
-}
-
-function WalletIcon({ active }: { active: boolean }) {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
-      <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
-      <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
     </svg>
   );
 }

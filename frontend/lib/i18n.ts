@@ -510,6 +510,17 @@ const translations = {
     'coin_mobile_line1': '16종 코인 입금 지원!',
     'coin_mobile_line2': '테더 3회 입금마다 누적 보너스!',
 
+    // Mobile redesign
+    'total_balance': '총 잔액',
+    'continue_playing': '이어서 플레이',
+    'hot_slots': '핫 슬롯',
+    'search_tab': '검색',
+    'min_ago': '분 전',
+    'hour_ago': '시간 전',
+    'players': '명 플레이',
+    'vip_gold': 'VIP GOLD',
+    'to_platinum': 'PLATINUM까지',
+
     // Language
     'lang_ko': '한국어',
     'lang_en': 'English',
@@ -1013,6 +1024,17 @@ const translations = {
     'online_label': 'online',
     'coin_mobile_line1': '16 Coins Supported!',
     'coin_mobile_line2': 'Bonus every 3rd USDT deposit!',
+
+    // Mobile redesign
+    'total_balance': 'Total Balance',
+    'continue_playing': 'Continue Playing',
+    'hot_slots': 'Hot Slots',
+    'search_tab': 'Search',
+    'min_ago': 'min ago',
+    'hour_ago': 'hr ago',
+    'players': 'plays',
+    'vip_gold': 'VIP GOLD',
+    'to_platinum': 'to PLATINUM',
 
     // Language
     'lang_ko': '한국어',

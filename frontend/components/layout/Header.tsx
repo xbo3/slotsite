@@ -10,8 +10,6 @@ const RECENT_SEARCHES = ['Gates of Olympus', 'Sweet Bonanza', 'Fortune Tiger'];
 
 export default function Header() {
   const { user, isLoggedIn, logout } = useAuth();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [walletOpen, setWalletOpen] = useState(false);
@@ -56,24 +54,22 @@ export default function Header() {
           </span>
         </Link>
         <div className="flex items-center gap-1">
-          {/* Mobile balance */}
-          {isLoggedIn && (
-            <span className="text-[10px] font-light text-white/70 mr-1">{formatKRW(balance)}</span>
-          )}
-          {/* Deposit button */}
-          <Link href="/wallet" className="px-3 py-1.5 text-[10px] font-light tracking-wider uppercase text-white border border-white/40 rounded hover:bg-white hover:text-black transition-all">
-            {t('deposit')}
-          </Link>
-          <button onClick={() => setSearchOpen(!searchOpen)} className="p-2" style={{ color: '#888888' }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          {/* Notification bell */}
+          <button className="relative p-2" style={{ color: '#888888' }}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
+            {notifCount > 0 && (
+              <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] flex items-center justify-center font-medium">{notifCount}</span>
+            )}
           </button>
-          <button className="flex flex-col gap-1.5 p-2" onClick={() => setMenuOpen(!menuOpen)} aria-label={t('menu')}>
-            <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-            <span className={`w-5 h-0.5 bg-white transition-opacity ${menuOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-5 h-0.5 bg-white transition-transform ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-          </button>
+          {/* Chat icon */}
+          <Link href="/support" className="p-2" style={{ color: '#888888' }}>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </Link>
         </div>
       </div>
 
@@ -292,92 +288,6 @@ export default function Header() {
         </div>{/* end right area */}
       </div>{/* end desktop header */}
 
-      {/* Mobile Search Dropdown */}
-      {searchOpen && (
-        <div className="md:hidden px-4 pb-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder={t('search_games')}
-            autoFocus
-            className="w-full px-4 py-2.5 border rounded-lg text-sm text-white focus:outline-none"
-            style={{ background: '#0A0A0A', borderColor: 'rgba(255,255,255,0.06)', color: '#FFFFFF' }}
-          />
-        </div>
-      )}
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden border-t px-4 py-4 space-y-1 animate-fade-in" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.06)' }}>
-          {isLoggedIn ? (
-            <>
-              <div className="flex items-center justify-between py-3 px-2 rounded-lg mb-2" style={{ background: '#0A0A0A' }}>
-                <span className="text-sm font-light" style={{ color: '#888888' }}>{nickname}</span>
-                <span className="font-light text-sm text-white">{formatKRW(balance)}</span>
-              </div>
-              {[
-                { href: '/lobby', label: t('games') },
-                { href: '/wallet', label: t('wallet') },
-                { href: '/mypage', label: t('mypage') },
-                { href: '/mypage/coupons', label: t('bonus') },
-                { href: '/support', label: t('support') },
-              ].map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block py-2.5 px-2 text-sm font-light hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                  style={{ color: '#888888' }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <button
-                onClick={logout}
-                className="block w-full text-left py-2.5 px-2 text-sm font-light rounded-lg"
-                style={{ color: '#E53935' }}
-              >
-                {t('logout')}
-              </button>
-            </>
-          ) : (
-            <>
-              {[
-                { href: '/lobby', label: t('games') },
-                { href: '/support', label: t('support') },
-              ].map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block py-2.5 px-2 text-sm font-light hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                  style={{ color: '#888888' }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <div className="flex gap-2 pt-3">
-                <Link
-                  href="/login"
-                  className="flex-1 text-center py-2.5 border rounded-lg text-white text-xs font-light hover:bg-white/5 min-h-[44px] flex items-center justify-center"
-                  style={{ borderColor: 'rgba(255,255,255,0.1)' }}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {t('login')}
-                </Link>
-                <Link
-                  href="/register"
-                  className="flex-1 text-center py-2.5 text-xs font-light text-white border border-white rounded-lg hover:bg-white hover:text-black transition-all min-h-[44px] flex items-center justify-center"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {t('register')}
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-      )}
     </header>
   );
 }

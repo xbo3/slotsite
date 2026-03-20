@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { DEMO_GAMES } from '@/lib/gameData';
 import { useLang } from '@/hooks/useLang';
+import { useAuth } from '@/context/AuthContext';
 
 // ===== Data =====
 const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: string }> = {
@@ -134,6 +135,8 @@ function useInView(threshold = 0.15) {
 // ===== Main Page =====
 export default function Home() {
   const { t } = useLang();
+  const { user } = useAuth();
+  const balance = user ? Number(user.balance) || 0 : 14287.50; // demo fallback
   // Banner slider
   const [bannerIdx, setBannerIdx] = useState(0);
   const [bannerAnim, setBannerAnim] = useState<'enter' | 'exit'>('enter');
@@ -288,8 +291,31 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== Mobile Balance Card ===== */}
+      <div className="md:hidden px-3 -mt-2 mb-4">
+        <div className="rounded-2xl p-4" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <p className="text-text-muted text-xs font-light uppercase tracking-wider">{t('total_balance')}</p>
+          <p className="text-white text-3xl font-light mt-1">${balance.toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+          <div className="mt-3 flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded text-[10px] font-medium text-white" style={{ background: '#B8860B' }}>{t('vip_gold')}</span>
+            <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#222' }}>
+              <div className="h-full rounded-full" style={{ width: '35%', background: 'linear-gradient(90deg, #B8860B, #DAA520)' }} />
+            </div>
+            <span className="text-[10px] text-text-muted font-light">35% {t('to_platinum')}</span>
+          </div>
+          <div className="flex gap-3 mt-4">
+            <Link href="/wallet" className="flex-1 py-2.5 rounded-xl text-center text-sm font-light text-black" style={{ background: '#FFFFFF' }}>
+              {t('deposit')}
+            </Link>
+            <Link href="/wallet" className="flex-1 py-2.5 rounded-xl text-center text-sm font-light text-white border border-white/20">
+              {t('withdraw')}
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* ===== Coin Support Strip Banner ===== */}
-      <section className="w-full" style={{ background: 'linear-gradient(135deg, #111111 0%, #1A1A1A 50%, #111111 100%)' }}>
+      <section className="hidden md:block w-full" style={{ background: 'linear-gradient(135deg, #111111 0%, #1A1A1A 50%, #111111 100%)' }}>
         <div className="max-w-7xl mx-auto px-3 md:px-4 py-2 md:py-3 flex items-center justify-between gap-2 md:gap-4 overflow-hidden">
           {/* Left: Tether logo + Text */}
           <div className="flex items-center gap-1.5 md:gap-3 flex-shrink-0 min-w-0">
@@ -377,6 +403,38 @@ export default function Home() {
         </section>
       </div>
 
+      {/* ===== Mobile Category Buttons ===== */}
+      <div className="md:hidden px-3 mb-6">
+        <div className="flex gap-3">
+          {[
+            { href: '/lobby?cat=slots', label: t('slots'), icon: '\uD83C\uDFB0' },
+            { href: '/lobby?cat=live', label: t('live'), icon: '\uD83C\uDFB2' },
+            { href: '/lobby?cat=slots&hot=true', label: t('hot_slots'), icon: '\uD83D\uDD25' },
+          ].map(cat => (
+            <Link key={cat.href} href={cat.href} className="flex-1 flex flex-col items-center gap-2 py-4 rounded-2xl border border-white/5 touch-active" style={{ background: '#111111' }}>
+              <span className="text-2xl">{cat.icon}</span>
+              <span className="text-white text-xs font-light">{cat.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ===== Mobile Continue Playing ===== */}
+      <div className="md:hidden px-3 mb-6">
+        <h3 className="text-white font-light text-base mb-3">{t('continue_playing')}</h3>
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-2">
+          {TOP_GAMES.slice(0, 5).map((game, i) => (
+            <Link key={game.id} href={`/game/${game.id}`} className="flex-shrink-0 flex flex-col items-center gap-1.5 w-20 touch-active">
+              <div className="w-16 h-16 rounded-2xl overflow-hidden" style={{ background: '#222' }}>
+                {game.thumbnail && <img src={game.thumbnail} alt="" className="w-full h-full object-cover" loading="lazy" />}
+              </div>
+              <span className="text-white text-[10px] font-light text-center truncate w-full">{game.name}</span>
+              <span className="text-text-muted text-[9px] font-light">{[2, 15, 60, 180, 240][i]}{t('min_ago')}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* ===== Popular Games ===== */}
       <div ref={popularSection.ref} className={popularSection.inView ? 'section-visible' : 'section-hidden'}>
         <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
@@ -403,9 +461,30 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
+          <div className="hidden md:grid md:grid-cols-4 gap-4">
             {TOP_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={popularGradients[i % popularGradients.length]} />
+            ))}
+          </div>
+
+          {/* Mobile list view */}
+          <div className="md:hidden space-y-2">
+            {TOP_GAMES.slice(0, 6).map((game) => (
+              <Link key={game.id} href={`/game/${game.id}`} className="flex items-center gap-3 p-3 rounded-xl touch-active" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.04)' }}>
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0" style={{ background: '#222' }}>
+                  {game.thumbnail && <img src={game.thumbnail} alt="" className="w-full h-full object-cover" loading="lazy" />}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white text-sm font-light truncate">{game.name}</p>
+                  <p className="text-text-muted text-xs font-light">{game.provider}</p>
+                </div>
+                <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                  <span className="text-text-muted text-[10px] font-light">RTP {game.rtp}</span>
+                  <button className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21" /></svg>
+                  </button>
+                </div>
+              </Link>
             ))}
           </div>
 
@@ -432,16 +511,37 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4">
+          <div className="hidden md:grid md:grid-cols-4 gap-4">
             {NEW_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={newGradients[i % newGradients.length]} />
+            ))}
+          </div>
+
+          {/* Mobile list view */}
+          <div className="md:hidden space-y-2">
+            {NEW_GAMES.slice(0, 6).map((game) => (
+              <Link key={game.id} href={`/game/${game.id}`} className="flex items-center gap-3 p-3 rounded-xl touch-active" style={{ background: '#111111', border: '1px solid rgba(255,255,255,0.04)' }}>
+                <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0" style={{ background: '#222' }}>
+                  {game.thumbnail && <img src={game.thumbnail} alt="" className="w-full h-full object-cover" loading="lazy" />}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white text-sm font-light truncate">{game.name}</p>
+                  <p className="text-text-muted text-xs font-light">{game.provider}</p>
+                </div>
+                <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                  <span className="text-text-muted text-[10px] font-light">RTP {game.rtp}</span>
+                  <button className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21" /></svg>
+                  </button>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
       </div>
 
       {/* ===== BIG WIN ===== */}
-      <div ref={bigWinSection.ref} className={bigWinSection.inView ? 'section-visible' : 'section-hidden'}>
+      <div ref={bigWinSection.ref} className={`hidden md:block ${bigWinSection.inView ? 'section-visible' : 'section-hidden'}`}>
         <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-8">
             <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
@@ -505,7 +605,7 @@ export default function Home() {
       </div>
 
       {/* ===== Features ===== */}
-      <div ref={featureSection.ref} className={featureSection.inView ? 'section-visible' : 'section-hidden'}>
+      <div ref={featureSection.ref} className={`hidden md:block ${featureSection.inView ? 'section-visible' : 'section-hidden'}`}>
         <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
             <FeatureCard
@@ -531,7 +631,7 @@ export default function Home() {
       </div>
 
       {/* ===== Leaderboard ===== */}
-      <div ref={leaderboardSection.ref} className={leaderboardSection.inView ? 'section-visible' : 'section-hidden'}>
+      <div ref={leaderboardSection.ref} className={`hidden md:block ${leaderboardSection.inView ? 'section-visible' : 'section-hidden'}`}>
         <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
           <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-8">
             <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #FFFFFF, rgba(255,255,255,0.3))' }} />
@@ -622,7 +722,7 @@ export default function Home() {
       </div>
 
       {/* ===== CTA Section ===== */}
-      <div ref={ctaSection.ref} className={ctaSection.inView ? 'section-visible' : 'section-hidden'}>
+      <div ref={ctaSection.ref} className={`hidden md:block ${ctaSection.inView ? 'section-visible' : 'section-hidden'}`}>
         <section className="relative overflow-hidden">
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.04), rgba(255,255,255,0.02))' }} />
           <div className="relative max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24 text-center">

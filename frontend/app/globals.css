@@ -862,6 +862,11 @@ a.sub-item.border-click {
   }
 }
 
+/* VIP Progress Bar */
+.vip-progress {
+  background: linear-gradient(90deg, #B8860B, #DAA520);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
