@@ -405,15 +405,15 @@ export default function Home() {
 
       {/* ===== Mobile Category Buttons ===== */}
       <div className="md:hidden px-3 mb-6">
-        <div className="flex gap-3">
+        <div className="grid grid-cols-3 gap-2">
           {[
             { href: '/lobby?cat=slots', label: t('slots'), icon: '\uD83C\uDFB0' },
             { href: '/lobby?cat=live', label: t('live'), icon: '\uD83C\uDFB2' },
             { href: '/lobby?cat=slots&hot=true', label: t('hot_slots'), icon: '\uD83D\uDD25' },
           ].map(cat => (
-            <Link key={cat.href} href={cat.href} className="flex-1 flex flex-col items-center gap-2 py-4 rounded-2xl border border-white/5 touch-active" style={{ background: '#111111' }}>
-              <span className="text-2xl">{cat.icon}</span>
-              <span className="text-white text-xs font-light">{cat.label}</span>
+            <Link key={cat.href} href={cat.href} className="flex flex-col items-center gap-1.5 py-3 rounded-2xl border border-white/5 touch-active" style={{ background: '#111111' }}>
+              <span className="text-xl">{cat.icon}</span>
+              <span className="text-white text-[11px] font-light">{cat.label}</span>
             </Link>
           ))}
         </div>
