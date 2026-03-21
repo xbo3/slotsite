@@ -1,23 +1,42 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { PrismaClient } from '@prisma/client';
 import { config } from '../config';
 import { authMiddleware } from '../middleware/auth';
 import { successResponse, errorResponse } from '../utils';
-import { notifyNewUser } from '../services/telegram';
+import { notifyNewUser, sendTelegramMessage } from '../services/telegram';
 
 const router = Router();
 const prisma = new PrismaClient();
 
+/** canvas_hash + webgl_hash를 조합해서 fingerprint_hash 생성 */
+function buildFingerprintHash(canvasHash?: string, webglHash?: string): string | null {
+  if (!canvasHash && !webglHash) return null;
+  const raw = `${canvasHash || ''}:${webglHash || ''}`;
+  return crypto.createHash('sha256').update(raw).digest('hex');
+}
+
 // POST /api/auth/register
 router.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, password, nickname, phone } = req.body;
+    const { username, password, nickname, phone, canvas_hash, webgl_hash } = req.body;
 
     if (!username || !password || !nickname) {
       res.status(400).json(errorResponse('username, password, nickname은 필수입니다'));
       return;
+    }
+
+    // 블랙리스트 핑거프린트 체크
+    if (canvas_hash) {
+      const blacklisted = await prisma.fingerprintBlacklist.findUnique({
+        where: { canvas_hash },
+      });
+      if (blacklisted) {
+        res.status(403).json(errorResponse('차단된 기기입니다. 관리자에게 문의하세요.'));
+        return;
+      }
     }
 
     const existing = await prisma.user.findUnique({ where: { username } });
@@ -54,11 +73,22 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
 // POST /api/auth/login
 router.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
-    const { username, password } = req.body;
+    const { username, password, canvas_hash, webgl_hash } = req.body;
 
     if (!username || !password) {
       res.status(400).json(errorResponse('아이디와 비밀번호를 입력해주세요'));
       return;
+    }
+
+    // 블랙리스트 핑거프린트 체크
+    if (canvas_hash) {
+      const blacklisted = await prisma.fingerprintBlacklist.findUnique({
+        where: { canvas_hash },
+      });
+      if (blacklisted) {
+        res.status(403).json(errorResponse('차단된 기기입니다. 관리자에게 문의하세요.'));
+        return;
+      }
     }
 
     const user = await prisma.user.findUnique({ where: { username } });
@@ -89,13 +119,39 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
       data: { last_login: new Date() },
     });
 
-    // 로그인 기록 저장
+    // fingerprint_hash 생성
+    const fpHash = buildFingerprintHash(canvas_hash, webgl_hash);
+
+    // 새 기기 로그인 감지: 이전 로그인의 fingerprint_hash와 비교
+    if (fpHash) {
+      const lastLogin = await prisma.loginLog.findFirst({
+        where: {
+          user_id: user.id,
+          fingerprint_hash: { not: null },
+        },
+        orderBy: { created_at: 'desc' },
+      });
+
+      if (lastLogin && lastLogin.fingerprint_hash && lastLogin.fingerprint_hash !== fpHash) {
+        // 이전과 다른 기기에서 로그인 → 텔레그램 알림
+        const forwarded = req.headers['x-forwarded-for'];
+        const loginIp = typeof forwarded === 'string'
+          ? forwarded.split(',')[0].trim()
+          : req.ip || 'unknown';
+        sendTelegramMessage(
+          `🔐 <b>새 기기 로그인 감지</b>\n👤 ${user.username}\n📱 IP: ${loginIp}\n⚠️ 이전 기기와 다른 fingerprint`
+        );
+      }
+    }
+
+    // 로그인 기록 저장 (fingerprint_hash 포함)
     await prisma.loginLog.create({
       data: {
         user_id: user.id,
         ip_address: req.ip || req.headers['x-forwarded-for'] as string || 'unknown',
         user_agent: req.headers['user-agent'] || null,
         device: /Mobile|Android|iPhone/i.test(req.headers['user-agent'] || '') ? 'Mobile' : 'PC',
+        fingerprint_hash: fpHash,
       },
     });
 

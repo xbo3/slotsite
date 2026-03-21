@@ -79,6 +79,51 @@ router.post('/activate', authMiddleware, async (req: Request, res: Response): Pr
 
     const depositAmt = new Prisma.Decimal(deposit_amount);
 
+    // 다중계정 보너스 어뷰징 방지:
+    // 현재 유저의 canvas_hash를 가진 다른 유저가 같은 보너스를 이미 받았는지 체크
+    const userFingerprints = await prisma.userFingerprint.findMany({
+      where: { user_id: userId, canvas_hash: { not: null } },
+      select: { canvas_hash: true },
+      distinct: ['canvas_hash'],
+    });
+
+    if (userFingerprints.length > 0) {
+      const canvasHashes = userFingerprints
+        .map(fp => fp.canvas_hash)
+        .filter((h): h is string => h !== null);
+
+      if (canvasHashes.length > 0) {
+        // 같은 canvas_hash를 가진 다른 유저 ID 찾기
+        const otherUserFps = await prisma.userFingerprint.findMany({
+          where: {
+            canvas_hash: { in: canvasHashes },
+            user_id: { not: userId },
+          },
+          select: { user_id: true },
+          distinct: ['user_id'],
+        });
+
+        const otherUserIds = otherUserFps
+          .map(fp => fp.user_id)
+          .filter((id): id is number => id !== null);
+
+        if (otherUserIds.length > 0) {
+          // 다른 유저가 같은 template_id로 보너스를 받았는지 확인
+          const duplicateBonus = await prisma.userBonus.findFirst({
+            where: {
+              user_id: { in: otherUserIds },
+              template_id: template_id,
+            },
+          });
+
+          if (duplicateBonus) {
+            res.status(403).json(errorResponse('이미 다른 계정에서 이 보너스를 사용했습니다'));
+            return;
+          }
+        }
+      }
+    }
+
     // 동시 활성 보너스 1개 제한
     const activeBonus = await prisma.userBonus.findFirst({
       where: { user_id: userId, status: 'ACTIVE' },

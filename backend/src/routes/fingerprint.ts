@@ -355,4 +355,103 @@ router.get('/admin/users/:id', authMiddleware, adminMiddleware, async (req: Requ
   }
 });
 
+// ===== 블랙리스트 API =====
+
+// POST /api/fingerprint/admin/blacklist — canvas_hash 블랙리스트 추가
+router.post('/admin/blacklist', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { canvas_hash, reason } = req.body;
+
+    if (!canvas_hash) {
+      res.status(400).json(errorResponse('canvas_hash 필수'));
+      return;
+    }
+
+    // 이미 블랙리스트에 있는지 체크
+    const existing = await prisma.fingerprintBlacklist.findUnique({
+      where: { canvas_hash },
+    });
+    if (existing) {
+      res.status(400).json(errorResponse('이미 블랙리스트에 등록된 fingerprint입니다'));
+      return;
+    }
+
+    const blacklist = await prisma.fingerprintBlacklist.create({
+      data: {
+        canvas_hash,
+        reason: reason || null,
+        blocked_by: req.user!.id,
+      },
+    });
+
+    // 이 canvas_hash를 사용하는 유저 목록 조회
+    const affectedUsers = await prisma.userFingerprint.findMany({
+      where: { canvas_hash },
+      select: { user_id: true },
+      distinct: ['user_id'],
+    });
+    const affectedUserIds = affectedUsers
+      .map(u => u.user_id)
+      .filter((id): id is number => id !== null);
+
+    res.status(201).json(successResponse({
+      blacklist,
+      affected_user_ids: affectedUserIds,
+      message: `블랙리스트 등록 완료. 영향받는 유저 ${affectedUserIds.length}명`,
+    }));
+  } catch (err) {
+    console.error('Blacklist add error:', err);
+    res.status(500).json(errorResponse('블랙리스트 등록 실패'));
+  }
+});
+
+// GET /api/fingerprint/admin/blacklist — 블랙리스트 목록
+router.get('/admin/blacklist', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 50;
+    const skip = (page - 1) * limit;
+
+    const [blacklist, total] = await Promise.all([
+      prisma.fingerprintBlacklist.findMany({
+        orderBy: { created_at: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.fingerprintBlacklist.count(),
+    ]);
+
+    res.json(successResponse({
+      blacklist,
+      pagination: { page, limit, total, total_pages: Math.ceil(total / limit) },
+    }));
+  } catch (err) {
+    console.error('Blacklist list error:', err);
+    res.status(500).json(errorResponse('블랙리스트 조회 실패'));
+  }
+});
+
+// DELETE /api/fingerprint/admin/blacklist/:id — 블랙리스트 해제
+router.delete('/admin/blacklist/:id', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json(errorResponse('유효하지 않은 ID'));
+      return;
+    }
+
+    const entry = await prisma.fingerprintBlacklist.findUnique({ where: { id } });
+    if (!entry) {
+      res.status(404).json(errorResponse('블랙리스트 항목을 찾을 수 없습니다'));
+      return;
+    }
+
+    await prisma.fingerprintBlacklist.delete({ where: { id } });
+    res.json(successResponse({ message: '블랙리스트에서 해제되었습니다' }));
+  } catch (err) {
+    console.error('Blacklist delete error:', err);
+    res.status(500).json(errorResponse('블랙리스트 해제 실패'));
+  }
+});
+
 export default router;

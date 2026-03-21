@@ -3,6 +3,8 @@ import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import { config } from './config';
 import { errorResponse } from './utils';
+import { securityHeaders } from './middleware/security';
+import { strictLimiter, normalLimiter } from './middleware/rateLimit';
 
 const prisma = new PrismaClient();
 
@@ -22,10 +24,19 @@ import webhookRouter from './routes/webhook';
 
 const app = express();
 
+// 보안 헤더
+app.use(securityHeaders);
+
 // 미들웨어
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Rate Limiting: 민감 API에 strict, 나머지에 normal
+app.use('/api/auth/login', strictLimiter);
+app.use('/api/auth/register', strictLimiter);
+app.use('/api/coupons/apply', strictLimiter);
+app.use('/api', normalLimiter);
 
 // 라우터
 app.use('/api/auth', authRouter);

@@ -73,16 +73,29 @@ model GameLog {
 }
 
 model LoginLog {
-  id         Int      @id @default(autoincrement())
-  user_id    Int
-  ip_address String
-  user_agent String?
-  device     String?  // PC, Mobile, Tablet
-  created_at DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  user_id          Int
+  ip_address       String
+  user_agent       String?
+  device           String?  // PC, Mobile, Tablet
+  fingerprint_hash String?  // canvas_hash + webgl_hash 조합 해시
+  created_at       DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id])
 
   @@index([user_id])
+  @@index([fingerprint_hash])
+}
+
+model FingerprintBlacklist {
+  id           Int      @id @default(autoincrement())
+  canvas_hash  String
+  reason       String?
+  blocked_by   Int?     // 블랙리스트 등록한 관리자 ID
+  created_at   DateTime @default(now())
+
+  @@unique([canvas_hash])
+  @@index([canvas_hash])
 }
 
 // ===== 보너스 시스템 =====

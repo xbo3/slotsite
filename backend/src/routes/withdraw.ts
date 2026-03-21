@@ -6,7 +6,7 @@ import { adminMiddleware } from '../middleware/admin';
 import { successResponse, errorResponse } from '../utils';
 import { subtractBalance, addBalance } from '../services/balance';
 import * as bipaysService from '../services/bipays';
-import { notifyWithdraw } from '../services/telegram';
+import { notifyWithdraw, sendTelegramMessage } from '../services/telegram';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -20,7 +20,7 @@ const WITHDRAW_FEE = 1;  // 수수료 1 USDT
 router.post('/request', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.user!.id;
-    const { to_address, amount, security_password } = req.body;
+    const { to_address, amount, security_password, canvas_hash, webgl_hash } = req.body;
 
     if (!to_address || !amount) {
       res.status(400).json(errorResponse('to_address, amount 필수'));
@@ -50,6 +50,63 @@ router.post('/request', authMiddleware, async (req: Request, res: Response): Pro
         res.status(400).json(errorResponse('2차 비밀번호가 일치하지 않습니다'));
         return;
       }
+    }
+
+    // 핑거프린트 검증: 가입 시점의 fingerprint와 현재 비교
+    let fingerprintMismatch = false;
+    if (canvas_hash || webgl_hash) {
+      // 유저의 최초(가입 시점 근처) fingerprint 조회
+      const originalFp = await prisma.userFingerprint.findFirst({
+        where: { user_id: userId },
+        orderBy: { created_at: 'asc' },
+      });
+
+      if (originalFp) {
+        const canvasDiff = canvas_hash && originalFp.canvas_hash && canvas_hash !== originalFp.canvas_hash;
+        const webglDiff = webgl_hash && originalFp.webgl_hash && webgl_hash !== originalFp.webgl_hash;
+
+        if (canvasDiff || webglDiff) {
+          fingerprintMismatch = true;
+        }
+      }
+    }
+
+    if (fingerprintMismatch) {
+      // 핑거프린트 불일치 → 출금 보류 + 텔레그램 알림
+      const forwarded = req.headers['x-forwarded-for'];
+      const reqIp = typeof forwarded === 'string'
+        ? forwarded.split(',')[0].trim()
+        : req.ip || 'unknown';
+
+      sendTelegramMessage(
+        `🚨 <b>출금 보류 — 기기 불일치</b>\n👤 ${user.username}\n💵 ${withdrawAmount} USDT\n📍 ${to_address}\n📱 IP: ${reqIp}\n⚠️ 가입 시점과 다른 기기 fingerprint 감지\n🔒 관리자 수동 승인 필요`
+      );
+
+      // 잔액 차감은 하되 PENDING 상태로 — 관리자가 수동 승인/거절
+      const totalDeduct = withdrawAmount + WITHDRAW_FEE;
+      if (user.balance.lt(new Prisma.Decimal(totalDeduct.toString()))) {
+        res.status(400).json(errorResponse(`잔액이 부족합니다 (필요: ${totalDeduct} USDT, 보유: ${user.balance})`));
+        return;
+      }
+      await subtractBalance(userId, totalDeduct, 'WITHDRAW', `출금 요청 — 기기 불일치 보류 (${to_address})`);
+
+      const withdraw = await prisma.withdrawRequest.create({
+        data: {
+          user_id: userId,
+          to_address: to_address.trim(),
+          amount: new Prisma.Decimal(withdrawAmount.toString()),
+          fee: new Prisma.Decimal(WITHDRAW_FEE.toString()),
+          net_amount: new Prisma.Decimal(withdrawAmount.toString()),
+          admin_memo: '기기 fingerprint 불일치 — 수동 승인 필요',
+        },
+      });
+
+      res.status(201).json(successResponse({
+        withdraw,
+        message: '출금 요청이 접수되었습니다. 보안 검증을 위해 관리자 확인 후 처리됩니다.',
+        security_hold: true,
+      }));
+      return;
     }
 
     const totalDeduct = withdrawAmount + WITHDRAW_FEE;
