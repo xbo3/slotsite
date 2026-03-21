@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { PrismaClient, Prisma } from '@prisma/client';
 import { addBalance } from '../services/balance';
 import * as bipaysService from '../services/bipays';
+import { notifyDeposit, notifyWithdraw } from '../services/telegram';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -78,6 +79,10 @@ router.post('/bipays', async (req: Request, res: Response): Promise<void> => {
         await addBalance(user.id, depositAmount, 'DEPOSIT', `BiPays 입금 (tx: ${txHash || 'N/A'})`);
 
         console.log(`[Webhook] Deposit confirmed: user=${user.username}, amount=${amount} USDT, tx=${txHash}`);
+
+        // 텔레그램 알림
+        notifyDeposit(user.username, Number(depositAmount), 'BiPays USDT');
+
         res.json({ success: true, message: 'Deposit processed' });
         return;
       }
@@ -104,6 +109,12 @@ router.post('/bipays', async (req: Request, res: Response): Promise<void> => {
               data: { status: 'COMPLETED', tx_hash: txHash || withdraw.tx_hash },
             });
             console.log(`[Webhook] Withdraw completed: id=${withdraw.id}, tx=${txHash}`);
+
+            // 텔레그램 알림
+            const wUser = await prisma.user.findUnique({ where: { id: withdraw.user_id }, select: { username: true } });
+            if (wUser) {
+              notifyWithdraw(wUser.username, Number(withdraw.net_amount), 'COMPLETED');
+            }
           }
         }
 

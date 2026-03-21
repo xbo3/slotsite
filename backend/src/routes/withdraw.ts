@@ -6,6 +6,7 @@ import { adminMiddleware } from '../middleware/admin';
 import { successResponse, errorResponse } from '../utils';
 import { subtractBalance, addBalance } from '../services/balance';
 import * as bipaysService from '../services/bipays';
+import { notifyWithdraw } from '../services/telegram';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -175,6 +176,12 @@ router.put('/admin/:id/approve', authMiddleware, adminMiddleware, async (req: Re
         reviewed_at: new Date(),
       },
     });
+
+    // 텔레그램 알림
+    const approveUser = await prisma.user.findUnique({ where: { id: withdraw.user_id }, select: { username: true } });
+    if (approveUser) {
+      notifyWithdraw(approveUser.username, Number(withdraw.net_amount), bipaysResult ? 'PROCESSING' : 'APPROVED');
+    }
 
     res.json(successResponse({
       withdraw: updated,

@@ -5,6 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import { config } from '../config';
 import { authMiddleware } from '../middleware/auth';
 import { successResponse, errorResponse } from '../utils';
+import { notifyNewUser } from '../services/telegram';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -35,6 +36,9 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
         phone: phone || null,
       },
     });
+
+    // 텔레그램 알림
+    notifyNewUser(user.username);
 
     res.status(201).json(successResponse({
       id: user.id,

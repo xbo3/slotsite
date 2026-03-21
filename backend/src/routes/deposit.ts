@@ -5,6 +5,7 @@ import { adminMiddleware } from '../middleware/admin';
 import { successResponse, errorResponse } from '../utils';
 import { addBalance } from '../services/balance';
 import * as bipaysService from '../services/bipays';
+import { notifyDeposit } from '../services/telegram';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -220,6 +221,12 @@ router.post('/admin/confirm', authMiddleware, adminMiddleware, async (req: Reque
     });
 
     const user = await addBalance(deposit.user_id, actualAmount, 'DEPOSIT', `입금 확인 (요청 #${deposit_id})`);
+
+    // 텔레그램 알림
+    const depositUser = await prisma.user.findUnique({ where: { id: deposit.user_id }, select: { username: true } });
+    if (depositUser) {
+      notifyDeposit(depositUser.username, Number(actualAmount), '관리자 수동 확인');
+    }
 
     res.json(successResponse({
       deposit_id,

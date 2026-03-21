@@ -1,7 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import { PrismaClient } from '@prisma/client';
 import { config } from './config';
 import { errorResponse } from './utils';
+
+const prisma = new PrismaClient();
 
 import authRouter from './routes/auth';
 import walletRouter from './routes/wallet';
@@ -59,6 +62,24 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 app.listen(config.port, () => {
   console.log(`[SlotSite Backend] Server running on port ${config.port}`);
   console.log(`[SlotSite Backend] Health check: http://localhost:${config.port}/health`);
+
+  // 입금 자동 만료 크론: 5분마다 30분 지난 PENDING 입금 요청 만료 처리
+  setInterval(async () => {
+    try {
+      const thirtyMinAgo = new Date(Date.now() - 30 * 60 * 1000);
+      const result = await prisma.depositRequest.updateMany({
+        where: { status: 'PENDING', created_at: { lt: thirtyMinAgo } },
+        data: { status: 'EXPIRED' },
+      });
+      if (result.count > 0) {
+        console.log(`[Cron] ${result.count}건의 입금 요청 만료 처리`);
+      }
+    } catch (err) {
+      console.error('[Cron] 입금 만료 처리 오류:', err);
+    }
+  }, 5 * 60 * 1000);
+
+  console.log('[SlotSite Backend] Deposit expiry cron started (every 5 min)');
 });
 
 export default app;
