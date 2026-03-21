@@ -7,6 +7,36 @@ import { successResponse, errorResponse } from '../utils';
 const router = Router();
 const prisma = new PrismaClient();
 
+// GameCategory enum 문자열 → enum 변환 헬퍼
+function getCategoryEnum(category: string): any {
+  const map: Record<string, string> = {
+    'slots': 'SLOT',
+    'slot': 'SLOT',
+    'SLOT': 'SLOT',
+    'casino': 'LIVE_CASINO',
+    'live_casino': 'LIVE_CASINO',
+    'LIVE_CASINO': 'LIVE_CASINO',
+    'sports': 'SPORTS',
+    'SPORTS': 'SPORTS',
+    'mini_game': 'MINI_GAME',
+    'MINI_GAME': 'MINI_GAME',
+  };
+  return map[category] || 'ALL';
+}
+
+// Game.category 문자열 → WagerLog GameCategory 매핑 헬퍼
+function gameCategoryToEnum(gameCategory: string): string {
+  const map: Record<string, string> = {
+    'slots': 'SLOT',
+    'slot': 'SLOT',
+    'live_casino': 'LIVE_CASINO',
+    'casino': 'LIVE_CASINO',
+    'sports': 'SPORTS',
+    'mini_game': 'MINI_GAME',
+  };
+  return map[gameCategory.toLowerCase()] || 'SLOT';
+}
+
 // ===== 유저 API =====
 
 // GET /api/bonus/templates — 활성 보너스 목록
@@ -22,6 +52,11 @@ router.get('/templates', authMiddleware, async (_req: Request, res: Response): P
         wager_multiplier: true, wager_base: true,
         max_conversion: true, allowed_games: true,
         validity_days: true,
+        // 대출/전환 확장 필드
+        loan_percent: true, withdraw_deduction: true,
+        max_conversion_amount: true, max_conversion_multi: true,
+        allowed_category: true, full_withdraw_only: true,
+        auto_apply_on_deposit: true, min_deposit_amount: true,
       },
     });
     res.json(successResponse(templates));
@@ -160,6 +195,115 @@ router.post('/activate', authMiddleware, async (req: Request, res: Response): Pr
   }
 });
 
+// POST /api/bonus/apply-loan — 대출 보너스 적용
+router.post('/apply-loan', authMiddleware, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { template_id, deposit_amount } = req.body;
+    const userId = req.user!.id;
+
+    if (!template_id || !deposit_amount) {
+      res.status(400).json(errorResponse('template_id, deposit_amount 필수'));
+      return;
+    }
+
+    const depositAmt = new Prisma.Decimal(deposit_amount);
+
+    // 동시 활성 보너스 1개 제한
+    const activeBonus = await prisma.userBonus.findFirst({
+      where: { user_id: userId, status: 'ACTIVE' },
+    });
+    if (activeBonus) {
+      res.status(400).json(errorResponse('이미 활성 보너스가 있습니다. 완료/취소 후 이용해주세요.'));
+      return;
+    }
+
+    // 템플릿 조회
+    const template = await prisma.bonusTemplate.findUnique({ where: { id: template_id } });
+    if (!template || template.status !== 'ACTIVE') {
+      res.status(404).json(errorResponse('보너스를 찾을 수 없습니다'));
+      return;
+    }
+
+    // 대출 퍼센트 확인
+    if (!template.loan_percent || template.loan_percent <= 0) {
+      res.status(400).json(errorResponse('대출 보너스가 아닙니다'));
+      return;
+    }
+
+    // 입금액 검증
+    if (template.min_deposit.gt(0) && depositAmt.lt(template.min_deposit)) {
+      res.status(400).json(errorResponse(`최소 입금액: ${template.min_deposit}`));
+      return;
+    }
+    if (template.max_deposit.gt(0) && depositAmt.gt(template.max_deposit)) {
+      res.status(400).json(errorResponse(`최대 입금액: ${template.max_deposit}`));
+      return;
+    }
+
+    // 대출 금액 계산: 입금액 × loan_percent / 100
+    const loanAmount = depositAmt.mul(template.loan_percent).div(100);
+
+    // 웨이저 계산: (입금액 + 대출금) × wager_multiplier
+    const wagerRequired = depositAmt.add(loanAmount).mul(template.wager_multiplier);
+
+    // 만료일
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + template.validity_days);
+
+    // 최대 전환액
+    let maxConversion: Prisma.Decimal;
+    if (template.max_conversion_amount) {
+      maxConversion = template.max_conversion_amount;
+    } else if (template.max_conversion.gt(0)) {
+      maxConversion = template.max_conversion;
+    } else {
+      maxConversion = new Prisma.Decimal(999999999);
+    }
+
+    // 트랜잭션으로 생성
+    const result = await prisma.$transaction(async (tx) => {
+      const userBonus = await tx.userBonus.create({
+        data: {
+          user_id: userId,
+          template_id,
+          deposit_amount: depositAmt,
+          bonus_amount: loanAmount,
+          current_bonus: loanAmount,
+          wager_required: wagerRequired,
+          max_conversion: maxConversion,
+          is_loan: true,
+          expires_at: expiresAt,
+        },
+      });
+
+      // 유저 bonus_balance 증가
+      const user = await tx.user.update({
+        where: { id: userId },
+        data: { bonus_balance: { increment: loanAmount } },
+      });
+
+      // BonusTransaction 기록
+      await tx.bonusTransaction.create({
+        data: {
+          user_id: userId,
+          user_bonus_id: userBonus.id,
+          type: 'GRANT',
+          amount: loanAmount,
+          balance_after: user.bonus_balance,
+          memo: `${template.name} 대출 보너스 (${template.loan_percent}%)`,
+        },
+      });
+
+      return userBonus;
+    });
+
+    res.json(successResponse(result));
+  } catch (err) {
+    console.error('Bonus apply-loan error:', err);
+    res.status(500).json(errorResponse('서버 오류'));
+  }
+});
+
 // GET /api/bonus/active — 내 활성 보너스
 router.get('/active', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
@@ -178,9 +322,11 @@ router.get('/active', authMiddleware, async (req: Request, res: Response): Promi
 router.post('/convert', authMiddleware, async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = req.user!.id;
+    const { amount: requestedAmount } = req.body; // 부분 전환 금액 (optional)
 
     const bonus = await prisma.userBonus.findFirst({
       where: { user_id: userId, status: 'ACTIVE' },
+      include: { template: true },
     });
 
     if (!bonus) {
@@ -188,11 +334,31 @@ router.post('/convert', authMiddleware, async (req: Request, res: Response): Pro
       return;
     }
 
-    // 웨이저 달성 확인
-    if (bonus.wager_completed.lt(bonus.wager_required)) {
-      const remaining = bonus.wager_required.sub(bonus.wager_completed);
-      res.status(400).json(errorResponse(`웨이저 미달성. 남은 금액: ${remaining}`));
-      return;
+    const template = bonus.template;
+
+    // 웨이저 달성 확인 (카테고리별 롤링 체크)
+    if (template.allowed_category) {
+      // 해당 카테고리 게임 배팅만 합산
+      const categoryWager = await prisma.wagerLog.aggregate({
+        where: {
+          user_bonus_id: bonus.id,
+          game_category: getCategoryEnum(template.allowed_category),
+        },
+        _sum: { wager_counted: true },
+      });
+      const categoryCompleted = categoryWager._sum.wager_counted || new Prisma.Decimal(0);
+      if (categoryCompleted.lt(bonus.wager_required)) {
+        const remaining = bonus.wager_required.sub(categoryCompleted);
+        res.status(400).json(errorResponse(`웨이저 미달성 (${template.allowed_category} 카테고리만 인정). 남은 금액: ${remaining}`));
+        return;
+      }
+    } else {
+      // 기존 로직: 전체 웨이저 달성 확인
+      if (bonus.wager_completed.lt(bonus.wager_required)) {
+        const remaining = bonus.wager_required.sub(bonus.wager_completed);
+        res.status(400).json(errorResponse(`웨이저 미달성. 남은 금액: ${remaining}`));
+        return;
+      }
     }
 
     // 만료 확인
@@ -201,10 +367,53 @@ router.post('/convert', authMiddleware, async (req: Request, res: Response): Pro
       return;
     }
 
-    // 전환 금액 (현재 보너스 잔액, 최대전환액 제한)
+    // 전환 금액 결정
     let convertAmount = bonus.current_bonus;
+
+    // full_withdraw_only: 전액 전환만 허용
+    if (template.full_withdraw_only) {
+      if (requestedAmount && !new Prisma.Decimal(requestedAmount).eq(bonus.current_bonus)) {
+        res.status(400).json(errorResponse('전액 환전만 가능한 보너스입니다'));
+        return;
+      }
+    } else if (requestedAmount) {
+      const reqAmt = new Prisma.Decimal(requestedAmount);
+      if (reqAmt.gt(bonus.current_bonus)) {
+        res.status(400).json(errorResponse(`전환 가능 금액 초과. 보유: ${bonus.current_bonus}`));
+        return;
+      }
+      convertAmount = reqAmt;
+    }
+
+    // max_conversion 제한 (기존)
     if (convertAmount.gt(bonus.max_conversion)) {
       convertAmount = bonus.max_conversion;
+    }
+
+    // max_conversion_multi: 전환 금액 <= 원래 입금액 × 배수
+    if (template.max_conversion_multi && template.max_conversion_multi > 0) {
+      const maxByMulti = bonus.deposit_amount.mul(template.max_conversion_multi);
+      if (convertAmount.gt(maxByMulti)) {
+        convertAmount = maxByMulti;
+      }
+    }
+
+    // max_conversion_amount 제한 (새 필드)
+    if (template.max_conversion_amount && convertAmount.gt(template.max_conversion_amount)) {
+      convertAmount = template.max_conversion_amount;
+    }
+
+    // is_loan + withdraw_deduction: 대출 보너스 전환 시 차감
+    let deductionAmount = new Prisma.Decimal(0);
+    if (bonus.is_loan && template.withdraw_deduction && template.withdraw_deduction > 0) {
+      deductionAmount = convertAmount.mul(template.withdraw_deduction).div(100);
+      convertAmount = convertAmount.sub(deductionAmount);
+    }
+
+    // 전환 금액이 0 이하면 에러
+    if (convertAmount.lte(0)) {
+      res.status(400).json(errorResponse('차감 후 전환 가능 금액이 없습니다'));
+      return;
     }
 
     const result = await prisma.$transaction(async (tx) => {
@@ -229,6 +438,10 @@ router.post('/convert', authMiddleware, async (req: Request, res: Response): Pro
       });
 
       // BonusTransaction 기록
+      const memo = deductionAmount.gt(0)
+        ? `보너스 전환 (${convertAmount}), 차감 ${deductionAmount} (${template.withdraw_deduction}%)`
+        : `보너스 전환 (${convertAmount})`;
+
       await tx.bonusTransaction.create({
         data: {
           user_id: userId,
@@ -236,11 +449,16 @@ router.post('/convert', authMiddleware, async (req: Request, res: Response): Pro
           type: 'CONVERT',
           amount: convertAmount,
           balance_after: user.bonus_balance,
-          memo: `보너스 전환 (${convertAmount})`,
+          memo,
         },
       });
 
-      return { converted: convertAmount, new_balance: user.balance, new_bonus_balance: user.bonus_balance };
+      return {
+        converted: convertAmount,
+        deduction: deductionAmount.gt(0) ? deductionAmount : undefined,
+        new_balance: user.balance,
+        new_bonus_balance: user.bonus_balance,
+      };
     });
 
     res.json(successResponse(result));
@@ -305,6 +523,9 @@ router.post('/admin/templates', authMiddleware, adminMiddleware, async (req: Req
       name, description, deposit_type, min_deposit, max_deposit,
       bonus_percent, max_bonus, wager_multiplier, wager_base,
       max_conversion, allowed_games, validity_days, daily_limit, total_limit, priority,
+      // 대출/전환 확장 필드
+      loan_percent, withdraw_deduction, max_conversion_amount, max_conversion_multi,
+      allowed_category, full_withdraw_only, auto_apply_on_deposit, min_deposit_amount,
     } = req.body;
 
     if (!name || bonus_percent === undefined || wager_multiplier === undefined) {
@@ -329,6 +550,15 @@ router.post('/admin/templates', authMiddleware, adminMiddleware, async (req: Req
         daily_limit: daily_limit || 0,
         total_limit: total_limit || 0,
         priority: priority || 0,
+        // 대출/전환 확장 필드
+        loan_percent: loan_percent || null,
+        withdraw_deduction: withdraw_deduction || null,
+        max_conversion_amount: max_conversion_amount || null,
+        max_conversion_multi: max_conversion_multi || null,
+        allowed_category: allowed_category || null,
+        full_withdraw_only: full_withdraw_only || false,
+        auto_apply_on_deposit: auto_apply_on_deposit || false,
+        min_deposit_amount: min_deposit_amount || null,
       },
     });
 

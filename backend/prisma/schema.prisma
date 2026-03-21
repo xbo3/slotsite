@@ -111,6 +111,16 @@ model BonusTemplate {
   daily_limit      Int                 @default(0)
   total_limit      Int                 @default(0)
 
+  // 대출/전환 확장 필드
+  loan_percent           Float?              // 대출 퍼센트 (예: 60)
+  withdraw_deduction     Float?              // 환전 차감 퍼센트 (예: 30)
+  max_conversion_amount  Decimal?  @db.Decimal(18, 2)  // 전환 최대 금액
+  max_conversion_multi   Float?              // 전환 배수 제한 (예: 5)
+  allowed_category       String?             // 허용 카테고리 ('slots', 'casino', 'sports', null=전체)
+  full_withdraw_only     Boolean   @default(false)     // 전액 환전만 가능
+  auto_apply_on_deposit  Boolean   @default(false)     // 입금 시 자동 적용
+  min_deposit_amount     Decimal?  @db.Decimal(18, 2)  // 최소 입금액 조건
+
   priority         Int                 @default(0)
   created_at       DateTime            @default(now())
   updated_at       DateTime            @updatedAt
@@ -134,6 +144,9 @@ model UserBonus {
 
   converted_amount Decimal         @default(0) @db.Decimal(18, 2)
   max_conversion   Decimal         @db.Decimal(18, 2)
+
+  // 대출 보너스 확장 필드
+  is_loan          Boolean         @default(false)   // 대출 보너스 여부
 
   activated_at     DateTime        @default(now())
   expires_at       DateTime
