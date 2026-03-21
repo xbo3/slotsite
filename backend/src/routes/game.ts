@@ -1,7 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 
 const router = Router();
 
-// TODO: 게임 API 구현 예정 (게임 목록, 실행, 콜백)
+// games.ts가 이미 전부 커버하므로 안내 응답만 반환
+router.get('/', (_req: Request, res: Response) => {
+  res.json({ success: true, message: 'Use /api/games' });
+});
 
 export default router;

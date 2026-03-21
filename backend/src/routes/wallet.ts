@@ -1,7 +1,10 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 
 const router = Router();
 
-// TODO: 지갑 API 구현 예정 (잔액 조회, 충전, 환전, 내역)
+// deposit.ts와 withdraw.ts가 이미 전부 커버하므로 안내 응답만 반환
+router.get('/', (_req: Request, res: Response) => {
+  res.json({ success: true, message: 'Use /api/deposit or /api/withdraw' });
+});
 
 export default router;

@@ -22,6 +22,20 @@ interface DashboardStats {
   pendingWithdrawals: number;
 }
 
+interface DailyDataItem {
+  day: string;
+  deposit: number;
+  withdraw: number;
+}
+
+interface RecentActivityItem {
+  type: string;
+  user: string;
+  amount?: number;
+  game?: string;
+  time: string;
+}
+
 const DUMMY_STATS: DashboardStats = {
   userCount: 1247,
   todayDeposit: 3500000,
@@ -33,7 +47,7 @@ const DUMMY_STATS: DashboardStats = {
   pendingWithdrawals: 5,
 };
 
-const DAILY_DATA = [
+const DUMMY_DAILY_DATA: DailyDataItem[] = [
   { day: '03/13', deposit: 850000, withdraw: 620000 },
   { day: '03/14', deposit: 1200000, withdraw: 900000 },
   { day: '03/15', deposit: 780000, withdraw: 450000 },
@@ -43,7 +57,7 @@ const DAILY_DATA = [
   { day: '03/19', deposit: 650000, withdraw: 400000 },
 ];
 
-const RECENT_ACTIVITY = [
+const DUMMY_RECENT_ACTIVITY: RecentActivityItem[] = [
   { type: 'deposit', user: 'test7', amount: 100000, time: '2분 전' },
   { type: 'withdraw', user: 'player1', amount: 50000, time: '15분 전' },
   { type: 'signup', user: 'newuser', time: '30분 전' },
@@ -76,17 +90,70 @@ function CustomTooltip({ active, payload, label }: any) {
   );
 }
 
+function SkeletonCard() {
+  return (
+    <div className="p-5 rounded-xl animate-pulse" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="h-3 w-16 rounded bg-white/5 mb-3" />
+      <div className="h-7 w-24 rounded bg-white/5" />
+    </div>
+  );
+}
+
+function SkeletonChart() {
+  return (
+    <div className="mt-6 p-5 rounded-xl animate-pulse" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="h-3 w-32 rounded bg-white/5 mb-4" />
+      <div className="h-[260px] rounded bg-white/[0.03]" />
+    </div>
+  );
+}
+
+function SkeletonActivity() {
+  return (
+    <div className="mt-6 rounded-xl overflow-hidden animate-pulse" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="px-5 py-3.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="h-3 w-16 rounded bg-white/5" />
+      </div>
+      {[1, 2, 3, 4, 5].map(i => (
+        <div key={i} className="flex items-center gap-3 px-5 py-3" style={{ borderBottom: i < 5 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
+          <div className="w-8 h-8 rounded-full bg-white/5 flex-shrink-0" />
+          <div className="flex-1">
+            <div className="h-3 w-40 rounded bg-white/5" />
+          </div>
+          <div className="h-3 w-12 rounded bg-white/5 flex-shrink-0" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function AdminPage() {
   const [stats, setStats] = useState<DashboardStats>(DUMMY_STATS);
+  const [dailyData, setDailyData] = useState<DailyDataItem[]>(DUMMY_DAILY_DATA);
+  const [recentActivity, setRecentActivity] = useState<RecentActivityItem[]>(DUMMY_RECENT_ACTIVITY);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     adminApi.getDashboard().then(res => {
       try {
         if (res.success && res.data) {
-          setStats(prev => ({ ...prev, ...res.data }));
+          if (res.data.stats) setStats(prev => ({ ...prev, ...res.data.stats }));
+          else setStats(prev => ({ ...prev, ...res.data }));
+          if (res.data.dailyData && Array.isArray(res.data.dailyData) && res.data.dailyData.length > 0) {
+            setDailyData(res.data.dailyData);
+          }
+          if (res.data.recentActivity && Array.isArray(res.data.recentActivity) && res.data.recentActivity.length > 0) {
+            setRecentActivity(res.data.recentActivity);
+          }
         }
-      } catch { /* keep dummy */ }
-    }).catch(() => {});
+      } catch (err) {
+        console.error('Dashboard API parse error:', err);
+      }
+    }).catch(err => {
+      console.error('Dashboard API error:', err);
+    }).finally(() => {
+      setLoading(false);
+    });
   }, []);
 
   const cards = [
@@ -122,87 +189,98 @@ export default function AdminPage() {
 
       {/* 통계 카드 8개 — 2x4 그리드 */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {cards.map((c, i) => (
-          <div key={i} className="p-5 rounded-xl" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <p className="text-[10px] font-light uppercase tracking-wider" style={{ color: '#555' }}>{c.label}</p>
-            <p className="text-2xl font-light mt-2" style={{ color: c.color }}>
-              {c.value}<span className="text-xs font-light ml-1" style={{ color: '#555' }}>{c.suffix}</span>
-            </p>
-          </div>
-        ))}
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+          : cards.map((c, i) => (
+              <div key={i} className="p-5 rounded-xl" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <p className="text-[10px] font-light uppercase tracking-wider" style={{ color: '#555' }}>{c.label}</p>
+                <p className="text-2xl font-light mt-2" style={{ color: c.color }}>
+                  {c.value}<span className="text-xs font-light ml-1" style={{ color: '#555' }}>{c.suffix}</span>
+                </p>
+              </div>
+            ))
+        }
       </div>
 
       {/* 차트 영역 — 일별 입출금 추이 */}
-      <div className="mt-6 p-5 rounded-xl" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <p className="text-[10px] font-light uppercase tracking-wider mb-4" style={{ color: '#555' }}>7일간 입출금 추이</p>
-        <div style={{ width: '100%', height: 260 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={DAILY_DATA} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="gDeposit" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#4CAF50" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#4CAF50" stopOpacity={0} />
-                </linearGradient>
-                <linearGradient id="gWithdraw" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#E53935" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#E53935" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="day" tick={{ fill: '#555', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#555', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 10000).toFixed(0)}만`} width={45} />
-              <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="deposit" stroke="#4CAF50" strokeWidth={2} fill="url(#gDeposit)" name="입금" />
-              <Area type="monotone" dataKey="withdraw" stroke="#E53935" strokeWidth={2} fill="url(#gWithdraw)" name="출금" />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="flex items-center gap-6 mt-3 px-2">
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-[2px] rounded-full" style={{ background: '#4CAF50' }} />
-            <span className="text-[10px] font-light" style={{ color: '#888' }}>입금</span>
+      {loading ? (
+        <SkeletonChart />
+      ) : (
+        <div className="mt-6 p-5 rounded-xl" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <p className="text-[10px] font-light uppercase tracking-wider mb-4" style={{ color: '#555' }}>7일간 입출금 추이</p>
+          <div style={{ width: '100%', height: 260 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={dailyData} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="gDeposit" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#4CAF50" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#4CAF50" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="gWithdraw" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#E53935" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#E53935" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="day" tick={{ fill: '#555', fontSize: 11 }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fill: '#555', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 10000).toFixed(0)}만`} width={45} />
+                <Tooltip content={<CustomTooltip />} />
+                <Area type="monotone" dataKey="deposit" stroke="#4CAF50" strokeWidth={2} fill="url(#gDeposit)" name="입금" />
+                <Area type="monotone" dataKey="withdraw" stroke="#E53935" strokeWidth={2} fill="url(#gWithdraw)" name="출금" />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-3 h-[2px] rounded-full" style={{ background: '#E53935' }} />
-            <span className="text-[10px] font-light" style={{ color: '#888' }}>출금</span>
+          <div className="flex items-center gap-6 mt-3 px-2">
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-[2px] rounded-full" style={{ background: '#4CAF50' }} />
+              <span className="text-[10px] font-light" style={{ color: '#888' }}>입금</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3 h-[2px] rounded-full" style={{ background: '#E53935' }} />
+              <span className="text-[10px] font-light" style={{ color: '#888' }}>출금</span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 최근 활동 리스트 */}
-      <div className="mt-6 rounded-xl overflow-hidden" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="px-5 py-3.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-          <p className="text-[10px] font-light uppercase tracking-wider" style={{ color: '#555' }}>최근 활동</p>
-        </div>
-        <div>
-          {RECENT_ACTIVITY.map((item, i) => {
-            const info = getActivityIcon(item.type);
-            return (
-              <div
-                key={i}
-                className="flex items-center gap-3 px-5 py-3"
-                style={{ borderBottom: i < RECENT_ACTIVITY.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}
-              >
-                <span
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0"
-                  style={{ background: `${info.color}15`, color: info.color }}
+      {loading ? (
+        <SkeletonActivity />
+      ) : (
+        <div className="mt-6 rounded-xl overflow-hidden" style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <div className="px-5 py-3.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <p className="text-[10px] font-light uppercase tracking-wider" style={{ color: '#555' }}>최근 활동</p>
+          </div>
+          <div>
+            {recentActivity.map((item, i) => {
+              const info = getActivityIcon(item.type);
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 px-5 py-3"
+                  style={{ borderBottom: i < recentActivity.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}
                 >
-                  {info.icon}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-light text-white">
-                    <span style={{ color: info.color }}>{info.label}</span>
-                    {' · '}
-                    <span className="text-white/80">{item.user}</span>
-                    {item.amount && <span className="text-white ml-1">₩{item.amount.toLocaleString()}</span>}
-                    {item.game && <span className="text-white/50 ml-1 text-[10px]">{item.game}</span>}
-                  </p>
+                  <span
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-sm flex-shrink-0"
+                    style={{ background: `${info.color}15`, color: info.color }}
+                  >
+                    {info.icon}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-light text-white">
+                      <span style={{ color: info.color }}>{info.label}</span>
+                      {' · '}
+                      <span className="text-white/80">{item.user}</span>
+                      {item.amount && <span className="text-white ml-1">₩{item.amount.toLocaleString()}</span>}
+                      {item.game && <span className="text-white/50 ml-1 text-[10px]">{item.game}</span>}
+                    </p>
+                  </div>
+                  <span className="text-[10px] font-light flex-shrink-0" style={{ color: '#555' }}>{item.time}</span>
                 </div>
-                <span className="text-[10px] font-light flex-shrink-0" style={{ color: '#555' }}>{item.time}</span>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

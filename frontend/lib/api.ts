@@ -117,12 +117,24 @@ export const adminApi = {
   getWallets: () => api.get('/deposit/admin/wallets'),
   bulkAddWallets: (data: any) => api.post('/deposit/admin/wallets/bulk-add', data),
   confirmDeposit: (data: any) => api.post('/deposit/admin/confirm', data),
+  // Settings
+  getSettings: () => api.get('/admin/settings'),
+  updateSettings: (data: any) => api.put('/admin/settings', data),
   // Games admin
   getGameStats: () => api.get('/games/admin/games/stats'),
   addGame: (data: any) => api.post('/games/admin/games', data),
   bulkAddGames: (data: any) => api.post('/games/admin/games/bulk', data),
   updateGame: (id: number, data: any) => api.put(`/games/admin/games/${id}`, data),
   deleteGame: (id: number) => api.delete(`/games/admin/games/${id}`),
+  // Logs
+  getLogs: async (params?: { page?: number; action?: string; admin?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.page) query.set('page', String(params.page));
+    if (params?.action) query.set('action', params.action);
+    if (params?.admin) query.set('admin', params.admin);
+    const qs = query.toString();
+    return api.get(`/admin/logs${qs ? `?${qs}` : ''}`);
+  },
 };
 
 // Backward compatibility

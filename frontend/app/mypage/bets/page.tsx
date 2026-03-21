@@ -77,19 +77,29 @@ export default function BetsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedBet, setSelectedBet] = useState<Bet | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [, setLoading] = useState(true);
   const [showDateSheet, setShowDateSheet] = useState(false);
   const perPage = 10;
 
   // Fetch bets from API
   useEffect(() => {
-    if (!isLoggedIn) return;
+    if (!isLoggedIn) {
+      setLoading(false);
+      return;
+    }
     userApi.getBets().then(res => {
       try {
         if (res.success && res.data) {
           setBets(res.data);
         }
-      } catch { /* keep dummy data */ }
-    }).catch(() => {});
+      } catch (err) {
+        console.error('Bets API parse error:', err);
+      }
+    }).catch(err => {
+      console.error('Bets API error:', err);
+    }).finally(() => {
+      setLoading(false);
+    });
   }, [isLoggedIn]);
 
   // Pull-to-refresh
