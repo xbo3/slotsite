@@ -220,7 +220,7 @@
 <div class="mob-overlay" id="mobOverlay"><div class="mob-sidebar" id="mobSidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark pearl-shimmer">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div><div class="sb-close" id="mobClose">✕</div></div><div class="sb-scroll" id="mobMenu"></div></div></div>
 
 <div class="main">
-<header class="hdr"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><div class="hdr-btn">🔔<div class="dot"></div></div><div class="hdr-btn">💬</div></div></header>
+<header class="hdr"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="openLoginModal()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="openLoginModal('register')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></header>
 <div class="content">
 
   <div class="section"><div class="bal pearl-shimmer">
@@ -320,6 +320,42 @@ mobSb.addEventListener('click',e=>e.stopPropagation());
 let tx=0;mobSb.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
 mobSb.addEventListener('touchend',e=>{if(tx-e.changedTouches[0].clientX>60)closeMob()},{passive:true});
 document.querySelectorAll('.nav:not(.mob-menu-btn)').forEach(n=>{n.addEventListener('click',()=>{document.querySelectorAll('.nav').forEach(x=>x.classList.remove('on'));n.classList.add('on')})});
+
+// ── Login Modal ──
+function openLoginModal(tab){createLoginModal(tab||'login')}
+function createLoginModal(startTab){
+  if(document.getElementById('drslot-login-modal')){if(startTab)switchAuthTab(startTab);document.getElementById('drslot-login-modal').style.display='flex';return}
+  const modal=document.createElement('div');modal.id='drslot-login-modal';
+  modal.style.cssText='display:flex;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center';
+  modal.innerHTML=`<div style="background:#0e0e14;border:1px solid rgba(255,46,74,0.15);border-radius:16px;padding:28px;width:min(360px,90vw);position:relative">
+    <div style="position:absolute;top:12px;right:16px;cursor:pointer;font-size:20px;color:rgba(255,255,255,0.4)" onclick="closeLoginModal()">&times;</div>
+    <div style="font-size:22px;font-weight:800;margin-bottom:20px;text-align:center;background:linear-gradient(135deg,#FF2E4A,#FF6B81);-webkit-background-clip:text;-webkit-text-fill-color:transparent">ROYAL PLAY</div>
+    <div id="drslot-login-tab" style="display:flex;gap:8px;margin-bottom:16px">
+      <button onclick="switchAuthTab('login')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.15);color:#FF6B81;font-weight:600;font-size:13px;cursor:pointer">Sign In</button>
+      <button onclick="switchAuthTab('register')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-weight:600;font-size:13px;cursor:pointer">Sign Up</button>
+    </div>
+    <input id="drslot-username" type="text" placeholder="Email" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    <input id="drslot-password" type="password" placeholder="Password" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    <div id="drslot-register-fields" style="display:none"><input id="drslot-nickname" type="text" placeholder="Nickname" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif"></div>
+    <div id="drslot-auth-error" style="color:#FF3B5C;font-size:12px;margin-bottom:8px;display:none"></div>
+    <button id="drslot-auth-submit" style="width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:Inter,sans-serif">Sign In</button>
+    <div style="position:relative;margin:16px 0"><div style="position:absolute;inset:0;display:flex;align-items:center"><div style="width:100%;border-top:1px solid rgba(255,255,255,0.05)"></div></div><div style="position:relative;display:flex;justify-content:center"><span style="padding:0 12px;background:#0e0e14;color:rgba(255,255,255,0.3);font-size:11px">OR</span></div></div>
+    <div style="display:flex;gap:8px">
+      <button type="button" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:Inter,sans-serif"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A11.96 11.96 0 0 0 1 12c0 1.93.46 3.74 1.18 5.35l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google</button>
+      <button type="button" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px;background:rgba(0,136,204,0.1);border:1px solid rgba(0,136,204,0.2);border-radius:8px;color:#0088cc;font-size:13px;font-weight:500;cursor:pointer;font-family:Inter,sans-serif"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Telegram</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);if(startTab)switchAuthTab(startTab);
+}
+let currentAuthTab='login';
+function switchAuthTab(tab){
+  currentAuthTab=tab;const tabs=document.querySelectorAll('#drslot-login-tab .auth-tab');if(!tabs.length)return;
+  tabs[0].style.background=tab==='login'?'rgba(255,46,74,0.15)':'rgba(255,255,255,0.06)';tabs[0].style.color=tab==='login'?'#FF6B81':'rgba(255,255,255,0.4)';tabs[0].style.borderColor=tab==='login'?'rgba(255,46,74,0.3)':'rgba(255,255,255,0.08)';
+  tabs[1].style.background=tab==='register'?'rgba(255,46,74,0.15)':'rgba(255,255,255,0.06)';tabs[1].style.color=tab==='register'?'#FF6B81':'rgba(255,255,255,0.4)';tabs[1].style.borderColor=tab==='register'?'rgba(255,46,74,0.3)':'rgba(255,255,255,0.08)';
+  document.getElementById('drslot-register-fields').style.display=tab==='register'?'block':'none';
+  document.getElementById('drslot-auth-submit').textContent=tab==='login'?'Sign In':'Sign Up';
+}
+function closeLoginModal(){const m=document.getElementById('drslot-login-modal');if(m)m.style.display='none'}
 </script>
 </body>
 </html>
