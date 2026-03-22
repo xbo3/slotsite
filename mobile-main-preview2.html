@@ -279,6 +279,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 .bn-item.active{color:var(--neon)}
 .bn-item.active::before{content:'';position:absolute;top:-6px;width:16px;height:2px;border-radius:1px;background:var(--neon)}
 .bn-item svg{width:22px;height:22px}
+.bn-item img.nav-icon{width:32px;height:32px;border-radius:50%;object-fit:cover}
 .bn-item .bl{font-size:10px;font-weight:500}
 .bn-item.center{margin-top:-20px}
 .cn-circ{width:48px;height:48px;border-radius:14px;background:rgba(0,229,255,0.18);border:1px solid rgba(0,229,255,0.3);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--neon-g);backdrop-filter:blur(8px)}
@@ -660,11 +661,10 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 <!-- BOTTOM NAV -->
 <nav class="bnav">
-  <a class="bn-item active"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1a1 1 0 00.7-1.7l-9-9a1 1 0 00-1.4 0l-9 9A1 1 0 003 13z"/></svg><span class="bl">Home</span></a>
-  <a class="bn-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="bl">Search</span></a>
-  <a class="bn-item center"><div class="cn-circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><span class="bl" style="margin-top:4px;color:var(--neon)">Deposit</span></a>
-  <a class="bn-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg><span class="bl">Bonus</span></a>
-  <a class="bn-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="bl">Profile</span></a>
+  <a class="bn-item active"><img src="icon-slot.jpg" alt="슬롯" class="nav-icon"><span class="bl">슬롯</span></a>
+  <a class="bn-item"><img src="icon-sports.jpg" alt="스포츠" class="nav-icon"><span class="bl">스포츠</span></a>
+  <a class="bn-item"><img src="icon-bonus.jpg" alt="보너스" class="nav-icon"><span class="bl">보너스</span></a>
+  <a class="bn-item"><img src="icon-profile.jpg" alt="프로필" class="nav-icon"><span class="bl">프로필</span></a>
 </nav>
 
 <script>
