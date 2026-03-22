@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DR.SLOT — Responsive Main</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+:root {
+  --bg: #08080a;
+  --card: #111114;
+  --card-hover: #18181c;
+  --surface: #0d0d10;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,255,255,0.12);
+  --gold: #F0B90B;
+  --gold-dim: rgba(240,185,11,0.15);
+  --gold-glow: rgba(240,185,11,0.3);
+  --green: #00C853;
+  --green-dim: rgba(0,200,83,0.12);
+  --red: #FF3B5C;
+  --blue: #3B82F6;
+  --purple: #8B5CF6;
+  --text: #FFFFFF;
+  --text-sec: #8A8A9A;
+  --text-muted: #4A4A5A;
+  --sidebar-w: 240px;
+}
+
+html { overflow-x: hidden; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', 'Poppins', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; }
+
+/* ===== PC SIDEBAR ===== */
+.sidebar {
+  display: none;
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  z-index: 300;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
+
+.sidebar-logo {
+  padding: 20px 20px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  background: linear-gradient(135deg, #F0B90B 0%, #FFD93D 50%, #F0B90B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-section {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-section-title {
+  padding: 0 20px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sec);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.sidebar-item:hover {
+  background: rgba(255,255,255,0.03);
+  color: var(--text);
+}
+
+.sidebar-item.active {
+  color: var(--gold);
+  background: var(--gold-dim);
+  border-right: 2px solid var(--gold);
+}
+
+.sidebar-item .icon { font-size: 18px; width: 24px; text-align: center; }
+
+.sidebar-provider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.sidebar-provider:hover { color: var(--text-sec); background: rgba(255,255,255,0.02); }
+.sidebar-provider img { width: 28px; height: 28px; object-fit: contain; filter: brightness(0.8); }
+
+/* ===== TOP NAV ===== */
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,8,10,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.logo-mobile {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  background: linear-gradient(135deg, #F0B90B 0%, #FFD93D 50%, #F0B90B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-center {
+  display: none;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-btn {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sec);
+  position: relative;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover { background: var(--card-hover); border-color: var(--border-hover); }
+
+.nav-btn .badge {
+  position: absolute;
+  top: -2px; right: -2px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--red);
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border: 2px solid var(--bg);
+}
+
+.deposit-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+
+.deposit-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px var(--gold-glow); }
+
+.nav-search-pc {
+  display: none;
+}
+
+.nav-user-pc {
+  display: none;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  max-width: 100%;
+}
+
+/* ===== HERO BANNER ===== */
+.hero-wrapper {
+  padding: 0 12px;
+  margin-bottom: 16px;
+}
+
+.hero {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  height: 200px;
+  background: linear-gradient(135deg, #1a0a2e 0%, #16213e 40%, #0f3460 100%);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 80% 40%, rgba(240,185,11,0.15), transparent),
+    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(139,92,246,0.12), transparent);
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-particles span {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(240,185,11,0.4);
+  animation: float-up 4s infinite;
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-300px) scale(0); opacity: 0; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 24px 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-right {
+  display: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(240,185,11,0.12);
+  border: 1px solid rgba(240,185,11,0.2);
+  width: fit-content;
+  margin-bottom: 10px;
+}
+
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero-badge .text {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+
+.hero h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+.hero h1 .gold {
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p.hero-desc {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 8px;
+}
+
+.hero-cta .btn-primary {
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.hero-cta .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--gold-glow); }
+
+.hero-cta .btn-ghost {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.hero-cta .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+
+.hero-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 3;
+}
+
+.hero-dots span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.hero-dots span.active {
+  width: 20px;
+  border-radius: 3px;
+  background: var(--gold);
+}
+
+/* ===== BALANCE CARD ===== */
+.balance-card {
+  margin: 0 12px 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #111114, #18181f);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.balance-card::after {
+  content: '';
+  position: absolute;
+  top: -50%; right: -30%;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,185,11,0.06), transparent 70%);
+}
+
+.balance-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.balance-label {
+  font-size: 11px;
+  color: var(--text-sec);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.balance-amount {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.balance-amount .currency {
+  font-size: 16px;
+  color: var(--text-sec);
+  font-weight: 400;
+  margin-right: 2px;
+}
+
+.balance-actions {
+  display: flex;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.bal-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+}
+
+.bal-btn.deposit {
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  color: #000;
+}
+
+.bal-btn.deposit:hover { box-shadow: 0 4px 16px var(--gold-glow); }
+
+.bal-btn.withdraw {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+}
+
+.bal-btn.withdraw:hover { background: rgba(255,255,255,0.1); }
+
+/* ===== SURPRISE QUIZ ===== */
+.quiz-card {
+  margin: 0 12px 14px;
+  padding: 18px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0d1a2e, #1a0a2e);
+  border: 1px solid rgba(240,185,11,0.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-glow {
+  position: absolute;
+  top: -40%; right: -20%;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,185,11,0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.quiz-inner { position: relative; z-index: 1; }
+
+.quiz-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(240,185,11,0.12);
+  border: 1px solid rgba(240,185,11,0.2);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 10px;
+  animation: quiz-shake 3s ease-in-out infinite;
+}
+
+@keyframes quiz-shake {
+  0%,100% { transform: rotate(0); }
+  10% { transform: rotate(-3deg); }
+  20% { transform: rotate(3deg); }
+  30% { transform: rotate(0); }
+}
+
+.quiz-question {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.quiz-game {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.quiz-options {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.quiz-opt {
+  flex: 1;
+  padding: 8px 4px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-sec);
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.quiz-opt:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: var(--border-hover);
+  color: var(--text);
+}
+
+.quiz-opt.correct:hover {
+  background: rgba(240,185,11,0.15);
+  border-color: rgba(240,185,11,0.4);
+  color: var(--gold);
+  box-shadow: 0 0 16px rgba(240,185,11,0.15);
+}
+
+.quiz-reward {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.quiz-gold {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ===== 4 CATEGORY BUTTONS ===== */
+.cat-4btn {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 0 12px;
+  margin-bottom: 16px;
+}
+
+.c4-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 4px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: all 0.25s;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.c4-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.c4-slots::before { background: radial-gradient(circle at 50% 40%, rgba(240,185,11,0.12), transparent 70%); }
+.c4-casino::before { background: radial-gradient(circle at 50% 40%, rgba(139,92,246,0.12), transparent 70%); }
+.c4-sports::before { background: radial-gradient(circle at 50% 40%, rgba(0,200,83,0.12), transparent 70%); }
+.c4-bonus::before { background: radial-gradient(circle at 50% 40%, rgba(255,59,92,0.12), transparent 70%); }
+
+.c4-btn:hover { transform: translateY(-3px); }
+.c4-btn:hover::before { opacity: 1; }
+.c4-btn:active { transform: scale(0.95); }
+
+.c4-slots:hover { border-color: rgba(240,185,11,0.3); box-shadow: 0 4px 16px rgba(240,185,11,0.1); }
+.c4-casino:hover { border-color: rgba(139,92,246,0.3); box-shadow: 0 4px 16px rgba(139,92,246,0.1); }
+.c4-sports:hover { border-color: rgba(0,200,83,0.3); box-shadow: 0 4px 16px rgba(0,200,83,0.1); }
+.c4-bonus:hover { border-color: rgba(255,59,92,0.3); box-shadow: 0 4px 16px rgba(255,59,92,0.1); }
+
+.c4-icon {
+  font-size: 26px;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.c4-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-sec);
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s;
+}
+
+.c4-slots:hover .c4-label { color: var(--gold); }
+.c4-casino:hover .c4-label { color: #B388FF; }
+.c4-sports:hover .c4-label { color: #00E676; }
+.c4-bonus:hover .c4-label { color: #FF3B5C; }
+
+/* ===== LIVE TICKER ===== */
+.live-ticker {
+  margin: 0 12px 16px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.live-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.live-dot .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: pulse 1.5s infinite;
+}
+
+.live-dot .label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.ticker-content {
+  flex: 1;
+  font-size: 12px;
+  color: var(--text-sec);
+  white-space: nowrap;
+  overflow: hidden;
+  animation: ticker-slide 12s linear infinite;
+}
+
+.ticker-content strong { color: var(--text); font-weight: 600; }
+.ticker-content .amount { color: var(--gold); font-weight: 700; }
+
+@keyframes ticker-slide {
+  0% { transform: translateX(60%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ===== SECTION HEADER ===== */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title .fire { font-size: 18px; }
+
+.see-all {
+  font-size: 12px;
+  color: var(--gold);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.see-all:hover { opacity: 0.8; }
+
+/* ===== GAME SCROLL (horizontal) ===== */
+.game-scroll {
+  padding: 0 12px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  display: flex;
+  gap: 10px;
+}
+
+.game-scroll::-webkit-scrollbar { display: none; }
+
+.game-card {
+  flex-shrink: 0;
+  width: 130px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: all 0.25s;
+  position: relative;
+  cursor: pointer;
+}
+
+.game-card:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+.game-card:active { transform: scale(0.96); }
+
+.game-thumb {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-card:hover .game-overlay { opacity: 1; }
+
+.game-play-btn {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px var(--gold-glow);
+}
+
+.game-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 2;
+}
+
+.game-badge.hot {
+  background: linear-gradient(135deg, #FF3B5C, #FF6B6B);
+  color: white;
+}
+
+.game-badge.new {
+  background: linear-gradient(135deg, #00C853, #69F0AE);
+  color: #000;
+}
+
+.game-info {
+  padding: 8px 10px 10px;
+}
+
+.game-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.game-provider {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.game-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.game-rtp { font-size: 10px; color: var(--green); font-weight: 600; }
+.game-maxwin { font-size: 10px; color: var(--gold); font-weight: 500; }
+
+/* ===== GAME GRID (responsive) ===== */
+.game-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 12px;
+  margin-bottom: 24px;
+}
+
+.game-card-grid {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.game-card-grid:hover { transform: translateY(-4px); border-color: var(--border-hover); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+
+.game-card-grid .game-thumb { height: 140px; }
+.game-card-grid .game-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
+.game-card-grid:hover .game-overlay { opacity: 1; }
+
+/* ===== PROMO CARDS ===== */
+.promo-scroll {
+  padding: 0 12px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  display: flex;
+  gap: 10px;
+}
+
+.promo-scroll::-webkit-scrollbar { display: none; }
+
+.promo-card {
+  flex-shrink: 0;
+  width: 280px;
+  height: 130px;
+  border-radius: 16px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.promo-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+
+.promo-card.first { background: linear-gradient(135deg, #1a0a2e, #2d1b69); border: 1px solid rgba(139,92,246,0.2); }
+.promo-card.second { background: linear-gradient(135deg, #0a1628, #162e50); border: 1px solid rgba(59,130,246,0.2); }
+.promo-card.third { background: linear-gradient(135deg, #1a0f00, #3d2500); border: 1px solid rgba(240,185,11,0.2); }
+
+.promo-card::after {
+  content: '';
+  position: absolute;
+  top: -40%; right: -20%;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.04), transparent 70%);
+}
+
+.promo-tag {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+.promo-card.first .promo-tag { color: var(--purple); }
+.promo-card.second .promo-tag { color: var(--blue); }
+.promo-card.third .promo-tag { color: var(--gold); }
+
+.promo-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.promo-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== BIG WINS ===== */
+.bigwin-list {
+  padding: 0 12px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bigwin-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.bigwin-item:hover { background: var(--card-hover); border-color: var(--border-hover); }
+
+.bigwin-avatar {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.bigwin-avatar.gold { background: linear-gradient(135deg, rgba(240,185,11,0.2), rgba(240,185,11,0.05)); color: var(--gold); border: 1px solid rgba(240,185,11,0.2); }
+.bigwin-avatar.silver { background: linear-gradient(135deg, rgba(192,192,192,0.2), rgba(192,192,192,0.05)); color: #C0C0C0; border: 1px solid rgba(192,192,192,0.2); }
+.bigwin-avatar.bronze { background: linear-gradient(135deg, rgba(205,127,50,0.2), rgba(205,127,50,0.05)); color: #CD7F32; border: 1px solid rgba(205,127,50,0.2); }
+
+.bigwin-info { flex: 1; min-width: 0; }
+.bigwin-user { font-size: 13px; font-weight: 600; }
+.bigwin-game { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bigwin-amount { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 700; color: var(--gold); text-align: right; flex-shrink: 0; }
+.bigwin-time { font-size: 10px; color: var(--text-muted); text-align: right; }
+
+/* ===== PROVIDER CONVEYOR ===== */
+.provider-conveyor {
+  margin: 0 12px 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  /* edge fade mask */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.provider-row {
+  display: flex;
+  gap: 10px;
+  width: max-content;
+}
+
+.provider-row.left { animation: conveyor-left 40s linear infinite; }
+.provider-row.right { animation: conveyor-right 40s linear infinite; }
+
+.provider-conveyor:hover .provider-row { animation-play-state: paused; }
+
+.provider-item { min-width: 76px; max-width: 90px; }
+
+@keyframes conveyor-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes conveyor-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.provider-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 4px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: all 0.35s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.provider-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 40%, rgba(240,185,11,0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.provider-item:hover {
+  background: var(--card-hover);
+  border-color: rgba(240,185,11,0.25);
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 4px 20px rgba(240,185,11,0.1), 0 0 30px rgba(240,185,11,0.06);
+}
+
+.provider-item:hover::before { opacity: 1; }
+
+.provider-item img {
+  width: 80%;
+  height: auto;
+  max-height: 40px;
+  object-fit: contain;
+  filter: brightness(0.6) saturate(0.5);
+  transition: all 0.35s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.provider-item:hover img {
+  filter: brightness(1.2) saturate(1.1) drop-shadow(0 0 8px rgba(240,185,11,0.4));
+  transform: scale(1.1);
+}
+
+.provider-item .name {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-align: center;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: color 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+.provider-item:hover .name { color: var(--gold); }
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+  margin: 0 12px 24px;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--card), #15151a);
+  border: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat-item { text-align: center; }
+.stat-value { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 2px; }
+.stat-value .unit { font-size: 11px; color: var(--text-sec); font-weight: 500; }
+.stat-label { font-size: 10px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ===== CTA BOTTOM ===== */
+.cta-bottom {
+  margin: 0 12px 100px;
+  padding: 24px 20px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #1a0a2e 0%, #0f1a3e 50%, #0a2e1a 100%);
+  border: 1px solid rgba(240,185,11,0.1);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bottom::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(240,185,11,0.08), transparent);
+}
+
+.cta-bottom h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-bottom p {
+  font-size: 13px;
+  color: var(--text-sec);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-bottom button {
+  padding: 14px 40px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  color: #000;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+}
+
+.cta-bottom button:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--gold-glow); }
+
+/* ===== BOTTOM NAV (mobile only) ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: rgba(8,8,10,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 6px 0 max(6px, env(safe-area-inset-bottom));
+  z-index: 200;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 12px;
+  color: var(--text-muted);
+  position: relative;
+}
+
+.nav-item.active { color: var(--gold); }
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  width: 16px; height: 2px;
+  border-radius: 1px;
+  background: var(--gold);
+}
+
+.nav-item svg { width: 22px; height: 22px; }
+.nav-item .nav-label { font-size: 10px; font-weight: 500; }
+
+.nav-item.center-btn { margin-top: -20px; }
+
+.center-circle {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  border: 3px solid var(--bg);
+}
+
+.center-circle svg { width: 22px; height: 22px; color: #000; }
+
+/* ===== PC FOOTER ===== */
+.pc-footer {
+  display: none;
+  padding: 40px 20px 24px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+.footer-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-brand .footer-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 24px;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+.footer-brand p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.footer-col h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-sec);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 4px 0;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--text); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 24px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.footer-coins {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.footer-coin-img {
+  width: 24px; height: 24px;
+  object-fit: contain;
+  filter: brightness(0.9);
+  transition: filter 0.2s;
+}
+
+.footer-coin-img:hover { filter: brightness(1.1); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeInUp 0.5s ease forwards; }
+.delay-1 { animation-delay: 0.1s; opacity: 0; }
+.delay-2 { animation-delay: 0.2s; opacity: 0; }
+.delay-3 { animation-delay: 0.3s; opacity: 0; }
+
+.game-card::after, .game-card-grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 45%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.03) 55%, transparent 60%);
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ============================================
+   DESKTOP (768px+)
+   ============================================ */
+@media (min-width: 768px) {
+  .sidebar { display: flex; }
+  .main-content { margin-left: var(--sidebar-w); }
+  .bottom-nav { display: none; }
+  .logo-mobile { display: none; }
+  .status-bar-mobile { display: none; }
+  .pc-footer { display: block; }
+
+  /* -- PC wrapper: max-width + center -- */
+  .pc-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .top-nav {
+    padding: 12px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-search-pc {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 16px;
+    flex: 1;
+    max-width: 400px;
+    margin: 0 24px;
+    transition: all 0.2s;
+  }
+
+  .nav-search-pc:focus-within { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-dim); }
+  .nav-search-pc svg { color: var(--text-muted); flex-shrink: 0; }
+
+  .nav-search-pc input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    width: 100%;
+  }
+
+  .nav-search-pc input::placeholder { color: var(--text-muted); }
+
+  .nav-user-pc {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-user-avatar {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--gold-dim), rgba(240,185,11,0.05));
+    border: 1px solid rgba(240,185,11,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    cursor: pointer;
+  }
+
+  .nav-balance-pc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .nav-balance-pc .currency { color: var(--text-sec); font-size: 12px; font-weight: 400; }
+
+  /* -- Hero -- */
+  .hero-wrapper { padding: 0 32px; margin-bottom: 28px; max-width: 1264px; margin-left: auto; margin-right: auto; }
+
+  .hero {
+    height: 340px;
+    border-radius: 24px;
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-content {
+    padding: 40px 48px;
+    width: 55%;
+  }
+
+  .hero-badge .text { font-size: 12px; }
+  .hero h1 { font-size: 44px; margin-bottom: 8px; }
+  .hero p.hero-desc { font-size: 15px; margin-bottom: 20px; max-width: 380px; }
+
+  .hero-cta .btn-primary { padding: 14px 32px; font-size: 15px; border-radius: 14px; }
+  .hero-cta .btn-ghost { padding: 14px 24px; font-size: 15px; border-radius: 14px; }
+
+  .hero-right {
+    display: flex;
+    position: absolute;
+    right: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    gap: 12px;
+    perspective: 600px;
+  }
+
+  .hero-float-card {
+    width: 110px;
+    height: 150px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    animation: float-card 3s ease-in-out infinite;
+  }
+
+  .hero-float-card:nth-child(2) { animation-delay: 0.5s; }
+  .hero-float-card:nth-child(3) { animation-delay: 1s; }
+  .hero-float-card img { width: 100%; height: 100%; object-fit: cover; }
+
+  @keyframes float-card {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  /* -- Quiz card PC -- */
+  .quiz-card {
+    margin: 0 32px 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 24px;
+  }
+
+  .quiz-question { font-size: 18px; }
+  .quiz-options { max-width: 400px; }
+
+  /* -- 4 Category buttons PC -- */
+  .cat-4btn {
+    padding: 0 32px;
+    margin-bottom: 24px;
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 12px;
+  }
+
+  .c4-btn {
+    flex-direction: row;
+    padding: 16px 20px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .c4-icon { font-size: 24px; }
+  .c4-label { font-size: 13px; }
+
+  /* -- Live ticker -- */
+  .live-ticker {
+    margin: 0 32px 28px;
+    padding: 12px 20px;
+    border-radius: 14px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* -- Section headers -- */
+  .section-header {
+    padding: 0 32px;
+    margin-bottom: 16px;
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .section-title { font-size: 20px; }
+
+  /* -- Hot Games: PC에서 그리드로 변환 -- */
+  .game-scroll {
+    padding: 0 32px;
+    margin-bottom: 32px;
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
+    /* PC: 가로 스크롤 → 그리드로 */
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
+    overflow-x: visible;
+  }
+
+  .game-card {
+    width: auto;
+    flex-shrink: unset;
+  }
+
+  .game-card .game-thumb { height: 200px; }
+  .game-name { font-size: 13px; }
+
+  /* -- New Games grid -- */
+  .game-grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 32px;
+    gap: 14px;
+    margin-bottom: 32px;
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .game-card-grid .game-thumb { height: 180px; }
+
+  /* -- Promo: 3열 균등 그리드 -- */
+  .promo-scroll {
+    padding: 0 32px;
+    gap: 14px;
+    margin-bottom: 32px;
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
+    /* PC: 가로 스크롤 → 3열 그리드 */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+  }
+
+  .promo-card {
+    width: auto;
+    flex-shrink: unset;
+    height: 160px;
+    padding: 24px;
+    border-radius: 20px;
+  }
+
+  .promo-title { font-size: 26px; }
+  .promo-desc { font-size: 12px; }
+
+  /* -- Big Wins 3열 -- */
+  .bigwin-list {
+    padding: 0 32px;
+    margin-bottom: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 1264px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* -- Provider conveyor PC -- */
+  .provider-conveyor {
+    margin: 0 32px 32px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 12px;
+  }
+
+  .provider-item { padding: 14px 10px; border-radius: 14px; min-width: 110px; max-width: 140px; }
+  .provider-item img { width: 85%; max-height: 48px; }
+  .provider-item .name { font-size: 10px; }
+
+  /* -- Stats -- */
+  .stats-bar {
+    margin: 0 auto 32px;
+    padding: 24px;
+    border-radius: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+  }
+
+  .stat-value { font-size: 28px; }
+  .stat-label { font-size: 12px; }
+
+  /* -- CTA -- */
+  .cta-bottom {
+    margin: 0 auto 60px;
+    padding: 48px 40px;
+    border-radius: 24px;
+    max-width: 1200px;
+  }
+
+  .cta-bottom h2 { font-size: 32px; }
+  .cta-bottom p { font-size: 16px; }
+  .cta-bottom button { padding: 16px 48px; font-size: 16px; }
+
+  /* -- Mobile search btn hidden on PC -- */
+  .nav-actions .nav-btn:first-child { display: none; }
+}
+
+/* ============================================
+   LARGE DESKTOP (1200px+)
+   ============================================ */
+@media (min-width: 1200px) {
+  .game-grid { grid-template-columns: repeat(4, 1fr); }
+  .provider-item { min-width: 120px; max-width: 150px; }
+
+  .hero { height: 380px; }
+  .hero h1 { font-size: 52px; }
+  .hero-float-card { width: 130px; height: 175px; }
+}
+
+/* ============================================
+   ULTRA WIDE (1400px+)
+   ============================================ */
+@media (min-width: 1400px) {
+  .game-scroll { grid-template-columns: repeat(6, 1fr); }
+  .game-grid { grid-template-columns: repeat(5, 1fr); }
+  .provider-item { min-width: 130px; max-width: 160px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== PC SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-logo">DR.SLOT</div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Menu</div>
+    <div class="sidebar-item active"><span class="icon">🏠</span> Home</div>
+    <div class="sidebar-item"><span class="icon">🎰</span> Slots</div>
+    <div class="sidebar-item"><span class="icon">🃏</span> Live Casino</div>
+    <div class="sidebar-item"><span class="icon">⚽</span> Sports</div>
+    <div class="sidebar-item"><span class="icon">🎁</span> Promotions</div>
+    <div class="sidebar-item"><span class="icon">🏆</span> Tournament</div>
+    <div class="sidebar-item"><span class="icon">💎</span> VIP</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Providers</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png" alt="">Pragmatic Play</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/128992a35d.png" alt="">PG Soft</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/9c40f44618.png" alt="">Evolution</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/1f7914af40.png" alt="">Nolimit City</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/50e7c80e3a.png" alt="">NetEnt</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/ccf8045f30.png" alt="">Hacksaw</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/651ed6cb08.png" alt="">Red Tiger</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/dd8ef215f6.png" alt="">Big Time Gaming</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/1600322b49.png" alt="">Habanero</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/75b5d81876.png" alt="">BGaming</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/11dec4b4c5.png" alt="">JILI</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/408156443a.png" alt="">Spadegaming</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/e1162a0386.png" alt="">BetSoft</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/bf6887c12b.png" alt="">Relax Gaming</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/96e8551016.png" alt="">Spinomenal</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/3861400bec.png" alt="">Quickspin</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/311c691438.png" alt="">Endorphina</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/7a8603b60e.png" alt="">AdvantPlay</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/2e8e44ae59.png" alt="">Sexy Gaming</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/c9c8ea471b.png" alt="">Booongo</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/bf9711c9c6.png" alt="">Fat Panda</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/b7afeab59d.png" alt="">JDB</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/b6fa55fc56.png" alt="">FA CHAI</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/ffcc4827a8.png" alt="">Skywind</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/46e85c6609.png" alt="">1Spin4Win</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/63fd72ebf2.png" alt="">Fazi</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/40542a64f2.png" alt="">SmartSoft</div>
+    <div class="sidebar-provider"><img src="https://imgxcut.com/game/image/e03d7b925f.png" alt="">Spribe</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Support</div>
+    <div class="sidebar-item"><span class="icon">💬</span> Live Chat</div>
+    <div class="sidebar-item"><span class="icon">📧</span> Email</div>
+    <div class="sidebar-item"><span class="icon">❓</span> FAQ</div>
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<div class="main-content">
+
+  <!-- STATUS BAR (mobile) -->
+  <div class="status-bar-mobile" style="display:flex;align-items:center;justify-content:space-between;padding:8px 20px;font-size:12px;font-weight:600;">
+    <span>9:41</span>
+    <div style="display:flex;gap:4px;align-items:center;">
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="white"><rect x="0" y="6" width="3" height="6" rx="0.5"/><rect x="4" y="4" width="3" height="8" rx="0.5"/><rect x="8" y="2" width="3" height="10" rx="0.5"/><rect x="12" y="0" width="3" height="12" rx="0.5"/></svg>
+      <svg width="16" height="12" viewBox="0 0 24 24" fill="white"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+      <svg width="22" height="12" viewBox="0 0 28 14" fill="none"><rect x="0.5" y="0.5" width="23" height="13" rx="3.5" stroke="white" stroke-opacity="0.35"/><rect x="2" y="2" width="16" height="10" rx="2" fill="#4CAF50"/><rect x="25" y="4" width="2.5" height="6" rx="1" fill="white" fill-opacity="0.4"/></svg>
+    </div>
+  </div>
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <span class="logo-mobile">DR.SLOT</span>
+
+    <!-- PC: Search bar -->
+    <div class="nav-search-pc">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search games, providers...">
+    </div>
+
+    <div class="nav-actions">
+      <div class="nav-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <div class="nav-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="badge">3</span>
+      </div>
+      <button class="deposit-btn">Deposit</button>
+    </div>
+
+    <!-- PC: User area -->
+    <div class="nav-user-pc">
+      <div class="nav-balance-pc"><span class="currency">$ </span>14,287.50</div>
+      <div class="nav-user-avatar">W</div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-wrapper fade-in">
+    <div class="hero">
+      <div class="hero-particles">
+        <span style="left:10%;top:80%;animation-delay:0s"></span>
+        <span style="left:25%;top:90%;animation-delay:0.8s"></span>
+        <span style="left:45%;top:85%;animation-delay:1.6s"></span>
+        <span style="left:65%;top:95%;animation-delay:2.4s"></span>
+        <span style="left:80%;top:88%;animation-delay:0.4s"></span>
+        <span style="left:90%;top:92%;animation-delay:1.2s"></span>
+        <span style="left:15%;top:75%;animation-delay:2s"></span>
+        <span style="left:55%;top:80%;animation-delay:3s"></span>
+        <span style="left:35%;top:70%;animation-delay:3.5s"></span>
+        <span style="left:72%;top:65%;animation-delay:1.8s"></span>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          <span class="text">2,847 Playing Now</span>
+        </div>
+        <h1>Welcome<br><span class="gold">200% Bonus</span></h1>
+        <p class="hero-desc">First deposit bonus up to $10,000</p>
+        <div class="hero-cta">
+          <button class="btn-primary">
+            Get Bonus
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <button class="btn-ghost">Browse Games</button>
+        </div>
+      </div>
+      <!-- PC: floating game cards -->
+      <div class="hero-right">
+        <div class="hero-float-card">
+          <img src="https://www.pgsoft.com/uploads/Games/Images/d078f748-944f-46c1-89aa-d39e73fe1b7e.jpg" alt="">
+        </div>
+        <div class="hero-float-card">
+          <img src="https://www.pgsoft.com/uploads/Games/Images/72f8d537-77e5-4506-803a-63e7f58d4fec.png" alt="">
+        </div>
+        <div class="hero-float-card">
+          <img src="https://www.pgsoft.com/uploads/Games/Images/70aab544-e9aa-4451-9d5c-e2d6dcc85a1c.jpg" alt="">
+        </div>
+      </div>
+      <div class="hero-dots">
+        <span class="active"></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BALANCE CARD (mobile only) -->
+  <!-- SURPRISE QUIZ -->
+  <div class="quiz-card fade-in delay-1">
+    <div class="quiz-glow"></div>
+    <div class="quiz-inner">
+      <div class="quiz-badge">🎯 돌발퀴즈</div>
+      <div class="quiz-question">이 슬롯의 최대 배수는?</div>
+      <div class="quiz-game">Mental 2 — Nolimit City</div>
+      <div class="quiz-options">
+        <button class="quiz-opt">x33,333</button>
+        <button class="quiz-opt">x50,000</button>
+        <button class="quiz-opt correct">x66,666</button>
+      </div>
+      <div class="quiz-reward">정답 시 <span class="quiz-gold">Free Spin 5회</span> 즉시 지급!</div>
+    </div>
+  </div>
+
+  <!-- 4 CATEGORY BUTTONS -->
+  <div class="cat-4btn fade-in delay-2">
+    <a href="/lobby?cat=slots" class="c4-btn c4-slots">
+      <span class="c4-icon">🎰</span>
+      <span class="c4-label">Slots</span>
+    </a>
+    <a href="/lobby?cat=casino" class="c4-btn c4-casino">
+      <span class="c4-icon">🃏</span>
+      <span class="c4-label">Casino</span>
+    </a>
+    <a href="/lobby?cat=sports" class="c4-btn c4-sports">
+      <span class="c4-icon">⚽</span>
+      <span class="c4-label">Sports</span>
+    </a>
+    <a href="/mypage/coupons" class="c4-btn c4-bonus">
+      <span class="c4-icon">🎁</span>
+      <span class="c4-label">Bonus</span>
+    </a>
+  </div>
+
+  <!-- LIVE TICKER -->
+  <div class="live-ticker fade-in delay-2">
+    <div class="live-dot">
+      <span class="dot"></span>
+      <span class="label">Live</span>
+    </div>
+    <div class="ticker-content">
+      <strong>ro**k</strong> won <span class="amount">$1,850</span> on Mega Moolah &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+      <strong>pr**o</strong> won <span class="amount">$920</span> on Gates of Olympus &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+      <strong>st**r</strong> won <span class="amount">$460</span> on Dead or Alive 2 &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+      <strong>go**d</strong> won <span class="amount">$415</span> on Sweet Bonanza
+    </div>
+  </div>
+
+  <!-- HOT GAMES -->
+  <div class="section-header fade-in delay-3">
+    <div class="section-title"><span class="fire">🔥</span> Hot Games</div>
+    <span class="see-all">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </div>
+
+  <div class="game-scroll fade-in delay-3">
+    <div class="game-card">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/d078f748-944f-46c1-89aa-d39e73fe1b7e.jpg" alt="">
+      <span class="game-badge hot">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Flirting Scholar</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.75%</span><span class="game-maxwin">x5000</span></div></div>
+    </div>
+    <div class="game-card">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/72f8d537-77e5-4506-803a-63e7f58d4fec.png" alt="">
+      <span class="game-badge hot">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Fortune Dragon</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.60%</span><span class="game-maxwin">x8000</span></div></div>
+    </div>
+    <div class="game-card">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/70aab544-e9aa-4451-9d5c-e2d6dcc85a1c.jpg" alt="">
+      <span class="game-badge hot">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Fortune Tiger</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.80%</span><span class="game-maxwin">x10000</span></div></div>
+    </div>
+    <div class="game-card">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/29904434-8ffd-4174-9a81-c919a5a19237.jpg" alt="">
+      <span class="game-badge hot">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Wild Ape #3258</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.75%</span><span class="game-maxwin">x7000</span></div></div>
+    </div>
+    <div class="game-card">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/a91a74c1-f908-43cb-9c82-7409a37cdcd0.jpg" alt="">
+      <span class="game-badge hot">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Pharaoh Royals</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.70%</span><span class="game-maxwin">x8000</span></div></div>
+    </div>
+    <div class="game-card">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/29904434-8ffd-4174-9a81-c919a5a19237.jpg" alt="">
+      <span class="game-badge hot">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Wild Ape #3258</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.75%</span><span class="game-maxwin">x7000</span></div></div>
+    </div>
+  </div>
+
+  <!-- PROMOTIONS -->
+  <div class="section-header">
+    <div class="section-title"><span class="fire">🎁</span> Promotions</div>
+    <span class="see-all">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </div>
+
+  <div class="promo-scroll">
+    <div class="promo-card first">
+      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="" class="promo-coin-img" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:60px;height:60px;opacity:0.15;z-index:0;">
+      <span class="promo-tag">Welcome Bonus</span>
+      <div class="promo-title" style="color:#d8b4fe">200% <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6)">First Deposit</span></div>
+      <div class="promo-desc">Up to $10,000 + 50 Free Spins</div>
+      <div style="display:flex;gap:6px;margin-top:8px;position:relative;z-index:1;">
+        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC" style="width:18px;height:18px;">
+        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH" style="width:18px;height:18px;">
+        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" style="width:18px;height:18px;">
+        <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX" style="width:18px;height:18px;">
+        <span style="font-size:10px;color:rgba(255,255,255,0.4);line-height:18px;">+8</span>
+      </div>
+    </div>
+    <div class="promo-card second">
+      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:60px;height:60px;opacity:0.1;z-index:0;">
+      <span class="promo-tag">Daily Reward</span>
+      <div class="promo-title" style="color:#93c5fd">15% <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6)">Cashback</span></div>
+      <div class="promo-desc">Every day, no wagering requirement</div>
+    </div>
+    <div class="promo-card third">
+      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:60px;height:60px;opacity:0.12;z-index:0;">
+      <span class="promo-tag">VIP Exclusive</span>
+      <div class="promo-title" style="color:#fcd34d">VIP <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6)">Unlimited</span></div>
+      <div class="promo-desc">Personal manager + instant withdrawals</div>
+    </div>
+  </div>
+
+  <!-- NEW GAMES (grid) -->
+  <div class="section-header">
+    <div class="section-title"><span class="fire">✨</span> New Games</div>
+    <span class="see-all">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </div>
+
+  <div class="game-grid">
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/5799539d-0d10-43ae-a16f-fb81c4197328.jpg" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Mayan Destiny</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.55%</span><span class="game-maxwin">x5000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/8ddbc4f9-891c-4ede-a003-dfc8c0e5f721.webp" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Inferno Mayhem</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.60%</span><span class="game-maxwin">x10000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/40574712-13fb-45de-8b4c-61956b7ffdfa.jpg" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Forbidden Alchemy</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.80%</span><span class="game-maxwin">x7000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/ce79987a-6228-4e3f-95f9-19c2a5d344ee.jpg" alt="">
+      <span class="game-badge hot" style="position:absolute;top:8px;left:8px">HOT</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Alibaba's Cave</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.90%</span><span class="game-maxwin">x15000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/edee4972-7863-4f54-8c87-1337c246908e.jpg" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Skylight Wonders</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.65%</span><span class="game-maxwin">x5500</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/b7c9b442-05cb-44e6-8899-89c2a74ba432.jpg" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Ninja Raccoon</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.70%</span><span class="game-maxwin">x7000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/815a44d0-361f-4399-a4ce-c72145cdeac4.png" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Pinata Wins</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.40%</span><span class="game-maxwin">x3000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/804eb27d-8aed-47d4-9fce-806a82d01771.jpg" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Majestic Empire</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.60%</span><span class="game-maxwin">x7000</span></div></div>
+    </div>
+    <div class="game-card-grid">
+      <img class="game-thumb" src="https://www.pgsoft.com/uploads/Games/Images/45a72f52-b2ab-4a64-a13c-f2633c6fe708.webp" alt="">
+      <span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>
+      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      <div class="game-info"><div class="game-name">Poker Kingdom</div><div class="game-provider">PG Soft</div><div class="game-meta"><span class="game-rtp">96.30%</span><span class="game-maxwin">x2000</span></div></div>
+    </div>
+  </div>
+
+  <!-- BIG WINS -->
+  <div class="section-header">
+    <div class="section-title"><span class="fire">🏆</span> Big Wins</div>
+    <span class="see-all">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </div>
+
+  <div class="bigwin-list">
+    <div class="bigwin-item">
+      <div class="bigwin-avatar gold">1</div>
+      <div class="bigwin-info"><div class="bigwin-user">ro**k</div><div class="bigwin-game">Mega Moolah</div></div>
+      <div><div class="bigwin-amount">$1,850</div><div class="bigwin-time">2h ago</div></div>
+    </div>
+    <div class="bigwin-item">
+      <div class="bigwin-avatar silver">2</div>
+      <div class="bigwin-info"><div class="bigwin-user">pr**o</div><div class="bigwin-game">Gates of Olympus</div></div>
+      <div><div class="bigwin-amount">$920</div><div class="bigwin-time">5h ago</div></div>
+    </div>
+    <div class="bigwin-item">
+      <div class="bigwin-avatar bronze">3</div>
+      <div class="bigwin-info"><div class="bigwin-user">st**r</div><div class="bigwin-game">Dead or Alive 2</div></div>
+      <div><div class="bigwin-amount">$460</div><div class="bigwin-time">8h ago</div></div>
+    </div>
+  </div>
+
+  <!-- PROVIDERS -->
+  <div class="section-header">
+    <div class="section-title"><span class="fire">🎮</span> Providers</div>
+    <span class="see-all">60+ <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
+  </div>
+
+  <div class="provider-conveyor">
+    <!-- Row 1: 좌→우 -->
+    <div class="provider-row left">
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png" alt=""><span class="name">Pragmatic</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/128992a35d.png" alt=""><span class="name">PG Soft</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/9c40f44618.png" alt=""><span class="name">Evolution</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/1f7914af40.png" alt=""><span class="name">Nolimit City</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/50e7c80e3a.png" alt=""><span class="name">NetEnt</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/ccf8045f30.png" alt=""><span class="name">Hacksaw</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/651ed6cb08.png" alt=""><span class="name">Red Tiger</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/dd8ef215f6.png" alt=""><span class="name">BTG</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/e03d7b925f.png" alt=""><span class="name">Spribe</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/ef623e6158.png" alt=""><span class="name">1x2 Gaming</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/f6d618de9c.png" alt=""><span class="name">Thunderkick</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/5e9d393fde.png" alt=""><span class="name">Ezugi</span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png" alt=""><span class="name">Pragmatic</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/128992a35d.png" alt=""><span class="name">PG Soft</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/9c40f44618.png" alt=""><span class="name">Evolution</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/1f7914af40.png" alt=""><span class="name">Nolimit City</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/50e7c80e3a.png" alt=""><span class="name">NetEnt</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/ccf8045f30.png" alt=""><span class="name">Hacksaw</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/651ed6cb08.png" alt=""><span class="name">Red Tiger</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/dd8ef215f6.png" alt=""><span class="name">BTG</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/e03d7b925f.png" alt=""><span class="name">Spribe</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/ef623e6158.png" alt=""><span class="name">1x2 Gaming</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/f6d618de9c.png" alt=""><span class="name">Thunderkick</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/5e9d393fde.png" alt=""><span class="name">Ezugi</span></div>
+    </div>
+    <!-- Row 2: 우→좌 -->
+    <div class="provider-row right">
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/1600322b49.png" alt=""><span class="name">Habanero</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/75b5d81876.png" alt=""><span class="name">BGaming</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/11dec4b4c5.png" alt=""><span class="name">JILI</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/408156443a.png" alt=""><span class="name">Spadegaming</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/e1162a0386.png" alt=""><span class="name">BetSoft</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/bf6887c12b.png" alt=""><span class="name">Relax</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/96e8551016.png" alt=""><span class="name">Spinomenal</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/3861400bec.png" alt=""><span class="name">Quickspin</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/4047f2dada.png" alt=""><span class="name">Novomatic</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/826ecb0385.png" alt=""><span class="name">Wazdan</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/b12f8fcf83.png" alt=""><span class="name">Blueprint</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/9aec8f2b38.png" alt=""><span class="name">Platipus</span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/1600322b49.png" alt=""><span class="name">Habanero</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/75b5d81876.png" alt=""><span class="name">BGaming</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/11dec4b4c5.png" alt=""><span class="name">JILI</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/408156443a.png" alt=""><span class="name">Spadegaming</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/e1162a0386.png" alt=""><span class="name">BetSoft</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/bf6887c12b.png" alt=""><span class="name">Relax</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/96e8551016.png" alt=""><span class="name">Spinomenal</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/3861400bec.png" alt=""><span class="name">Quickspin</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/4047f2dada.png" alt=""><span class="name">Novomatic</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/826ecb0385.png" alt=""><span class="name">Wazdan</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/b12f8fcf83.png" alt=""><span class="name">Blueprint</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/9aec8f2b38.png" alt=""><span class="name">Platipus</span></div>
+    </div>
+    <!-- Row 3: 좌→우 -->
+    <div class="provider-row left" style="animation-duration:35s;">
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/311c691438.png" alt=""><span class="name">Endorphina</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/7a8603b60e.png" alt=""><span class="name">AdvantPlay</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/c9c8ea471b.png" alt=""><span class="name">Booongo</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/bf9711c9c6.png" alt=""><span class="name">Fat Panda</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/b7afeab59d.png" alt=""><span class="name">JDB</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/ffcc4827a8.png" alt=""><span class="name">Skywind</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/b6fa55fc56.png" alt=""><span class="name">FA CHAI</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/46e85c6609.png" alt=""><span class="name">1Spin4Win</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/63fd72ebf2.png" alt=""><span class="name">Fazi</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/40542a64f2.png" alt=""><span class="name">SmartSoft</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/65c347aca8.png" alt=""><span class="name">GameArt</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/d491d907d7.png" alt=""><span class="name">Penguin King</span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/311c691438.png" alt=""><span class="name">Endorphina</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/7a8603b60e.png" alt=""><span class="name">AdvantPlay</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/c9c8ea471b.png" alt=""><span class="name">Booongo</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/bf9711c9c6.png" alt=""><span class="name">Fat Panda</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/b7afeab59d.png" alt=""><span class="name">JDB</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/ffcc4827a8.png" alt=""><span class="name">Skywind</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/b6fa55fc56.png" alt=""><span class="name">FA CHAI</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/46e85c6609.png" alt=""><span class="name">1Spin4Win</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/63fd72ebf2.png" alt=""><span class="name">Fazi</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/40542a64f2.png" alt=""><span class="name">SmartSoft</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/65c347aca8.png" alt=""><span class="name">GameArt</span></div>
+      <div class="provider-item"><img src="https://imgxcut.com/game/image/d491d907d7.png" alt=""><span class="name">Penguin King</span></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item"><div class="stat-value">2.8K<span class="unit">+</span></div><div class="stat-label">Online</div></div>
+    <div class="stat-item"><div class="stat-value">5K<span class="unit">+</span></div><div class="stat-label">Games</div></div>
+    <div class="stat-item"><div class="stat-value">60<span class="unit">+</span></div><div class="stat-label">Providers</div></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bottom">
+    <h2>Start Winning Today</h2>
+    <p>Join now and claim your 200% welcome bonus</p>
+    <button>Create Account</button>
+  </div>
+
+  <!-- PC FOOTER -->
+  <footer class="pc-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">DR.SLOT</div>
+        <p>The ultimate online slot experience. Licensed and regulated. 5000+ games from 60+ providers.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Casino</h4>
+        <a href="#">Slots</a>
+        <a href="#">Live Casino</a>
+        <a href="#">Sports</a>
+        <a href="#">Tournament</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Live Chat</a>
+        <a href="#">FAQ</a>
+        <a href="#">Email Us</a>
+        <a href="#">Terms</a>
+      </div>
+      <div class="footer-col">
+        <h4>Account</h4>
+        <a href="#">Deposit</a>
+        <a href="#">Withdraw</a>
+        <a href="#">VIP Program</a>
+        <a href="#">Promotions</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 DR.SLOT. All rights reserved.</span>
+      <div class="footer-coins">
+        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC" class="footer-coin-img">
+        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH" class="footer-coin-img">
+        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" class="footer-coin-img">
+        <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg" alt="BNB" class="footer-coin-img">
+        <img src="https://cryptologos.cc/logos/solana-sol-logo.svg" alt="SOL" class="footer-coin-img">
+        <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.svg" alt="DOGE" class="footer-coin-img">
+        <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX" class="footer-coin-img">
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /main-content -->
+
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav">
+  <a class="nav-item active" href="#">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1a1 1 0 00.7-1.7l-9-9a1 1 0 00-1.4 0l-9 9A1 1 0 003 13z"/></svg>
+    <span class="nav-label">Home</span>
+  </a>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <span class="nav-label">Search</span>
+  </a>
+  <a class="nav-item center-btn" href="#">
+    <div class="center-circle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </div>
+    <span class="nav-label" style="margin-top:4px;color:var(--gold)">Deposit</span>
+  </a>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+    <span class="nav-label">Bonus</span>
+  </a>
+  <a class="nav-item" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="nav-label">Profile</span>
+  </a>
+</nav>
+
+<script>
+// ═══════════════════════════════════════════
+// API INTEGRATION
+// ═══════════════════════════════════════════
+const API_BASE = 'https://slotsite-backend-production.up.railway.app/api';
+let authToken = localStorage.getItem('drslot_token') || null;
+
+function apiHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (authToken) h['Authorization'] = 'Bearer ' + authToken;
+  return h;
+}
+async function apiCall(path, options = {}) {
+  const res = await fetch(API_BASE + path, { ...options, headers: { ...apiHeaders(), ...options.headers } });
+  return res.json();
+}
+
+// ── Login Modal ──
+function createLoginModal() {
+  if (document.getElementById('drslot-login-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'drslot-login-modal';
+  modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center';
+  modal.innerHTML = `<div style="background:var(--card,#111114);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;width:min(360px,90vw);position:relative">
+    <div style="position:absolute;top:12px;right:16px;cursor:pointer;font-size:20px;color:rgba(255,255,255,0.5)" onclick="closeLoginModal()">&times;</div>
+    <div style="font-size:22px;font-weight:800;margin-bottom:20px;text-align:center;background:linear-gradient(135deg,#F0B90B,#FFD93D);-webkit-background-clip:text;-webkit-text-fill-color:transparent">DR.SLOT</div>
+    <div id="drslot-login-tab" style="display:flex;gap:8px;margin-bottom:16px">
+      <button onclick="switchAuthTab('login')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--gold,#F0B90B);color:#000;font-weight:600;font-size:13px;cursor:pointer">Login</button>
+      <button onclick="switchAuthTab('register')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);font-weight:600;font-size:13px;cursor:pointer">Register</button>
+    </div>
+    <input id="drslot-username" type="text" placeholder="Username" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    <input id="drslot-password" type="password" placeholder="Password" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    <div id="drslot-register-fields" style="display:none">
+      <input id="drslot-nickname" type="text" placeholder="Nickname" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    </div>
+    <div id="drslot-auth-error" style="color:#FF3B5C;font-size:12px;margin-bottom:8px;display:none"></div>
+    <button id="drslot-auth-submit" onclick="submitAuth()" style="width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,#F0B90B,#FFD93D);color:#000;font-weight:700;font-size:14px;cursor:pointer;font-family:Inter,sans-serif">Login</button>
+  </div>`;
+  document.body.appendChild(modal);
+}
+let currentAuthTab = 'login';
+function switchAuthTab(tab) {
+  currentAuthTab = tab;
+  const tabs = document.querySelectorAll('#drslot-login-tab .auth-tab');
+  tabs[0].style.background = tab === 'login' ? 'var(--gold,#F0B90B)' : 'rgba(255,255,255,0.06)';
+  tabs[0].style.color = tab === 'login' ? '#000' : 'rgba(255,255,255,0.5)';
+  tabs[1].style.background = tab === 'register' ? 'var(--gold,#F0B90B)' : 'rgba(255,255,255,0.06)';
+  tabs[1].style.color = tab === 'register' ? '#000' : 'rgba(255,255,255,0.5)';
+  document.getElementById('drslot-register-fields').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('drslot-auth-submit').textContent = tab === 'login' ? 'Login' : 'Register';
+  document.getElementById('drslot-auth-error').style.display = 'none';
+}
+function openLoginModal() { createLoginModal(); document.getElementById('drslot-login-modal').style.display = 'flex'; }
+function closeLoginModal() { const m = document.getElementById('drslot-login-modal'); if (m) m.style.display = 'none'; }
+async function submitAuth() {
+  const username = document.getElementById('drslot-username').value.trim();
+  const password = document.getElementById('drslot-password').value.trim();
+  const errEl = document.getElementById('drslot-auth-error');
+  if (!username || !password) { errEl.textContent = 'Please enter username and password'; errEl.style.display = 'block'; return; }
+  try {
+    if (currentAuthTab === 'login') {
+      const data = await apiCall('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+      if (data.success && data.data && data.data.token) { authToken = data.data.token; localStorage.setItem('drslot_token', authToken); closeLoginModal(); updateUIForLogin(); }
+      else { errEl.textContent = data.error || 'Login failed'; errEl.style.display = 'block'; }
+    } else {
+      const nickname = document.getElementById('drslot-nickname').value.trim() || username;
+      const data = await apiCall('/auth/register', { method: 'POST', body: JSON.stringify({ username, password, nickname }) });
+      if (data.success && data.data && data.data.token) { authToken = data.data.token; localStorage.setItem('drslot_token', authToken); closeLoginModal(); updateUIForLogin(); }
+      else { errEl.textContent = data.error || 'Registration failed'; errEl.style.display = 'block'; }
+    }
+  } catch (e) { errEl.textContent = 'Server connection failed'; errEl.style.display = 'block'; }
+}
+
+// ── Balance ──
+async function updateBalance() {
+  if (!authToken) return;
+  try {
+    const data = await apiCall('/wallet/balance');
+    if (data.success && data.data !== undefined) {
+      const bal = Number(data.data.balance || data.data || 0);
+      const balEl = document.querySelector('.nav-balance-pc');
+      if (balEl) balEl.innerHTML = '<span class="currency">$ </span>' + bal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+  } catch (e) {}
+}
+
+// ── Games from API (with fallback) ──
+async function loadGamesFromAPI() {
+  try {
+    const data = await apiCall('/games?page=1&limit=20');
+    if (data.success && data.data && data.data.length > 0) {
+      // Update game-scroll (hot games horizontal)
+      const gameScroll = document.querySelector('.game-scroll');
+      if (gameScroll) {
+        const existingHTML = gameScroll.innerHTML;
+        const html = data.data.slice(0, 6).map(g => {
+          const badge = g.is_hot ? '<span class="game-badge hot">HOT</span>' : g.is_new ? '<span class="game-badge new">NEW</span>' : '';
+          const thumb = g.image_url ? `<img class="game-thumb" src="${g.image_url}" alt="">` : `<div class="game-thumb" style="display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#1a1a3a,#0d0d2a)">${g.thumbnail || '🎰'}</div>`;
+          return `<div class="game-card">${thumb}${badge}<div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="game-info"><div class="game-name">${g.name || g.game_name}</div><div class="game-provider">${g.provider || ''}</div><div class="game-meta"><span class="game-rtp">${g.rtp || '96.5'}%</span><span class="game-maxwin">x${g.max_win || '5000'}</span></div></div></div>`;
+        }).join('');
+        gameScroll.innerHTML = html || existingHTML;
+      }
+      // Update game-grid (new games grid)
+      const gameGrid = document.querySelector('.game-grid');
+      if (gameGrid) {
+        const existingHTML = gameGrid.innerHTML;
+        const html = data.data.slice(6, 15).map(g => {
+          const badge = g.is_new ? '<span class="game-badge new" style="position:absolute;top:8px;left:8px">NEW</span>' : g.is_hot ? '<span class="game-badge hot" style="position:absolute;top:8px;left:8px">HOT</span>' : '';
+          const thumb = g.image_url ? `<img class="game-thumb" src="${g.image_url}" alt="">` : `<div class="game-thumb" style="display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#1a1a3a,#0d0d2a);height:140px">${g.thumbnail || '🎰'}</div>`;
+          return `<div class="game-card-grid">${thumb}${badge}<div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div><div class="game-info"><div class="game-name">${g.name || g.game_name}</div><div class="game-provider">${g.provider || ''}</div><div class="game-meta"><span class="game-rtp">${g.rtp || '96.5'}%</span><span class="game-maxwin">x${g.max_win || '5000'}</span></div></div></div>`;
+        }).join('');
+        gameGrid.innerHTML = html || existingHTML;
+      }
+    }
+  } catch (e) {}
+}
+
+function updateUIForLogin() { updateBalance(); loadGamesFromAPI(); }
+
+// ── Deposit Button ──
+document.querySelectorAll('.deposit-btn').forEach(btn => {
+  btn.addEventListener('click', () => { if (!authToken) openLoginModal(); else alert('Deposit page'); });
+});
+// ── Center deposit in bottom nav ──
+document.querySelectorAll('.center-btn, .center-circle').forEach(btn => {
+  btn.addEventListener('click', (e) => { e.preventDefault(); if (!authToken) openLoginModal(); else alert('Deposit page'); });
+});
+
+if (authToken) updateUIForLogin();
+loadGamesFromAPI();
+</script>
+
+</body>
+</html>

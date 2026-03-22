@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DR.SLOT — V2 Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#060609;--card:#0e0e14;--card2:#12121a;--surface:#0a0a10;
+  --border:rgba(255,255,255,0.05);--border-h:rgba(255,255,255,0.12);
+  --gold:#F0B90B;--gold-d:rgba(240,185,11,0.12);--gold-g:rgba(240,185,11,0.25);
+  --neon:#00E5FF;--neon-d:rgba(0,229,255,0.1);--neon-g:rgba(0,229,255,0.2);
+  --green:#00E676;--red:#FF3B5C;--purple:#B388FF;--blue:#448AFF;
+  --t:#FFF;--t2:#7A7A90;--t3:#3E3E52;
+  --sidebar-w:240px;
+}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:'Inter','Poppins',sans-serif;background:var(--bg);color:var(--t);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
+
+/* ===== SIDEBAR (PC) ===== */
+.sidebar{display:none;position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);z-index:300;flex-direction:column;overflow-y:auto;scrollbar-width:none}
+.sidebar::-webkit-scrollbar{display:none}
+.sb-logo{padding:20px;font-family:'Poppins';font-weight:800;font-size:22px;border-bottom:1px solid var(--border)}
+.sb-logo .dr{background:linear-gradient(135deg,var(--neon),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sb-logo .slot{color:#fff}
+.sb-sec{padding:12px 0;border-bottom:1px solid var(--border)}
+.sb-sec-t{padding:0 20px;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.sb-item{display:flex;align-items:center;gap:12px;padding:10px 20px;font-size:13px;color:var(--t2);transition:all .2s;cursor:pointer}
+.sb-item:hover{background:rgba(255,255,255,0.03);color:var(--t)}
+.sb-item.active{color:var(--neon);background:var(--neon-d);border-right:2px solid var(--neon)}
+.sb-item .ic{font-size:18px;width:24px;text-align:center}
+.sb-prov{display:flex;align-items:center;gap:10px;padding:7px 20px;font-size:12px;color:var(--t3);transition:all .2s;cursor:pointer}
+.sb-prov:hover{color:var(--t2);background:rgba(255,255,255,0.02)}
+.sb-prov img{width:24px;height:24px;object-fit:contain;filter:brightness(0.7)}
+
+/* ===== TOP NAV ===== */
+.topnav{display:flex;align-items:center;justify-content:space-between;padding:8px var(--px-m);position:sticky;top:0;z-index:100;background:rgba(6,6,9,0.92);backdrop-filter:blur(20px)}
+/* ===== UNIFIED SPACING ===== */
+:root{--px-m:10px;--px-d:20px;--max-w:1200px}
+/* DR.SLOT logo — DR. = neon, SLOT = white */
+.logo-m{font-family:'Poppins';font-weight:800;font-size:20px}
+.logo-m .dr{background:linear-gradient(135deg,var(--neon),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-m .slot{color:#fff}
+
+.nav-r{display:flex;align-items:center;gap:5px}
+
+/* ===== UNIVERSAL GLASS BUTTON ===== */
+.g-btn{
+  padding:7px 14px;border-radius:10px;font-size:11px;font-weight:600;border:none;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .2s;
+  display:inline-flex;align-items:center;gap:4px;cursor:pointer;
+}
+.g-btn:hover{transform:translateY(-1px)}
+.g-btn:active{transform:scale(0.96)}
+
+/* variations */
+.g-btn.primary{background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.25);color:var(--neon)}
+.g-btn.primary:hover{background:rgba(0,229,255,0.25);box-shadow:0 4px 16px rgba(0,229,255,0.15)}
+.g-btn.gold{background:rgba(240,185,11,0.15);border:1px solid rgba(240,185,11,0.25);color:var(--gold)}
+.g-btn.gold:hover{background:rgba(240,185,11,0.25);box-shadow:0 4px 16px rgba(240,185,11,0.15)}
+.g-btn.ghost{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:var(--t2)}
+.g-btn.ghost:hover{background:rgba(255,255,255,0.12);color:var(--t)}
+.g-btn.accent{background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.25);color:var(--purple)}
+.g-btn.accent:hover{background:rgba(139,92,246,0.25);box-shadow:0 4px 16px rgba(139,92,246,0.15)}
+
+/* nav icon */
+.nav-ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;color:var(--t2);position:relative;transition:all .2s;backdrop-filter:blur(8px)}
+.nav-ic:hover{border-color:var(--border-h);background:rgba(255,255,255,0.1)}
+.nav-ic .bdg{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:var(--red);font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid var(--bg)}
+
+/* money display */
+.nav-money{padding:5px 12px;border-radius:10px;background:rgba(240,185,11,0.08);border:1px solid rgba(240,185,11,0.15);backdrop-filter:blur(8px)}
+.money-val{font-family:'Poppins';font-size:13px;font-weight:600;color:var(--gold)}
+
+/* PC nav extras */
+.nav-search,.nav-user{display:none}
+
+/* ===== MAIN ===== */
+.main{max-width:100%}
+
+/* ===== JACKPOT TICKER ===== */
+.jackpot{margin:0 var(--px-m) 12px;padding:12px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(240,185,11,0.08),rgba(0,229,255,0.05));border:1px solid rgba(240,185,11,0.12);display:flex;align-items:center;justify-content:space-between}
+.jackpot-left{display:flex;align-items:center;gap:8px}
+.jackpot-icon{font-size:20px}
+.jackpot-label{font-size:10px;color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.jackpot-amount{font-family:'Poppins';font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--gold),#FFD93D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:jackpot-pulse 2s ease infinite}
+@keyframes jackpot-pulse{0%,100%{opacity:1}50%{opacity:.7}}
+
+/* ===== HERO FULL ===== */
+.hero-full{position:relative;margin:0 var(--px-m) 16px;border-radius:20px;overflow:hidden;height:220px}
+.hero-full .bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d1b2a,#1b2838,#162447);z-index:0}
+.hero-full .bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 75% 30%,rgba(0,229,255,0.12),transparent),radial-gradient(ellipse 50% 60% at 20% 80%,rgba(240,185,11,0.1),transparent)}
+.hero-full .mesh{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;z-index:1}
+.hero-inner2{position:relative;z-index:2;padding:24px 20px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.hero-top-row{display:flex;align-items:center;gap:8px}
+.hero-live{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.15)}
+.hero-live .dot{width:5px;height:5px;border-radius:50%;background:var(--neon);animation:pulse 2s infinite}
+.hero-live .txt{font-size:10px;color:var(--neon);font-weight:500}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero-mid h1{font-family:'Poppins';font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-.5px}
+.hero-mid h1 .cyan{color:var(--neon)}
+.hero-mid h1 .gold{background:linear-gradient(135deg,var(--gold),#FFD93D);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-mid p{font-size:12px;color:rgba(255,255,255,.55);margin-top:4px}
+.hero-bottom{display:flex;gap:8px;align-items:center}
+.h-btn{padding:10px 22px;border-radius:12px;font-size:12px;font-weight:700;border:none;display:flex;align-items:center;gap:5px;transition:all .2s;backdrop-filter:blur(8px)}
+.h-btn.pri{background:rgba(0,229,255,0.18);border:1px solid rgba(0,229,255,0.3);color:var(--neon)}
+.h-btn.pri:hover{background:rgba(0,229,255,0.3);box-shadow:0 4px 20px var(--neon-g);transform:translateY(-2px)}
+.h-btn.sec{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;border-radius:12px}
+.hero-dots2{position:absolute;bottom:12px;right:20px;display:flex;gap:5px;z-index:3}
+.hero-dots2 span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15)}
+.hero-dots2 span.a{width:18px;border-radius:3px;background:var(--neon)}
+/* PC hero float */
+.hero-float{display:none}
+
+/* ===== CATEGORY STICKY ===== */
+.cat-bar{position:sticky;top:52px;z-index:90;padding:8px var(--px-m);display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;background:rgba(6,6,9,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.cat-bar::-webkit-scrollbar{display:none}
+.cat-chip{flex-shrink:0;padding:7px 14px;border-radius:10px;font-size:11px;font-weight:600;color:var(--t2);background:rgba(255,255,255,0.04);border:1px solid var(--border);white-space:nowrap;transition:all .2s;cursor:pointer;backdrop-filter:blur(6px)}
+.cat-chip.active{color:var(--neon);background:rgba(0,229,255,0.12);border-color:rgba(0,229,255,0.25)}
+.cat-chip:hover:not(.active){border-color:var(--border-h);color:var(--t);background:rgba(255,255,255,0.08)}
+
+/* ===== FEATURED GAME ===== */
+.featured{margin:16px var(--px-m);border-radius:18px;overflow:hidden;position:relative;height:180px;cursor:pointer}
+.featured img{width:100%;height:100%;object-fit:cover}
+.featured .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.2) 40%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:16px}
+.featured .tag{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:8px;background:linear-gradient(135deg,var(--neon),#00B8D4);color:#000;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.featured .f-name{font-family:'Poppins';font-size:18px;font-weight:700;margin-bottom:2px}
+.featured .f-prov{font-size:11px;color:rgba(255,255,255,.5)}
+.featured .f-row{display:flex;gap:12px;margin-top:6px}
+.featured .f-stat{font-size:10px;color:var(--t2)}
+.featured .f-stat b{color:var(--neon);font-weight:600}
+.featured .play-circle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;background:rgba(0,229,255,0.2);border:2px solid var(--neon);display:flex;align-items:center;justify-content:center;opacity:0;transition:all .3s}
+.featured:hover .play-circle{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
+
+/* ===== SECTION ===== */
+.sec-h{display:flex;align-items:center;justify-content:space-between;padding:0 var(--px-m);margin:20px 0 12px}
+.sec-t{font-family:'Poppins';font-size:16px;font-weight:700;display:flex;align-items:center;gap:8px}
+.sec-t .ic{font-size:16px}
+.see-a{font-size:11px;color:var(--neon);font-weight:500;display:flex;align-items:center;gap:3px}
+
+/* ===== BONUS CARD ===== */
+.bonus-card{margin:0 var(--px-m) 16px;padding:24px 20px;border-radius:18px;background:linear-gradient(135deg,#0d1a2e,#1a0a2e,#0a2e1a);border:1px solid rgba(240,185,11,0.15);text-align:center;position:relative;overflow:hidden}
+.bonus-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(240,185,11,0.1),transparent 60%);pointer-events:none}
+.bonus-card::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(240,185,11,0.04) 45%,rgba(255,255,255,0.06) 50%,rgba(240,185,11,0.04) 55%,transparent 60%);animation:bonus-shimmer 3s infinite;pointer-events:none}
+@keyframes bonus-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.bonus-inner{position:relative;z-index:1}
+.bonus-coins{display:flex;justify-content:center;gap:12px;margin-bottom:14px}
+.bonus-coins img{width:30px;height:30px;object-fit:contain;animation:coin-float 2s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(240,185,11,0.3))}
+.bonus-coins img:nth-child(2){animation-delay:.3s}
+.bonus-coins img:nth-child(3){animation-delay:.6s}
+.bonus-coins img:nth-child(4){animation-delay:.9s}
+@keyframes coin-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.bonus-text{font-family:'Poppins';font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;background:linear-gradient(135deg,var(--gold),#FFD93D,#FFF,#FFD93D,var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gold-shift 3s ease infinite}
+@keyframes gold-shift{0%{background-position:0% center}50%{background-position:200% center}100%{background-position:0% center}}
+.bonus-sub{font-size:12px;color:rgba(255,255,255,0.5);font-weight:400}
+.bonus-emoji{font-size:24px;margin-bottom:8px;animation:bounce 1s ease infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ===== PROMO GRID ===== */
+.promo-grid{padding:0 var(--px-m);margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.promo-slot{border-radius:12px;padding:14px 12px;position:relative;overflow:hidden}
+.promo-slot.wide{grid-column:1/-1}
+.promo-slot-tag{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.promo-slot-val{font-family:'Poppins';font-size:20px;font-weight:800;line-height:1.1}
+.promo-slot-desc{font-size:10px;color:rgba(255,255,255,0.45);margin-top:2px}
+
+/* ===== GAME GRID 2x2 ===== */
+.game-grid-2x{padding:0 var(--px-m);margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.gm-card{border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--border);position:relative;cursor:pointer;transition:all .25s}
+.gm-card:hover{transform:translateY(-3px);border-color:var(--border-h);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.gm-card .thumb{width:100%;display:block}
+.gm-card .thumb.tall{height:190px;object-fit:cover}
+.gm-card .thumb.short{height:140px;object-fit:cover}
+.gm-card .thumb.wide{height:150px;object-fit:cover}
+.gm-card .thumb.mid{height:160px;object-fit:cover}
+.gm-card .bdg{position:absolute;top:8px;left:8px;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;z-index:2}
+.gm-card .bdg.hot{background:linear-gradient(135deg,#FF3B5C,#FF6B6B);color:#fff}
+.gm-card .bdg.new{background:linear-gradient(135deg,var(--neon),#00E5FF);color:#000}
+.gm-card .bdg.top{background:linear-gradient(135deg,var(--gold),#FFD93D);color:#000}
+.gm-card .info{padding:8px 10px}
+.gm-card .nm{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gm-card .pv{font-size:10px;color:var(--t3)}
+.gm-card .meta{display:flex;justify-content:space-between;margin-top:3px}
+.gm-card .rtp{font-size:10px;color:var(--green);font-weight:600}
+.gm-card .mw{font-size:10px;color:var(--gold);font-weight:500}
+/* hover play overlay */
+.gm-card .g-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent 50%);opacity:0;transition:opacity .3s;display:flex;align-items:center;justify-content:center}
+.gm-card:hover .g-ov{opacity:1}
+.g-play{width:40px;height:40px;border-radius:50%;background:var(--neon);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px var(--neon-g)}
+
+/* ===== HORIZONTAL GAME ROW ===== */
+.game-row{padding:0 var(--px-m);margin-bottom:20px;overflow-x:auto;scrollbar-width:none;display:flex;gap:10px}
+.game-row::-webkit-scrollbar{display:none}
+.gr-card{flex-shrink:0;width:120px;border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .25s;position:relative}
+.gr-card:hover{transform:translateY(-3px);border-color:var(--border-h)}
+.gr-card .thumb{width:100%;height:160px;object-fit:cover;display:block}
+.gr-card .info{padding:8px 10px}
+.gr-card .nm{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gr-card .pv{font-size:9px;color:var(--t3)}
+
+/* ===== LIVE CASINO STRIP ===== */
+.live-strip{padding:0 var(--px-m);margin-bottom:20px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.live-strip::-webkit-scrollbar{display:none}
+.live-card{flex-shrink:0;width:150px;height:100px;border-radius:14px;position:relative;overflow:hidden;cursor:pointer;border:1px solid var(--border);transition:all .25s}
+.live-card:hover{border-color:var(--neon-g);box-shadow:0 0 20px var(--neon-d)}
+.live-card .lc-bg{position:absolute;inset:0}
+.live-card .lc-bg.roulette{background:linear-gradient(135deg,#1a3a2a,#0d2818)}
+.live-card .lc-bg.baccarat{background:linear-gradient(135deg,#2a1a1a,#1a0d0d)}
+.live-card .lc-bg.blackjack{background:linear-gradient(135deg,#1a1a2a,#0d0d1a)}
+.live-card .lc-bg.poker{background:linear-gradient(135deg,#2a2a1a,#1a1a0d)}
+.live-card .lc-info{position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
+.live-card .lc-name{font-size:12px;font-weight:600}
+.live-card .lc-dealer{font-size:9px;color:var(--t2)}
+.live-card .lc-live{position:absolute;top:8px;right:8px;display:flex;align-items:center;gap:4px;padding:2px 6px;border-radius:4px;background:rgba(255,59,92,0.9)}
+.live-card .lc-live span{font-size:8px;font-weight:700;color:#fff;text-transform:uppercase}
+.live-card .lc-live .d{width:4px;height:4px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite}
+
+/* ===== TOURNAMENT BANNER ===== */
+.tourney{margin:0 var(--px-m) 20px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#1a0a2e,#0f1a3e);border:1px solid rgba(139,92,246,0.15);position:relative;overflow:hidden}
+.tourney::before{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(179,136,255,0.08),transparent 70%)}
+.tourney .t-row{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.tourney .t-left{}
+.tourney .t-tag{font-size:9px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px}
+.tourney .t-title{font-family:'Poppins';font-size:18px;font-weight:800;color:#fff}
+.tourney .t-title .amt{color:var(--gold)}
+.tourney .t-sub{font-size:11px;color:var(--t2);margin-top:2px}
+.tourney .t-timer{display:flex;gap:6px}
+.tourney .t-box{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:6px 8px;text-align:center;min-width:40px}
+.tourney .t-box .num{font-family:'Poppins';font-size:16px;font-weight:700;color:var(--neon)}
+.tourney .t-box .lbl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px}
+
+/* ===== PROVIDER CONVEYOR ===== */
+.prov-conv{margin:0 var(--px-m) 20px;overflow:hidden;display:flex;flex-direction:column;gap:10px;-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 6%,#000 94%,transparent 100%);mask-image:linear-gradient(to right,transparent 0%,#000 6%,#000 94%,transparent 100%)}
+.prov-r{display:flex;gap:10px;width:max-content}
+.prov-r.l{animation:cv-l 35s linear infinite}
+.prov-r.r{animation:cv-r 35s linear infinite}
+.prov-conv:hover .prov-r{animation-play-state:paused}
+@keyframes cv-l{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes cv-r{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+
+.pv-item{flex-shrink:0;min-width:76px;max-width:90px;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 6px;border-radius:12px;background:var(--card);border:1px solid var(--border);transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.pv-item::before{content:'';position:absolute;inset:0;border-radius:12px;background:radial-gradient(circle at 50% 40%,rgba(0,229,255,0.1),transparent 70%);opacity:0;transition:opacity .3s}
+.pv-item:hover{border-color:rgba(0,229,255,0.25);transform:translateY(-3px) scale(1.04);box-shadow:0 4px 16px rgba(0,229,255,0.08)}
+.pv-item:hover::before{opacity:1}
+.pv-item img{width:80%;height:auto;max-height:36px;object-fit:contain;filter:brightness(0.55) saturate(.5);transition:all .3s;position:relative;z-index:1}
+.pv-item:hover img{filter:brightness(1.2) saturate(1.1) drop-shadow(0 0 6px rgba(0,229,255,0.35));transform:scale(1.1)}
+.pv-item .n{font-size:8px;color:var(--t3);text-align:center;font-weight:500;position:relative;z-index:1;transition:color .3s}
+.pv-item:hover .n{color:var(--neon)}
+
+/* ===== STATS RIBBON ===== */
+.stats-rib{margin:0 var(--px-m) 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.st-card{padding:14px 8px;border-radius:14px;background:var(--card);border:1px solid var(--border);text-align:center}
+.st-card .val{font-family:'Poppins';font-size:18px;font-weight:700}
+.st-card .val.neon{color:var(--neon)}
+.st-card .val.gold{color:var(--gold)}
+.st-card .val.green{color:var(--green)}
+.st-card .val.purple{color:var(--purple)}
+.st-card .lbl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ===== CTA ===== */
+.cta2{margin:0 var(--px-m) 100px;padding:28px 20px;border-radius:20px;background:linear-gradient(135deg,#0a1628,#162447,#1a0a2e);border:1px solid rgba(0,229,255,0.08);text-align:center;position:relative;overflow:hidden}
+.cta2::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 0%,rgba(0,229,255,0.06),transparent)}
+.cta2 h2{font-family:'Poppins';font-size:22px;font-weight:800;position:relative;z-index:1}
+.cta2 h2 .cyan{color:var(--neon)}
+.cta2 p{font-size:12px;color:var(--t2);margin:6px 0 16px;position:relative;z-index:1}
+.cta2 .coins{display:flex;justify-content:center;gap:8px;margin-bottom:16px;position:relative;z-index:1}
+.cta2 .coins img{width:22px;height:22px;object-fit:contain;filter:brightness(0.8)}
+.cta2 button{padding:14px 40px;border-radius:25px;background:linear-gradient(135deg,var(--neon),#00B8D4);color:#000;font-size:14px;font-weight:700;border:none;position:relative;z-index:1;transition:all .2s}
+.cta2 button:hover{transform:translateY(-2px);box-shadow:0 6px 24px var(--neon-g)}
+
+/* ===== BOTTOM NAV ===== */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,9,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:200}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 12px;color:var(--t3);position:relative}
+.bn-item.active{color:var(--neon)}
+.bn-item.active::before{content:'';position:absolute;top:-6px;width:16px;height:2px;border-radius:1px;background:var(--neon)}
+.bn-item svg{width:22px;height:22px}
+.bn-item .bl{font-size:10px;font-weight:500}
+.bn-item.center{margin-top:-20px}
+.cn-circ{width:48px;height:48px;border-radius:14px;background:rgba(0,229,255,0.18);border:1px solid rgba(0,229,255,0.3);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--neon-g);backdrop-filter:blur(8px)}
+.cn-circ svg{width:22px;height:22px;color:#000}
+
+/* ===== PC FOOTER ===== */
+.pc-ft{display:none;padding:40px 20px 24px;border-top:1px solid var(--border);margin-top:40px}
+.ft-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
+.ft-brand .ft-logo{font-family:'Poppins';font-weight:800;font-size:24px;background:linear-gradient(135deg,var(--neon),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.ft-brand p{font-size:13px;color:var(--t3);line-height:1.6;max-width:300px}
+.ft-col h4{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
+.ft-col a{display:block;font-size:13px;color:var(--t3);padding:4px 0;transition:color .2s}
+.ft-col a:hover{color:var(--t)}
+.ft-bot{max-width:1200px;margin:24px auto 0;padding-top:20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--t3)}
+.ft-coins{display:flex;gap:8px;align-items:center}
+.ft-coins img{width:22px;height:22px;object-fit:contain;filter:brightness(0.7)}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fadeUp .5s ease forwards}.d1{animation-delay:.1s;opacity:0}.d2{animation-delay:.2s;opacity:0}.d3{animation-delay:.3s;opacity:0}
+
+/* ===== DESKTOP ===== */
+@media(min-width:768px){
+  .sidebar{display:flex}
+  .main{margin-left:var(--sidebar-w)}
+  .bnav{display:none}
+  .logo-m{display:none}
+  .pc-ft{display:block}
+  :root{--px-m:var(--px-d)}
+  .topnav{padding:10px var(--px-d);border-bottom:1px solid var(--border)}
+
+  .hero-full{margin:0 var(--px-d) 20px;height:340px;border-radius:24px;max-width:var(--max-w);margin-left:auto;margin-right:auto}
+  .hero-inner2{padding:40px 48px}
+  .hero-mid h1{font-size:46px}
+  .hero-mid p{font-size:15px;max-width:380px}
+  .h-btn{padding:14px 32px;font-size:14px}
+  .hero-float{display:flex;position:absolute;right:48px;top:50%;transform:translateY(-50%);gap:14px;z-index:2}
+  .hf-card{width:120px;height:165px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);box-shadow:0 12px 40px rgba(0,0,0,.5);animation:flt 3s ease-in-out infinite}
+  .hf-card:nth-child(2){animation-delay:.5s}.hf-card:nth-child(3){animation-delay:1s}
+  .hf-card img{width:100%;height:100%;object-fit:cover}
+  @keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  .jackpot{max-width:var(--max-w);margin:0 auto 16px}
+  .cat-bar{padding:8px var(--px-d);top:56px;max-width:calc(var(--max-w) + 64px);margin:0 auto;justify-content:center;gap:8px;flex-wrap:wrap}
+  .cat-chip{padding:8px 20px;font-size:12px;border-radius:25px}
+
+  .featured{max-width:var(--max-w);margin:16px auto;height:260px}
+  .featured .f-name{font-size:24px}
+
+  .sec-h{padding:0;max-width:var(--max-w);margin:24px auto 16px}
+  .sec-t{font-size:20px}
+
+  .bonus-card{max-width:var(--max-w);margin:0 auto 20px}
+  .promo-grid{max-width:var(--max-w);margin:0 auto 28px;padding:0;grid-template-columns:1fr 1fr;gap:14px}
+  .game-grid-2x{max-width:var(--max-w);margin:0 auto 28px;padding:0;grid-template-columns:repeat(4,1fr);gap:14px}
+  .gm-card .thumb.mid{height:180px}
+
+  .game-row{padding:0;max-width:var(--max-w);margin:0 auto 28px;gap:14px;display:grid;grid-template-columns:repeat(6,1fr);overflow-x:visible}
+  .gr-card{width:auto;flex-shrink:unset}
+  .gr-card .thumb{height:200px}
+
+  .live-strip{padding:0;max-width:var(--max-w);margin:0 auto 28px;gap:14px;display:grid;grid-template-columns:repeat(4,1fr);overflow-x:visible}
+  .live-card{width:auto;height:140px}
+
+  .tourney{max-width:var(--max-w);margin:0 auto 28px;padding:24px 32px}
+  .tourney .t-title{font-size:24px}
+
+  .prov-conv{max-width:var(--max-w);margin:0 auto 28px;gap:12px}
+  .pv-item{min-width:110px;max-width:140px}
+  .pv-item img{max-height:44px}
+
+  .stats-rib{max-width:var(--max-w);margin:0 auto 28px;padding:0;gap:12px}
+  .st-card{padding:20px 12px;border-radius:16px}
+  .st-card .val{font-size:24px}
+  .st-card .lbl{font-size:10px}
+
+  .cta2{max-width:var(--max-w);margin:0 auto 60px;padding:48px 40px;border-radius:24px}
+  .cta2 h2{font-size:32px}
+  .cta2 p{font-size:15px}
+}
+
+@media(min-width:1200px){
+  .hero-full{height:380px}
+  .hero-mid h1{font-size:52px}
+  .hf-card{width:140px;height:190px}
+  .game-grid-2x{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo"><span class="dr">DR.</span><span class="slot">SLOT</span></div>
+  <div class="sb-sec">
+    <div class="sb-sec-t">Games</div>
+    <div class="sb-item active"><span class="ic">⚽</span>Sports</div>
+    <div class="sb-item"><span class="ic">🃏</span>Casino</div>
+    <div class="sb-item"><span class="ic">🎰</span>Slots</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-sec-t">Slots Providers</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png">Pragmatic Play</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/128992a35d.png">PG Soft</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/9c40f44618.png">Evolution</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/1f7914af40.png">Nolimit City</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/50e7c80e3a.png">NetEnt</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/ccf8045f30.png">Hacksaw</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/651ed6cb08.png">Red Tiger</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/dd8ef215f6.png">Big Time Gaming</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/1600322b49.png">Habanero</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/75b5d81876.png">BGaming</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/11dec4b4c5.png">JILI</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/e1162a0386.png">BetSoft</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/bf6887c12b.png">Relax Gaming</div>
+    <div class="sb-prov"><img src="https://imgxcut.com/game/image/e03d7b925f.png">Spribe</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-sec-t">Offers</div>
+    <div class="sb-item"><span class="ic">🎁</span>Promotions</div>
+    <div class="sb-item"><span class="ic">💰</span>Bonus</div>
+    <div class="sb-item"><span class="ic">💎</span>VIP</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-sec-t">More</div>
+    <div class="sb-item"><span class="ic">🤝</span>Partners Program</div>
+    <div class="sb-item"><span class="ic">❓</span>FAQ</div>
+    <div class="sb-item"><span class="ic">💬</span>Contact</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- TOP NAV (비로그인 상태) -->
+<div class="topnav" id="nav-guest">
+  <span class="logo-m"><span class="dr">DR.</span><span class="slot">SLOT</span></span>
+  <div class="nav-r">
+    <button class="g-btn ghost">Deposit</button>
+    <button class="g-btn ghost">Withdraw</button>
+    <button class="g-btn ghost" onclick="document.getElementById('nav-guest').style.display='none';document.getElementById('nav-logged').style.display='flex'">Sign In</button>
+    <button class="g-btn primary">Sign Up</button>
+  </div>
+</div>
+<!-- TOP NAV (로그인 상태) -->
+<div class="topnav" id="nav-logged" style="display:none">
+  <span class="logo-m"><span class="dr">DR.</span><span class="slot">SLOT</span></span>
+  <div class="nav-r">
+    <div class="nav-money"><span class="money-val">$14,287.50</span></div>
+    <button class="g-btn primary">Deposit</button>
+    <button class="g-btn ghost">Withdraw</button>
+    <button class="g-btn accent">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Safe
+    </button>
+    <div class="nav-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+  </div>
+</div>
+
+<!-- JACKPOT -->
+<div class="jackpot fi">
+  <div class="jackpot-left">
+    <span class="jackpot-icon">🏆</span>
+    <span class="jackpot-label">Grand Jackpot</span>
+  </div>
+  <div class="jackpot-amount">$2,847,391.50</div>
+</div>
+
+<!-- HERO -->
+<div class="hero-full fi d1">
+  <div class="bg"></div>
+  <div class="mesh"></div>
+  <div class="hero-inner2">
+    <div class="hero-top-row">
+      <div class="hero-live"><span class="dot"></span><span class="txt">2,847 Online</span></div>
+    </div>
+    <div class="hero-mid">
+      <h1>Play & Win<br><span class="cyan">200%</span> <span class="gold">Bonus</span></h1>
+      <p>First deposit bonus up to $10,000 USDT</p>
+    </div>
+    <div class="hero-bottom">
+      <button class="h-btn pri">Get Started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+      <button class="h-btn sec">Browse Games</button>
+    </div>
+  </div>
+  <div class="hero-float">
+    <div class="hf-card"><img src="https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png"></div>
+    <div class="hf-card"><img src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Mental_2_69663c454c.png"></div>
+    <div class="hf-card"><img src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Kill_Em_All_95e8fe9a9c.png"></div>
+  </div>
+  <div class="hero-dots2"><span class="a"></span><span></span><span></span></div>
+</div>
+
+<!-- CATEGORY BAR -->
+<div class="cat-bar fi d2">
+  <div class="cat-chip active">🔥 Popular</div>
+  <div class="cat-chip">🎰 Slots</div>
+  <div class="cat-chip">🃏 Live</div>
+  <div class="cat-chip">⚡ Crash</div>
+  <div class="cat-chip">🎲 Table</div>
+  <div class="cat-chip">⚽ Sports</div>
+  <div class="cat-chip">🎁 Bonus Buy</div>
+</div>
+
+<!-- SUPER BONUS -->
+<div class="sec-h fi d2"><div class="sec-t">Super bonus</div></div>
+<div class="bonus-card fi d2">
+  <div class="bonus-inner">
+    <div class="bonus-emoji">🎰</div>
+    <div class="bonus-coins">
+      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="">
+      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="">
+      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="">
+      <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="">
+    </div>
+    <div class="bonus-text">코인입금시 200% 보너스혜택</div>
+    <div class="bonus-sub">지금 가입하면 최대 $10,000 보너스 즉시 지급!</div>
+  </div>
+</div>
+
+<!-- PROMOTION -->
+<div class="sec-h"><div class="sec-t">Promotion</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="promo-grid">
+  <div class="promo-slot wide" style="background:linear-gradient(135deg,#1a0a2e,#2d1b69);border:1px solid rgba(139,92,246,0.15)">
+    <div class="promo-slot-tag" style="color:var(--purple)">Welcome</div>
+    <div class="promo-slot-val" style="color:#d8b4fe">200%</div>
+    <div class="promo-slot-desc">First Deposit</div>
+  </div>
+  <div class="promo-slot" style="background:linear-gradient(135deg,#0a1628,#162e50);border:1px solid rgba(59,130,246,0.15)">
+    <div class="promo-slot-tag" style="color:var(--blue)">Daily</div>
+    <div class="promo-slot-val" style="color:#93c5fd">15%</div>
+    <div class="promo-slot-desc">Cashback</div>
+  </div>
+  <div class="promo-slot" style="background:linear-gradient(135deg,#1a0f00,#3d2500);border:1px solid rgba(240,185,11,0.15)">
+    <div class="promo-slot-tag" style="color:var(--gold)">VIP</div>
+    <div class="promo-slot-val" style="color:#fcd34d">Unlimited</div>
+    <div class="promo-slot-desc">Withdrawals</div>
+  </div>
+</div>
+
+<!-- POPULAR GAMES (2x2 grid) -->
+<div class="sec-h fi d3"><div class="sec-t"><span class="ic">🔥</span>Popular Games</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="game-grid-2x fi d3">
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/tombstone_no_mercy_icon5_c384ee5cdf.png"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Tombstone: No Mercy</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.09%</span><span class="mw">x50,000</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/small_duck_hunters_logo2_813513f3fb.png"><span class="bdg new">NEW</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Duck Hunters</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.08%</span><span class="mw">x55,500</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/sq_death_row_icon5_05a618afb5.png"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">San Quentin 2</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.03%</span><span class="mw">x50,000</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/small_fith_2_icon5_0f344179fa.png"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Fire In The Hole 2</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.07%</span><span class="mw">x55,000</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Mental_2_69663c454c.png"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Mental 2</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.09%</span><span class="mw">x66,666</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/karen_maneater_icon5_8f23dbf83c.png"><span class="bdg top">TOP</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Karen Maneater</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.08%</span><span class="mw">x41,050</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Fire In The Hole 3</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.02%</span><span class="mw">x60,000</span></div></div></div>
+  <div class="gm-card"><img class="thumb mid" src="https://fan-cdn.nolimitcity.com/the_rave_icon5_0498c66e8d.png"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">The Rave</div><div class="pv">Nolimit City</div><div class="meta"><span class="rtp">96.05%</span><span class="mw">x36,750</span></div></div></div>
+</div>
+
+<!-- LIVE CASINO -->
+<div class="sec-h"><div class="sec-t"><span class="ic">🃏</span>Live Casino</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="live-strip">
+  <div class="live-card"><div class="lc-bg roulette"></div><div class="lc-live"><span class="d"></span><span>LIVE</span></div><div class="lc-info"><div class="lc-name">Lightning Roulette</div><div class="lc-dealer">Dealer: Sarah</div></div></div>
+  <div class="live-card"><div class="lc-bg baccarat"></div><div class="lc-live"><span class="d"></span><span>LIVE</span></div><div class="lc-info"><div class="lc-name">Speed Baccarat</div><div class="lc-dealer">Dealer: Mia</div></div></div>
+  <div class="live-card"><div class="lc-bg blackjack"></div><div class="lc-live"><span class="d"></span><span>LIVE</span></div><div class="lc-info"><div class="lc-name">Infinite Blackjack</div><div class="lc-dealer">Dealer: James</div></div></div>
+  <div class="live-card"><div class="lc-bg poker"></div><div class="lc-live"><span class="d"></span><span>LIVE</span></div><div class="lc-info"><div class="lc-name">Casino Hold'em</div><div class="lc-dealer">Dealer: Luna</div></div></div>
+</div>
+
+<!-- NEW GAMES (row) -->
+<div class="sec-h"><div class="sec-t"><span class="ic">✨</span>New Releases</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="game-row">
+  <div class="gr-card"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_Website_Icon_Catfish_Hunters_47ef66edfe.jpg"><div class="info"><div class="nm">Catfish Hunters</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Kill_Em_All_95e8fe9a9c.png"><div class="info"><div class="nm">Kill Em All</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card"><img class="thumb" src="https://fan-cdn.nolimitcity.com/Website_Icon_Das_x_Boat2_No_Text_710005aad0.png"><div class="info"><div class="nm">Das xBoot 2wei!</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_the_crypt_logo2_3276573b66.png"><div class="info"><div class="nm">The Crypt</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_tanked_icon5_5917c5d4f7.png"><div class="info"><div class="nm">Tanked</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_The_Crypt_2_b0697336d3.png"><div class="info"><div class="nm">The Crypt 2</div><div class="pv">Nolimit City</div></div></div>
+</div>
+
+<!-- TOURNAMENT -->
+<div class="tourney">
+  <div class="t-row">
+    <div class="t-left">
+      <div class="t-tag">🏆 Weekly Tournament</div>
+      <div class="t-title">Prize Pool <span class="amt">$50,000</span></div>
+      <div class="t-sub">247 players competing now</div>
+    </div>
+    <div class="t-timer">
+      <div class="t-box"><div class="num">02</div><div class="lbl">Days</div></div>
+      <div class="t-box"><div class="num">14</div><div class="lbl">Hrs</div></div>
+      <div class="t-box"><div class="num">36</div><div class="lbl">Min</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROVIDERS -->
+<div class="sec-h"><div class="sec-t"><span class="ic">🎮</span>60+ Providers</div></div>
+<div class="prov-conv">
+  <div class="prov-r l">
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png"><span class="n">Pragmatic</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/128992a35d.png"><span class="n">PG Soft</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/9c40f44618.png"><span class="n">Evolution</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/1f7914af40.png"><span class="n">Nolimit</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/50e7c80e3a.png"><span class="n">NetEnt</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/ccf8045f30.png"><span class="n">Hacksaw</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/651ed6cb08.png"><span class="n">Red Tiger</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/dd8ef215f6.png"><span class="n">BTG</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/e03d7b925f.png"><span class="n">Spribe</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/f6d618de9c.png"><span class="n">Thunderkick</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png"><span class="n">Pragmatic</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/128992a35d.png"><span class="n">PG Soft</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/9c40f44618.png"><span class="n">Evolution</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/1f7914af40.png"><span class="n">Nolimit</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/50e7c80e3a.png"><span class="n">NetEnt</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/ccf8045f30.png"><span class="n">Hacksaw</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/651ed6cb08.png"><span class="n">Red Tiger</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/dd8ef215f6.png"><span class="n">BTG</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/e03d7b925f.png"><span class="n">Spribe</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/f6d618de9c.png"><span class="n">Thunderkick</span></div>
+  </div>
+  <div class="prov-r r">
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/1600322b49.png"><span class="n">Habanero</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/75b5d81876.png"><span class="n">BGaming</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/11dec4b4c5.png"><span class="n">JILI</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/408156443a.png"><span class="n">Spadegaming</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/e1162a0386.png"><span class="n">BetSoft</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/bf6887c12b.png"><span class="n">Relax</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/96e8551016.png"><span class="n">Spinomenal</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/3861400bec.png"><span class="n">Quickspin</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/4047f2dada.png"><span class="n">Novomatic</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/826ecb0385.png"><span class="n">Wazdan</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/1600322b49.png"><span class="n">Habanero</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/75b5d81876.png"><span class="n">BGaming</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/11dec4b4c5.png"><span class="n">JILI</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/408156443a.png"><span class="n">Spadegaming</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/e1162a0386.png"><span class="n">BetSoft</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/bf6887c12b.png"><span class="n">Relax</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/96e8551016.png"><span class="n">Spinomenal</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/3861400bec.png"><span class="n">Quickspin</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/4047f2dada.png"><span class="n">Novomatic</span></div>
+    <div class="pv-item"><img src="https://imgxcut.com/game/image/826ecb0385.png"><span class="n">Wazdan</span></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-rib">
+  <div class="st-card"><div class="val neon">2.8K</div><div class="lbl">Online</div></div>
+  <div class="st-card"><div class="val gold">5K+</div><div class="lbl">Games</div></div>
+  <div class="st-card"><div class="val green">60+</div><div class="lbl">Providers</div></div>
+  <div class="st-card"><div class="val purple">24/7</div><div class="lbl">Support</div></div>
+</div>
+
+<!-- CTA -->
+<div class="cta2">
+  <h2>Start Playing <span class="cyan">Now</span></h2>
+  <p>Join 50,000+ players worldwide</p>
+  <div class="coins">
+    <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg">
+    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg">
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg">
+    <img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg">
+    <img src="https://cryptologos.cc/logos/solana-sol-logo.svg">
+    <img src="https://cryptologos.cc/logos/tron-trx-logo.svg">
+  </div>
+  <button>Create Account</button>
+</div>
+
+<!-- PC FOOTER -->
+<footer class="pc-ft">
+  <div class="ft-grid">
+    <div class="ft-brand"><div class="ft-logo">DR.SLOT</div><p>The ultimate online slot experience. Licensed and regulated. 5000+ games from 60+ providers.</p></div>
+    <div class="ft-col"><h4>Casino</h4><a>Slots</a><a>Live Casino</a><a>Sports</a><a>Tournament</a></div>
+    <div class="ft-col"><h4>Support</h4><a>Live Chat</a><a>FAQ</a><a>Email Us</a><a>Terms</a></div>
+    <div class="ft-col"><h4>Account</h4><a>Deposit</a><a>Withdraw</a><a>VIP Program</a><a>Promotions</a></div>
+  </div>
+  <div class="ft-bot">
+    <span>© 2026 DR.SLOT. All rights reserved.</span>
+    <div class="ft-coins">
+      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.svg"><img src="https://cryptologos.cc/logos/solana-sol-logo.svg">
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <a class="bn-item active"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1a1 1 0 00.7-1.7l-9-9a1 1 0 00-1.4 0l-9 9A1 1 0 003 13z"/></svg><span class="bl">Home</span></a>
+  <a class="bn-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="bl">Search</span></a>
+  <a class="bn-item center"><div class="cn-circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><span class="bl" style="margin-top:4px;color:var(--neon)">Deposit</span></a>
+  <a class="bn-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg><span class="bl">Bonus</span></a>
+  <a class="bn-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="bl">Profile</span></a>
+</nav>
+
+<script>
+// ═══════════════════════════════════════════
+// API INTEGRATION
+// ═══════════════════════════════════════════
+const API_BASE = 'https://slotsite-backend-production.up.railway.app/api';
+let authToken = localStorage.getItem('drslot_token') || null;
+
+function apiHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (authToken) h['Authorization'] = 'Bearer ' + authToken;
+  return h;
+}
+async function apiCall(path, options = {}) {
+  const res = await fetch(API_BASE + path, { ...options, headers: { ...apiHeaders(), ...options.headers } });
+  return res.json();
+}
+
+// ── Login Modal ──
+function createLoginModal(startTab) {
+  if (document.getElementById('drslot-login-modal')) {
+    if (startTab) switchAuthTab(startTab);
+    document.getElementById('drslot-login-modal').style.display = 'flex';
+    return;
+  }
+  const modal = document.createElement('div');
+  modal.id = 'drslot-login-modal';
+  modal.style.cssText = 'display:flex;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center';
+  modal.innerHTML = `<div style="background:var(--card,#0e0e14);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;width:min(360px,90vw);position:relative">
+    <div style="position:absolute;top:12px;right:16px;cursor:pointer;font-size:20px;color:rgba(255,255,255,0.4)" onclick="closeLoginModal()">&times;</div>
+    <div style="font-size:22px;font-weight:800;margin-bottom:20px;text-align:center"><span style="background:linear-gradient(135deg,var(--neon,#00E5FF),var(--gold,#F0B90B));-webkit-background-clip:text;-webkit-text-fill-color:transparent">DR.</span><span style="color:#fff">SLOT</span></div>
+    <div id="drslot-login-tab" style="display:flex;gap:8px;margin-bottom:16px">
+      <button onclick="switchAuthTab('login')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,229,255,0.2);background:rgba(0,229,255,0.15);color:var(--neon,#00E5FF);font-weight:600;font-size:13px;cursor:pointer">Sign In</button>
+      <button onclick="switchAuthTab('register')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);font-weight:600;font-size:13px;cursor:pointer">Sign Up</button>
+    </div>
+    <input id="drslot-username" type="text" placeholder="Username" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    <input id="drslot-password" type="password" placeholder="Password" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    <div id="drslot-register-fields" style="display:none">
+      <input id="drslot-nickname" type="text" placeholder="Nickname" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.04);color:#fff;font-size:14px;margin-bottom:10px;outline:none;font-family:Inter,sans-serif">
+    </div>
+    <div id="drslot-auth-error" style="color:var(--red,#FF3B5C);font-size:12px;margin-bottom:8px;display:none"></div>
+    <button id="drslot-auth-submit" onclick="submitAuth()" style="width:100%;padding:12px;border-radius:8px;border:none;background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.25);color:var(--neon,#00E5FF);font-weight:600;font-size:14px;cursor:pointer;font-family:Inter,sans-serif">Sign In</button>
+  </div>`;
+  document.body.appendChild(modal);
+  if (startTab) switchAuthTab(startTab);
+}
+let currentAuthTab = 'login';
+function switchAuthTab(tab) {
+  currentAuthTab = tab;
+  const tabs = document.querySelectorAll('#drslot-login-tab .auth-tab');
+  if (!tabs.length) return;
+  tabs[0].style.background = tab === 'login' ? 'rgba(0,229,255,0.15)' : 'rgba(255,255,255,0.06)';
+  tabs[0].style.color = tab === 'login' ? 'var(--neon,#00E5FF)' : 'rgba(255,255,255,0.4)';
+  tabs[0].style.borderColor = tab === 'login' ? 'rgba(0,229,255,0.2)' : 'rgba(255,255,255,0.08)';
+  tabs[1].style.background = tab === 'register' ? 'rgba(0,229,255,0.15)' : 'rgba(255,255,255,0.06)';
+  tabs[1].style.color = tab === 'register' ? 'var(--neon,#00E5FF)' : 'rgba(255,255,255,0.4)';
+  tabs[1].style.borderColor = tab === 'register' ? 'rgba(0,229,255,0.2)' : 'rgba(255,255,255,0.08)';
+  document.getElementById('drslot-register-fields').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('drslot-auth-submit').textContent = tab === 'login' ? 'Sign In' : 'Sign Up';
+  document.getElementById('drslot-auth-error').style.display = 'none';
+}
+function openLoginModal() { createLoginModal('login'); }
+function closeLoginModal() { const m = document.getElementById('drslot-login-modal'); if (m) m.style.display = 'none'; }
+async function submitAuth() {
+  const username = document.getElementById('drslot-username').value.trim();
+  const password = document.getElementById('drslot-password').value.trim();
+  const errEl = document.getElementById('drslot-auth-error');
+  if (!username || !password) { errEl.textContent = 'Please enter username and password'; errEl.style.display = 'block'; return; }
+  try {
+    if (currentAuthTab === 'login') {
+      const data = await apiCall('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+      if (data.success && data.data && data.data.token) { authToken = data.data.token; localStorage.setItem('drslot_token', authToken); closeLoginModal(); updateUIForLogin(); }
+      else { errEl.textContent = data.error || 'Login failed'; errEl.style.display = 'block'; }
+    } else {
+      const nickname = document.getElementById('drslot-nickname').value.trim() || username;
+      const data = await apiCall('/auth/register', { method: 'POST', body: JSON.stringify({ username, password, nickname }) });
+      if (data.success && data.data && data.data.token) { authToken = data.data.token; localStorage.setItem('drslot_token', authToken); closeLoginModal(); updateUIForLogin(); }
+      else { errEl.textContent = data.error || 'Registration failed'; errEl.style.display = 'block'; }
+    }
+  } catch (e) { errEl.textContent = 'Server connection failed'; errEl.style.display = 'block'; }
+}
+
+// ── Wire existing Sign In / Sign Up / Deposit buttons ──
+(function wireExistingButtons() {
+  // Guest nav: Sign In button
+  const guestNav = document.getElementById('nav-guest');
+  if (guestNav) {
+    const btns = guestNav.querySelectorAll('.g-btn');
+    btns.forEach(btn => {
+      const txt = btn.textContent.trim();
+      if (txt === 'Sign In') {
+        // Replace inline onclick with API login
+        btn.removeAttribute('onclick');
+        btn.addEventListener('click', () => createLoginModal('login'));
+      } else if (txt === 'Sign Up') {
+        btn.addEventListener('click', () => createLoginModal('register'));
+      } else if (txt === 'Deposit' || txt === 'Withdraw') {
+        btn.addEventListener('click', () => { if (!authToken) createLoginModal('login'); else alert(txt + ' page'); });
+      }
+    });
+  }
+  // Logged nav: Deposit/Withdraw buttons
+  const loggedNav = document.getElementById('nav-logged');
+  if (loggedNav) {
+    loggedNav.querySelectorAll('.g-btn').forEach(btn => {
+      const txt = btn.textContent.trim();
+      if (txt === 'Deposit' || txt === 'Withdraw') {
+        btn.addEventListener('click', () => { alert(txt + ' page'); });
+      }
+    });
+  }
+})();
+
+// ── Balance ──
+async function updateBalance() {
+  if (!authToken) return;
+  try {
+    const data = await apiCall('/wallet/balance');
+    if (data.success && data.data !== undefined) {
+      const bal = Number(data.data.balance || data.data || 0);
+      const moneyEl = document.querySelector('.money-val');
+      if (moneyEl) moneyEl.textContent = '$' + bal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+  } catch (e) {}
+}
+
+// ── Switch to logged nav ──
+function showLoggedNav() {
+  const guest = document.getElementById('nav-guest');
+  const logged = document.getElementById('nav-logged');
+  if (guest) guest.style.display = 'none';
+  if (logged) logged.style.display = 'flex';
+}
+
+// ── Games from API ──
+async function loadGamesFromAPI() {
+  try {
+    const data = await apiCall('/games?page=1&limit=20');
+    if (data.success && data.data && data.data.length > 0) {
+      const grid = document.querySelector('.game-grid-2x');
+      if (grid) {
+        const existingHTML = grid.innerHTML;
+        const html = data.data.slice(0, 8).map(g => {
+          const badge = g.is_hot ? '<span class="bdg hot">HOT</span>' : g.is_new ? '<span class="bdg new">NEW</span>' : '';
+          const thumb = g.image_url
+            ? `<img class="thumb mid" src="${g.image_url}">`
+            : `<div class="thumb mid" style="display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#1a1a3a,#0d0d2a)">${g.thumbnail || '🎰'}</div>`;
+          return `<div class="gm-card">${thumb}${badge}<div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">${g.name || g.game_name}</div><div class="pv">${g.provider || ''}</div><div class="meta"><span class="rtp">${g.rtp || '96.0'}%</span><span class="mw">x${g.max_win || '50000'}</span></div></div></div>`;
+        }).join('');
+        grid.innerHTML = html || existingHTML;
+      }
+    }
+  } catch (e) {}
+}
+
+function updateUIForLogin() {
+  showLoggedNav();
+  updateBalance();
+  loadGamesFromAPI();
+}
+
+// ── Bottom nav deposit ──
+document.querySelectorAll('.bn-item.center, .cn-circ').forEach(btn => {
+  btn.addEventListener('click', (e) => { e.preventDefault(); if (!authToken) openLoginModal(); else alert('Deposit page'); });
+});
+
+if (authToken) updateUIForLogin();
+loadGamesFromAPI();
+</script>
+
+</body>
+</html>

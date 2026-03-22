@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>DR.SLOT - 최고의 온라인 슬롯</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0e14;--card:#141922;--card-hover:#1a2130;--surface:#111820;
+  --green:#00E701;--gold:#FFD700;--red:#FF3B5C;--blue:#3B82F6;--purple:#A855F7;
+  --text:#fff;--text-dim:#8899aa;--text-muted:#556677;
+  --radius:12px;--bottom-nav:64px;
+  --sidebar:0px;--header-h:60px;
+}
+html,body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{padding-bottom:calc(var(--bottom-nav) + 16px)}
+::-webkit-scrollbar{width:6px;height:0}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px}
+
+/* ══════════ DESKTOP SIDEBAR ══════════ */
+.sidebar{display:none}
+
+/* ══════════ HEADER ══════════ */
+.header{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;height:var(--header-h);
+  background:rgba(10,14,20,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.logo{font-size:20px;font-weight:800;letter-spacing:-0.5px;
+  background:linear-gradient(135deg,var(--green),#00ff88);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+.logo span{-webkit-text-fill-color:var(--text)}
+.header-right{display:flex;align-items:center;gap:8px}
+.balance-chip{display:flex;align-items:center;gap:6px;background:var(--card);border:1px solid rgba(255,255,255,0.06);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600}
+.balance-chip .amt{color:var(--green)}
+.btn-deposit{background:linear-gradient(135deg,var(--green),#00cc00);color:#000;font-weight:700;font-size:12px;padding:8px 16px;border-radius:20px;border:none;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;box-shadow:0 2px 12px rgba(0,231,1,0.3);transition:transform .15s}
+.btn-deposit:hover{transform:scale(1.05)}
+.btn-icon{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:16px;cursor:pointer;transition:background .2s}
+.btn-icon:hover{background:var(--card-hover)}
+.header-search{display:none;align-items:center;gap:8px;background:var(--card);border:1px solid rgba(255,255,255,0.06);border-radius:24px;padding:8px 16px;flex:1;max-width:400px}
+.header-search input{background:none;border:none;outline:none;color:var(--text);font-size:13px;font-family:inherit;width:100%}
+.header-search input::placeholder{color:var(--text-muted)}
+.nav-desktop{display:none;align-items:center;gap:4px}
+.nav-desktop a{color:var(--text-dim);font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:8px;transition:all .2s;white-space:nowrap}
+.nav-desktop a:hover{color:var(--text);background:rgba(255,255,255,0.04)}
+.nav-desktop a.active{color:var(--green)}
+
+/* ══════════ MAIN CONTENT ══════════ */
+.main{margin-left:var(--sidebar);transition:margin .3s}
+
+/* ══════════ HERO BANNER ══════════ */
+.hero-slider{padding:12px 16px 0;overflow-x:auto;scroll-snap-type:x mandatory;display:flex;gap:12px;scrollbar-width:none}
+.hero-slider::-webkit-scrollbar{display:none}
+.hero-slide{flex:0 0 calc(100% - 16px);scroll-snap-align:start;height:160px;border-radius:var(--radius);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s}
+.hero-slide:hover{transform:scale(1.01)}
+.hero-slide.promo1{background:linear-gradient(135deg,#1a0a30,#0d1b3e 50%,#0a2a1a)}
+.hero-slide.promo2{background:linear-gradient(135deg,#2a1a00,#1a0a00 50%,#0d0a1e)}
+.hero-slide.promo3{background:linear-gradient(135deg,#0a1a2e,#1a0a2e)}
+.hero-content{position:absolute;inset:0;padding:20px 24px;display:flex;flex-direction:column;justify-content:center;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(0,231,1,0.15);color:var(--green);padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;width:fit-content;margin-bottom:8px}
+.hero-title{font-size:22px;font-weight:800;line-height:1.15;margin-bottom:4px}
+.hero-title .highlight{color:var(--green)}
+.hero-title .gold{color:var(--gold)}
+.hero-sub{font-size:12px;color:var(--text-dim)}
+.hero-deco{position:absolute;right:-10px;bottom:-10px;font-size:120px;opacity:.08;z-index:1}
+.hero-dots{display:flex;justify-content:center;gap:6px;padding:10px 0}
+.hero-dots .dot{width:6px;height:6px;border-radius:50%;background:var(--text-muted);transition:all .3s;cursor:pointer}
+.hero-dots .dot.active{width:20px;border-radius:3px;background:var(--green)}
+
+/* ══════════ LIVE WINS TICKER ══════════ */
+.live-wins{margin:12px 16px;background:var(--card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:10px 0;overflow:hidden;position:relative}
+.live-wins-label{position:absolute;left:0;top:0;bottom:0;display:flex;align-items:center;padding:0 12px;background:linear-gradient(90deg,var(--card) 70%,transparent);z-index:2;font-size:11px;font-weight:700;color:var(--green);gap:4px}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ticker-track{display:flex;gap:24px;animation:scroll-ticker 25s linear infinite;padding-left:80px}
+.ticker-item{display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:12px}
+.ticker-item .game-icon{width:28px;height:28px;border-radius:6px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-size:14px}
+.ticker-item .user{color:var(--text-dim);font-weight:500}
+.ticker-item .amount{color:var(--green);font-weight:700}
+.ticker-item .amount.big{color:var(--gold);font-size:13px}
+@keyframes scroll-ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ══════════ SECTION ══════════ */
+.section{padding:0 16px;margin-top:20px;animation:fadeInUp .5s ease both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.section-title{font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px}
+.section-title .icon{font-size:18px}
+.see-all{font-size:12px;color:var(--text-dim);font-weight:500;cursor:pointer;transition:color .2s}
+.see-all:hover{color:var(--green)}
+
+/* ══════════ CATEGORIES ══════════ */
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px;margin-top:16px}
+.cat-card{background:var(--card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:14px 8px;text-align:center;cursor:pointer;transition:all .25s}
+.cat-card:hover{background:var(--card-hover);transform:translateY(-2px)}
+.cat-icon{font-size:28px;margin-bottom:6px;display:block}
+.cat-name{font-size:11px;font-weight:600;color:var(--text-dim)}
+.cat-card.active{border-color:var(--green);background:rgba(0,231,1,0.05)}
+.cat-card.active .cat-name{color:var(--green)}
+
+/* ══════════ BIG CATEGORY CARDS ══════════ */
+.big-cats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-top:16px}
+.big-cat{border-radius:var(--radius);padding:20px 16px;position:relative;overflow:hidden;cursor:pointer;min-height:100px;transition:transform .2s}
+.big-cat:active{transform:scale(.97)}
+.big-cat.casino{background:linear-gradient(135deg,#0d2818,#0a1a10);border:1px solid rgba(0,231,1,0.1)}
+.big-cat.sports{background:linear-gradient(135deg,#1a1a00,#1a0d00);border:1px solid rgba(255,215,0,0.1)}
+.big-cat-title{font-size:18px;font-weight:800;margin-bottom:2px}
+.big-cat.casino .big-cat-title{color:var(--green)}
+.big-cat.sports .big-cat-title{color:var(--gold)}
+.big-cat-sub{font-size:11px;color:var(--text-dim)}
+.big-cat-emoji{position:absolute;right:12px;bottom:8px;font-size:48px;opacity:.3}
+.big-cat-arrow{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:12px;font-size:14px;transition:background .2s}
+.big-cat.casino .big-cat-arrow{background:rgba(0,231,1,0.15);color:var(--green)}
+.big-cat.sports .big-cat-arrow{background:rgba(255,215,0,0.15);color:var(--gold)}
+
+/* ══════════ FILTER CHIPS ══════════ */
+.filter-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px}
+.filter-chips::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;background:var(--card);border:1px solid rgba(255,255,255,0.06);color:var(--text-dim);cursor:pointer;transition:all .2s;white-space:nowrap}
+.chip.active{background:var(--green);color:#000;border-color:var(--green);box-shadow:0 2px 12px rgba(0,231,1,0.2)}
+.chip:hover:not(.active){border-color:rgba(255,255,255,0.15)}
+
+/* ══════════ GAME GRID ══════════ */
+.game-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.game-card{position:relative;border-radius:var(--radius);overflow:hidden;cursor:pointer;aspect-ratio:3/4;background:var(--card);transition:transform .2s}
+.game-card:hover{transform:translateY(-4px)}
+.game-card:active{transform:scale(.96)}
+.game-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px}
+.game-card .badge-hot{position:absolute;top:6px;left:6px;background:var(--red);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase}
+.game-card .badge-new{position:absolute;top:6px;left:6px;background:var(--blue);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase}
+.game-info{position:absolute;bottom:0;left:0;right:0;padding:24px 8px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.85))}
+.game-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-provider{font-size:9px;color:var(--text-muted);font-weight:500}
+
+/* ══════════ SPORTS ══════════ */
+.matches-scroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.matches-scroll::-webkit-scrollbar{display:none}
+.match-card{background:var(--card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:10px;flex:0 0 calc(100% - 48px);min-width:260px;transition:border-color .2s}
+.match-card:hover{border-color:rgba(255,255,255,0.1)}
+.match-league{font-size:10px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:6px}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 1s infinite}
+.match-teams{display:flex;align-items:center;justify-content:space-between}
+.team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.team-logo{width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:20px}
+.team-name{font-size:11px;font-weight:600;text-align:center}
+.match-vs{display:flex;flex-direction:column;align-items:center;gap:2px}
+.match-time{font-size:11px;font-weight:700;color:var(--gold)}
+.match-date{font-size:9px;color:var(--text-muted)}
+.match-odds{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.odd-btn{background:var(--surface);border:1px solid rgba(255,255,255,0.04);border-radius:8px;padding:8px 6px;text-align:center;cursor:pointer;transition:all .2s}
+.odd-btn:hover{border-color:var(--green);background:rgba(0,231,1,0.05)}
+.odd-label{font-size:9px;color:var(--text-muted)}
+.odd-value{font-size:13px;font-weight:700;color:var(--green)}
+.matches-grid{display:none}
+
+/* ══════════ BOTTOM NAV (MOBILE/TABLET) ══════════ */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:var(--bottom-nav);
+  background:rgba(10,14,20,0.95);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:space-around;
+  z-index:200;padding-bottom:env(safe-area-inset-bottom,0);
+}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:8px 12px;transition:all .2s}
+.nav-icon{font-size:20px;opacity:.5;transition:all .2s}
+.nav-label{font-size:10px;font-weight:600;color:var(--text-muted);transition:all .2s}
+.nav-item.active .nav-icon{opacity:1}
+.nav-item.active .nav-label{color:var(--green)}
+.nav-item.center{position:relative;margin-top:-16px}
+.nav-icon-wrap{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--green),#00cc00);display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 20px rgba(0,231,1,0.3)}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════════════ */
+
+/* ── TABLET (768px+) ── */
+@media(min-width:768px){
+  :root{--header-h:64px}
+  body{padding-bottom:calc(var(--bottom-nav) + 20px)}
+  .header{padding:12px 24px}
+  .header-search{display:flex}
+  .hero-slider{padding:16px 24px 0;gap:16px}
+  .hero-slide{flex:0 0 calc(50% - 12px);height:180px}
+  .hero-title{font-size:24px}
+  .live-wins{margin:12px 24px}
+  .categories{padding:0 24px;grid-template-columns:repeat(4,1fr);gap:12px}
+  .cat-card{padding:18px 10px}
+  .cat-icon{font-size:32px}
+  .big-cats{padding:0 24px;gap:12px}
+  .big-cat{min-height:120px;padding:24px 20px}
+  .big-cat-title{font-size:20px}
+  .section{padding:0 24px;margin-top:24px}
+  .game-grid{grid-template-columns:repeat(4,1fr);gap:12px}
+  .matches-scroll{padding:0}
+  .match-card{flex:0 0 calc(50% - 8px)}
+}
+
+/* ── DESKTOP (1024px+) ── */
+@media(min-width:1024px){
+  :root{--sidebar:220px;--header-h:64px}
+  body{padding-bottom:0}
+
+  /* Sidebar */
+  .sidebar{
+    display:flex;flex-direction:column;
+    position:fixed;left:0;top:0;bottom:0;width:var(--sidebar);
+    background:var(--card);border-right:1px solid rgba(255,255,255,0.04);
+    z-index:150;padding:20px 0;overflow-y:auto;
+  }
+  .sidebar-logo{padding:0 20px 24px;font-size:22px;font-weight:800;
+    background:linear-gradient(135deg,var(--green),#00ff88);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+  .sidebar-logo span{-webkit-text-fill-color:var(--text)}
+  .sidebar-nav{display:flex;flex-direction:column;gap:2px;padding:0 10px}
+  .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--text-dim);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+  .sidebar-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+  .sidebar-item.active{background:rgba(0,231,1,0.08);color:var(--green)}
+  .sidebar-item .s-icon{font-size:18px;width:24px;text-align:center}
+  .sidebar-divider{height:1px;background:rgba(255,255,255,0.04);margin:16px 20px}
+  .sidebar-section{padding:0 20px;margin-bottom:8px;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+
+  /* Header shift */
+  .header{margin-left:var(--sidebar)}
+  .header .logo{display:none}
+  .nav-desktop{display:flex}
+
+  /* Main content shift */
+  .main{margin-left:var(--sidebar)}
+
+  /* Hide bottom nav, show sidebar */
+  .bottom-nav{display:none}
+
+  .hero-slider{padding:20px 32px 0}
+  .hero-slide{flex:0 0 calc(33.333% - 12px);height:200px}
+  .hero-title{font-size:26px}
+  .live-wins{margin:16px 32px}
+  .categories{padding:0 32px;gap:12px}
+  .big-cats{padding:0 32px;gap:16px}
+  .big-cat{min-height:130px}
+  .section{padding:0 32px;margin-top:28px}
+  .game-grid{grid-template-columns:repeat(5,1fr);gap:14px}
+  .game-card:hover .game-overlay{opacity:1}
+  .matches-scroll{display:none}
+  .matches-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+}
+
+/* ── WIDE DESKTOP (1440px+) ── */
+@media(min-width:1440px){
+  :root{--sidebar:240px}
+  .game-grid{grid-template-columns:repeat(6,1fr);gap:16px}
+  .hero-slide{height:220px}
+  .hero-title{font-size:28px}
+  .matches-grid{grid-template-columns:repeat(4,1fr)}
+}
+
+/* ── PLAY OVERLAY (DESKTOP) ── */
+.game-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.6);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .25s;z-index:3;
+}
+.game-overlay .play-btn{
+  width:48px;height:48px;border-radius:50%;
+  background:var(--green);color:#000;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:900;
+  box-shadow:0 4px 20px rgba(0,231,1,0.4);
+  transform:scale(0.8);transition:transform .2s;
+}
+.game-card:hover .game-overlay .play-btn{transform:scale(1)}
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR (Desktop only) ═══ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">DR.<span>SLOT</span></div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-item active"><span class="s-icon">🏠</span> 홈</a>
+    <a class="sidebar-item"><span class="s-icon">🎰</span> 카지노</a>
+    <a class="sidebar-item"><span class="s-icon">🃏</span> 라이브 카지노</a>
+    <a class="sidebar-item"><span class="s-icon">⚽</span> 스포츠</a>
+    <a class="sidebar-item"><span class="s-icon">🎁</span> 보너스</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">내 계정</div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-item"><span class="s-icon">💰</span> 지갑</a>
+    <a class="sidebar-item"><span class="s-icon">📊</span> 베팅 내역</a>
+    <a class="sidebar-item"><span class="s-icon">🎟️</span> 쿠폰함</a>
+    <a class="sidebar-item"><span class="s-icon">👤</span> 마이페이지</a>
+  </nav>
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section">고객센터</div>
+  <nav class="sidebar-nav">
+    <a class="sidebar-item"><span class="s-icon">💬</span> 실시간 채팅</a>
+    <a class="sidebar-item"><span class="s-icon">📋</span> FAQ</a>
+  </nav>
+</aside>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="logo">DR.<span>SLOT</span></div>
+  <div class="header-search">
+    <span>🔍</span>
+    <input type="text" placeholder="게임 검색...">
+  </div>
+  <nav class="nav-desktop">
+    <a class="active" href="#">홈</a>
+    <a href="#">카지노</a>
+    <a href="#">라이브</a>
+    <a href="#">스포츠</a>
+    <a href="#">보너스</a>
+  </nav>
+  <div class="header-right">
+    <div class="balance-chip">
+      <span>💰</span>
+      <span class="amt">₩0</span>
+    </div>
+    <button class="btn-deposit">충전</button>
+    <div class="btn-icon">🔔</div>
+    <div class="btn-icon">👤</div>
+  </div>
+</header>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main">
+
+  <!-- HERO BANNER -->
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide promo1">
+      <div class="hero-content">
+        <div class="hero-badge">🎁 신규 이벤트</div>
+        <div class="hero-title">첫 충전 <span class="highlight">200%</span><br>보너스 지급!</div>
+        <div class="hero-sub">지금 가입하고 최대 ₩500,000 받기</div>
+      </div>
+      <div class="hero-deco">🎰</div>
+    </div>
+    <div class="hero-slide promo2">
+      <div class="hero-content">
+        <div class="hero-badge">⚡ 주간 토너먼트</div>
+        <div class="hero-title">총 상금 <span class="gold">₩10,000,000</span></div>
+        <div class="hero-sub">매주 TOP 50에게 상금 지급</div>
+      </div>
+      <div class="hero-deco">🏆</div>
+    </div>
+    <div class="hero-slide promo3">
+      <div class="hero-content">
+        <div class="hero-badge">🔥 프리스핀</div>
+        <div class="hero-title">무료 <span class="highlight">50회</span> 스핀<br>매일 받기</div>
+        <div class="hero-sub">출석 체크만 하면 자동 지급</div>
+      </div>
+      <div class="hero-deco">🎡</div>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <span class="dot active"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+
+  <!-- LIVE WINS TICKER -->
+  <div class="live-wins">
+    <div class="live-wins-label"><span class="pulse"></span> LIVE</div>
+    <div class="ticker-track" id="ticker">
+      <div class="ticker-item"><div class="game-icon">🐍</div><span class="user">Tak***</span><span>Fortune Snake</span><span class="amount">₩63,190</span></div>
+      <div class="ticker-item"><div class="game-icon">🦁</div><span class="user">Kim***</span><span>Wild Machine</span><span class="amount big">₩518,760</span></div>
+      <div class="ticker-item"><div class="game-icon">🦴</div><span class="user">Nad***</span><span>Bone Fortune</span><span class="amount">₩185,000</span></div>
+      <div class="ticker-item"><div class="game-icon">🏏</div><span class="user">Aoi***</span><span>Crash Cricket</span><span class="amount big">₩1,500,000</span></div>
+      <div class="ticker-item"><div class="game-icon">👑</div><span class="user">ev3***</span><span>Cleopatra</span><span class="amount">₩252,580</span></div>
+      <div class="ticker-item"><div class="game-icon">🎲</div><span class="user">Par***</span><span>Lucky Dice</span><span class="amount">₩89,200</span></div>
+      <div class="ticker-item"><div class="game-icon">🐍</div><span class="user">Tak***</span><span>Fortune Snake</span><span class="amount">₩63,190</span></div>
+      <div class="ticker-item"><div class="game-icon">🦁</div><span class="user">Kim***</span><span>Wild Machine</span><span class="amount big">₩518,760</span></div>
+      <div class="ticker-item"><div class="game-icon">🦴</div><span class="user">Nad***</span><span>Bone Fortune</span><span class="amount">₩185,000</span></div>
+      <div class="ticker-item"><div class="game-icon">🏏</div><span class="user">Aoi***</span><span>Crash Cricket</span><span class="amount big">₩1,500,000</span></div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="categories">
+    <div class="cat-card active"><span class="cat-icon">🎰</span><span class="cat-name">슬롯</span></div>
+    <div class="cat-card"><span class="cat-icon">🃏</span><span class="cat-name">라이브</span></div>
+    <div class="cat-card"><span class="cat-icon">⚽</span><span class="cat-name">스포츠</span></div>
+    <div class="cat-card"><span class="cat-icon">🎁</span><span class="cat-name">보너스</span></div>
+  </div>
+
+  <!-- BIG CATEGORY CARDS -->
+  <div class="big-cats">
+    <div class="big-cat casino">
+      <div class="big-cat-title">카지노</div>
+      <div class="big-cat-sub">2,400+ 게임</div>
+      <div class="big-cat-arrow">›</div>
+      <div class="big-cat-emoji">🎰</div>
+    </div>
+    <div class="big-cat sports">
+      <div class="big-cat-title">스포츠</div>
+      <div class="big-cat-sub">실시간 베팅</div>
+      <div class="big-cat-arrow">›</div>
+      <div class="big-cat-emoji">⚽</div>
+    </div>
+  </div>
+
+  <!-- HOT GAMES -->
+  <div class="section" style="margin-top:24px">
+    <div class="section-head">
+      <div class="section-title"><span class="icon">🔥</span> 인기 게임</div>
+      <span class="see-all">모두 ›</span>
+    </div>
+    <div class="filter-chips">
+      <span class="chip active">전체</span>
+      <span class="chip">PG Soft</span>
+      <span class="chip">Pragmatic</span>
+      <span class="chip">Evolution</span>
+      <span class="chip">NetEnt</span>
+      <span class="chip">Hacksaw</span>
+    </div>
+    <div class="game-grid" id="hotGames">
+    </div>
+  </div>
+
+  <!-- NEW GAMES -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="icon">✨</span> 신규 게임</div>
+      <span class="see-all">모두 ›</span>
+    </div>
+    <div class="game-grid" id="newGames">
+    </div>
+  </div>
+
+  <!-- SPORTS -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="icon">⚽</span> 스포츠</div>
+      <span class="see-all">모두 ›</span>
+    </div>
+    <!-- Mobile/Tablet: horizontal scroll -->
+    <div class="matches-scroll" id="matchesScroll"></div>
+    <!-- Desktop: grid -->
+    <div class="matches-grid" id="matchesGrid"></div>
+  </div>
+
+  <div style="height:40px"></div>
+</div>
+
+<!-- ═══ BOTTOM NAV (Mobile/Tablet) ═══ -->
+<nav class="bottom-nav">
+  <div class="nav-item active"><span class="nav-icon">🏠</span><span class="nav-label" style="color:var(--green)">홈</span></div>
+  <div class="nav-item"><span class="nav-icon">🔍</span><span class="nav-label">탐색</span></div>
+  <div class="nav-item center"><div class="nav-icon-wrap">🎰</div><span class="nav-label" style="margin-top:4px">카지노</span></div>
+  <div class="nav-item"><span class="nav-icon">💰</span><span class="nav-label">지갑</span></div>
+  <div class="nav-item"><span class="nav-icon">👤</span><span class="nav-label">마이</span></div>
+</nav>
+
+<script>
+// ── Data ──
+const hotGamesData = [
+  {name:'Fortune Snake',provider:'PG Soft',emoji:'🐍',bg:'#1a3a1a,#0d2d0d',badge:'hot'},
+  {name:'Doomsday Rampage',provider:'PG Soft',emoji:'💥',bg:'#2a1a0a,#1a0d00',badge:'hot'},
+  {name:'Gates of Olympus',provider:'Pragmatic',emoji:'⚡',bg:'#1a1a3a,#0d0d2a',badge:null},
+  {name:"Cleopatra's Gold",provider:'NetEnt',emoji:'👑',bg:'#2a0a2a,#1a001a',badge:'new'},
+  {name:'Dragon Tiger',provider:'Evolution',emoji:'🐉',bg:'#0a2a2a,#001a1a',badge:null},
+  {name:'Sugar Rush',provider:'Pragmatic',emoji:'🍬',bg:'#2a2a0a,#1a1a00',badge:null},
+  {name:'Wild Machine',provider:'PG Soft',emoji:'🦁',bg:'#2a1a1a,#1a0d0d',badge:'hot'},
+  {name:'Crash Cricket',provider:'Hacksaw',emoji:'🏏',bg:'#0a2a1a,#001a0d',badge:null},
+  {name:'Bone Fortune',provider:'PG Soft',emoji:'🦴',bg:'#1a1a1a,#0d0d0d',badge:null},
+  {name:'Lucky Dice',provider:'NetEnt',emoji:'🎲',bg:'#1a0a2a,#0d001a',badge:'new'},
+  {name:'Phoenix Rises',provider:'Pragmatic',emoji:'🔥',bg:'#2a0a0a,#1a0000',badge:null},
+  {name:'Mystic Moon',provider:'Evolution',emoji:'🌙',bg:'#0a0a2a,#00001a',badge:null},
+];
+const newGamesData = [
+  {name:'Volcanic Gold',provider:'Hacksaw',emoji:'🌋',bg:'#3a1a0a,#2a0d00',badge:'new'},
+  {name:'Ocean Fortune',provider:'PG Soft',emoji:'🌊',bg:'#0a1a3a,#000d2a',badge:'new'},
+  {name:'Phantom Riches',provider:'NetEnt',emoji:'🎭',bg:'#2a0a1a,#1a000d',badge:'new'},
+  {name:'Samurai Ways',provider:'Pragmatic',emoji:'⛩️',bg:'#1a0a0a,#0d0000',badge:'new'},
+  {name:'Crystal Cave',provider:'Evolution',emoji:'💎',bg:'#0a1a2a,#000d1a',badge:'new'},
+  {name:'Thunder Strike',provider:'Hacksaw',emoji:'⚡',bg:'#2a2a0a,#1a1a00',badge:'new'},
+];
+const matchesData = [
+  {league:'프리미어리그',live:true,home:'맨유',homeIcon:'🔴',away:'번리',awayIcon:'🟡',time:'03:00',date:'내일',odds:['1.45','4.20','6.50']},
+  {league:'라리가',live:false,home:'레알',homeIcon:'⚪',away:'비야레알',awayIcon:'🟠',time:'05:00',date:'내일',odds:['1.30','5.00','8.50']},
+  {league:'세리에 A',live:false,home:'유벤투스',homeIcon:'⚫',away:'나폴리',awayIcon:'🔵',time:'04:00',date:'토요일',odds:['2.10','3.40','3.20']},
+  {league:'분데스리가',live:true,home:'바이에른',homeIcon:'🔴',away:'도르트문트',awayIcon:'🟡',time:'22:30',date:'오늘',odds:['1.65','3.80','5.00']},
+];
+
+function makeGameCard(g) {
+  return `<div class="game-card">
+    <div class="game-placeholder" style="background:linear-gradient(135deg,${g.bg})">${g.emoji}</div>
+    ${g.badge==='hot'?'<span class="badge-hot">HOT</span>':g.badge==='new'?'<span class="badge-new">NEW</span>':''}
+    <div class="game-overlay"><div class="play-btn">▶</div></div>
+    <div class="game-info"><div class="game-name">${g.name}</div><div class="game-provider">${g.provider}</div></div>
+  </div>`;
+}
+function makeMatchCard(m) {
+  return `<div class="match-card">
+    <div class="match-league">${m.live?'<span class="live-dot"></span>':''}${m.league}</div>
+    <div class="match-teams">
+      <div class="team"><div class="team-logo">${m.homeIcon}</div><div class="team-name">${m.home}</div></div>
+      <div class="match-vs"><div class="match-time">${m.time}</div><div class="match-date">${m.date}</div></div>
+      <div class="team"><div class="team-logo">${m.awayIcon}</div><div class="team-name">${m.away}</div></div>
+    </div>
+    <div class="match-odds">
+      <div class="odd-btn"><div class="odd-label">홈</div><div class="odd-value">${m.odds[0]}</div></div>
+      <div class="odd-btn"><div class="odd-label">무</div><div class="odd-value">${m.odds[1]}</div></div>
+      <div class="odd-btn"><div class="odd-label">원</div><div class="odd-value">${m.odds[2]}</div></div>
+    </div>
+  </div>`;
+}
+
+// Render
+document.getElementById('hotGames').innerHTML = hotGamesData.map(makeGameCard).join('');
+document.getElementById('newGames').innerHTML = newGamesData.map(makeGameCard).join('');
+document.getElementById('matchesScroll').innerHTML = matchesData.map(makeMatchCard).join('');
+document.getElementById('matchesGrid').innerHTML = matchesData.map(makeMatchCard).join('');
+
+// Hero slider
+const slider = document.getElementById('heroSlider');
+const dots = document.querySelectorAll('.hero-dots .dot');
+let cur = 0;
+function goTo(n){
+  cur = n;
+  const w = slider.children[0].offsetWidth + 12;
+  slider.scrollTo({left:w*n,behavior:'smooth'});
+  dots.forEach((d,i)=>d.classList.toggle('active',i===n));
+}
+setInterval(()=>goTo((cur+1)%3),4000);
+dots.forEach((d,i)=>d.addEventListener('click',()=>goTo(i)));
+
+// Category toggle
+document.querySelectorAll('.cat-card').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.cat-card').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  });
+});
+
+// Chip toggle
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  });
+});
+
+// Sidebar toggle
+document.querySelectorAll('.sidebar-item').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.sidebar-item').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  });
+});
+
+// ═══════════════════════════════════════════
+// API INTEGRATION
+// ═══════════════════════════════════════════
+const API_BASE = 'https://slotsite-backend-production.up.railway.app/api';
+let authToken = localStorage.getItem('drslot_token') || null;
+
+function apiHeaders() {
+  const h = { 'Content-Type': 'application/json' };
+  if (authToken) h['Authorization'] = 'Bearer ' + authToken;
+  return h;
+}
+
+async function apiCall(path, options = {}) {
+  const res = await fetch(API_BASE + path, { ...options, headers: { ...apiHeaders(), ...options.headers } });
+  return res.json();
+}
+
+// ── Login Modal ──
+function createLoginModal() {
+  if (document.getElementById('drslot-login-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'drslot-login-modal';
+  modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center';
+  modal.innerHTML = `<div style="background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;width:min(360px,90vw);position:relative">
+    <div style="position:absolute;top:12px;right:16px;cursor:pointer;font-size:20px;color:var(--text-dim)" onclick="closeLoginModal()">&times;</div>
+    <div style="font-size:20px;font-weight:700;margin-bottom:20px;text-align:center">DR.<span style="color:var(--green)">SLOT</span></div>
+    <div id="drslot-login-tab" style="display:flex;gap:8px;margin-bottom:16px">
+      <button onclick="switchAuthTab('login')" class="auth-tab active" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--green);color:#000;font-weight:600;font-size:13px;cursor:pointer">로그인</button>
+      <button onclick="switchAuthTab('register')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--card);color:var(--text-dim);font-weight:600;font-size:13px;cursor:pointer">회원가입</button>
+    </div>
+    <div id="drslot-auth-form">
+      <input id="drslot-username" type="text" placeholder="유저명" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none">
+      <input id="drslot-password" type="password" placeholder="비밀번호" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none">
+      <div id="drslot-register-fields" style="display:none">
+        <input id="drslot-nickname" type="text" placeholder="닉네임" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none">
+      </div>
+      <div id="drslot-auth-error" style="color:var(--red);font-size:12px;margin-bottom:8px;display:none"></div>
+      <button id="drslot-auth-submit" onclick="submitAuth()" style="width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#00cc00);color:#000;font-weight:700;font-size:14px;cursor:pointer">로그인</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+let currentAuthTab = 'login';
+function switchAuthTab(tab) {
+  currentAuthTab = tab;
+  const tabs = document.querySelectorAll('#drslot-login-tab .auth-tab');
+  tabs[0].style.background = tab === 'login' ? 'var(--green)' : 'var(--card)';
+  tabs[0].style.color = tab === 'login' ? '#000' : 'var(--text-dim)';
+  tabs[1].style.background = tab === 'register' ? 'var(--green)' : 'var(--card)';
+  tabs[1].style.color = tab === 'register' ? '#000' : 'var(--text-dim)';
+  document.getElementById('drslot-register-fields').style.display = tab === 'register' ? 'block' : 'none';
+  document.getElementById('drslot-auth-submit').textContent = tab === 'login' ? '로그인' : '회원가입';
+  document.getElementById('drslot-auth-error').style.display = 'none';
+}
+function openLoginModal() { createLoginModal(); document.getElementById('drslot-login-modal').style.display = 'flex'; }
+function closeLoginModal() { const m = document.getElementById('drslot-login-modal'); if (m) m.style.display = 'none'; }
+async function submitAuth() {
+  const username = document.getElementById('drslot-username').value.trim();
+  const password = document.getElementById('drslot-password').value.trim();
+  const errEl = document.getElementById('drslot-auth-error');
+  if (!username || !password) { errEl.textContent = '유저명과 비밀번호를 입력하세요'; errEl.style.display = 'block'; return; }
+  try {
+    if (currentAuthTab === 'login') {
+      const data = await apiCall('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) });
+      if (data.success && data.data && data.data.token) { authToken = data.data.token; localStorage.setItem('drslot_token', authToken); closeLoginModal(); updateUIForLogin(); }
+      else { errEl.textContent = data.error || '로그인 실패'; errEl.style.display = 'block'; }
+    } else {
+      const nickname = document.getElementById('drslot-nickname').value.trim() || username;
+      const data = await apiCall('/auth/register', { method: 'POST', body: JSON.stringify({ username, password, nickname }) });
+      if (data.success && data.data && data.data.token) { authToken = data.data.token; localStorage.setItem('drslot_token', authToken); closeLoginModal(); updateUIForLogin(); }
+      else { errEl.textContent = data.error || '회원가입 실패'; errEl.style.display = 'block'; }
+    }
+  } catch (e) { errEl.textContent = '서버 연결 실패'; errEl.style.display = 'block'; }
+}
+
+// ── Balance ──
+async function updateBalance() {
+  if (!authToken) return;
+  try {
+    const data = await apiCall('/wallet/balance');
+    if (data.success && data.data !== undefined) {
+      const bal = Number(data.data.balance || data.data || 0);
+      document.querySelectorAll('.balance-chip .amt').forEach(el => el.textContent = '₩' + bal.toLocaleString());
+    }
+  } catch (e) {}
+}
+
+// ── Games from API ──
+async function loadGamesFromAPI() {
+  try {
+    const data = await apiCall('/games?page=1&limit=20');
+    if (data.success && data.data && data.data.length > 0) {
+      const games = data.data;
+      const hotEl = document.getElementById('hotGames');
+      const newEl = document.getElementById('newGames');
+      const apiCards = games.map(g => {
+        const emoji = g.thumbnail || '🎰';
+        const bg = '#1a1a3a,#0d0d2a';
+        const badge = g.is_hot ? 'hot' : g.is_new ? 'new' : null;
+        return makeGameCard({ name: g.name || g.game_name, provider: g.provider || '', emoji, bg, badge });
+      });
+      if (hotEl) hotEl.innerHTML = apiCards.slice(0, 12).join('');
+      if (newEl) newEl.innerHTML = apiCards.slice(12).join('') || newEl.innerHTML;
+    }
+  } catch (e) {}
+}
+
+function updateUIForLogin() { updateBalance(); loadGamesFromAPI(); }
+
+// ── Deposit Button ──
+document.querySelectorAll('.btn-deposit').forEach(btn => {
+  btn.addEventListener('click', () => { if (!authToken) openLoginModal(); else alert('충전 페이지로 이동합니다'); });
+});
+document.querySelectorAll('.btn-icon').forEach(btn => {
+  if (btn.textContent.trim() === '👤') btn.addEventListener('click', () => { if (!authToken) openLoginModal(); });
+});
+
+if (authToken) updateUIForLogin();
+loadGamesFromAPI();
+</script>
+</body>
+</html>
