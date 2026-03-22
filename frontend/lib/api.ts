@@ -126,6 +126,12 @@ export const adminApi = {
   bulkAddGames: (data: any) => api.post('/games/admin/games/bulk', data),
   updateGame: (id: number, data: any) => api.put(`/games/admin/games/${id}`, data),
   deleteGame: (id: number) => api.delete(`/games/admin/games/${id}`),
+  // User detail
+  getUserDetail: (id: number) => api.get(`/admin/users/${id}/detail`),
+  // User memo
+  updateUserMemo: (id: number, memo: string) => api.put(`/admin/users/${id}`, { memo }),
+  // Money history
+  getMoneyHistory: (params?: string) => api.get(`/admin/money-history${params ? `?${params}` : ''}`),
   // Logs
   getLogs: async (params?: { page?: number; action?: string; admin?: string }) => {
     const query = new URLSearchParams();

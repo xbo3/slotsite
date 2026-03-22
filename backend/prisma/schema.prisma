@@ -21,6 +21,7 @@ model User {
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
   last_login        DateTime?
+  memo              String?
 
   // BiPays 연동
   bipays_member_id      Int?      // BiPays 회원 번호 (member_no)

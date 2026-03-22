@@ -1027,4 +1027,455 @@ router.get('/games/stats', async (req: Request, res: Response): Promise<void> =>
   }
 });
 
+// ===== 유저 상세 전체 데이터 =====
+
+// GET /users/:id/detail — 유저 상세 (통합)
+router.get('/users/:id/detail', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = parseInt(String(req.params.id));
+    if (isNaN(userId)) {
+      res.status(400).json(errorResponse('유효하지 않은 유저 ID입니다'));
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        nickname: true,
+        phone: true,
+        role: true,
+        status: true,
+        balance: true,
+        bonus_balance: true,
+        memo: true,
+        created_at: true,
+        updated_at: true,
+        last_login: true,
+      },
+    });
+
+    if (!user) {
+      res.status(404).json(errorResponse('유저를 찾을 수 없습니다'));
+      return;
+    }
+
+    // 통계 (입금/출금/베팅/당첨)
+    const [depositSum, withdrawSum, betSum, winSum] = await Promise.all([
+      prisma.transaction.aggregate({
+        where: { user_id: userId, type: 'DEPOSIT', status: 'COMPLETED' },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.aggregate({
+        where: { user_id: userId, type: 'WITHDRAW', status: 'COMPLETED' },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.aggregate({
+        where: { user_id: userId, type: 'BET', status: 'COMPLETED' },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.aggregate({
+        where: { user_id: userId, type: 'WIN', status: 'COMPLETED' },
+        _sum: { amount: true },
+      }),
+    ]);
+
+    const totalDeposit = Number(depositSum._sum.amount || 0);
+    const totalWithdraw = Number(withdrawSum._sum.amount || 0);
+    const totalBet = Number(betSum._sum.amount || 0);
+    const totalWin = Number(winSum._sum.amount || 0);
+
+    // 최근 로그인 10건
+    const recentLogins = await prisma.loginLog.findMany({
+      where: { user_id: userId },
+      orderBy: { created_at: 'desc' },
+      take: 10,
+      select: {
+        ip_address: true,
+        device: true,
+        user_agent: true,
+        created_at: true,
+        fingerprint_hash: true,
+      },
+    });
+
+    // 활성 보너스
+    const activeBonuses = await prisma.userBonus.findMany({
+      where: { user_id: userId, status: 'ACTIVE' },
+      include: {
+        template: { select: { name: true } },
+      },
+    });
+
+    const activeBonus = activeBonuses.map((b: any) => ({
+      template_name: b.template.name,
+      wagered: Number(b.wager_completed),
+      required: Number(b.wager_required),
+      progress_pct: Number(b.wager_required) > 0
+        ? Math.round(Number(b.wager_completed) / Number(b.wager_required) * 10000) / 100
+        : 0,
+    }));
+
+    // 최근 트랜잭션 20건
+    const recentTransactions = await prisma.transaction.findMany({
+      where: { user_id: userId },
+      orderBy: { created_at: 'desc' },
+      take: 20,
+      select: {
+        id: true,
+        type: true,
+        amount: true,
+        balance_after: true,
+        status: true,
+        reference: true,
+        memo: true,
+        created_at: true,
+      },
+    });
+
+    res.json(successResponse({
+      user: {
+        ...user,
+        balance: Number(user.balance),
+        bonus_balance: Number(user.bonus_balance),
+      },
+      stats: {
+        totalDeposit,
+        totalWithdraw,
+        totalBet,
+        totalWin,
+        netProfit: totalDeposit - totalWithdraw,
+      },
+      recentLogins,
+      activeBonus,
+      recentTransactions: recentTransactions.map((t: any) => ({
+        ...t,
+        amount: Number(t.amount),
+        balance_after: Number(t.balance_after),
+      })),
+    }));
+  } catch (err) {
+    console.error('GET /admin/users/:id/detail error:', err);
+    res.status(500).json(errorResponse('서버 오류가 발생했습니다'));
+  }
+});
+
+// ===== 머니히스토리 =====
+
+// GET /money-history — 전체 유저 머니히스토리
+router.get('/money-history', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const {
+      page = '1',
+      limit = '20',
+      type,
+      username,
+      startDate,
+      endDate,
+    } = req.query;
+
+    const pageNum = Math.max(1, parseInt(page as string) || 1);
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit as string) || 20));
+    const skip = (pageNum - 1) * limitNum;
+
+    const where: any = {};
+
+    // type 필터 (deposit/withdraw/bet/win/bonus/coupon → TxType enum)
+    if (type) {
+      const typeStr = (type as string).toUpperCase();
+      if (['DEPOSIT', 'WITHDRAW', 'BET', 'WIN', 'BONUS'].includes(typeStr)) {
+        where.type = typeStr;
+      }
+    }
+
+    // username 필터
+    if (username) {
+      where.user = {
+        username: { contains: username as string, mode: 'insensitive' },
+      };
+    }
+
+    // 날짜 필터
+    if (startDate || endDate) {
+      where.created_at = {};
+      if (startDate) where.created_at.gte = new Date(startDate as string);
+      if (endDate) where.created_at.lte = new Date(endDate as string);
+    }
+
+    const [transactions, total] = await Promise.all([
+      prisma.transaction.findMany({
+        where,
+        orderBy: { created_at: 'desc' },
+        skip,
+        take: limitNum,
+        include: {
+          user: { select: { username: true } },
+        },
+      }),
+      prisma.transaction.count({ where }),
+    ]);
+
+    // 필터된 기간의 합계
+    const summaryWhere = { ...where, status: 'COMPLETED' as const };
+    const [sumDeposit, sumWithdraw, sumBet, sumWin] = await Promise.all([
+      prisma.transaction.aggregate({
+        where: { ...summaryWhere, type: 'DEPOSIT' },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.aggregate({
+        where: { ...summaryWhere, type: 'WITHDRAW' },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.aggregate({
+        where: { ...summaryWhere, type: 'BET' },
+        _sum: { amount: true },
+      }),
+      prisma.transaction.aggregate({
+        where: { ...summaryWhere, type: 'WIN' },
+        _sum: { amount: true },
+      }),
+    ]);
+
+    const totalDeposit = Number(sumDeposit._sum.amount || 0);
+    const totalWithdraw = Number(sumWithdraw._sum.amount || 0);
+    const totalBet = Number(sumBet._sum.amount || 0);
+    const totalWin = Number(sumWin._sum.amount || 0);
+
+    res.json(successResponse({
+      transactions: transactions.map((t: any) => ({
+        id: t.id,
+        username: t.user.username,
+        type: t.type,
+        amount: Number(t.amount),
+        balance_after: Number(t.balance_after),
+        reference: t.reference,
+        memo: t.memo,
+        created_at: t.created_at,
+      })),
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        total_pages: Math.ceil(total / limitNum),
+      },
+      summary: {
+        totalDeposit,
+        totalWithdraw,
+        totalBet,
+        totalWin,
+        netProfit: totalDeposit - totalWithdraw,
+      },
+    }));
+  } catch (err) {
+    console.error('GET /admin/money-history error:', err);
+    res.status(500).json(errorResponse('서버 오류가 발생했습니다'));
+  }
+});
+
+// ===== 유저 메모 =====
+
+// PUT /users/:id/memo — 유저 메모 저장
+router.put('/users/:id/memo', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = parseInt(String(req.params.id));
+    if (isNaN(userId)) {
+      res.status(400).json(errorResponse('유효하지 않은 유저 ID입니다'));
+      return;
+    }
+
+    const { memo } = req.body;
+    if (memo === undefined) {
+      res.status(400).json(errorResponse('memo 필드가 필요합니다'));
+      return;
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      res.status(404).json(errorResponse('유저를 찾을 수 없습니다'));
+      return;
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { memo: memo || null },
+    });
+
+    await createAdminLog(
+      req.user!.id,
+      'USER_MEMO_UPDATE',
+      'User',
+      userId,
+      { memo },
+      req.ip
+    );
+
+    res.json(successResponse({ user_id: userId, memo: memo || null }));
+  } catch (err) {
+    console.error('PUT /admin/users/:id/memo error:', err);
+    res.status(500).json(errorResponse('서버 오류가 발생했습니다'));
+  }
+});
+
+// ===== 쿠폰 통계 =====
+
+// GET /coupons/stats — 쿠폰 통계
+router.get('/coupons/stats', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const now = new Date();
+
+    // 전체 쿠폰 목록
+    const coupons = await prisma.coupon.findMany({
+      select: {
+        id: true,
+        type: true,
+        value: true,
+        max_uses: true,
+        used_count: true,
+        is_active: true,
+        expires_at: true,
+      },
+    });
+
+    let totalIssued = 0;
+    let totalUsed = 0;
+    let totalExpired = 0;
+    let totalUnused = 0;
+    let totalAmountIssued = 0;
+    let totalAmountUsed = 0;
+
+    const byType: Record<string, { issued: number; used: number }> = {};
+
+    for (const c of coupons) {
+      const typeName = c.type as string;
+      if (!byType[typeName]) {
+        byType[typeName] = { issued: 0, used: 0 };
+      }
+
+      totalIssued++;
+      byType[typeName].issued++;
+      totalAmountIssued += Number(c.value);
+
+      if (c.used_count > 0) {
+        totalUsed++;
+        byType[typeName].used++;
+        totalAmountUsed += Number(c.value) * c.used_count;
+      }
+
+      if (c.expires_at && c.expires_at < now && c.used_count === 0) {
+        totalExpired++;
+      }
+
+      if (c.used_count === 0 && c.is_active && (!c.expires_at || c.expires_at >= now)) {
+        totalUnused++;
+      }
+    }
+
+    res.json(successResponse({
+      total: {
+        issued: totalIssued,
+        used: totalUsed,
+        expired: totalExpired,
+        unused: totalUnused,
+      },
+      byType,
+      totalAmount: {
+        issued: totalAmountIssued,
+        used: totalAmountUsed,
+      },
+    }));
+  } catch (err) {
+    console.error('GET /admin/coupons/stats error:', err);
+    res.status(500).json(errorResponse('서버 오류가 발생했습니다'));
+  }
+});
+
+// ===== 쿠폰 일괄 발급 =====
+
+// POST /coupons/bulk-assign — 다수 유저에게 일괄 쿠폰 발급
+router.post('/coupons/bulk-assign', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { userIds, couponData } = req.body;
+
+    if (!userIds || !Array.isArray(userIds) || userIds.length === 0) {
+      res.status(400).json(errorResponse('userIds 배열이 필요합니다'));
+      return;
+    }
+
+    if (!couponData || !couponData.type || couponData.amount === undefined) {
+      res.status(400).json(errorResponse('couponData에 type, amount가 필요합니다'));
+      return;
+    }
+
+    const { code_prefix = 'BULK', type, amount, expires_at, description } = couponData;
+
+    // type 검증
+    if (!['BONUS_MONEY', 'FREE_SPIN', 'DEPOSIT_BONUS'].includes(type)) {
+      res.status(400).json(errorResponse('type은 BONUS_MONEY, FREE_SPIN, DEPOSIT_BONUS 중 하나여야 합니다'));
+      return;
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+      res.status(400).json(errorResponse('유효한 금액을 입력해주세요'));
+      return;
+    }
+
+    // 유저 존재 확인
+    const users = await prisma.user.findMany({
+      where: { id: { in: userIds.map((id: any) => parseInt(id)) } },
+      select: { id: true, username: true },
+    });
+
+    if (users.length === 0) {
+      res.status(400).json(errorResponse('유효한 유저가 없습니다'));
+      return;
+    }
+
+    const createdCoupons: any[] = [];
+    const timestamp = Date.now().toString(36);
+
+    for (const user of users) {
+      const code = `${code_prefix}-${user.id}-${timestamp}`.toUpperCase();
+
+      const coupon = await prisma.coupon.create({
+        data: {
+          code,
+          type: type as any,
+          value: numAmount,
+          max_uses: 1,
+          target_user_id: user.id,
+          is_active: true,
+          expires_at: expires_at ? new Date(expires_at) : null,
+          description: description || `일괄 발급 (${code_prefix})`,
+        },
+      });
+
+      createdCoupons.push({
+        coupon_id: coupon.id,
+        code: coupon.code,
+        user_id: user.id,
+        username: user.username,
+      });
+    }
+
+    await createAdminLog(
+      req.user!.id,
+      'COUPON_BULK_ASSIGN',
+      'Coupon',
+      undefined,
+      { userIds: users.map((u: any) => u.id), couponData, created_count: createdCoupons.length },
+      req.ip
+    );
+
+    res.json(successResponse({
+      created_count: createdCoupons.length,
+      coupons: createdCoupons,
+    }));
+  } catch (err) {
+    console.error('POST /admin/coupons/bulk-assign error:', err);
+    res.status(500).json(errorResponse('서버 오류가 발생했습니다'));
+  }
+});
+
 export default router;
