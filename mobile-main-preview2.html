@@ -22,7 +22,10 @@ body{font-family:'Inter','Poppins',sans-serif;background:var(--bg);color:var(--t
 a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== SIDEBAR (PC) ===== */
-.sidebar{display:none;position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);z-index:300;flex-direction:column;overflow-y:auto;scrollbar-width:none}
+.sidebar{display:none;position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);z-index:300;flex-direction:column;overflow-y:auto;scrollbar-width:none;transition:transform .3s ease}
+.sidebar.mobile-open{display:flex;z-index:400}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:399}
+.sidebar-overlay.active{display:block}
 .sidebar::-webkit-scrollbar{display:none}
 .sb-logo{padding:20px;font-family:'Poppins';font-weight:800;font-size:22px;border-bottom:1px solid var(--border)}
 .sb-logo .dr{background:linear-gradient(135deg,var(--neon),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -372,7 +375,8 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 <body>
 
 <!-- SIDEBAR -->
-<aside class="sidebar">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="mobileSidebar">
   <div class="sb-logo"><span class="dr">DR.</span><span class="slot">SLOT</span></div>
   <div class="sb-sec">
     <div class="sb-sec-t">Games</div>
@@ -661,13 +665,27 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 <!-- BOTTOM NAV -->
 <nav class="bnav">
-  <a class="bn-item active"><img src="mint_icon1.png" alt="Menu" class="nav-icon"><span class="bl">Menu</span></a>
+  <a class="bn-item active" onclick="toggleSidebar()"><img src="mint_icon1.png" alt="Menu" class="nav-icon"><span class="bl">Menu</span></a>
   <a class="bn-item"><img src="mint_icon2.png" alt="Sports" class="nav-icon"><span class="bl">Sports</span></a>
   <a class="bn-item"><img src="mint_icon3.png" alt="Bonus" class="nav-icon"><span class="bl">Bonus</span></a>
   <a class="bn-item"><img src="mint_icon4.png" alt="Profile" class="nav-icon"><span class="bl">Profile</span></a>
 </nav>
 
 <script>
+// ═══════════════════════════════════════════
+// SIDEBAR TOGGLE (Mobile)
+// ═══════════════════════════════════════════
+function toggleSidebar() {
+  const sb = document.getElementById('mobileSidebar');
+  const ov = document.getElementById('sidebarOverlay');
+  sb.classList.toggle('mobile-open');
+  ov.classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('mobileSidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
 // ═══════════════════════════════════════════
 // API INTEGRATION
 // ═══════════════════════════════════════════
