@@ -538,6 +538,7 @@ const translations = {
     // Language
     'lang_ko': '한국어',
     'lang_en': 'English',
+    'lang_th': 'ภาษาไทย',
   },
   en: {
     'home': 'Home',
@@ -1067,15 +1068,556 @@ const translations = {
     // Language
     'lang_ko': '한국어',
     'lang_en': 'English',
+    'lang_th': 'ภาษาไทย',
+  },
+  th: {
+    // 공통
+    'home': 'หน้าแรก',
+    'games': 'เกม',
+    'lobby': 'ล็อบบี้',
+    'bonus': 'โบนัส',
+    'wallet': 'กระเป๋าเงิน',
+    'mypage': 'หน้าของฉัน',
+    'support': 'ฝ่ายสนับสนุน',
+    'login': 'เข้าสู่ระบบ',
+    'register': 'สมัครสมาชิก',
+    'logout': 'ออกจากระบบ',
+    'more': 'เพิ่มเติม',
+    'search': 'ค้นหา',
+    'balance': 'ยอดคงเหลือ',
+    'deposit': 'ฝากเงิน',
+    'withdraw': 'ถอนเงิน',
+    'settings': 'ตั้งค่า',
+    'profile': 'โปรไฟล์',
+
+    // 코인 배너
+    'coin_support_title': 'รองรับการฝากเหรียญ 16 ชนิด! โบนัสสะสมทุก 3 ครั้งที่ฝาก USDT!',
+    'coin_support_desc': '',
+
+    // 메인
+    'popular_games': 'เกมยอดนิยม',
+    'new_games': 'เกมใหม่',
+    'all_games': 'เกมทั้งหมด',
+    'play_now': 'เล่นเลย',
+    'see_all': 'ดูทั้งหมด',
+    'providers': 'ผู้ให้บริการ',
+    'live_betting': 'เดิมพันสด',
+    'big_wins': 'ชนะครั้งใหญ่',
+    'leaderboard': 'กระดานผู้นำ',
+
+    // 보너스
+    'emergency_bonus': 'โบนัสฉุกเฉิน',
+    'derived_bonus': 'โบนัสอนุพันธ์',
+    'linked_bonus': 'โบนัสเชื่อมโยง',
+    'relay_bonus': 'โบนัสรีเลย์',
+    'request_bonus': 'โบนัสคำขอ',
+    'grade_benefits': 'สิทธิประโยชน์ตามระดับ',
+    'bonus_loan': 'สินเชื่อโบนัส',
+    'available': 'พร้อมรับ',
+    'claimed': 'รับแล้ว',
+    'convert': 'แปลง',
+    'current_rolling': 'โรลลิ่งปัจจุบัน',
+
+    // 지갑
+    'deposit_request': 'คำขอฝากเงิน',
+    'withdraw_request': 'คำขอถอนเงิน',
+    'transaction_history': 'ประวัติธุรกรรม',
+    'min_deposit': 'ฝากขั้นต่ำ',
+    'estimated_arrival': 'เวลาโดยประมาณ',
+
+    // 마이페이지
+    'my_profile': 'โปรไฟล์ของฉัน',
+    'betting_history': 'ประวัติการเดิมพัน',
+    'my_bonus': 'โบนัสของฉัน',
+    'my_transactions': 'ธุรกรรมของฉัน',
+    'change_password': 'เปลี่ยนรหัสผ่าน',
+    'nickname': 'ชื่อเล่น',
+
+    // 관리자
+    'admin_dashboard': 'แดชบอร์ดผู้ดูแล',
+    'user_management': 'จัดการสมาชิก',
+    'finance_management': 'จัดการการเงิน',
+    'game_management': 'จัดการเกม',
+    'bonus_management': 'จัดการโบนัส',
+
+    // 로그인/회원가입
+    'username': 'ชื่อผู้ใช้',
+    'password': 'รหัสผ่าน',
+    'confirm_password': 'ยืนยันรหัสผ่าน',
+    'phone': 'โทรศัพท์',
+    'already_have_account': 'มีบัญชีอยู่แล้ว?',
+    'no_account': 'ยังไม่มีบัญชี?',
+
+    // 푸터
+    'responsible_gaming': 'เล่นอย่างรับผิดชอบ',
+    'terms': 'เงื่อนไขการให้บริการ',
+    'privacy': 'นโยบายความเป็นส่วนตัว',
+    'copyright': '© 2026 DR.SLOT. All rights reserved.',
+
+    // 기타
+    'loading': 'กำลังโหลด...',
+    'no_data': 'ไม่มีข้อมูล',
+    'error': 'เกิดข้อผิดพลาด',
+    'confirm': 'ยืนยัน',
+    'cancel': 'ยกเลิก',
+    'save': 'บันทึก',
+    'delete': 'ลบ',
+    'edit': 'แก้ไข',
+    'close': 'ปิด',
+    'copy': 'คัดลอก',
+    'copied': 'คัดลอกแล้ว',
+
+    // Header
+    'search_games': 'ค้นหาเกม...',
+    'recent_searches': 'ค้นหาล่าสุด',
+    'held_balance': 'ยอดคงเหลือ',
+    'withdrawal': 'ถอนเงิน',
+    'menu': 'เมนู',
+
+    // Sidebar
+    'slots': 'สล็อต',
+    'live': 'สด',
+    'table': 'โต๊ะ',
+    'mini_games': 'มินิเกม',
+    'customer_support_247': 'สนับสนุน 24/7',
+    'live_chat': 'แชทสด',
+
+    // MobileNav
+    'select_category': 'เลือกหมวดหมู่',
+    'num_games': ' เกม',
+    'view_all_games': 'ดูเกมทั้งหมด',
+
+    // Footer
+    'best_slot_experience': 'ประสบการณ์สล็อตออนไลน์ที่ดีที่สุด',
+    'quick_links': 'ลิงก์ด่วน',
+    'game_lobby': 'ล็อบบี้เกม',
+    'deposit_withdraw': 'ฝาก / ถอน',
+    'info': 'ข้อมูล',
+    'age_restriction': 'อายุ 18 ปีขึ้นไป',
+    'responsible_gaming_msg': 'เราสนับสนุนการเล่นเกมอย่างรับผิดชอบ',
+
+    // Login
+    'login_title': 'เข้าสู่ระบบ',
+    'login_subtitle': 'เข้าสู่ระบบเพื่อเริ่มเล่นเกม',
+    'enter_username': 'ใส่ชื่อผู้ใช้',
+    'enter_password': 'ใส่รหัสผ่าน',
+    'login_required': 'กรุณาใส่ชื่อผู้ใช้และรหัสผ่าน',
+    'login_failed': 'เข้าสู่ระบบล้มเหลว',
+    'login_error': 'เกิดข้อผิดพลาดขณะเข้าสู่ระบบ',
+    'logging_in': 'กำลังเข้าสู่ระบบ...',
+    'not_member': 'ยังไม่เป็นสมาชิก?',
+    'forgot_password': 'ลืมรหัสผ่าน?',
+    'or': 'หรือ',
+
+    // Register
+    'register_title': 'สมัครสมาชิก',
+    'register_subtitle': 'สมัครฟรีและเพลิดเพลินกับเกมต่างๆ',
+    'username_placeholder': 'ตัวอักษรและตัวเลข 4 ตัวขึ้นไป',
+    'pw_placeholder': '8 ตัวขึ้นไป',
+    'pw_confirm_placeholder': 'ใส่รหัสผ่านอีกครั้ง',
+    'required_fields': 'กรุณากรอกข้อมูลที่จำเป็นทั้งหมด',
+    'username_min': 'ชื่อผู้ใช้ต้องมีอย่างน้อย 4 ตัวอักษร',
+    'pw_min': 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร',
+    'pw_mismatch': 'รหัสผ่านไม่ตรงกัน',
+    'register_failed': 'การสมัครล้มเหลว',
+    'register_error': 'เกิดข้อผิดพลาดขณะสมัคร',
+    'registering': 'กำลังสมัคร...',
+    'register_btn': 'สมัครสมาชิก',
+    'username_min_msg': 'ต้องมีอย่างน้อย 4 ตัวอักษร',
+    'username_valid': 'ชื่อผู้ใช้นี้ใช้ได้',
+    'pw_strength': 'ความแข็งแกร่งรหัสผ่าน',
+    'pw_weak': 'อ่อน',
+    'pw_medium': 'ปานกลาง',
+    'pw_strong': 'แข็งแกร่ง',
+    'pw_match': 'รหัสผ่านตรงกัน',
+    'signup_bonus_title': 'โบนัสสมัครสมาชิก',
+    'signup_bonus_amount': '$10 ทันที!',
+    'signup_bonus_desc1': 'สมัครตอนนี้และลอง',
+    'signup_bonus_desc2': 'สล็อตพรีเมียมด้วยโบนัสฟรี',
+    'games_count': '300+ เกม',
+    'instant_withdraw': 'ถอนทันที',
+    '247_support': 'สนับสนุน 24/7',
+
+    // Main page
+    'first_deposit_bonus': 'โบนัสฝากครั้งแรก',
+    'up_to_200': 'สูงสุด 200%',
+    'first_deposit_desc': 'สมัครตอนนี้และรับโบนัสสูงสุด 200% เมื่อฝากครั้งแรก!',
+    'get_bonus': 'รับโบนัส',
+    'daily_cashback': 'แคชแบ็คทุกวัน',
+    'up_to_15': 'สูงสุด 15%',
+    'daily_cashback_desc': 'ยิ่งเล่นมากยิ่งได้แคชแบ็คมาก! อย่าพลาด',
+    'see_details': 'ดูรายละเอียด',
+    'vip_benefits': 'สิทธิประโยชน์ VIP',
+    'unlimited': 'ไม่จำกัด',
+    'vip_benefits_desc': 'ยิ่งระดับ VIP สูงขึ้น ยิ่งได้รับรางวัลมากขึ้นและเกมพิเศษ',
+    'view_vip_benefits': 'ดูสิทธิประโยชน์ VIP',
+    'now_playing_count': 'ขณะนี้มี {count} คนกำลังเล่น',
+    'browse_games': 'เลือกดูเกม',
+    'popular_games_icon': 'เกมยอดนิยม',
+    'top8_realtime': 'TOP 8 เกมที่มีผู้เล่นมากที่สุดแบบเรียลไทม์',
+    'view_all': 'ดูทั้งหมด',
+    'view_all_games_arrow': 'ดูเกมทั้งหมด',
+    'new_games_icon': 'เกมใหม่',
+    'new_hot_games': 'เกมฮอตที่เพิ่งออกใหม่',
+    'play_now_icon': 'เล่นเลย',
+    'big_win_title': 'BIG WIN',
+    'recent_big_winners': 'ผู้ชนะรางวัลใหญ่ล่าสุด',
+    'official_providers': 'ผู้ให้บริการเกมอย่างเป็นทางการ',
+    '300_premium_games': '300+ เกมพรีเมียม',
+    '300_premium_games_desc': 'สล็อตยอดนิยมและเกมสดจากผู้ให้บริการระดับโลก Pragmatic Play, PG Soft และ Evolution',
+    'instant_deposit_withdraw': 'ฝาก-ถอนทันที',
+    'instant_deposit_desc': 'รวดเร็วและปลอดภัยผ่าน USDT คริปโตและโอนธนาคาร ถอนเงินภายใน 10 นาที',
+    'vip_bonus': 'โบนัส VIP',
+    'vip_bonus_desc': 'โบนัสฝากครั้งแรก 15%, แคชแบ็ครายสัปดาห์, รางวัลเลเวลอัพ ยิ่งเล่นยิ่งได้',
+    'weekly_top10': 'TOP 10 ประจำสัปดาห์',
+    'most_winners': 'ผู้เล่นที่ชนะมากที่สุด',
+    'rank': 'อันดับ',
+    'nickname_col': 'ชื่อเล่น',
+    'game_col': 'เกม',
+    'win_amount': 'จำนวนเงินรางวัล',
+    'join_now_and': 'สมัครตอนนี้และ',
+    'get_special_bonus': 'รับโบนัสพิเศษ',
+    'new_member_bonus': 'สมาชิกใหม่รับ',
+    'up_to_200_bonus': 'สูงสุด 200%',
+    'bonus_given': 'โบนัสเมื่อฝากครั้งแรก',
+    'join_now': 'สมัครเลย',
+    'real_play': 'เล่นจริง',
+    'free_trial': 'ทดลองฟรี',
+    'hours_ago': 'ชั่วโมงที่แล้ว',
+    'won': 'ชนะ!',
+    'nim': '',
+    'at_game': 'ที่',
+
+    // Lobby page
+    'game_lobby_title': 'ล็อบบี้เกม',
+    'premium_games_waiting': ' เกมพรีเมียมรอคุณอยู่',
+    'recent_play': 'เล่นล่าสุด',
+    'hot_games': 'เกม HOT',
+    'search_game_provider': 'ค้นหาชื่อเกม, ผู้ให้บริการ...',
+    'default_sort': 'เริ่มต้น',
+    'rtp_sort': 'RTP สูงสุด',
+    'name_sort': 'ตามชื่อ',
+    'reset_all': 'รีเซ็ตทั้งหมด',
+    'games_count_suffix': ' เกม',
+    'no_search_results': 'ไม่พบผลลัพธ์',
+    'reset_filters': 'รีเซ็ตตัวกรอง',
+    'all_games_loaded': 'โหลดเกมทั้งหมดแล้ว',
+    'continue_play': 'เล่นต่อ',
+    'recent_label': 'ล่าสุด',
+    'rtp_sort_label': 'RTP',
+    'name_sort_label': 'ชื่อ',
+
+    // Wallet page
+    'my_wallet': 'กระเป๋าเงินของฉัน',
+    'wallet_desc': 'ฟีเจอร์ฝากและถอนเงินจะแสดงที่นี่',
+    'deposit_title': 'ฝากเงิน',
+    'bank_tab': 'ธนาคาร',
+    'crypto_tab': 'คริปโต',
+    'select_bonus': 'เลือกโบนัส',
+    'first_deposit_100': 'ฝากครั้งแรก',
+    'first_deposit_100_desc': 'สูงสุด ₩500,000 · โรลลิ่ง x3',
+    'daily_bonus_10': 'โบนัสรายวัน',
+    'daily_bonus_10_desc': 'ทุกการฝากครั้งแรก · โรลลิ่ง x1',
+    'no_bonus': 'ไม่มีโบนัส',
+    'no_bonus_desc': 'ฝากโดยไม่มีโบนัส',
+    'bonus_warning': 'เลือกได้ <b style="color:#999;font-weight:400">1 โบนัสต่อการฝาก</b> เท่านั้น ต้อง <b style="color:#999;font-weight:400">ยกเลิกหรือใช้ให้เสร็จ</b> ก่อนจึงเลือกใหม่ได้',
+    'deposit_amount': 'จำนวนเงินฝาก',
+    'request_deposit': 'ขอฝากเงิน',
+    'recent_deposits': 'ล่าสุด',
+    'app_download_title': 'บันทึกธุรกรรม',
+    'app_download_desc': "ดาวน์โหลด 'Let\\'s School' จาก Google Play",
+    'crypto_bonus_150': 'ฝากคริปโตครั้งแรก',
+    'crypto_bonus_150_desc': '<b style="color:#ff6b6b;font-weight:400">โบนัส 150%</b> — มากกว่าฝากธนาคาร 50%',
+    'zero_fee': 'ค่าธรรมเนียม 0 · ทันที',
+    'zero_fee_desc': '<b style="color:#ffd43b;font-weight:400">ไม่มีค่าธรรมเนียม</b> · เครดิตอัตโนมัติใน <b style="color:#51cf66;font-weight:400">30 วินาที ~ 2 นาที</b>',
+    'anonymous_secure': 'ไม่ระบุตัวตน & ปลอดภัย',
+    'anonymous_secure_desc': '<b style="color:#339af0;font-weight:400">ไม่เปิดเผย</b> ข้อมูลส่วนตัว · <b style="color:#cc5de8;font-weight:400">บล็อกเชนปลอดภัย</b>',
+    'deposit_address': 'ที่อยู่ฝากเงิน',
+    'crypto_warning': 'ส่งเฉพาะ <b style="color:#999;font-weight:400">USDT</b> ไปยังที่อยู่นี้ ฝากต่ำกว่า <b style="color:#999;font-weight:400">1 USDT</b> จะไม่ถูกเครดิต เครือข่ายผิด = กู้คืนไม่ได้',
+    'address_copied': 'คัดลอกที่อยู่แล้ว',
+
+    // Withdraw
+    'withdraw_tab': 'ถอนเงิน',
+    'deposit_tab': 'ฝากเงิน',
+    'select_bank': 'เลือกธนาคาร',
+    'account_number': 'เลขบัญชี',
+    'account_holder': 'เจ้าของบัญชี',
+    'withdraw_amount': 'จำนวนเงินถอน',
+    'available_balance': 'ยอดคงเหลือ',
+    'min_withdraw': 'ถอนขั้นต่ำ',
+    'estimated_processing': 'เวลาดำเนินการ',
+    'request_withdraw': 'ขอถอนเงิน',
+    'recent_withdrawals': 'การถอนล่าสุด',
+    'wallet_address': 'ที่อยู่กระเป๋าเงิน',
+    'withdraw_qty': 'จำนวนเงินถอน',
+    'fee': 'ค่าธรรมเนียม',
+    'withdraw_requested': 'ขอถอนเงินแล้ว',
+    '10min_to_1hour': '10 นาที ~ 1 ชม.',
+    'about_5min': '~5 นาที',
+    'withdraw_network': 'เครือข่าย',
+    'withdraw_coin_select': 'เลือกเหรียญ',
+
+    // MyPage
+    'daily_missions': 'ภารกิจรายวัน',
+    'completed': 'สำเร็จ',
+    'play_3_games': 'เล่น 3 เกมวันนี้',
+    'first_deposit_mission': 'ฝากเงินครั้งแรก',
+    'complete_profile': 'กรอกโปรไฟล์ให้ครบ',
+    'basic_info_edit': 'แก้ไขข้อมูลพื้นฐาน',
+    'email': 'อีเมล',
+    'email_no_change': 'ไม่สามารถเปลี่ยนอีเมลได้เพื่อความปลอดภัย',
+    'change': 'เปลี่ยน',
+    'change_pw': 'เปลี่ยนรหัสผ่าน',
+    'current_password': 'รหัสผ่านปัจจุบัน',
+    'new_password': 'รหัสผ่านใหม่',
+    'confirm_pw': 'ยืนยันรหัสผ่าน',
+    'current_pw_placeholder': 'ใส่รหัสผ่านปัจจุบัน',
+    'new_pw_6plus': '6 ตัวขึ้นไป',
+    'new_pw_reenter': 'ใส่รหัสผ่านใหม่อีกครั้ง',
+    'submit_change': 'เปลี่ยน',
+    'security_settings': 'ตั้งค่าความปลอดภัย',
+    'security_pw_desc': 'รหัสผ่านรองใช้สำหรับถอนเงิน',
+    'secondary_pw_label': 'รหัสผ่านรอง (4-6 หลัก)',
+    'digits_4_6': '4-6 หลัก',
+    'set_button': 'ตั้งค่า',
+    'recent_login': 'ประวัติเข้าสู่ระบบล่าสุด',
+    'date': 'วันที่',
+    'ip': 'IP',
+    'device': 'อุปกรณ์',
+    'browser': 'เบราว์เซอร์',
+    'nickname_min_2': 'ชื่อเล่นต้องมีอย่างน้อย 2 ตัวอักษร',
+    'nickname_changed': 'เปลี่ยนชื่อเล่นแล้ว',
+    'enter_current_pw': 'กรุณาใส่รหัสผ่านปัจจุบัน',
+    'new_pw_min_6': 'รหัสผ่านใหม่ต้องมีอย่างน้อย 6 ตัวอักษร',
+    'new_pw_mismatch': 'รหัสผ่านใหม่ไม่ตรงกัน',
+    'pw_changed': 'เปลี่ยนรหัสผ่านแล้ว',
+    'enter_4_6_digits': 'กรุณาใส่ 4-6 หลัก',
+    'secondary_pw_set': 'ตั้งรหัสผ่านรองแล้ว',
+
+    // MyPage Layout
+    'total_deposit': 'ฝากทั้งหมด',
+    'total_withdraw_label': 'ถอนทั้งหมด',
+    'total_bet': 'เดิมพันทั้งหมด',
+    'total_wins': 'ชนะทั้งหมด',
+    'level': 'ระดับ',
+    'next_level_xp': 'XP ถึงระดับถัดไป',
+    'joined': 'เข้าร่วม',
+    'held_amount': 'ยอดคงเหลือ',
+    'deposit_action': 'ฝากเงิน',
+    'withdraw_action': 'ถอนเงิน',
+    'tab_profile': 'โปรไฟล์',
+    'tab_transactions': 'ธุรกรรม',
+    'tab_bets': 'การเดิมพัน',
+    'tab_coupons': 'โบนัสของฉัน',
+    'tab_vip': 'VIP',
+
+    // Coupons page
+    'my_bonuses': 'โบนัสของฉัน',
+    'bonus_code_input': 'รหัสโบนัส',
+    'enter_bonus_code': 'ใส่รหัสโบนัส',
+    'checking': 'กำลังตรวจสอบ...',
+    'apply': 'ใช้',
+    'bonus_applied': 'ใช้โบนัสแล้ว!',
+    'bonus_types': 'ประเภทโบนัส',
+    'emergency_bonus_desc': 'โบนัสสนับสนุนฉุกเฉิน',
+    'derived_bonus_desc': 'ได้จากโบนัสที่มีอยู่',
+    'linked_bonus_desc': 'เชื่อมโยงเมื่อเงื่อนไขครบ',
+    'relay_bonus_desc': 'โบนัสตามขั้นตอน',
+    'request_bonus_desc': 'โบนัสตามคำขอ',
+    'grade_benefits_title': 'สิทธิประโยชน์ตามระดับ',
+    'grade_auto_bonus': 'โบนัสอัตโนมัติตามระดับ',
+    'vip_only': 'VIP เท่านั้น',
+    'bonus_loan_title': 'สินเชื่อโบนัส',
+    'advance_rolling': 'จ่ายล่วงหน้าหักโรลลิ่ง',
+    'apply_loan': 'สมัคร',
+    'conversion_coupon_70k': 'คูปองแปลง 70K',
+    'rolling_777_desc': 'แปลงได้เมื่อโรลลิ่งถึง 777%',
+    'current_rolling_label': 'โรลลิ่งปัจจุบัน',
+    'coupon_amount': 'จำนวนคูปอง',
+    'max_conversion': 'แปลงสูงสุด',
+    'convert_btn': 'แปลง',
+    'available_bonuses': 'โบนัสที่ใช้ได้',
+    'no_bonuses': 'ไม่มีโบนัส',
+    'no_bonuses_desc': 'ตรวจสอบหน้าโปรโมชั่นเพื่อรับโบนัส',
+    'view_promotions': 'ดูโปรโมชั่น',
+    'past_bonuses': 'โบนัสที่ใช้แล้ว / หมดอายุ',
+    'use_coupon': 'ใช้',
+    'used_complete': 'ใช้แล้ว',
+    'expired': 'หมดอายุ',
+    'bonus_money': 'เงินโบนัส',
+    'free_spin': 'ฟรีสปิน',
+    'deposit_bonus_label': 'โบนัสฝากเงิน',
+    'min_label': 'ขั้นต่ำ',
+
+    // Bets page
+    'total_bet_count': 'เดิมพันทั้งหมด',
+    'count_suffix': 'ครั้ง',
+    'total_bet_amount': 'จำนวนเดิมพันทั้งหมด',
+    'total_win_amount': 'จำนวนเงินรางวัลทั้งหมด',
+    'net_profit': 'กำไรสุทธิ',
+    'all': 'ทั้งหมด',
+    'slot_label': 'สล็อต',
+    'live_casino': 'คาสิโนสด',
+    'table_game': 'เกมโต๊ะ',
+    'period': 'ช่วงเวลา',
+    'today': 'วันนี้',
+    '7days': '7 วัน',
+    '30days': '30 วัน',
+    'custom_input': 'กำหนดเอง',
+    'all_results': 'ผลทั้งหมด',
+    'all_result_option': 'ผลทั้งหมด',
+    'win': 'ชนะ',
+    'lose': 'แพ้',
+    'no_bets_yet': 'ยังไม่มีเกมที่เล่น',
+    'no_bets_desc': 'เลือกเกมจากล็อบบี้',
+    'browse_games_btn': 'เลือกดูเกม',
+    'bet_detail': 'รายละเอียดเดิมพัน',
+    'bet_amount': 'จำนวนเดิมพัน',
+    'win_amount_label': 'จำนวนเงินรางวัล',
+    'profit': 'กำไร',
+    'result': 'ผลลัพธ์',
+    'round_id': 'รหัสรอบ',
+    'period_select': 'เลือกช่วงเวลา',
+    'direct_input': 'กำหนดเอง',
+    'apply_btn': 'ใช้',
+
+    // Transactions page
+    'tx_deposit': 'ฝากเงิน',
+    'tx_withdraw': 'ถอนเงิน',
+    'tx_bonus': 'โบนัส',
+    'tx_coupon': 'คูปองโบนัส',
+    'tx_status_completed': 'สำเร็จ',
+    'tx_status_pending': 'รอดำเนินการ',
+    'tx_status_cancelled': 'ยกเลิก',
+    'all_status': 'สถานะทั้งหมด',
+    'no_transactions_yet': 'ยังไม่มีธุรกรรม',
+    'no_transactions_desc': 'ฝากเงินเพื่อเริ่มเล่น',
+    'deposit_now': 'ฝากเงินเลย',
+    'tx_detail': 'รายละเอียดธุรกรรม',
+    'status': 'สถานะ',
+    'memo': 'บันทึก',
+    'type_label': 'ประเภท',
+    'amount_label': 'จำนวนเงิน',
+
+    // Support page
+    'customer_center': 'ฝ่ายสนับสนุน',
+    'support_desc': 'ฟีเจอร์สนับสนุนลูกค้าจะแสดงที่นี่',
+
+    // Game page
+    'game_hash': 'เกม',
+    'game_page_desc': 'หน้าจอเปิดเกมจะแสดงที่นี่',
+
+    // Admin layout
+    'admin_panel': 'แผงผู้ดูแล',
+    'dashboard': 'แดชบอร์ด',
+    'user_mgmt': 'สมาชิก',
+    'finance_mgmt': 'การเงิน',
+    'bonus_mgmt': 'โบนัส',
+    'game_mgmt': 'เกม',
+    'back_to_site': 'กลับไปที่ไซต์',
+
+    // Admin dashboard
+    'admin_dashboard_title': 'แดชบอร์ดผู้ดูแล',
+    'admin_desc': 'ฟีเจอร์ผู้ดูแลจะแสดงที่นี่',
+
+    // Admin coupons
+    'bonus_management_title': 'จัดการโบนัส',
+    'bulk_create': 'สร้างจำนวนมาก',
+    'create_bonus': 'สร้างโบนัส',
+    'search_code_desc': 'ค้นหารหัสหรือคำอธิบาย...',
+    'all_status_filter': 'สถานะทั้งหมด',
+    'active': 'ใช้งาน',
+    'inactive': 'ไม่ใช้งาน',
+    'expired_status': 'หมดอายุ',
+    'all_type_filter': 'ประเภททั้งหมด',
+    'code': 'รหัส',
+    'type_col': 'ประเภท',
+    'amount_col': 'จำนวนเงิน',
+    'usage': 'การใช้งาน',
+    'validity_period': 'ระยะเวลา',
+    'status_col': 'สถานะ',
+    'manage': 'จัดการ',
+    'history': 'ประวัติ',
+    'deactivate': 'ปิดใช้งาน',
+    'activate': 'เปิดใช้งาน',
+    'delete_btn': 'ลบ',
+    'create_bonus_modal': 'สร้างโบนัส',
+    'code_label': 'รหัส',
+    'leave_empty_auto': 'เว้นว่างเพื่อสร้างอัตโนมัติ',
+    'auto_generate': 'สร้างอัตโนมัติ',
+    'type_select': 'ประเภท',
+    'ratio_percent': 'อัตราส่วน (%)',
+    'spin_count': 'จำนวนสปิน',
+    'amount_won': 'จำนวนเงิน (KRW)',
+    'min_deposit_condition': 'เงื่อนไขฝากขั้นต่ำ (KRW)',
+    'no_condition': '0 = ไม่มีเงื่อนไข',
+    'use_count_limit': 'จำกัดการใช้งาน',
+    'unlimited_use': '0 = ไม่จำกัด',
+    'start_date': 'วันเริ่มต้น',
+    'end_date': 'วันสิ้นสุด',
+    'specific_user_id': 'ID ผู้ใช้เฉพาะ (ตัวเลือก)',
+    'leave_empty_all': 'เว้นว่างสำหรับผู้ใช้ทั้งหมด',
+    'description': 'คำอธิบาย',
+    'bonus_desc_placeholder': 'คำอธิบายโบนัส',
+    'bulk_bonus_create': 'สร้างโบนัสจำนวนมาก',
+    'create_count': 'จำนวน',
+    'code_prefix': 'คำนำหน้ารหัส',
+    'preview': 'ดูตัวอย่าง',
+    'bulk_create_btn': ' สร้างจำนวนมาก',
+    'usage_history': 'ประวัติการใช้งาน',
+    'total_usage': 'ใช้ทั้งหมด',
+    'max': 'สูงสุด',
+    'remaining': 'เหลือ',
+    'edit_bonus': 'แก้ไขโบนัส',
+    'save_btn': 'บันทึก',
+    'confirm_delete': 'คุณแน่ใจหรือไม่ว่าต้องการลบ?',
+
+    // Additional
+    'play_btn': '▶ เล่น',
+    'hot_games_label': 'เกม HOT',
+    'cold_games_label': 'เกม COLD',
+    'online_label': 'ออนไลน์',
+    'coin_mobile_line1': 'รองรับ 16 เหรียญ!',
+    'coin_mobile_line2': 'โบนัสทุก 3 ครั้งที่ฝาก USDT!',
+
+    // Mobile redesign
+    'total_balance': 'ยอดรวม',
+    'continue_playing': 'เล่นต่อ',
+    'hot_slots': 'สล็อตฮอต',
+    'search_tab': 'ค้นหา',
+    'min_ago': 'นาทีที่แล้ว',
+    'hour_ago': 'ชม. ที่แล้ว',
+    'players': 'ผู้เล่น',
+    'vip_gold': 'VIP GOLD',
+    'to_platinum': 'ถึง PLATINUM',
+
+    // Sidebar/Nav/Profile panel
+    'menu_tab': 'เมนู',
+    'casino': 'คาสิโน',
+    'sports': 'กีฬา',
+    'promotion': 'โปรโมชั่น',
+    'partner': 'พาร์ทเนอร์',
+    'support_247': 'สนับสนุน 24/7',
+    'deposit_menu': 'ฝากเงิน',
+    'withdraw_menu': 'ถอนเงิน',
+    'tx_history': 'ธุรกรรม',
+    'bet_history': 'การเดิมพัน',
+    'vip_club': 'VIP Club',
+    'global_setting': 'ตั้งค่าทั่วไป',
+
+    // Language
+    'lang_ko': '한국어',
+    'lang_en': 'English',
+    'lang_th': 'ภาษาไทย',
   }
 };
 
-export type Lang = 'ko' | 'en';
+export type Lang = 'ko' | 'en' | 'th';
 export type TranslationKey = keyof typeof translations.ko;
 
 // 번역 함수
 export function t(key: string, lang: Lang = 'ko'): string {
-  return (translations[lang] as Record<string, string>)?.[key] || key;
+  return (translations[lang] as Record<string, string>)?.[key] || (translations['en'] as Record<string, string>)?.[key] || key;
 }
 
 // 언어 저장/불러오기
@@ -1086,4 +1628,31 @@ export function getLang(): Lang {
 
 export function setLang(lang: Lang): void {
   localStorage.setItem('lang', lang);
+}
+
+// 백엔드 API에서 번역 데이터 가져오기
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+
+export async function fetchTranslations(lang: string): Promise<Record<string, string> | null> {
+  try {
+    const res = await fetch(`${API_URL}/i18n/${lang}`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    if (json.success) return json.data.translations;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+export async function fetchSupportedLanguages(): Promise<{ code: string; name: string; native: string }[]> {
+  try {
+    const res = await fetch(`${API_URL}/i18n`);
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (json.success) return json.data.languages;
+    return [];
+  } catch {
+    return [];
+  }
 }

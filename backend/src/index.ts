@@ -21,6 +21,7 @@ import gamesRouter from './routes/games';
 import fingerprintRouter from './routes/fingerprint';
 import bipaysRouter from './routes/bipays';
 import webhookRouter from './routes/webhook';
+import i18nRouter from './routes/i18n';
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use('/api/games', gamesRouter);
 app.use('/api/fingerprint', fingerprintRouter);
 app.use('/api/bipays', bipaysRouter);
 app.use('/api/webhook', webhookRouter);
+app.use('/api/i18n', i18nRouter);
 
 // 헬스체크
 app.get('/health', (_req: Request, res: Response) => {
