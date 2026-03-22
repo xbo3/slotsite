@@ -898,6 +898,22 @@ a.sub-item.border-click {
   background: linear-gradient(90deg, #B8860B, #DAA520);
 }
 
+/* ===== 3D Carousel ===== */
+.carousel-3d-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-3d-track {
+  transform-style: preserve-3d;
+}
+
+/* Ensure back faces are hidden for clean rotation */
+.carousel-3d-track > div {
+  backface-visibility: hidden;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

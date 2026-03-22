@@ -231,7 +231,7 @@ export default function MobileNav() {
       >
         {/* 로고 */}
         <div className="flex items-center justify-between p-4 border-b border-white/5">
-          <span className="text-white font-light tracking-wider text-lg">DR.SLOT</span>
+          <span className="font-light tracking-wider text-lg"><span style={{ color: '#DAA520' }}>DR.</span><span className="text-white">SLOT</span></span>
           <button onClick={() => setMenuOpen(false)} className="p-1 text-white/40 hover:text-white">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />

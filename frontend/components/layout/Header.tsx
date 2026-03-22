@@ -49,7 +49,7 @@ export default function Header() {
       <div className="flex md:hidden items-center justify-between h-14 px-3">
         <Link href="/" className="flex items-center">
           <span className="text-base tracking-[0.15em]">
-            <span className="text-white font-light">DR.</span>
+            <span className="font-light" style={{ color: '#DAA520' }}>DR.</span>
             <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
           </span>
         </Link>

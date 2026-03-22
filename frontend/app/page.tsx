@@ -1,23 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { DEMO_GAMES } from '@/lib/gameData';
 import { useLang } from '@/hooks/useLang';
 import { useAuth } from '@/context/AuthContext';
 
 // ===== Data =====
-const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: string }> = {
-  'Pragmatic Play': { from: '#42A5F5', to: '#64B5F6', pattern: 'svg-pattern-dots' },
-  'PG Soft': { from: '#888888', to: '#AAAAAA', pattern: 'svg-pattern-grid' },
-  'Evolution': { from: '#4CAF50', to: '#66BB6A', pattern: 'svg-pattern-diagonal' },
-  'NetEnt': { from: '#E53935', to: '#EF5350', pattern: 'svg-pattern-circles' },
-  'Microgaming': { from: '#555555', to: '#888888', pattern: 'svg-pattern-waves' },
-  "Play'n GO": { from: '#42A5F5', to: '#64B5F6', pattern: 'svg-pattern-hexagon' },
-  'Nolimit City': { from: '#E53935', to: '#EF5350', pattern: 'svg-pattern-dots' },
-  'Red Tiger': { from: '#FFB300', to: '#FFCA28', pattern: 'svg-pattern-grid' },
-  'Big Time Gaming': { from: '#555555', to: '#888888', pattern: 'svg-pattern-diagonal' },
-};
+// PROVIDER_COLORS — kept for potential future use in game cards
+// const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: string }> = { ... };
 
 // 인기 게임 = Nolimit City HOT 게임 우선
 const NLC_HOT = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isHot && g.thumbnail).slice(0, 8);
@@ -32,27 +23,27 @@ const NEW_GAMES = [...NLC_NEW, ...PG_NEW].slice(0, 8).map(g => ({
   id: g.id, name: g.name, provider: g.provider, maxWin: g.maxWin, thumbnail: g.thumbnail, rtp: g.rtp,
 }));
 
-const BANNER_SLIDES_KEYS = [
+const CAROUSEL_BANNERS = [
   {
-    titleKey: 'first_deposit_bonus',
-    highlightKey: 'up_to_200',
-    descKey: 'first_deposit_desc',
-    ctaKey: 'get_bonus',
+    title: 'First Deposit 100% Bonus',
+    desc: 'Double your first deposit instantly with crypto',
+    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
+    accent: '#4FC3F7',
     ctaHref: '/register',
   },
   {
-    titleKey: 'daily_cashback',
-    highlightKey: 'up_to_15',
-    descKey: 'daily_cashback_desc',
-    ctaKey: 'see_details',
+    title: 'Slot Loan Bonus',
+    desc: 'Get generous seeds! Borrow 70%, Pay Back Only 30%',
+    gradient: 'linear-gradient(135deg, #1a1a1a 0%, #2d1b4e 50%, #1a1a2e 100%)',
+    accent: '#CE93D8',
     ctaHref: '/register',
   },
   {
-    titleKey: 'vip_benefits',
-    highlightKey: 'unlimited',
-    descKey: 'vip_benefits_desc',
-    ctaKey: 'view_vip_benefits',
-    ctaHref: '/mypage',
+    title: 'Every Deposit Bonus',
+    desc: '13% → 16% → 19% UP / After withdrawal, re-deposit starts at 10%',
+    gradient: 'linear-gradient(135deg, #1a1a1a 0%, #1b3a2d 50%, #1a2e1a 100%)',
+    accent: '#81C784',
+    ctaHref: '/wallet',
   },
 ];
 
@@ -156,23 +147,26 @@ export default function Home() {
   const { t } = useLang();
   const { user } = useAuth();
   const balance = user ? Number(user.balance) || 0 : 14287.50; // demo fallback
-  // Banner slider
-  const [bannerIdx, setBannerIdx] = useState(0);
-  const [bannerAnim, setBannerAnim] = useState<'enter' | 'exit'>('enter');
-  const bannerTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // 3D Carousel
+  const [carouselAngle, setCarouselAngle] = useState(0);
+  const [carouselPaused, setCarouselPaused] = useState(false);
+  const carouselTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [carouselTz, setCarouselTz] = useState(320);
 
-  const nextBanner = useCallback(() => {
-    setBannerAnim('exit');
-    setTimeout(() => {
-      setBannerIdx(prev => (prev + 1) % BANNER_SLIDES_KEYS.length);
-      setBannerAnim('enter');
-    }, 500);
+  useEffect(() => {
+    const updateTz = () => setCarouselTz(window.innerWidth < 768 ? 200 : 320);
+    updateTz();
+    window.addEventListener('resize', updateTz);
+    return () => window.removeEventListener('resize', updateTz);
   }, []);
 
   useEffect(() => {
-    bannerTimerRef.current = setInterval(nextBanner, 5000);
-    return () => { if (bannerTimerRef.current) clearInterval(bannerTimerRef.current); };
-  }, [nextBanner]);
+    if (carouselPaused) return;
+    carouselTimerRef.current = setInterval(() => {
+      setCarouselAngle(prev => prev - 120);
+    }, 4000);
+    return () => { if (carouselTimerRef.current) clearInterval(carouselTimerRef.current); };
+  }, [carouselPaused]);
 
   // Betting feed
   const [feedIdx, setFeedIdx] = useState(0);
@@ -189,15 +183,6 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // Online count
-  const [onlineCount, setOnlineCount] = useState(2847);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setOnlineCount(Math.floor(Math.random() * (3200 - 2500 + 1)) + 2500);
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
-
   // Section observers
   const feedSection = useInView();
   const popularSection = useInView();
@@ -208,104 +193,86 @@ export default function Home() {
   const leaderboardSection = useInView();
   const ctaSection = useInView();
 
-  const bannerKeys = BANNER_SLIDES_KEYS[bannerIdx];
   const feedItem = BETTING_FEED_DATA[feedIdx];
 
   return (
     <div className="min-h-[calc(100vh-4rem)]">
-      {/* ===== Hero Banner ===== */}
-      <section className="relative overflow-hidden h-56 md:h-[480px] hero-particles">
+      {/* ===== Hero 3D Carousel Banner ===== */}
+      <section className="relative overflow-hidden hero-particles" style={{ height: 'clamp(220px, 50vw, 480px)' }}>
         {/* Background effects */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-transparent" />
         <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] rounded-full blur-[120px] animate-pulse hidden md:block" style={{ background: 'rgba(255,255,255,0.04)' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[100px] animate-pulse hidden md:block" style={{ background: 'rgba(255,255,255,0.03)', animationDelay: '2s' }} />
-        <div className="absolute top-10 right-10 w-32 h-32 rounded-full animate-spin hidden md:block" style={{ border: '1px solid rgba(255,255,255,0.06)', animationDuration: '20s' }} />
-        <div className="absolute bottom-20 left-20 w-20 h-20 rounded-full animate-spin hidden md:block" style={{ border: '1px solid rgba(255,255,255,0.05)', animationDuration: '15s', animationDirection: 'reverse' }} />
 
-        <div className="relative max-w-7xl mx-auto px-3 md:px-4 h-full flex items-center">
-          <div className="flex items-center justify-center md:justify-between w-full">
-            {/* Left: Text */}
-            <div className={`w-full md:flex-1 text-center md:text-left ${bannerAnim === 'enter' ? 'banner-enter' : 'banner-exit'}`}>
-              <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 md:px-4 py-1 md:py-1.5 rounded-full mb-2 md:mb-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full animate-pulse" style={{ background: '#FFFFFF' }} />
-                <span className="text-[10px] md:text-sm font-light text-white/80">{t('now_playing_count').replace('{count}', onlineCount.toLocaleString())}</span>
-              </div>
-
-              <h1 className="text-xl md:text-6xl lg:text-7xl font-extralight leading-[0.95] tracking-tight">
-                <span className="text-white">{t(bannerKeys.titleKey)}</span>
-                <br />
-                <span className="text-white font-thin">
-                  {t(bannerKeys.highlightKey)}
-                </span>
-              </h1>
-              <p className="mt-1.5 md:mt-4 text-xs md:text-lg text-text-secondary max-w-lg leading-relaxed font-light mx-auto md:mx-0">
-                {t(bannerKeys.descKey)}
-              </p>
-
-              <div className="mt-3 md:mt-8 flex flex-col sm:flex-row gap-2 md:gap-3 justify-center md:justify-start">
-                <Link
-                  href={bannerKeys.ctaHref}
-                  className="group inline-flex items-center justify-center gap-1.5 md:gap-2 px-4 md:px-8 py-2 md:py-3.5 text-xs md:text-lg font-light btn-cta"
-                >
-                  <span>{t(bannerKeys.ctaKey)}</span>
-                  <svg className="w-3.5 h-3.5 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </Link>
-                <Link
-                  href="/lobby"
-                  className="inline-flex items-center justify-center px-4 md:px-8 py-2 md:py-3.5 text-xs md:text-lg font-light transition-all hover:scale-105 active:scale-95"
-                  style={{ border: '1px solid rgba(255,255,255,0.12)', color: '#FFFFFF' }}
-                >
-                  {t('browse_games')}
-                </Link>
-              </div>
-
-              {/* Banner dots */}
-              <div className="flex gap-2 mt-3 md:mt-6 justify-center md:justify-start">
-                {BANNER_SLIDES_KEYS.map((_, i) => (
-                  <button
+        <div className="relative max-w-7xl mx-auto px-3 md:px-4 h-full flex items-center justify-center">
+          {/* 3D Carousel */}
+          <div
+            className="carousel-3d-wrapper"
+            onMouseEnter={() => setCarouselPaused(true)}
+            onMouseLeave={() => setCarouselPaused(false)}
+            style={{ perspective: '1200px', width: '100%', maxWidth: '900px', height: 'clamp(180px, 40vw, 360px)' }}
+          >
+            <div
+              className="carousel-3d-track"
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+                transformStyle: 'preserve-3d',
+                transform: `rotateY(${carouselAngle}deg)`,
+                transition: 'transform 1s cubic-bezier(0.45, 0.05, 0.55, 0.95)',
+              }}
+            >
+              {CAROUSEL_BANNERS.map((banner, i) => {
+                const angle = i * 120;
+                const tz = carouselTz;
+                return (
+                  <div
                     key={i}
-                    onClick={() => { setBannerAnim('exit'); setTimeout(() => { setBannerIdx(i); setBannerAnim('enter'); }, 500); }}
-                    className={`w-2 h-2 rounded-full transition-all ${i === bannerIdx ? 'w-6' : 'hover:bg-white/40'}`}
-                    style={{ background: i === bannerIdx ? '#FFFFFF' : 'rgba(255,255,255,0.2)' }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Right: Tilted game cards (desktop only) */}
-            <div className="hidden md:flex items-center justify-center flex-1 card-tilt">
-              <div className="relative w-72 h-72 card-tilt-inner">
-                {(TOP_GAMES.slice(0, 3)).map((game, i) => {
-                  const colors = PROVIDER_COLORS[game.provider] || PROVIDER_COLORS['Pragmatic Play'];
-                  const offsets = [
-                    { x: -30, y: 20, rotate: -12 },
-                    { x: 0, y: 0, rotate: 0 },
-                    { x: 30, y: -20, rotate: 12 },
-                  ];
-                  const o = offsets[i];
-                  return (
-                    <div
-                      key={game.name}
-                      className="absolute top-1/2 left-1/2 w-40 h-52 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
-                      style={{
-                        transform: `translate(-50%, -50%) translateX(${o.x}px) translateY(${o.y}px) rotate(${o.rotate}deg)`,
-                        background: `linear-gradient(135deg, ${colors.from}, ${colors.to})`,
-                        zIndex: i === 1 ? 3 : i === 2 ? 2 : 1,
-                      }}
-                    >
-                      <div className={`absolute inset-0 ${colors.pattern}`} />
-                      <div className="absolute inset-0 flex flex-col items-center justify-center p-3">
-                        <span className="text-white font-light text-lg text-center drop-shadow-lg leading-tight">{game.name}</span>
-                        <span className="text-white/70 text-xs mt-2 font-light">{game.provider}</span>
-                        <span className="mt-3 px-3 py-1 bg-white/20 rounded-full text-white text-xs font-light">{game.maxWin}</span>
-                      </div>
+                    className="absolute inset-0 rounded-2xl md:rounded-3xl overflow-hidden border border-white/10"
+                    style={{
+                      backfaceVisibility: 'hidden',
+                      transform: `rotateY(${angle}deg) translateZ(${tz}px)`,
+                      background: banner.gradient,
+                    }}
+                  >
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 md:p-10 text-center">
+                      <h2 className="text-lg md:text-4xl lg:text-5xl font-extralight text-white leading-tight tracking-tight">
+                        {banner.title}
+                      </h2>
+                      <p className="mt-2 md:mt-4 text-xs md:text-base font-light max-w-md" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                        {banner.desc}
+                      </p>
+                      <Link
+                        href={banner.ctaHref}
+                        className="mt-3 md:mt-6 inline-flex items-center gap-2 px-4 md:px-8 py-2 md:py-3 text-xs md:text-sm font-light btn-cta"
+                      >
+                        Get Started
+                        <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </Link>
                     </div>
-                  );
-                })}
-              </div>
+                    {/* Decorative accent line */}
+                    <div className="absolute bottom-0 left-0 right-0 h-1" style={{ background: banner.accent }} />
+                  </div>
+                );
+              })}
             </div>
+          </div>
+
+          {/* Carousel dots */}
+          <div className="absolute bottom-3 md:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {CAROUSEL_BANNERS.map((_, i) => {
+              const currentIdx = Math.round((-carouselAngle % 360 + 360) % 360 / 120) % 3;
+              return (
+                <button
+                  key={i}
+                  onClick={() => setCarouselAngle(-i * 120)}
+                  className={`w-2 h-2 rounded-full transition-all ${i === currentIdx ? 'w-6' : 'hover:bg-white/40'}`}
+                  style={{ background: i === currentIdx ? '#FFFFFF' : 'rgba(255,255,255,0.2)' }}
+                />
+              );
+            })}
           </div>
         </div>
       </section>
@@ -512,6 +479,39 @@ export default function Home() {
           <div className="grid grid-cols-3 xl:grid-cols-6 gap-2 md:gap-4">
             {NEW_GAMES.slice(0, 6).map((game, i) => (
               <PGStyleCard key={game.id} game={game} gradient={newGradients[i % newGradients.length]} />
+            ))}
+          </div>
+        </section>
+      </div>
+
+      {/* ===== Promotions ===== */}
+      <div className={popularSection.inView ? 'section-visible' : 'section-hidden'}>
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
+          <div className="h-[2px] mb-4 md:mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, #DAA520, transparent)' }} />
+          <div className="flex items-center justify-between mb-4 md:mb-8">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #DAA520, rgba(218,165,32,0.3))' }} />
+              <div>
+                <h2 className="text-base md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
+                  <span className="text-base md:text-2xl">{'\uD83C\uDF81'}</span> Promotions
+                </h2>
+                <p className="text-text-secondary text-xs md:text-sm mt-0.5 font-light">Exclusive bonuses & special offers</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+            {CAROUSEL_BANNERS.map((banner, i) => (
+              <Link key={i} href={banner.ctaHref} className="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/20 transition-all card-hover" style={{ background: banner.gradient }}>
+                <div className="p-4 md:p-6">
+                  <h3 className="text-white font-light text-sm md:text-lg mb-1 md:mb-2">{banner.title}</h3>
+                  <p className="text-xs md:text-sm font-light" style={{ color: 'rgba(255,255,255,0.6)' }}>{banner.desc}</p>
+                  <span className="inline-block mt-3 text-xs font-light text-white/80 group-hover:text-white transition-colors">
+                    Learn More &rarr;
+                  </span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 h-1" style={{ background: banner.accent }} />
+              </Link>
             ))}
           </div>
         </section>

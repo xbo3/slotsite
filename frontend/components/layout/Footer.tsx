@@ -13,7 +13,7 @@ export default function Footer() {
           {/* Logo & Copyright */}
           <div>
             <span className="text-xl tracking-[0.15em]">
-              <span className="text-white font-light">DR.</span>
+              <span className="font-light" style={{ color: '#DAA520' }}>DR.</span>
               <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
             </span>
             <p className="mt-2 text-sm font-light" style={{ color: '#888888' }}>
