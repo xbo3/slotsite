@@ -861,7 +861,69 @@ button { cursor: pointer; font-family: inherit; }
 .game-card-grid .game-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
 .game-card-grid:hover .game-overlay { opacity: 1; }
 
-/* ===== PROMO CARDS ===== */
+/* ===== 3D PROMO BANNER ===== */
+.banner3d-wrap {
+  padding: 0 12px;
+  margin-bottom: 24px;
+  perspective: 1000px;
+  overflow: hidden;
+  position: relative;
+  height: 160px;
+}
+.banner3d-track {
+  display: flex;
+  width: 300%;
+  height: 100%;
+  transition: transform 0.7s cubic-bezier(0.25,0.8,0.25,1);
+}
+.banner3d-slide {
+  flex: 0 0 33.333%;
+  border-radius: 16px;
+  padding: 20px 22px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.banner3d-slide::after {
+  content: '';
+  position: absolute;
+  top: -40%; right: -20%;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%);
+}
+.b3d-s1 { background: linear-gradient(135deg, #1a0f00, #3d2500, #1a0f00); border: 1px solid rgba(240,185,11,0.25); }
+.b3d-s2 { background: linear-gradient(135deg, #1a1200, #332600, #1a1200); border: 1px solid rgba(255,217,61,0.2); }
+.b3d-s3 { background: linear-gradient(135deg, #1a1000, #2d1e00, #1a1000); border: 1px solid rgba(240,185,11,0.2); }
+.banner3d-tag {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 6px; color: var(--gold);
+}
+.banner3d-title {
+  font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 800;
+  line-height: 1.1; margin-bottom: 4px; position: relative; z-index: 1;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.banner3d-desc {
+  font-size: 11px; color: rgba(255,255,255,0.55); position: relative; z-index: 1;
+}
+.banner3d-dots {
+  display: flex; justify-content: center; gap: 6px; margin-top: 10px;
+}
+.banner3d-dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); cursor: pointer; transition: all 0.3s;
+}
+.banner3d-dots span.active {
+  width: 24px; border-radius: 4px; background: var(--gold);
+}
+
+/* ===== PROMO CARDS (legacy) ===== */
 .promo-scroll {
   padding: 0 12px;
   margin-bottom: 24px;
@@ -932,6 +994,62 @@ button { cursor: pointer; font-family: inherit; }
   position: relative;
   z-index: 1;
 }
+
+/* ===== MOBILE SIDEBAR OVERLAY ===== */
+.mob-sidebar-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0); pointer-events: none;
+  transition: background 0.35s ease;
+}
+.mob-sidebar-overlay.open {
+  background: rgba(0,0,0,0.6); pointer-events: auto;
+}
+.mob-sidebar-panel {
+  position: fixed; top: 0; left: 0; z-index: 301;
+  width: min(280px, 78vw); height: 100%; height: 100dvh;
+  background: linear-gradient(180deg, #0d0d10, #08080a);
+  border-right: 1px solid var(--border);
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.mob-sidebar-overlay.open .mob-sidebar-panel {
+  transform: translateX(0);
+}
+.mob-sb-header {
+  padding: 16px 18px; display: flex; align-items: center;
+  justify-content: space-between; border-bottom: 1px solid var(--border);
+}
+.mob-sb-logo {
+  font-family: 'Poppins'; font-weight: 800; font-size: 20px;
+  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.mob-sb-close {
+  width: 32px; height: 32px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--card);
+  color: var(--text-sec); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.mob-sb-scroll {
+  flex: 1; overflow-y: auto; padding: 12px 0;
+}
+.mob-sb-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.mob-sb-section-title {
+  padding: 0 20px; font-size: 10px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 1.5px; margin-bottom: 8px;
+}
+.mob-sb-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 20px; font-size: 13px; font-weight: 500;
+  color: var(--text-sec); transition: all 0.2s; cursor: pointer;
+}
+.mob-sb-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
+.mob-sb-item.active { color: var(--gold); background: var(--gold-dim); }
+.mob-sb-item .ic { font-size: 18px; width: 24px; text-align: center; }
+body.no-scroll { overflow: hidden; }
 
 /* ===== BIG WINS ===== */
 .bigwin-list {
@@ -1876,37 +1994,34 @@ button { cursor: pointer; font-family: inherit; }
     </div>
   </div>
 
-  <!-- PROMOTIONS -->
+  <!-- 3D PROMO BANNER -->
   <div class="section-header">
     <div class="section-title"><span class="fire">🎁</span> Promotions</div>
     <span class="see-all">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span>
   </div>
 
-  <div class="promo-scroll">
-    <div class="promo-card first">
-      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="" class="promo-coin-img" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:60px;height:60px;opacity:0.15;z-index:0;">
-      <span class="promo-tag">Welcome Bonus</span>
-      <div class="promo-title" style="color:#d8b4fe">200% <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6)">First Deposit</span></div>
-      <div class="promo-desc">Up to $10,000 + 50 Free Spins</div>
-      <div style="display:flex;gap:6px;margin-top:8px;position:relative;z-index:1;">
-        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.svg" alt="BTC" style="width:18px;height:18px;">
-        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="ETH" style="width:18px;height:18px;">
-        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT" style="width:18px;height:18px;">
-        <img src="https://cryptologos.cc/logos/tron-trx-logo.svg" alt="TRX" style="width:18px;height:18px;">
-        <span style="font-size:10px;color:rgba(255,255,255,0.4);line-height:18px;">+8</span>
+  <div class="banner3d-wrap" id="banner3d1">
+    <div class="banner3d-track" id="banner3dTrack1">
+      <div class="banner3d-slide b3d-s1">
+        <div class="banner3d-tag">First Deposit Bonus</div>
+        <div class="banner3d-title">100% Bonus</div>
+        <div class="banner3d-desc">Double your first deposit instantly</div>
+      </div>
+      <div class="banner3d-slide b3d-s2">
+        <div class="banner3d-tag">Slot Loan Bonus</div>
+        <div class="banner3d-title">Borrow 70%</div>
+        <div class="banner3d-desc">Pay Back Only 30%</div>
+      </div>
+      <div class="banner3d-slide b3d-s3">
+        <div class="banner3d-tag">Every Deposit Bonus</div>
+        <div class="banner3d-title">13% → 16% → 19% UP</div>
+        <div class="banner3d-desc">After withdrawal, re-deposit starts at 10%</div>
       </div>
     </div>
-    <div class="promo-card second">
-      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.svg" alt="" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:60px;height:60px;opacity:0.1;z-index:0;">
-      <span class="promo-tag">Daily Reward</span>
-      <div class="promo-title" style="color:#93c5fd">15% <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6)">Cashback</span></div>
-      <div class="promo-desc">Every day, no wagering requirement</div>
-    </div>
-    <div class="promo-card third">
-      <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);width:60px;height:60px;opacity:0.12;z-index:0;">
-      <span class="promo-tag">VIP Exclusive</span>
-      <div class="promo-title" style="color:#fcd34d">VIP <span style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.6)">Unlimited</span></div>
-      <div class="promo-desc">Personal manager + instant withdrawals</div>
+    <div class="banner3d-dots" id="banner3dDots1">
+      <span class="active" onclick="goSlide1(0)"></span>
+      <span onclick="goSlide1(1)"></span>
+      <span onclick="goSlide1(2)"></span>
     </div>
   </div>
 
@@ -2149,9 +2264,45 @@ button { cursor: pointer; font-family: inherit; }
 
 </div><!-- /main-content -->
 
+<!-- MOBILE SIDEBAR -->
+<div class="mob-sidebar-overlay" id="mobSidebarOverlay1">
+  <div class="mob-sidebar-panel">
+    <div class="mob-sb-header">
+      <div class="mob-sb-logo">DR.SLOT</div>
+      <div class="mob-sb-close" id="mobSbClose1">&#10005;</div>
+    </div>
+    <div class="mob-sb-scroll">
+      <div class="mob-sb-section">
+        <div class="mob-sb-section-title">Games</div>
+        <div class="mob-sb-item active"><span class="ic">🎰</span>Slots</div>
+        <div class="mob-sb-item"><span class="ic">🃏</span>Live Casino</div>
+        <div class="mob-sb-item"><span class="ic">⚽</span>Sports</div>
+        <div class="mob-sb-item"><span class="ic">🎲</span>Table Games</div>
+        <div class="mob-sb-item"><span class="ic">⚡</span>Crash Games</div>
+      </div>
+      <div class="mob-sb-section">
+        <div class="mob-sb-section-title">Providers</div>
+        <div class="mob-sb-item"><span class="ic">🎮</span>Pragmatic Play</div>
+        <div class="mob-sb-item"><span class="ic">🎮</span>PG Soft</div>
+        <div class="mob-sb-item"><span class="ic">🎮</span>Evolution</div>
+        <div class="mob-sb-item"><span class="ic">🎮</span>Nolimit City</div>
+        <div class="mob-sb-item"><span class="ic">🎮</span>NetEnt</div>
+      </div>
+      <div class="mob-sb-section">
+        <div class="mob-sb-section-title">Account</div>
+        <div class="mob-sb-item"><span class="ic">💰</span>Deposit</div>
+        <div class="mob-sb-item"><span class="ic">💸</span>Withdraw</div>
+        <div class="mob-sb-item"><span class="ic">🎁</span>Promotions</div>
+        <div class="mob-sb-item"><span class="ic">👑</span>VIP</div>
+        <div class="mob-sb-item"><span class="ic">💬</span>Support</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV (mobile only) -->
 <nav class="bottom-nav">
-  <a class="nav-item active" href="#">
+  <a class="nav-item active" href="#" id="menuBtn1" onclick="openMobSidebar1();return false;">
     <img src="icon-slot.jpg" alt="Menu" class="nav-icon">
     <span class="nav-label">Menu</span>
   </a>
@@ -2304,6 +2455,30 @@ document.querySelectorAll('.center-btn, .center-circle').forEach(btn => {
 
 if (authToken) updateUIForLogin();
 loadGamesFromAPI();
+
+// ═══ 3D Banner Slider ═══
+(function(){
+  let cur1=0;const total=3;
+  const track=document.getElementById('banner3dTrack1');
+  const dots=document.querySelectorAll('#banner3dDots1 span');
+  function go(i){cur1=i;track.style.transform='translateX(-'+(cur1*33.333)+'%)';dots.forEach((d,j)=>d.classList.toggle('active',j===cur1));}
+  window.goSlide1=go;
+  setInterval(()=>go((cur1+1)%total),3500);
+})();
+
+// ═══ Mobile Sidebar ═══
+function openMobSidebar1(){
+  document.getElementById('mobSidebarOverlay1').classList.add('open');
+  document.body.classList.add('no-scroll');
+}
+function closeMobSidebar1(){
+  document.getElementById('mobSidebarOverlay1').classList.remove('open');
+  document.body.classList.remove('no-scroll');
+}
+document.getElementById('mobSbClose1').addEventListener('click',closeMobSidebar1);
+document.getElementById('mobSidebarOverlay1').addEventListener('click',function(e){
+  if(e.target===this)closeMobSidebar1();
+});
 </script>
 
 </body>

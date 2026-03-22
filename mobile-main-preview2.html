@@ -22,10 +22,10 @@ body{font-family:'Inter','Poppins',sans-serif;background:var(--bg);color:var(--t
 a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== SIDEBAR (PC) ===== */
-.sidebar{display:none;position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);z-index:300;flex-direction:column;overflow-y:auto;scrollbar-width:none;transition:transform .3s ease}
-.sidebar.mobile-open{display:flex;z-index:400}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:399}
-.sidebar-overlay.active{display:block}
+.sidebar{display:flex;position:fixed;left:0;top:0;bottom:0;width:min(280px,78vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
+.sidebar.mobile-open{transform:translateX(0)}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;z-index:399;transition:background .35s ease}
+.sidebar-overlay.active{background:rgba(0,0,0,0.6);pointer-events:auto}
 .sidebar::-webkit-scrollbar{display:none}
 .sb-logo{padding:20px;font-family:'Poppins';font-weight:800;font-size:22px;border-bottom:1px solid var(--border)}
 .sb-logo .dr{background:linear-gradient(135deg,var(--neon),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
@@ -163,7 +163,22 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 .bonus-emoji{font-size:24px;margin-bottom:8px;animation:bounce 1s ease infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-/* ===== PROMO GRID ===== */
+/* ===== 3D PROMO BANNER ===== */
+.banner3d-wrap{padding:0 var(--px-m);margin-bottom:20px;perspective:1000px;overflow:hidden;position:relative;height:150px}
+.banner3d-track{display:flex;width:300%;height:100%;transition:transform 0.7s cubic-bezier(0.25,0.8,0.25,1)}
+.banner3d-slide{flex:0 0 33.333%;border-radius:14px;padding:18px 16px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;transform-style:preserve-3d;backface-visibility:hidden}
+.banner3d-slide::after{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,0.06),transparent 70%)}
+.b3d-s1{background:linear-gradient(135deg,#061820,#0d2d3a,#061820);border:1px solid rgba(0,229,255,0.25)}
+.b3d-s2{background:linear-gradient(135deg,#061a20,#0a2830,#061a20);border:1px solid rgba(0,229,255,0.2)}
+.b3d-s3{background:linear-gradient(135deg,#06181e,#0d2530,#06181e);border:1px solid rgba(0,229,255,0.2)}
+.banner3d-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px;color:var(--neon)}
+.banner3d-title{font-family:'Poppins';font-size:20px;font-weight:800;line-height:1.1;margin-bottom:3px;position:relative;z-index:1;color:var(--neon)}
+.banner3d-desc{font-size:11px;color:rgba(255,255,255,0.5);position:relative;z-index:1}
+.banner3d-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+.banner3d-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);cursor:pointer;transition:all 0.3s}
+.banner3d-dots span.active{width:24px;border-radius:4px;background:var(--neon)}
+
+/* ===== PROMO GRID (legacy) ===== */
 .promo-grid{padding:0 var(--px-m);margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .promo-slot{border-radius:12px;padding:14px 12px;position:relative;overflow:hidden}
 .promo-slot.wide{grid-column:1/-1}
@@ -502,23 +517,30 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
   </div>
 </div>
 
-<!-- PROMOTION -->
+<!-- 3D PROMO BANNER -->
 <div class="sec-h"><div class="sec-t">Promotion</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-<div class="promo-grid">
-  <div class="promo-slot wide" style="background:linear-gradient(135deg,#1a0a2e,#2d1b69);border:1px solid rgba(139,92,246,0.15)">
-    <div class="promo-slot-tag" style="color:var(--purple)">Welcome</div>
-    <div class="promo-slot-val" style="color:#d8b4fe">200%</div>
-    <div class="promo-slot-desc">First Deposit</div>
+<div class="banner3d-wrap" id="banner3d2">
+  <div class="banner3d-track" id="banner3dTrack2">
+    <div class="banner3d-slide b3d-s1">
+      <div class="banner3d-tag">First Deposit Bonus</div>
+      <div class="banner3d-title">100% Bonus</div>
+      <div class="banner3d-desc">Double your first deposit instantly</div>
+    </div>
+    <div class="banner3d-slide b3d-s2">
+      <div class="banner3d-tag">Slot Loan Bonus</div>
+      <div class="banner3d-title">Borrow 70%</div>
+      <div class="banner3d-desc">Pay Back Only 30%</div>
+    </div>
+    <div class="banner3d-slide b3d-s3">
+      <div class="banner3d-tag">Every Deposit Bonus</div>
+      <div class="banner3d-title">13% → 16% → 19% UP</div>
+      <div class="banner3d-desc">After withdrawal, re-deposit starts at 10%</div>
+    </div>
   </div>
-  <div class="promo-slot" style="background:linear-gradient(135deg,#0a1628,#162e50);border:1px solid rgba(59,130,246,0.15)">
-    <div class="promo-slot-tag" style="color:var(--blue)">Daily</div>
-    <div class="promo-slot-val" style="color:#93c5fd">15%</div>
-    <div class="promo-slot-desc">Cashback</div>
-  </div>
-  <div class="promo-slot" style="background:linear-gradient(135deg,#1a0f00,#3d2500);border:1px solid rgba(240,185,11,0.15)">
-    <div class="promo-slot-tag" style="color:var(--gold)">VIP</div>
-    <div class="promo-slot-val" style="color:#fcd34d">Unlimited</div>
-    <div class="promo-slot-desc">Withdrawals</div>
+  <div class="banner3d-dots" id="banner3dDots2">
+    <span class="active" onclick="goSlide2(0)"></span>
+    <span onclick="goSlide2(1)"></span>
+    <span onclick="goSlide2(2)"></span>
   </div>
 </div>
 
@@ -855,6 +877,16 @@ document.querySelectorAll('.bn-item.center, .cn-circ').forEach(btn => {
 
 if (authToken) updateUIForLogin();
 loadGamesFromAPI();
+
+// ═══ 3D Banner Slider ═══
+(function(){
+  let cur=0;const total=3;
+  const track=document.getElementById('banner3dTrack2');
+  const dots=document.querySelectorAll('#banner3dDots2 span');
+  function go(i){cur=i;track.style.transform='translateX(-'+(cur*33.333)+'%)';dots.forEach((d,j)=>d.classList.toggle('active',j===cur));}
+  window.goSlide2=go;
+  setInterval(()=>go((cur+1)%total),3500);
+})();
 </script>
 
 </body>

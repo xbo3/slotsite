@@ -123,7 +123,23 @@
   .tick{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt2);white-space:nowrap;padding:6px 12px;background:var(--card);border:1px solid var(--bdr2);border-radius:8px;flex-shrink:0;font-weight:300}
   .tick .amt{color:var(--green);font-weight:400}.tick .gm{color:var(--txt3)}
 
-  /* ═══ PROMO 1行2列 ═══ */
+  /* ═══ 3D PROMO BANNER ═══ */
+  .banner3d-wrap{padding:0 var(--pad);margin-bottom:var(--gap);perspective:1000px;overflow:hidden;position:relative;height:clamp(140px,32vw,200px)}
+  .banner3d-track{display:flex;width:300%;height:100%;transition:transform 0.7s cubic-bezier(0.25,0.8,0.25,1)}
+  .banner3d-slide{flex:0 0 33.333%;border-radius:14px;padding:clamp(18px,4vw,30px);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;transform-style:preserve-3d;backface-visibility:hidden}
+  .banner3d-slide::after{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,46,74,0.06),transparent 70%)}
+  .b3d-s1{background:linear-gradient(140deg,#2a0a14,#44102a,#2a0a14);border:1px solid rgba(255,46,74,0.25)}
+  .b3d-s1::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--pearl-grad2);background-size:300% 100%;animation:pearlLine 3s ease infinite}
+  .b3d-s2{background:linear-gradient(140deg,#280a12,#3a0e22,#280a12);border:1px solid rgba(255,46,74,0.18)}
+  .b3d-s3{background:linear-gradient(140deg,#240a10,#360c1e,#240a10);border:1px solid rgba(255,46,74,0.18)}
+  .banner3d-tag{display:inline-block;font-size:clamp(8px,2.2vw,11px);font-weight:400;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:5px;margin-bottom:clamp(6px,1.5vw,10px);background:rgba(255,46,74,0.22);color:var(--pearl-white);width:fit-content}
+  .banner3d-title{font-size:clamp(16px,4.2vw,28px);font-weight:200;line-height:1.2;margin-bottom:4px;background:var(--pearl-grad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pearlText 4s ease infinite}
+  .banner3d-desc{font-size:clamp(9px,2.5vw,14px);color:var(--txt2);line-height:1.4;font-weight:300}
+  .banner3d-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
+  .banner3d-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.12);cursor:pointer;transition:all 0.3s}
+  .banner3d-dots span.active{width:24px;border-radius:4px;background:var(--pearl-btn);box-shadow:var(--pearl-glow-sm)}
+
+  /* ═══ PROMO (legacy) ═══ */
   .promo-sc{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
   .promo{border-radius:14px;padding:clamp(18px,4vw,30px);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s;min-height:clamp(140px,32vw,220px)}
   .promo:active{transform:scale(.98)}
@@ -234,10 +250,32 @@
     <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
   </div></div></div>
 
-  <div class="section"><div class="promo-sc">
-    <div class="promo p1 pearl-shimmer"><div class="p-tag">🎁 Welcome</div><div class="p-title">200% First Deposit Bonus</div><div class="p-desc">Up to $5,000 + 100 Free Spins</div><div class="p-emoji">🎰</div></div>
-    <div class="promo p2"><div class="p-tag">⚽ Sports</div><div class="p-title">Weekend Sports Special</div><div class="p-desc">15% Cashback on Live Bets</div><div class="p-emoji">⚽</div></div>
-  </div></div>
+  <div class="section">
+    <div class="banner3d-wrap" id="banner3d4">
+      <div class="banner3d-track" id="banner3dTrack4">
+        <div class="banner3d-slide b3d-s1 pearl-shimmer">
+          <div class="banner3d-tag">First Deposit Bonus</div>
+          <div class="banner3d-title">100% Bonus</div>
+          <div class="banner3d-desc">Double your first deposit instantly</div>
+        </div>
+        <div class="banner3d-slide b3d-s2">
+          <div class="banner3d-tag">Slot Loan Bonus</div>
+          <div class="banner3d-title">Borrow 70%</div>
+          <div class="banner3d-desc">Pay Back Only 30%</div>
+        </div>
+        <div class="banner3d-slide b3d-s3">
+          <div class="banner3d-tag">Every Deposit Bonus</div>
+          <div class="banner3d-title">13% → 16% → 19% UP</div>
+          <div class="banner3d-desc">After withdrawal, re-deposit starts at 10%</div>
+        </div>
+      </div>
+      <div class="banner3d-dots" id="banner3dDots4">
+        <span class="active" onclick="goSlide4(0)"></span>
+        <span onclick="goSlide4(1)"></span>
+        <span onclick="goSlide4(2)"></span>
+      </div>
+    </div>
+  </div>
 
   <div class="section"><div class="quick">
     <div class="q-item"><div class="q-ico qi1"><img src="red_slot.png" alt="Slots"></div><div class="q-lbl">Slots</div></div>
@@ -281,7 +319,7 @@
 </div>
 
 <nav class="bnav">
-  <div class="nav on"><div class="nav-i"><img src="red_icon1.png" alt="Menu" class="nav-icon"></div><div class="nav-l">Menu</div></div>
+  <div class="nav on" id="menuBtn"><div class="nav-i"><img src="red_icon1.png" alt="Menu" class="nav-icon"></div><div class="nav-l">Menu</div></div>
   <div class="nav"><div class="nav-i"><img src="red_icon2.png" alt="Sports" class="nav-icon"></div><div class="nav-l">Sports</div></div>
   <div class="nav"><div class="nav-i"><img src="red_icon3.png" alt="Bonus" class="nav-icon"></div><div class="nav-l">Bonus</div></div>
   <div class="nav"><div class="nav-i"><img src="red_icon4.png" alt="Profile" class="nav-icon"></div><div class="nav-l">Profile</div></div>
@@ -356,6 +394,16 @@ function switchAuthTab(tab){
   document.getElementById('drslot-auth-submit').textContent=tab==='login'?'Sign In':'Sign Up';
 }
 function closeLoginModal(){const m=document.getElementById('drslot-login-modal');if(m)m.style.display='none'}
+
+// ═══ 3D Banner Slider ═══
+(function(){
+  let cur=0;const total=3;
+  const track=document.getElementById('banner3dTrack4');
+  const dots=document.querySelectorAll('#banner3dDots4 span');
+  function go(i){cur=i;track.style.transform='translateX(-'+(cur*33.333)+'%)';dots.forEach((d,j)=>d.classList.toggle('active',j===cur));}
+  window.goSlide4=go;
+  setInterval(()=>go((cur+1)%total),3500);
+})();
 </script>
 </body>
 </html>
