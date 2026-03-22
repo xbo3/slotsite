@@ -123,21 +123,20 @@
   .tick{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt2);white-space:nowrap;padding:6px 12px;background:var(--card);border:1px solid var(--bdr2);border-radius:8px;flex-shrink:0;font-weight:300}
   .tick .amt{color:var(--green);font-weight:400}.tick .gm{color:var(--txt3)}
 
-  /* ═══ 3D PROMO BANNER ═══ */
-  .banner3d-wrap{padding:0 var(--pad);margin-bottom:var(--gap);perspective:1000px;overflow:hidden;position:relative;height:clamp(140px,32vw,200px)}
-  .banner3d-track{display:flex;width:300%;height:100%;transition:transform 0.7s cubic-bezier(0.25,0.8,0.25,1)}
-  .banner3d-slide{flex:0 0 33.333%;border-radius:14px;padding:clamp(18px,4vw,30px);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;transform-style:preserve-3d;backface-visibility:hidden}
-  .banner3d-slide::after{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,46,74,0.06),transparent 70%)}
-  .b3d-s1{background:linear-gradient(140deg,#2a0a14,#44102a,#2a0a14);border:1px solid rgba(255,46,74,0.25)}
-  .b3d-s1::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--pearl-grad2);background-size:300% 100%;animation:pearlLine 3s ease infinite}
-  .b3d-s2{background:linear-gradient(140deg,#280a12,#3a0e22,#280a12);border:1px solid rgba(255,46,74,0.18)}
-  .b3d-s3{background:linear-gradient(140deg,#240a10,#360c1e,#240a10);border:1px solid rgba(255,46,74,0.18)}
-  .banner3d-tag{display:inline-block;font-size:clamp(8px,2.2vw,11px);font-weight:400;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:5px;margin-bottom:clamp(6px,1.5vw,10px);background:rgba(255,46,74,0.22);color:var(--pearl-white);width:fit-content}
-  .banner3d-title{font-size:clamp(16px,4.2vw,28px);font-weight:200;line-height:1.2;margin-bottom:4px;background:var(--pearl-grad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pearlText 4s ease infinite}
-  .banner3d-desc{font-size:clamp(9px,2.5vw,14px);color:var(--txt2);line-height:1.4;font-weight:300}
-  .banner3d-dots{display:flex;justify-content:center;gap:6px;margin-top:8px}
-  .banner3d-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.12);cursor:pointer;transition:all 0.3s}
-  .banner3d-dots span.active{width:24px;border-radius:4px;background:var(--pearl-btn);box-shadow:var(--pearl-glow-sm)}
+  /* ═══ 3D 360° CAROUSEL BANNER ═══ */
+  .carousel-scene{padding:0 var(--pad);margin-bottom:var(--gap);perspective:1200px;overflow:visible;position:relative;height:clamp(160px,36vw,220px);display:flex;align-items:center;justify-content:center}
+  .carousel-ring{width:clamp(200px,60vw,400px);height:clamp(130px,30vw,180px);position:relative;transform-style:preserve-3d;animation:carouselSpin 20s linear infinite}
+  .carousel-ring:hover{animation-play-state:paused}
+  @keyframes carouselSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
+  .carousel-card{position:absolute;width:clamp(200px,60vw,400px);height:clamp(130px,30vw,180px);border-radius:16px;padding:clamp(16px,3.5vw,28px);overflow:hidden;display:flex;flex-direction:column;justify-content:center;backface-visibility:hidden;border:1px solid rgba(255,46,74,0.25);box-shadow:0 10px 40px rgba(0,0,0,0.5),0 0 20px rgba(255,46,74,0.08)}
+  .carousel-card::after{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,46,74,0.08),transparent 70%);pointer-events:none}
+  .cc-1{background:linear-gradient(140deg,#2a0a14,#44102a,#2a0a14);transform:rotateY(0deg) translateZ(clamp(180px,30vw,320px))}
+  .cc-1::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--pearl-grad2);background-size:300% 100%;animation:pearlLine 3s ease infinite}
+  .cc-2{background:linear-gradient(140deg,#280a12,#3a0e22,#280a12);transform:rotateY(120deg) translateZ(clamp(180px,30vw,320px))}
+  .cc-3{background:linear-gradient(140deg,#240a10,#360c1e,#240a10);transform:rotateY(240deg) translateZ(clamp(180px,30vw,320px))}
+  .carousel-tag{display:inline-block;font-size:clamp(8px,2.2vw,11px);font-weight:400;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:5px;margin-bottom:clamp(6px,1.5vw,10px);background:rgba(255,46,74,0.22);color:var(--pearl-white);width:fit-content}
+  .carousel-title{font-size:clamp(15px,4vw,26px);font-weight:200;line-height:1.2;margin-bottom:4px;background:var(--pearl-grad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pearlText 4s ease infinite}
+  .carousel-desc{font-size:clamp(9px,2.5vw,13px);color:var(--txt2);line-height:1.4;font-weight:300}
 
   /* ═══ PROMO (legacy) ═══ */
   .promo-sc{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
@@ -251,28 +250,23 @@
   </div></div></div>
 
   <div class="section">
-    <div class="banner3d-wrap" id="banner3d4">
-      <div class="banner3d-track" id="banner3dTrack4">
-        <div class="banner3d-slide b3d-s1 pearl-shimmer">
-          <div class="banner3d-tag">First Deposit Bonus</div>
-          <div class="banner3d-title">100% Bonus</div>
-          <div class="banner3d-desc">Double your first deposit instantly</div>
+    <div class="carousel-scene">
+      <div class="carousel-ring">
+        <div class="carousel-card cc-1 pearl-shimmer">
+          <div class="carousel-tag">First Deposit Bonus</div>
+          <div class="carousel-title">First Deposit 100% Bonus</div>
+          <div class="carousel-desc">Double your first deposit instantly with crypto</div>
         </div>
-        <div class="banner3d-slide b3d-s2">
-          <div class="banner3d-tag">Slot Loan Bonus</div>
-          <div class="banner3d-title">Borrow 70%</div>
-          <div class="banner3d-desc">Pay Back Only 30%</div>
+        <div class="carousel-card cc-2">
+          <div class="carousel-tag">Slot Loan Bonus</div>
+          <div class="carousel-title">Slot Loan Bonus</div>
+          <div class="carousel-desc">Get generous seeds! Borrow 70%, Pay Back Only 30%</div>
         </div>
-        <div class="banner3d-slide b3d-s3">
-          <div class="banner3d-tag">Every Deposit Bonus</div>
-          <div class="banner3d-title">13% → 16% → 19% UP</div>
-          <div class="banner3d-desc">After withdrawal, re-deposit starts at 10%</div>
+        <div class="carousel-card cc-3">
+          <div class="carousel-tag">Every Deposit Bonus</div>
+          <div class="carousel-title">13% → 16% → 19% UP</div>
+          <div class="carousel-desc">After withdrawal, re-deposit starts at 10%</div>
         </div>
-      </div>
-      <div class="banner3d-dots" id="banner3dDots4">
-        <span class="active" onclick="goSlide4(0)"></span>
-        <span onclick="goSlide4(1)"></span>
-        <span onclick="goSlide4(2)"></span>
       </div>
     </div>
   </div>
@@ -398,15 +392,7 @@ function switchAuthTab(tab){
 }
 function closeLoginModal(){const m=document.getElementById('drslot-login-modal');if(m)m.style.display='none'}
 
-// ═══ 3D Banner Slider ═══
-(function(){
-  let cur=0;const total=3;
-  const track=document.getElementById('banner3dTrack4');
-  const dots=document.querySelectorAll('#banner3dDots4 span');
-  function go(i){cur=i;track.style.transform='translateX(-'+(cur*33.333)+'%)';dots.forEach((d,j)=>d.classList.toggle('active',j===cur));}
-  window.goSlide4=go;
-  setInterval(()=>go((cur+1)%total),3500);
-})();
+// ═══ 3D 360° Carousel — auto-spins via CSS, hover pauses ═══
 </script>
 </body>
 </html>

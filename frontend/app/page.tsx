@@ -67,24 +67,24 @@ const BIG_WIN_DATA = [
 ];
 
 const PROVIDER_LIST = [
-  { name: 'Pragmatic Play', img: 'https://imgxcut.com/game/image/0ed1c4fe40.png' },
-  { name: 'PG Soft', img: 'https://imgxcut.com/game/image/128992a35d.png' },
-  { name: 'Evolution', img: 'https://imgxcut.com/game/image/9c40f44618.png' },
-  { name: 'NetEnt', img: 'https://imgxcut.com/game/image/50e7c80e3a.png' },
-  { name: 'Microgaming', img: 'https://imgxcut.com/game/image/5030317209.png' },
-  { name: 'Nolimit City', img: 'https://imgxcut.com/game/image/1f7914af40.png' },
-  { name: 'Red Tiger', img: 'https://imgxcut.com/game/image/651ed6cb08.png' },
-  { name: 'Big Time Gaming', img: 'https://imgxcut.com/game/image/dd8ef215f6.png' },
-  { name: 'Hacksaw', img: 'https://imgxcut.com/game/image/ccf8045f30.png' },
-  { name: 'Habanero', img: 'https://imgxcut.com/game/image/1600322b49.png' },
-  { name: 'BGaming', img: 'https://imgxcut.com/game/image/75b5d81876.png' },
-  { name: 'JILI', img: 'https://imgxcut.com/game/image/11dec4b4c5.png' },
-  { name: 'Spadegaming', img: 'https://imgxcut.com/game/image/408156443a.png' },
-  { name: 'BetSoft', img: 'https://imgxcut.com/game/image/e1162a0386.png' },
-  { name: 'Endorphina', img: 'https://imgxcut.com/game/image/311c691438.png' },
-  { name: 'Quickspin', img: 'https://imgxcut.com/game/image/3861400bec.png' },
-  { name: 'Relax Gaming', img: 'https://imgxcut.com/game/image/bf6887c12b.png' },
-  { name: 'Spinomenal', img: 'https://imgxcut.com/game/image/96e8551016.png' },
+  { name: 'Pragmatic Play' },
+  { name: 'PG Soft' },
+  { name: 'Evolution' },
+  { name: 'NetEnt' },
+  { name: 'Microgaming' },
+  { name: 'Nolimit City' },
+  { name: 'Red Tiger' },
+  { name: 'Big Time Gaming' },
+  { name: 'Hacksaw' },
+  { name: 'Habanero' },
+  { name: 'BGaming' },
+  { name: 'JILI' },
+  { name: 'Spadegaming' },
+  { name: 'BetSoft' },
+  { name: 'Endorphina' },
+  { name: 'Quickspin' },
+  { name: 'Relax Gaming' },
+  { name: 'Spinomenal' },
 ];
 
 // 1등 $1,850 → 2등 50% → 3등 50% → 이후 ~10%씩 감소
@@ -567,12 +567,9 @@ export default function Home() {
             <div className="flex provider-scroll items-center">
               {[...PROVIDER_LIST, ...PROVIDER_LIST].map((p, i) => (
                   <Link key={`${p.name}-${i}`} href={`/lobby?provider=${encodeURIComponent(p.name)}`} className="flex-shrink-0 mx-4 md:mx-6 py-3 hover:opacity-80 transition-opacity">
-                    <img
-                      src={p.img}
-                      alt={p.name}
-                      className="h-6 md:h-8 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity"
-                      loading="lazy"
-                    />
+                    <span className="text-xs md:text-sm font-light text-white/50 hover:text-white/90 transition-colors whitespace-nowrap tracking-wide">
+                      {p.name}
+                    </span>
                   </Link>
               ))}
             </div>
