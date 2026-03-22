@@ -143,6 +143,27 @@ export const adminApi = {
   },
 };
 
+// Partners
+export const partnerApi = {
+  getPartners: (params?: string) => api.get(`/admin/partners${params ? `?${params}` : ''}`),
+  createPartner: (data: any) => api.post('/admin/partners', data),
+  updatePartner: (id: number, data: any) => api.put(`/admin/partners/${id}`, data),
+  deletePartner: (id: number) => api.delete(`/admin/partners/${id}`),
+  getPartnerUsers: (id: number, params?: string) => api.get(`/admin/partners/${id}/users${params ? `?${params}` : ''}`),
+  getPartnerStats: (id: number) => api.get(`/admin/partners/${id}/stats`),
+  getPartnerTree: () => api.get('/admin/partners/tree'),
+};
+
+// Points
+export const pointsApi = {
+  getUsers: (params?: string) => api.get(`/admin/points/users${params ? `?${params}` : ''}`),
+  give: (data: { userId: number; amount: number; description?: string }) => api.post('/admin/points/give', data),
+  deduct: (data: { userId: number; amount: number; description?: string }) => api.post('/admin/points/deduct', data),
+  getHistory: (params?: string) => api.get(`/admin/points/history${params ? `?${params}` : ''}`),
+  getStats: () => api.get('/admin/points/stats'),
+  updateSettings: (data: any) => api.put('/admin/points/settings', data),
+};
+
 // Backward compatibility
 export { getToken, removeToken };
 export function setToken(token: string) { if (typeof window !== 'undefined') localStorage.setItem('token', token); }

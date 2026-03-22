@@ -22,6 +22,8 @@ import fingerprintRouter from './routes/fingerprint';
 import bipaysRouter from './routes/bipays';
 import webhookRouter from './routes/webhook';
 import i18nRouter from './routes/i18n';
+import partnerRouter from './routes/partner';
+import pointsRouter from './routes/points';
 
 const app = express();
 
@@ -54,6 +56,8 @@ app.use('/api/fingerprint', fingerprintRouter);
 app.use('/api/bipays', bipaysRouter);
 app.use('/api/webhook', webhookRouter);
 app.use('/api/i18n', i18nRouter);
+app.use('/api/admin', partnerRouter);
+app.use('/api/admin', pointsRouter);
 
 // 헬스체크
 app.get('/health', (_req: Request, res: Response) => {

@@ -27,6 +27,11 @@ model User {
   bipays_member_id      Int?      // BiPays 회원 번호 (member_no)
   bipays_deposit_address String?  // BiPays USDT 입금 주소
 
+  // 파트너/포인트
+  partner_id    Int?
+  partner_code  String?   // 가입 시 추천코드
+  points        Int       @default(0)
+
   transactions      Transaction[]
   game_logs          GameLog[]
   user_bonuses       UserBonus[]
@@ -40,6 +45,8 @@ model User {
   game_sessions      GameSession[]
   game_rounds        GameRound[]
   admin_logs         AdminLog[]
+  partner            Partner?  @relation("PartnerUsers", fields: [partner_id], references: [id])
+  point_transactions PointTransaction[]
 }
 
 model Transaction {
@@ -469,6 +476,43 @@ model AdminLog {
   admin       User      @relation(fields: [admin_id], references: [id])
   @@index([admin_id])
   @@index([action])
+  @@index([created_at])
+}
+
+// ===== 파트너 (어필리에이트) 시스템 =====
+
+model Partner {
+  id              Int       @id @default(autoincrement())
+  username        String    @unique
+  password        String
+  name            String
+  code            String    @unique  // 추천 코드
+  commission_rate Float     @default(0)  // 수수료율 %
+  parent_id       Int?      // 상위 파트너
+  status          String    @default("ACTIVE")
+  memo            String?
+  created_at      DateTime  @default(now())
+
+  users           User[]    @relation("PartnerUsers")
+  parent          Partner?  @relation("PartnerTree", fields: [parent_id], references: [id])
+  children        Partner[] @relation("PartnerTree")
+}
+
+// ===== 포인트 시스템 =====
+
+model PointTransaction {
+  id          Int      @id @default(autoincrement())
+  user_id     Int
+  amount      Int      // + 지급, - 차감
+  balance     Int      // 변경 후 잔액
+  type        String   // EARN, USE, CONVERT, ADMIN
+  description String?
+  created_at  DateTime @default(now())
+
+  user        User     @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+  @@index([type])
   @@index([created_at])
 }
 

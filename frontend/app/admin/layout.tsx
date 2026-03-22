@@ -13,6 +13,8 @@ const adminMenu = [
   { href: '/admin/coupons', label: '보너스관리', icon: CouponIcon },
   { href: '/admin/money-history', label: '머니히스토리', icon: MoneyHistoryIcon },
   { href: '/admin/games', label: '게임관리', icon: GamesIcon },
+  { href: '/admin/partners', label: '파트너관리', icon: PartnersIcon },
+  { href: '/admin/points', label: '포인트', icon: PointsIcon },
   { href: '/admin/settings', label: '설정', icon: SettingsIcon },
   { href: '/admin/logs', label: '로그', icon: LogsIcon },
 ];
@@ -204,6 +206,26 @@ function MoneyHistoryIcon({ active }: { active: boolean }) {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
       <path d="M3 3h18M3 21h18" />
+    </svg>
+  );
+}
+
+function PartnersIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+
+function PointsIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={active ? '#FFFFFF' : '#555555'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 6v12M8 10h8M8 14h8" />
     </svg>
   );
 }
