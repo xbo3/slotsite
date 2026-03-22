@@ -67,14 +67,14 @@ export default function PointsPage() {
 
   // 유저 탭
   const [users, setUsers] = useState<PointUser[]>([]);
-  const [userTotal, setUserTotal] = useState(0);
+  const [, setUserTotal] = useState(0);
   const [userPage, setUserPage] = useState(1);
   const [userTotalPages, setUserTotalPages] = useState(1);
   const [userSearch, setUserSearch] = useState('');
 
   // 내역 탭
   const [history, setHistory] = useState<PointTx[]>([]);
-  const [historyTotal, setHistoryTotal] = useState(0);
+  const [, setHistoryTotal] = useState(0);
   const [historyPage, setHistoryPage] = useState(1);
   const [historyTotalPages, setHistoryTotalPages] = useState(1);
   const [historyType, setHistoryType] = useState('');

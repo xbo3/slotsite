@@ -58,7 +58,7 @@ export default function PartnersPage() {
   // 상세
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [partnerUsers, setPartnerUsers] = useState<PartnerUser[]>([]);
-  const [partnerStats, setPartnerStats] = useState<any>(null);
+  const [partnerStats, setPartnerStats] = useState<Record<string, number> | null>(null);
 
   // 트리
   const [treeData, setTreeData] = useState<Partner[]>([]);
@@ -158,7 +158,7 @@ export default function PartnersPage() {
 
   const handleEdit = async () => {
     if (!editingId) return;
-    const data: any = { name: editForm.name, commission_rate: Number(editForm.commission_rate), status: editForm.status, memo: editForm.memo };
+    const data: Record<string, string | number> = { name: editForm.name, commission_rate: Number(editForm.commission_rate), status: editForm.status, memo: editForm.memo };
     if (editForm.password) data.password = editForm.password;
     const res = await partnerApi.updatePartner(editingId, data);
     if (res.success) {
