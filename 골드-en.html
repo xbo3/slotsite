@@ -129,10 +129,10 @@
 
   /* ═══ QUICK ACTIONS with images ═══ */
   .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
-  .q-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:clamp(10px,2.5vw,18px) 4px clamp(8px,2vw,14px);background:var(--card);border:1px solid var(--bdr);border-radius:14px;cursor:pointer;transition:all .15s}
-  .q-item:active{transform:scale(.93);background:var(--card2)}
-  .q-item:hover{border-color:rgba(201,168,76,0.15)}
-  .q-img{width:clamp(48px,12vw,80px);height:clamp(48px,12vw,80px);object-fit:contain}
+  .q-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:clamp(12px,3vw,22px) 8px clamp(10px,2.5vw,16px);background:none;border:none;border-radius:0;cursor:pointer;transition:all .15s}
+  .q-item:active{transform:scale(.93)}
+  .q-item:hover{opacity:0.8}
+  .q-img{width:clamp(56px,15vw,80px);height:clamp(56px,15vw,80px);object-fit:contain;border-radius:50%}
   .q-lbl{font-size:clamp(9px,2.5vw,13px);font-weight:300;color:var(--txt2)}
 
   /* 3D Promo Banner */
@@ -304,10 +304,10 @@
 
   <!-- Quick Actions with actual images -->
   <div class="section"><div class="quick">
-    <div class="q-item" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer"><img class="q-img" src="cat-icons/slot.png" alt="Slots" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">Slots</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><img class="q-img" src="cat-icons/casino.png" alt="Casino" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">Casino</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=sports'" style="cursor:pointer"><img class="q-img" src="cat-icons/sports.png" alt="Sports" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">Sports</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=virtual'" style="cursor:pointer"><img class="q-img" src="cat-icons/etc.png" alt="ETC" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">ETC</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer"><img class="q-img" src="cat-icons/slot.png" alt="Slots" ><div class="q-lbl">Slots</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><img class="q-img" src="cat-icons/casino.png" alt="Casino" ><div class="q-lbl">Casino</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=sports'" style="cursor:pointer"><img class="q-img" src="cat-icons/sports.png" alt="Sports" ><div class="q-lbl">Sports</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=virtual'" style="cursor:pointer"><img class="q-img" src="cat-icons/etc.png" alt="ETC" ><div class="q-lbl">ETC</div></div>
   </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t"><span class="g-emoji">🃏</span> Live Casino</div><div class="sec-m">View All ›</div></div>
