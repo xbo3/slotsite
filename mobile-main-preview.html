@@ -1549,17 +1549,35 @@ body.no-scroll { overflow: hidden; }
   filter: drop-shadow(0 0 6px rgba(240,185,11,0.6));
 }
 
-/* Sub-categories list */
-.subcat-list {
-  padding: 4px 0;
+/* Sub-categories accordion */
+.sidebar-item[data-cat] { position: relative; }
+.sidebar-item .arrow,
+.mob-sb-item .arrow {
+  margin-left: auto;
+  font-size: 10px;
+  transition: transform 0.3s ease;
+  color: var(--text-muted);
+}
+.sidebar-item.accordion-open .arrow,
+.mob-sb-item.accordion-open .arrow {
+  transform: rotate(180deg);
+  color: var(--gold);
+}
+.subcat-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.subcat-panel.open {
+  max-height: 500px;
 }
 .subcat-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 32px;
+  padding: 7px 20px 7px 52px;
   font-size: 12px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.5);
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -1571,11 +1589,45 @@ body.no-scroll { overflow: hidden; }
   content: '';
   width: 4px; height: 4px;
   border-radius: 50%;
-  background: var(--text-muted);
+  background: rgba(255,255,255,0.3);
   flex-shrink: 0;
   transition: background 0.2s;
 }
 .subcat-item:hover::before {
+  background: var(--gold);
+}
+/* Mobile sidebar accordion */
+.mob-subcat-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.mob-subcat-panel.open {
+  max-height: 500px;
+}
+.mob-subcat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px 7px 48px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.mob-subcat-item:hover {
+  color: var(--gold);
+  background: rgba(240,185,11,0.06);
+}
+.mob-subcat-item::before {
+  content: '';
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.mob-subcat-item:hover::before {
   background: var(--gold);
 }
 
@@ -1979,17 +2031,30 @@ body.no-scroll { overflow: hidden; }
   <div class="sidebar-section">
     <div class="sidebar-section-title">Menu</div>
     <div class="sidebar-item active" data-cat="home"><img src="cat-icons/home.jpg" alt="Home" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Home</div>
-    <div class="sidebar-item" data-cat="slots"><img src="cat-icons/slot.png" alt="Slots" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Slots</div>
-    <div class="sidebar-item" data-cat="casino"><img src="cat-icons/casino.png" alt="Casino" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Live Casino</div>
-    <div class="sidebar-item" data-cat="sports"><img src="cat-icons/sports.png" alt="Sports" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Sports</div>
-    <div class="sidebar-item" data-cat="etc"><img src="cat-icons/etc.png" alt="ETC" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> ETC / Virtual</div>
-    <div class="sidebar-item" data-cat="promotions"><img src="cat-icons/프로모션.png" alt="Promotions" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Promotions</div>
-    <div class="sidebar-item" data-cat="tournament"><img src="cat-icons/토너먼트.jpg" alt="Tournament" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Tournament</div>
-    <div class="sidebar-item" data-cat="vip"><img src="cat-icons/vip.jpg" alt="VIP" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> VIP</div>
-    <div class="sidebar-item" data-cat="bonus"><img src="cat-icons/보너스쿠폰.png" alt="Bonus" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Bonus / Coupon</div>
-  </div>
-  <!-- Sub-categories accordion (PC sidebar) -->
-  <div class="sidebar-subcats" id="pcSubcats" style="display:none;padding:4px 0;border-bottom:1px solid var(--border);">
+
+    <div class="sidebar-item" data-cat="slots"><img src="cat-icons/slot.png" alt="Slots" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Slots <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="slots"></div>
+
+    <div class="sidebar-item" data-cat="casino"><img src="cat-icons/casino.png" alt="Casino" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Live Casino <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="casino"></div>
+
+    <div class="sidebar-item" data-cat="sports"><img src="cat-icons/sports.png" alt="Sports" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Sports <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="sports"></div>
+
+    <div class="sidebar-item" data-cat="etc"><img src="cat-icons/etc.png" alt="ETC" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> ETC / Virtual <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="etc"></div>
+
+    <div class="sidebar-item" data-cat="promotions"><img src="cat-icons/프로모션.png" alt="Promotions" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Promotions <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="promotions"></div>
+
+    <div class="sidebar-item" data-cat="tournament"><img src="cat-icons/토너먼트.jpg" alt="Tournament" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Tournament <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="tournament"></div>
+
+    <div class="sidebar-item" data-cat="vip"><img src="cat-icons/vip.jpg" alt="VIP" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> VIP <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="vip"></div>
+
+    <div class="sidebar-item" data-cat="bonus"><img src="cat-icons/보너스쿠폰.png" alt="Bonus" style="width:34px;height:34px;object-fit:contain;border-radius:8px"> Bonus / Coupon <span class="arrow">&#9660;</span></div>
+    <div class="subcat-panel" data-panel="bonus"></div>
   </div>
 
   <div class="sidebar-section">
@@ -2230,18 +2295,6 @@ body.no-scroll { overflow: hidden; }
       <span class="game-badge hot">HOT</span>
       <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
       <div class="game-info"><div class="game-name">Mental 2</div><div class="game-provider">Nolimit City</div><div class="game-meta"><span class="game-rtp">96.01%</span><span class="game-maxwin">x66666</span></div></div>
-    </div>
-    <div class="game-card">
-      <img class="game-thumb" src="https://fan-cdn.nolimitcity.com/small_tanked_icon5_5917c5d4f7.png" alt="Tanked">
-      <span class="game-badge hot">HOT</span>
-      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
-      <div class="game-info"><div class="game-name">Tanked</div><div class="game-provider">Nolimit City</div><div class="game-meta"><span class="game-rtp">96.05%</span><span class="game-maxwin">x40000</span></div></div>
-    </div>
-    <div class="game-card">
-      <img class="game-thumb" src="https://fan-cdn.nolimitcity.com/small_the_crypt_logo2_3276573b66.png" alt="The Crypt">
-      <span class="game-badge hot">HOT</span>
-      <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
-      <div class="game-info"><div class="game-name">The Crypt</div><div class="game-provider">Nolimit City</div><div class="game-meta"><span class="game-rtp">96.03%</span><span class="game-maxwin">x30000</span></div></div>
     </div>
   </div>
 
@@ -2517,27 +2570,38 @@ body.no-scroll { overflow: hidden; }
       <div class="mob-sb-section">
         <div class="mob-sb-section-title">Menu</div>
         <div class="mob-sb-item" data-cat="home"><img src="cat-icons/home.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Home</div>
-        <div class="mob-sb-item active" data-cat="slots"><img src="cat-icons/slot.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Slots</div>
-        <div class="mob-sb-item" data-cat="casino"><img src="cat-icons/casino.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Live Casino</div>
-        <div class="mob-sb-item" data-cat="sports"><img src="cat-icons/sports.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Sports</div>
-        <div class="mob-sb-item" data-cat="etc"><img src="cat-icons/etc.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">ETC / Virtual</div>
+
+        <div class="mob-sb-item" data-cat="slots"><img src="cat-icons/slot.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Slots <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="slots"></div>
+
+        <div class="mob-sb-item" data-cat="casino"><img src="cat-icons/casino.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Live Casino <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="casino"></div>
+
+        <div class="mob-sb-item" data-cat="sports"><img src="cat-icons/sports.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Sports <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="sports"></div>
+
+        <div class="mob-sb-item" data-cat="etc"><img src="cat-icons/etc.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">ETC / Virtual <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="etc"></div>
       </div>
       <div class="mob-sb-section">
         <div class="mob-sb-section-title">Features</div>
-        <div class="mob-sb-item" data-cat="promotions"><img src="cat-icons/프로모션.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Promotions</div>
-        <div class="mob-sb-item" data-cat="tournament"><img src="cat-icons/토너먼트.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Tournament</div>
-        <div class="mob-sb-item" data-cat="vip"><img src="cat-icons/vip.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">VIP</div>
-        <div class="mob-sb-item" data-cat="bonus"><img src="cat-icons/보너스쿠폰.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Bonus / Coupon</div>
+        <div class="mob-sb-item" data-cat="promotions"><img src="cat-icons/프로모션.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Promotions <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="promotions"></div>
+
+        <div class="mob-sb-item" data-cat="tournament"><img src="cat-icons/토너먼트.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Tournament <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="tournament"></div>
+
+        <div class="mob-sb-item" data-cat="vip"><img src="cat-icons/vip.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">VIP <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="vip"></div>
+
+        <div class="mob-sb-item" data-cat="bonus"><img src="cat-icons/보너스쿠폰.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Bonus / Coupon <span class="arrow">&#9660;</span></div>
+        <div class="mob-subcat-panel" data-panel="bonus"></div>
       </div>
       <div class="mob-sb-section">
         <div class="mob-sb-section-title">Support</div>
         <div class="mob-sb-item"><img src="cat-icons/247.png" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">24/7 Support</div>
         <div class="mob-sb-item"><img src="cat-icons/파트너스프로그램.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Partners</div>
         <div class="mob-sb-item"><img src="cat-icons/알림.jpg" alt="" style="width:32px;height:32px;object-fit:contain;border-radius:8px">Notification</div>
-      </div>
-      <!-- Mobile sub-categories accordion -->
-      <div class="mob-sb-section" id="mobSubcats" style="display:none;">
-        <div class="mob-sb-section-title" id="mobSubcatsTitle">Sub Categories</div>
       </div>
     </div>
   </div>
@@ -2718,72 +2782,81 @@ document.getElementById('mobSidebarOverlay1').addEventListener('click',function(
 
 // ═══ Category Sub-categories Data ═══
 const subcatData = {
-  slots: ['Pragmatic Play', 'PG Soft', 'Nolimit City', 'NetEnt', 'Hacksaw Gaming', 'Red Tiger', 'Big Time Gaming', 'Habanero', 'BGaming', 'JILI', 'Spadegaming'],
-  casino: ['Evolution', 'Ezugi', 'Pragmatic Live', 'SA Gaming', 'Sexy Gaming', 'Dream Gaming', 'Asia Gaming'],
-  sports: ['Football', 'Basketball', 'Tennis', 'Baseball', 'E-Sports', 'Virtual Sports', 'MMA / UFC'],
-  etc: ['Crash Games', 'Virtual Games', 'Table Games', 'Fishing', 'Scratch Cards', 'Keno', 'Bingo'],
-  promotions: ['Welcome Bonus', 'Daily Bonus', 'Cashback', 'Reload Bonus', 'Free Spins', 'Tournament Prizes'],
-  tournament: ['Daily Tournament', 'Weekly Tournament', 'Monthly Grand', 'Slot Race', 'Leaderboard'],
-  vip: ['Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'VIP Benefits'],
-  bonus: ['Deposit Coupon', 'Free Spin Coupon', 'Cashback Coupon', 'Special Event', 'Referral Bonus'],
+  slots: ['Pragmatic Play', 'PG Soft', 'Nolimit City', 'Evolution', 'NetEnt', 'Hacksaw', 'Red Tiger', 'Big Time Gaming'],
+  casino: ['Evolution', 'Pragmatic Live', 'Ezugi', 'Vivo Gaming'],
+  sports: ['Football', 'Basketball', 'Baseball', 'Tennis'],
+  etc: ['Fishing', 'Quick Games', 'Crypto Futures'],
+  promotions: ['Tournament', 'Slot Race', 'Daily Deals', 'Weekend Special'],
+  tournament: ['Leaderboard', 'Prize Pool'],
+  vip: ['VIP Rewards', 'Cashback', 'Free Spins'],
+  bonus: ['Welcome Bonus', 'Reload Bonus', 'Enter Code'],
   home: []
 };
 
-// ═══ PC Sidebar Category Click + Glow + Subcats ═══
+// ═══ Build PC Sidebar Accordion Panels ═══
+document.querySelectorAll('.sidebar .subcat-panel[data-panel]').forEach(function(panel) {
+  var cat = panel.getAttribute('data-panel');
+  var subs = subcatData[cat] || [];
+  panel.innerHTML = subs.map(function(s) {
+    return '<div class="subcat-item">' + s + '</div>';
+  }).join('');
+});
+
+// ═══ Build Mobile Sidebar Accordion Panels ═══
+document.querySelectorAll('.mob-subcat-panel[data-panel]').forEach(function(panel) {
+  var cat = panel.getAttribute('data-panel');
+  var subs = subcatData[cat] || [];
+  panel.innerHTML = subs.map(function(s) {
+    return '<div class="mob-subcat-item">' + s + '</div>';
+  }).join('');
+});
+
+// ═══ PC Sidebar Accordion Toggle ═══
 document.querySelectorAll('.sidebar .sidebar-item[data-cat]').forEach(function(item) {
   item.addEventListener('click', function() {
     var cat = this.getAttribute('data-cat');
-    // Remove glow from all
-    document.querySelectorAll('.sidebar .sidebar-item').forEach(function(el) {
-      el.classList.remove('glow-active','active');
+    var panel = document.querySelector('.sidebar .subcat-panel[data-panel="' + cat + '"]');
+    var isOpen = this.classList.contains('accordion-open');
+
+    // Close all open panels
+    document.querySelectorAll('.sidebar .sidebar-item[data-cat]').forEach(function(el) {
+      el.classList.remove('accordion-open', 'glow-active', 'active');
     });
-    // Add glow to clicked
-    this.classList.add('glow-active','active');
-    // Show subcategories
-    var subcatsEl = document.getElementById('pcSubcats');
-    var subs = subcatData[cat] || [];
-    if (subs.length > 0) {
-      subcatsEl.style.display = 'block';
-      subcatsEl.innerHTML = '<div class="subcat-list">' + subs.map(function(s) {
-        return '<div class="subcat-item">' + s + '</div>';
-      }).join('') + '</div>';
+    document.querySelectorAll('.sidebar .subcat-panel').forEach(function(el) {
+      el.classList.remove('open');
+    });
+
+    // Toggle: if was closed, open it
+    if (!isOpen && panel && (subcatData[cat] || []).length > 0) {
+      this.classList.add('accordion-open', 'glow-active', 'active');
+      panel.classList.add('open');
     } else {
-      subcatsEl.style.display = 'none';
-      subcatsEl.innerHTML = '';
+      this.classList.add('glow-active', 'active');
     }
   });
 });
 
-// ═══ Mobile Sidebar Category Click + Glow + Subcats ═══
+// ═══ Mobile Sidebar Accordion Toggle ═══
 document.querySelectorAll('.mob-sb-item[data-cat]').forEach(function(item) {
   item.addEventListener('click', function() {
     var cat = this.getAttribute('data-cat');
-    // Remove glow from all mob items
-    document.querySelectorAll('.mob-sb-item').forEach(function(el) {
-      el.classList.remove('glow-active','active');
+    var panel = document.querySelector('.mob-subcat-panel[data-panel="' + cat + '"]');
+    var isOpen = this.classList.contains('accordion-open');
+
+    // Close all open panels
+    document.querySelectorAll('.mob-sb-item[data-cat]').forEach(function(el) {
+      el.classList.remove('accordion-open', 'glow-active', 'active');
     });
-    // Add glow
-    this.classList.add('glow-active','active');
-    // Show mobile subcats
-    var mobSubcats = document.getElementById('mobSubcats');
-    var titleEl = document.getElementById('mobSubcatsTitle');
-    var subs = subcatData[cat] || [];
-    if (subs.length > 0) {
-      mobSubcats.style.display = 'block';
-      var catName = this.textContent.trim();
-      titleEl.textContent = catName + ' - Sub Categories';
-      // Clear old subcat items (keep title)
-      var oldItems = mobSubcats.querySelectorAll('.subcat-item');
-      oldItems.forEach(function(el) { el.remove(); });
-      subs.forEach(function(s) {
-        var div = document.createElement('div');
-        div.className = 'subcat-item';
-        div.textContent = s;
-        div.style.padding = '8px 24px';
-        mobSubcats.appendChild(div);
-      });
+    document.querySelectorAll('.mob-subcat-panel').forEach(function(el) {
+      el.classList.remove('open');
+    });
+
+    // Toggle: if was closed, open it
+    if (!isOpen && panel && (subcatData[cat] || []).length > 0) {
+      this.classList.add('accordion-open', 'glow-active', 'active');
+      panel.classList.add('open');
     } else {
-      mobSubcats.style.display = 'none';
+      this.classList.add('glow-active', 'active');
     }
   });
 });
