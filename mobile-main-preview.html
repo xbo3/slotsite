@@ -8,6 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* Hide scrollbar */
+::-webkit-scrollbar { display: none; }
+* { -ms-overflow-style: none; scrollbar-width: none; }
 
 :root {
   --bg: #08080a;
@@ -2822,7 +2825,7 @@ body.no-scroll { overflow: hidden; }
 
 <!-- BOTTOM NAV (mobile only) -->
 <nav class="bottom-nav">
-  <a class="nav-item active" href="#" id="menuBtn1" onclick="openMobSidebar1();return false;">
+  <a class="nav-item active" href="#" id="menuBtn1" onclick="toggleMobSidebar1();return false;">
     <img src="cat-icons/하단메뉴.jpg" alt="Menu" class="nav-icon">
     <span class="nav-label">Menu</span>
   </a>
@@ -2979,10 +2982,14 @@ loadGamesFromAPI();
 // ═══ 3D Carousel (CSS-only animation, no JS needed) ═══
 
 // ═══ Mobile Sidebar ═══
-function openMobSidebar1(){
-  document.getElementById('mobSidebarOverlay1').classList.add('open');
-  document.body.classList.add('no-scroll');
-
+function toggleMobSidebar1(){
+  var ov = document.getElementById('mobSidebarOverlay1');
+  if(ov.classList.contains('open')){
+    closeMobSidebar1();
+  } else {
+    ov.classList.add('open');
+    document.body.classList.add('no-scroll');
+  }
 }
 function closeMobSidebar1(){
   document.getElementById('mobSidebarOverlay1').classList.remove('open');
