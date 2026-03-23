@@ -307,7 +307,8 @@
   .lv{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s}
   .lv:active{transform:scale(.97)}
   .lv-img{width:100%;height:clamp(80px,15vw,120px);display:flex;align-items:center;justify-content:center;font-size:clamp(28px,7vw,52px);position:relative;background:linear-gradient(135deg,rgba(232,54,78,0.08),rgba(120,80,200,0.05))}
-  .li1{background:linear-gradient(145deg,#1a2a1a,#0d1a0d)}.li2{background:linear-gradient(145deg,#2a1a1a,#1a0d0d)}.li3{background:linear-gradient(145deg,#1a1a2a,#0d0d1a)}
+  .li1{background:linear-gradient(135deg,#1a3a1a,#0d2a0d)}.li2{background:linear-gradient(135deg,#3a1a1a,#2a0d0d)}.li3{background:linear-gradient(135deg,#1a1a3a,#0d0d2a)}
+  .lv-img .lv-emoji{font-size:48px;filter:drop-shadow(0 0 12px rgba(255,255,255,0.3)) drop-shadow(0 0 24px rgba(255,46,74,0.2))}
   .lv-live{position:absolute;top:6px;left:6px;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);padding:3px 8px;border-radius:6px;font-size:clamp(8px,2vw,10px);font-weight:400;color:var(--pearl-lt)}
   .lv-dot{width:5px;height:5px;background:var(--pearl-1);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
@@ -467,10 +468,10 @@
   </div></div>
 
   <div class="section"><div class="quick">
-    <div class="q-item"><div class="q-ico qi1"><img src="red_slot.png" alt="Slots"></div><div class="q-lbl">Slots</div></div>
-    <div class="q-item"><div class="q-ico qi2"><img src="red_casino.png" alt="Casino"></div><div class="q-lbl">Casino</div></div>
-    <div class="q-item"><div class="q-ico qi3"><img src="red_sports.png" alt="Sports"></div><div class="q-lbl">Sports</div></div>
-    <div class="q-item"><div class="q-ico"><img src="red_virtual.png" alt="ETC"></div><div class="q-lbl">ETC</div></div>
+    <div class="q-item"><div class="q-ico qi1"><img src="red-cat-icons/slot.png" alt="Slots"></div><div class="q-lbl">Slots</div></div>
+    <div class="q-item"><div class="q-ico qi2"><img src="red-cat-icons/casino.png" alt="Casino"></div><div class="q-lbl">Casino</div></div>
+    <div class="q-item"><div class="q-ico qi3"><img src="red-cat-icons/sports.png" alt="Sports"></div><div class="q-lbl">Sports</div></div>
+    <div class="q-item"><div class="q-ico"><img src="red-cat-icons/etc.png" alt="ETC"></div><div class="q-lbl">ETC</div></div>
   </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t">⏱ Continue Playing</div></div>
@@ -493,9 +494,9 @@
 
   <div class="section"><div class="sec-hd"><div class="sec-t">🃏 Live Casino</div><div class="sec-m">View All ›</div></div>
   <div class="lv-grid">
-    <div class="lv"><div class="lv-img li1"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🃏<div class="lv-cnt">👥 2,847</div></div><div class="lv-body"><div class="lv-name">Blackjack VIP</div><div class="lv-deal">Dealer: Sarah K.</div><div class="lv-lim">Bet: <span>$10–$50K</span></div></div></div>
-    <div class="lv"><div class="lv-img li2"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🎡<div class="lv-cnt">👥 5,231</div></div><div class="lv-body"><div class="lv-name">Lightning Roulette</div><div class="lv-deal">Dealer: James L.</div><div class="lv-lim">Bet: <span>$5–$20K</span></div></div></div>
-    <div class="lv"><div class="lv-img li3"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🎴<div class="lv-cnt">👥 1,583</div></div><div class="lv-body"><div class="lv-name">Baccarat Squeeze</div><div class="lv-deal">Dealer: Emma W.</div><div class="lv-lim">Bet: <span>$10–$100K</span></div></div></div>
+    <div class="lv"><div class="lv-img li1"><div class="lv-live"><div class="lv-dot"></div> LIVE</div><span class="lv-emoji">🃏</span><div class="lv-cnt">👥 2,847</div></div><div class="lv-body"><div class="lv-name">Blackjack VIP</div><div class="lv-deal">Dealer: Sarah K.</div><div class="lv-lim">Bet: <span>$10–$50K</span></div></div></div>
+    <div class="lv"><div class="lv-img li2"><div class="lv-live"><div class="lv-dot"></div> LIVE</div><span class="lv-emoji">🎡</span><div class="lv-cnt">👥 5,231</div></div><div class="lv-body"><div class="lv-name">Lightning Roulette</div><div class="lv-deal">Dealer: James L.</div><div class="lv-lim">Bet: <span>$5–$20K</span></div></div></div>
+    <div class="lv"><div class="lv-img li3"><div class="lv-live"><div class="lv-dot"></div> LIVE</div><span class="lv-emoji">🎴</span><div class="lv-cnt">👥 1,583</div></div><div class="lv-body"><div class="lv-name">Baccarat Squeeze</div><div class="lv-deal">Dealer: Emma W.</div><div class="lv-lim">Bet: <span>$10–$100K</span></div></div></div>
   </div></div>
 
 
@@ -513,22 +514,22 @@
 
 <script>
 const menuHTML=`
-<div class="sb-cat" data-expand="games"><div class="sb-cat-ico ci-red">🎮</div><div class="sb-cat-txt"><div class="sb-cat-name">Games</div><div class="sb-cat-sub">Slots, Live, Sports & more</div></div><span class="sb-cat-badge badge-hot">HOT</span><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="games"><div class="sb-cat-ico ci-red"><img src="red-cat-icons/게임.png" alt="" style="width:28px;height:28px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Games</div><div class="sb-cat-sub">Slots, Live, Sports & more</div></div><span class="sb-cat-badge badge-hot">HOT</span><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="games"><div class="sb-sub-item"><div class="sb-sub-ico">🎰</div><div class="sb-sub-name">Slots</div><div class="sb-sub-cnt">1,390</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🃏</div><div class="sb-sub-name">Live Casino</div><div class="sb-sub-cnt">246</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">⚽</div><div class="sb-sub-name">Sports Betting</div><div class="sb-sub-cnt">58</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎲</div><div class="sb-sub-name">Quick Games</div><div class="sb-sub-cnt">32</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎣</div><div class="sb-sub-name">Fishing</div><div class="sb-sub-cnt">18</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🃏</div><div class="sb-sub-name">Poker</div><div class="sb-sub-cnt">12</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">₿</div><div class="sb-sub-name">Crypto Futures</div><div class="sb-sub-cnt">3</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="promo"><div class="sb-cat-ico ci-gold">🎉</div><div class="sb-cat-txt"><div class="sb-cat-name">Promotions</div><div class="sb-cat-sub">Events & campaigns</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="promo"><div class="sb-cat-ico ci-gold"><img src="red-cat-icons/프로모션.png" alt="" style="width:28px;height:28px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Promotions</div><div class="sb-cat-sub">Events & campaigns</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="promo"><div class="sb-sub-item"><div class="sb-sub-ico">🏆</div><div class="sb-sub-name">Tournament</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎰</div><div class="sb-sub-name">Slot Race</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📅</div><div class="sb-sub-name">Daily Deals</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🔥</div><div class="sb-sub-name">Weekend Special</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎯</div><div class="sb-sub-name">Leaderboard</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="bonus"><div class="sb-cat-ico ci-green">🎁</div><div class="sb-cat-txt"><div class="sb-cat-name">Bonus</div><div class="sb-cat-sub">Rewards & cashback</div></div><span class="sb-cat-badge badge-new">NEW</span><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="bonus"><div class="sb-cat-ico ci-green"><img src="red-cat-icons/보너스쿠폰.png" alt="" style="width:28px;height:28px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Bonus</div><div class="sb-cat-sub">Rewards & cashback</div></div><span class="sb-cat-badge badge-new">NEW</span><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="bonus"><div class="sb-sub-item"><div class="sb-sub-ico">🎊</div><div class="sb-sub-name">Welcome Bonus</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🔄</div><div class="sb-sub-name">Reload Bonus</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">💸</div><div class="sb-sub-name">Cashback</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎡</div><div class="sb-sub-name">Free Spins</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">👑</div><div class="sb-sub-name">VIP Rewards</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="coupon"><div class="sb-cat-ico ci-purple">🎟️</div><div class="sb-cat-txt"><div class="sb-cat-name">Coupon</div><div class="sb-cat-sub">Redeem your codes</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="coupon"><div class="sb-cat-ico ci-purple"><img src="red-cat-icons/미스테리박스.png" alt="" style="width:28px;height:28px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Coupon</div><div class="sb-cat-sub">Redeem your codes</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="coupon"><div class="sb-sub-item"><div class="sb-sub-ico">📝</div><div class="sb-sub-name">Enter Coupon Code</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📋</div><div class="sb-sub-name">My Coupons</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">⏰</div><div class="sb-sub-name">Expiring Soon</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="partners"><div class="sb-cat-ico ci-blue">🤝</div><div class="sb-cat-txt"><div class="sb-cat-name">Partners Program</div><div class="sb-cat-sub">Earn commissions</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="partners"><div class="sb-cat-ico ci-blue"><img src="red-cat-icons/파트너스프로그램.png" alt="" style="width:28px;height:28px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Partners Program</div><div class="sb-cat-sub">Earn commissions</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="partners"><div class="sb-sub-item"><div class="sb-sub-ico">📊</div><div class="sb-sub-name">Dashboard</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🔗</div><div class="sb-sub-name">Referral Link</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">💰</div><div class="sb-sub-name">Commission</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📈</div><div class="sb-sub-name">Statistics</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">👥</div><div class="sb-sub-name">Sub-Affiliates</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="support"><div class="sb-cat-ico ci-teal">🎧</div><div class="sb-cat-txt"><div class="sb-cat-name">24/7 Support</div><div class="sb-cat-sub">We're always here</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="support"><div class="sb-cat-ico ci-teal"><img src="red-cat-icons/247.png" alt="" style="width:28px;height:28px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">24/7 Support</div><div class="sb-cat-sub">We're always here</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="support"><div class="sb-sub-item"><div class="sb-sub-ico">💬</div><div class="sb-sub-name">Live Chat</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📧</div><div class="sb-sub-name">Email Support</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📱</div><div class="sb-sub-name">Telegram</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">❓</div><div class="sb-sub-name">FAQ</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📖</div><div class="sb-sub-name">Terms & Conditions</div><div class="sb-sub-arr">›</div></div></div>
 `;
 document.getElementById('deskMenu').innerHTML=menuHTML;
