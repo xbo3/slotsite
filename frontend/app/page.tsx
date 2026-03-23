@@ -185,6 +185,7 @@ export default function Home() {
 
   // Section observers
   const feedSection = useInView();
+  const liveCasinoSection = useInView();
   const popularSection = useInView();
   const newSection = useInView();
   const bigWinSection = useInView();
@@ -419,6 +420,67 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </div>
+
+      {/* ===== Live Casino ===== */}
+      <div ref={liveCasinoSection.ref} className={liveCasinoSection.inView ? 'section-visible' : 'section-hidden'}>
+        <section className="max-w-7xl mx-auto px-3 md:px-4 py-6 md:py-24">
+          <div className="h-[2px] mb-4 md:mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, #26A17B, transparent)' }} />
+          <div className="flex items-center justify-between mb-4 md:mb-8">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="w-1 md:w-1.5 h-8 md:h-10 rounded-full" style={{ background: 'linear-gradient(to bottom, #26A17B, rgba(38,161,123,0.3))' }} />
+              <div>
+                <h2 className="text-base md:text-3xl font-extralight text-white flex items-center gap-2 tracking-wide">
+                  <span className="text-base md:text-2xl">{'\uD83C\uDCCF'}</span> Live Casino
+                </h2>
+                <p className="text-text-secondary text-xs md:text-sm mt-0.5 font-light">Real dealers, real-time games</p>
+              </div>
+            </div>
+            <Link href="/lobby?cat=live" className="hidden md:flex items-center gap-1 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/5 rounded-xl text-text-secondary hover:text-white text-sm font-light transition-all">
+              View All
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2 md:gap-4">
+            {[
+              { name: 'Mega Roulette', dealer: 'Victoria M.', range: '$1 – $10K', img: 'MegaRoulette' },
+              { name: 'Mega Baccarat', dealer: 'Yuki S.', range: '$5 – $50K', img: 'MegaBaccarat' },
+              { name: 'Speed Roulette', dealer: 'James L.', range: '$1 – $5K', img: 'SpeedRoulette' },
+              { name: 'Mega Sic Bo', dealer: 'Luna K.', range: '$2 – $20K', img: 'MegaSicBo' },
+              { name: 'Dragon Tiger', dealer: 'Sarah K.', range: '$1 – $10K', img: 'DragonTigerLive' },
+              { name: 'Baccarat', dealer: 'Emma W.', range: '$10 – $100K', img: 'Baccarat' },
+            ].map((game) => (
+              <Link key={game.name} href="/lobby?cat=live" className="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-white/20 transition-all card-hover" style={{ background: '#111111' }}>
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={`https://cdn.softswiss.net/i/s3/pragmaticexternal/${game.img}.png`}
+                    alt={game.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-2 left-2 flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium text-white" style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                    LIVE
+                  </div>
+                </div>
+                <div className="p-2 md:p-3">
+                  <p className="text-white text-xs md:text-sm font-light truncate">{game.name}</p>
+                  <p className="text-text-muted text-[10px] md:text-xs font-light mt-0.5">Dealer: {game.dealer}</p>
+                  <p className="text-text-muted text-[10px] md:text-xs font-light">{game.range}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-4 md:mt-6 text-center md:hidden">
+            <Link href="/lobby?cat=live" className="inline-flex items-center gap-1 text-white font-light hover:underline">
+              View All Live Games {'\u2192'}
+            </Link>
+          </div>
+        </section>
       </div>
 
       {/* ===== Popular Games ===== */}
