@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,10 +38,20 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 .sb-item{display:flex;align-items:center;gap:12px;padding:10px 20px;font-size:13px;color:var(--t2);transition:all .2s;cursor:pointer}
 .sb-item:hover{background:rgba(255,255,255,0.03);color:var(--t)}
 .sb-item.active{color:var(--neon);background:var(--neon-d);border-right:2px solid var(--neon)}
-.sb-item .ic{font-size:18px;width:24px;text-align:center}
+.sb-item .ic{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0}
 .sb-prov{display:flex;align-items:center;gap:10px;padding:7px 20px;font-size:12px;color:var(--t3);transition:all .2s;cursor:pointer}
 .sb-prov:hover{color:var(--t2);background:rgba(255,255,255,0.02)}
 .sb-prov img{width:24px;height:24px;object-fit:contain;filter:brightness(0.7)}
+
+/* Sidebar accordion */
+.sb-cat-header{display:flex;align-items:center;gap:12px;padding:10px 20px;font-size:13px;color:var(--t2);transition:all .2s;cursor:pointer;user-select:none}
+.sb-cat-header:hover{background:rgba(255,255,255,0.03);color:var(--t)}
+.sb-cat-header.active{color:var(--neon);background:var(--neon-d);border-right:2px solid var(--neon)}
+.sb-cat-header .ic{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0}
+.sb-cat-header .arrow{margin-left:auto;font-size:12px;transition:transform .3s;color:var(--t3)}
+.sb-cat-header.open .arrow{transform:rotate(180deg)}
+.sb-sub-list{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.sb-sub-list.open{max-height:800px}
 
 /* ===== TOP NAV ===== */
 .topnav{display:flex;align-items:center;justify-content:space-between;padding:8px var(--px-m);position:sticky;top:0;z-index:100;background:rgba(6,6,9,0.92);backdrop-filter:blur(20px)}
@@ -166,20 +176,20 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 .bonus-emoji{font-size:24px;margin-bottom:8px;animation:bounce 1s ease infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-/* ===== 3D PROMO BANNER ===== */
-/* 3D Rotating Carousel Banner */
-.carousel3d-scene{width:100%;height:220px;perspective:800px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;position:relative;overflow:visible}
-.carousel3d{width:260px;height:180px;position:relative;transform-style:preserve-3d;animation:carousel3dSpin 12s linear infinite}
-.carousel3d:hover{animation-play-state:paused}
-@keyframes carousel3dSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-.carousel3d-card{position:absolute;width:260px;height:180px;border-radius:16px;overflow:hidden;padding:20px;display:flex;flex-direction:column;justify-content:center;backface-visibility:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.5),0 0 20px rgba(0,229,255,0.08)}
-.carousel3d-card:nth-child(1){transform:rotateY(0deg) translateZ(220px);background:linear-gradient(135deg,#061820,#0d2d3a);border:1px solid rgba(0,229,255,0.3)}
-.carousel3d-card:nth-child(2){transform:rotateY(120deg) translateZ(220px);background:linear-gradient(135deg,#0a1828,#0d2838);border:1px solid rgba(0,229,255,0.25)}
-.carousel3d-card:nth-child(3){transform:rotateY(240deg) translateZ(220px);background:linear-gradient(135deg,#06181e,#0d2530);border:1px solid rgba(0,229,255,0.2)}
-.carousel3d-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;color:var(--neon);opacity:0.8}
-.carousel3d-title{font-family:'Poppins';font-size:22px;font-weight:800;line-height:1.15;margin-bottom:5px;color:#fff}
-.carousel3d-title span{color:var(--neon)}
-.carousel3d-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.4}
+/* ===== CARD SLIDE BANNER ===== */
+.card-slider{position:relative;margin:0 var(--px-m) 20px;overflow:hidden;border-radius:16px}
+.card-slider-track{display:flex;transition:transform 0.6s ease;width:300%}
+.card-slide{width:100%;flex-shrink:0;padding:24px 20px;min-height:180px;display:flex;flex-direction:column;justify-content:center;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.5),0 0 20px rgba(0,229,255,0.08)}
+.card-slide:nth-child(1){background:linear-gradient(135deg,#061820,#0d2d3a);border:1px solid rgba(0,229,255,0.3)}
+.card-slide:nth-child(2){background:linear-gradient(135deg,#0a1828,#0d2838);border:1px solid rgba(0,229,255,0.25)}
+.card-slide:nth-child(3){background:linear-gradient(135deg,#06181e,#0d2530);border:1px solid rgba(0,229,255,0.2)}
+.card-slide-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;color:var(--neon);opacity:0.8}
+.card-slide-title{font-family:'Poppins';font-size:22px;font-weight:800;line-height:1.15;margin-bottom:5px;color:#fff}
+.card-slide-title span{color:var(--neon)}
+.card-slide-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.4}
+.card-slider-dots{display:flex;justify-content:center;gap:6px;margin-top:12px}
+.card-slider-dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);cursor:pointer;transition:all .3s}
+.card-slider-dots span.active{width:24px;border-radius:4px;background:var(--neon)}
 
 /* ===== PROMO GRID (legacy) ===== */
 .promo-grid{padding:0 var(--px-m);margin-bottom:20px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -355,6 +365,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
   .sec-t{font-size:20px}
 
   .bonus-card{max-width:var(--max-w);margin:0 auto 20px}
+  .card-slider{max-width:var(--max-w);margin:0 auto 28px;padding:0}
   .promo-grid{max-width:var(--max-w);margin:0 auto 28px;padding:0;grid-template-columns:1fr 1fr;gap:14px}
   .game-grid-2x{max-width:var(--max-w);margin:0 auto 28px;padding:0;grid-template-columns:repeat(4,1fr);gap:14px}
   .gm-card .thumb.mid{height:180px}
@@ -397,47 +408,68 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 <aside class="sidebar" id="mobileSidebar">
   <div class="sb-logo"><span class="dr">DR.</span><span class="slot">SLOT</span></div>
+
+  <!-- Home -->
+  <div class="sb-sec">
+    <div class="sb-item" onclick="location.href='/'"><img class="ic" src="mint-cat-icons/home.png" alt="">Home</div>
+  </div>
+
+  <!-- Games (accordion) -->
   <div class="sb-sec">
     <div class="sb-sec-t">Games</div>
-    <div class="sb-item active" onclick="location.href='/lobby?cat=sports'"><span class="ic">⚽</span>Sports</div>
-    <div class="sb-item" onclick="location.href='/lobby?cat=live'"><span class="ic">🃏</span>Casino</div>
-    <div class="sb-item" onclick="location.href='/lobby?cat=slots'"><span class="ic">🎰</span>Slots</div>
+    <div class="sb-cat-header" data-toggle="sub-slots" onclick="toggleSubList(this)">
+      <img class="ic" src="mint-cat-icons/게임.png" alt="">Slots
+      <span class="arrow">&#9660;</span>
+    </div>
+    <div class="sb-sub-list" id="sub-slots">
+      <div class="sb-prov" onclick="location.href='/lobby?provider=pragmatic'"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png">Pragmatic Play</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=pgsoft'"><img src="https://imgxcut.com/game/image/128992a35d.png">PG Soft</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=evolution'"><img src="https://imgxcut.com/game/image/9c40f44618.png">Evolution</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=nolimit'"><img src="https://imgxcut.com/game/image/1f7914af40.png">Nolimit City</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=netent'"><img src="https://imgxcut.com/game/image/50e7c80e3a.png">NetEnt</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=hacksaw'"><img src="https://imgxcut.com/game/image/ccf8045f30.png">Hacksaw</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=redtiger'"><img src="https://imgxcut.com/game/image/651ed6cb08.png">Red Tiger</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=btg'"><img src="https://imgxcut.com/game/image/dd8ef215f6.png">Big Time Gaming</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=habanero'"><img src="https://imgxcut.com/game/image/1600322b49.png">Habanero</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=bgaming'"><img src="https://imgxcut.com/game/image/75b5d81876.png">BGaming</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=jili'"><img src="https://imgxcut.com/game/image/11dec4b4c5.png">JILI</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=betsoft'"><img src="https://imgxcut.com/game/image/e1162a0386.png">BetSoft</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=relax'"><img src="https://imgxcut.com/game/image/bf6887c12b.png">Relax Gaming</div>
+      <div class="sb-prov" onclick="location.href='/lobby?provider=spribe'"><img src="https://imgxcut.com/game/image/e03d7b925f.png">Spribe</div>
+    </div>
+    <div class="sb-cat-header" onclick="location.href='/lobby?cat=live'">
+      <img class="ic" src="mint-cat-icons/casino.png" alt="">Casino
+    </div>
+    <div class="sb-cat-header" onclick="location.href='/lobby?cat=sports'">
+      <img class="ic" src="mint-cat-icons/sports.png" alt="">Sports
+    </div>
+    <div class="sb-cat-header" onclick="location.href='/lobby?cat=virtual'">
+      <img class="ic" src="mint-cat-icons/etc.png" alt="">Virtual / ETC
+    </div>
   </div>
-  <div class="sb-sec">
-    <div class="sb-sec-t">Slots Providers</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=pragmatic'"><img src="https://imgxcut.com/game/image/0ed1c4fe40.png">Pragmatic Play</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=pgsoft'"><img src="https://imgxcut.com/game/image/128992a35d.png">PG Soft</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=evolution'"><img src="https://imgxcut.com/game/image/9c40f44618.png">Evolution</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=nolimit'"><img src="https://imgxcut.com/game/image/1f7914af40.png">Nolimit City</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=netent'"><img src="https://imgxcut.com/game/image/50e7c80e3a.png">NetEnt</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=hacksaw'"><img src="https://imgxcut.com/game/image/ccf8045f30.png">Hacksaw</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=redtiger'"><img src="https://imgxcut.com/game/image/651ed6cb08.png">Red Tiger</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=btg'"><img src="https://imgxcut.com/game/image/dd8ef215f6.png">Big Time Gaming</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=habanero'"><img src="https://imgxcut.com/game/image/1600322b49.png">Habanero</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=bgaming'"><img src="https://imgxcut.com/game/image/75b5d81876.png">BGaming</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=jili'"><img src="https://imgxcut.com/game/image/11dec4b4c5.png">JILI</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=betsoft'"><img src="https://imgxcut.com/game/image/e1162a0386.png">BetSoft</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=relax'"><img src="https://imgxcut.com/game/image/bf6887c12b.png">Relax Gaming</div>
-    <div class="sb-prov" onclick="location.href='/lobby?provider=spribe'"><img src="https://imgxcut.com/game/image/e03d7b925f.png">Spribe</div>
-  </div>
+
+  <!-- Offers -->
   <div class="sb-sec">
     <div class="sb-sec-t">Offers</div>
-    <div class="sb-item" onclick="location.href='/mypage/coupons'"><span class="ic">🎁</span>Promotions</div>
-    <div class="sb-item" onclick="location.href='/mypage/coupons'"><span class="ic">💰</span>Bonus</div>
-    <div class="sb-item" onclick="location.href='/mypage/vip'"><span class="ic">💎</span>VIP</div>
+    <div class="sb-item" onclick="location.href='/mypage/coupons'"><img class="ic" src="mint-cat-icons/프로모션.png" alt="">Promotions</div>
+    <div class="sb-item" onclick="location.href='/mypage/coupons'"><img class="ic" src="mint-cat-icons/보너스쿠폰.png" alt="">Bonus / Coupon</div>
+    <div class="sb-item" onclick="location.href='/mypage/vip'"><img class="ic" src="mint-cat-icons/vip.png" alt="">VIP</div>
+    <div class="sb-item" onclick="location.href='/tournament'"><img class="ic" src="mint-cat-icons/토너먼트.png" alt="">Tournament</div>
   </div>
+
+  <!-- More -->
   <div class="sb-sec">
     <div class="sb-sec-t">More</div>
-    <div class="sb-item" onclick="location.href='/support'"><span class="ic">🤝</span>Partners Program</div>
-    <div class="sb-item" onclick="location.href='/support'"><span class="ic">❓</span>FAQ</div>
-    <div class="sb-item" onclick="location.href='/support'"><span class="ic">💬</span>Contact</div>
+    <div class="sb-item" onclick="location.href='/support'"><img class="ic" src="mint-cat-icons/247.png" alt="">24/7 Support</div>
+    <div class="sb-item" onclick="location.href='/partners'"><img class="ic" src="mint-cat-icons/파트너스프로그램.png" alt="">Partners</div>
+    <div class="sb-item" onclick="location.href='/notifications'"><img class="ic" src="mint-cat-icons/알림.png" alt="">Notification</div>
   </div>
 </aside>
 
 <!-- MAIN -->
 <div class="main">
 
-<!-- TOP NAV (비로그인 상태) -->
+<!-- TOP NAV (guest) -->
 <div class="topnav" id="nav-guest">
   <span class="logo-m"><span class="dr">DR.</span><span class="slot">SLOT</span></span>
   <div class="nav-r">
@@ -445,7 +477,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
     <button class="g-btn primary" onclick="location.href='/register'">Sign Up</button>
   </div>
 </div>
-<!-- TOP NAV (로그인 상태) -->
+<!-- TOP NAV (logged) -->
 <div class="topnav" id="nav-logged" style="display:none">
   <span class="logo-m"><span class="dr">DR.</span><span class="slot">SLOT</span></span>
   <div class="nav-r">
@@ -463,7 +495,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 <!-- JACKPOT -->
 <div class="jackpot fi">
   <div class="jackpot-left">
-    <span class="jackpot-icon">🏆</span>
+    <span class="jackpot-icon">&#127942;</span>
     <span class="jackpot-label">Grand Jackpot</span>
   </div>
   <div class="jackpot-amount">$2,847,391.50</div>
@@ -496,54 +528,59 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 <!-- CATEGORY BAR -->
 <div class="cat-bar fi d2">
-  <div class="cat-chip active">🔥 Popular</div>
-  <div class="cat-chip">🎰 Slots</div>
-  <div class="cat-chip">🃏 Live</div>
-  <div class="cat-chip">⚡ Crash</div>
-  <div class="cat-chip">🎲 Table</div>
-  <div class="cat-chip">⚽ Sports</div>
-  <div class="cat-chip">🎁 Bonus Buy</div>
+  <div class="cat-chip active">&#128293; Popular</div>
+  <div class="cat-chip">&#127920; Slots</div>
+  <div class="cat-chip">&#127183; Live</div>
+  <div class="cat-chip">&#9889; Crash</div>
+  <div class="cat-chip">&#127922; Table</div>
+  <div class="cat-chip">&#9917; Sports</div>
+  <div class="cat-chip">&#127873; Bonus Buy</div>
 </div>
 
-<!-- SUPER BONUS -->
-<div class="sec-h fi d2"><div class="sec-t">Super bonus</div></div>
+<!-- PROMOTIONS -->
+<div class="sec-h fi d2"><div class="sec-t">Promotions</div></div>
 <div class="bonus-card fi d2">
   <div class="bonus-inner">
-    <div class="bonus-emoji">🎰</div>
+    <div class="bonus-emoji">&#127920;</div>
     <div class="bonus-coins">
       <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="">
       <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="">
       <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="">
       <img src="https://assets.coingecko.com/coins/images/1094/small/tron-logo.png" alt="">
     </div>
-    <div class="bonus-text">코인입금시 200% 보너스혜택</div>
-    <div class="bonus-sub">지금 가입하면 최대 $10,000 보너스 즉시 지급!</div>
+    <div class="bonus-text">200% Bonus on Crypto Deposits</div>
+    <div class="bonus-sub">Sign up now and get up to $10,000 bonus instantly!</div>
   </div>
 </div>
 
-<!-- 3D ROTATING PROMO BANNER -->
-<div class="carousel3d-scene">
-  <div class="carousel3d">
-    <div class="carousel3d-card">
-      <div class="carousel3d-tag">First Deposit Bonus</div>
-      <div class="carousel3d-title"><span>100%</span> Bonus</div>
-      <div class="carousel3d-desc">Double your first deposit instantly with crypto</div>
+<!-- CARD SLIDE BANNER -->
+<div class="card-slider" id="cardSlider">
+  <div class="card-slider-track" id="sliderTrack">
+    <div class="card-slide">
+      <div class="card-slide-tag">First Deposit Bonus</div>
+      <div class="card-slide-title"><span>100%</span> Bonus</div>
+      <div class="card-slide-desc">Double your first deposit instantly with crypto</div>
     </div>
-    <div class="carousel3d-card">
-      <div class="carousel3d-tag">Slot Loan Bonus</div>
-      <div class="carousel3d-title">Borrow <span>70%</span></div>
-      <div class="carousel3d-desc">Get generous seeds! Pay back only 30%</div>
+    <div class="card-slide">
+      <div class="card-slide-tag">Slot Loan Bonus</div>
+      <div class="card-slide-title">Borrow <span>70%</span></div>
+      <div class="card-slide-desc">Get generous seeds! Pay back only 30%</div>
     </div>
-    <div class="carousel3d-card">
-      <div class="carousel3d-tag">Every Deposit Bonus</div>
-      <div class="carousel3d-title"><span>13%→16%→19%</span> UP</div>
-      <div class="carousel3d-desc">After withdrawal, re-deposit starts at 10%</div>
+    <div class="card-slide">
+      <div class="card-slide-tag">Every Deposit Bonus</div>
+      <div class="card-slide-title"><span>13%&#8594;16%&#8594;19%</span> UP</div>
+      <div class="card-slide-desc">After withdrawal, re-deposit starts at 10%</div>
     </div>
+  </div>
+  <div class="card-slider-dots" id="sliderDots">
+    <span class="active" onclick="goToSlide(0)"></span>
+    <span onclick="goToSlide(1)"></span>
+    <span onclick="goToSlide(2)"></span>
   </div>
 </div>
 
 <!-- LIVE CASINO -->
-<div class="sec-h fi d3"><div class="sec-t"><span class="ic">🃏</span>Live Casino</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="sec-h fi d3"><div class="sec-t"><span class="ic">&#127183;</span>Live Casino</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
 <div class="lc-grid fi d3">
   <div class="lc-card" onclick="location.href='/lobby?cat=live'"><img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaRoulette.png" alt="Mega Roulette"><div class="lc-badge"><span class="lc-dot"></span>LIVE</div><div class="lc-info"><div class="lc-name">Mega Roulette</div><div class="lc-dealer">Dealer: Victoria M.</div><div class="lc-range">$1 – $10K</div></div></div>
   <div class="lc-card" onclick="location.href='/lobby?cat=live'"><img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaBaccarat.png" alt="Mega Baccarat"><div class="lc-badge"><span class="lc-dot"></span>LIVE</div><div class="lc-info"><div class="lc-name">Mega Baccarat</div><div class="lc-dealer">Dealer: Yuki S.</div><div class="lc-range">$5 – $50K</div></div></div>
@@ -554,7 +591,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 </div>
 
 <!-- POPULAR GAMES (2x2 grid) -->
-<div class="sec-h"><div class="sec-t"><span class="ic">🔥</span>Popular Games</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="sec-h"><div class="sec-t"><span class="ic">&#128293;</span>Popular Games</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
 <div class="game-grid-2x">
   <div class="gm-card" onclick="location.href='/lobby'"><img class="thumb mid" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/BigBassBonanza.png" alt="Gates of Olympus"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Gates of Olympus</div><div class="pv">Pragmatic Play</div><div class="meta"><span class="rtp">96.50%</span><span class="mw">x5,000</span></div></div></div>
   <div class="gm-card" onclick="location.href='/lobby'"><img class="thumb mid" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/TheDogHouse.png" alt="Sweet Bonanza"><span class="bdg hot">HOT</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Sweet Bonanza</div><div class="pv">Pragmatic Play</div><div class="meta"><span class="rtp">96.48%</span><span class="mw">x21,175</span></div></div></div>
@@ -567,7 +604,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 </div>
 
 <!-- NEW GAMES (row) -->
-<div class="sec-h"><div class="sec-t"><span class="ic">✨</span>New Releases</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="sec-h"><div class="sec-t"><span class="ic">&#10024;</span>New Releases</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
 <div class="game-row">
   <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/JuicyFruits.png" alt="Fruit Party"><div class="info"><div class="nm">Fruit Party</div><div class="pv">Pragmatic Play</div></div></div>
   <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SweetBonanza.png" alt="Buffalo King Megaways"><div class="info"><div class="nm">Buffalo King MW</div><div class="pv">Pragmatic Play</div></div></div>
@@ -581,7 +618,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 <div class="tourney">
   <div class="t-row">
     <div class="t-left">
-      <div class="t-tag">🏆 Weekly Tournament</div>
+      <div class="t-tag">&#127942; Weekly Tournament</div>
       <div class="t-title">Prize Pool <span class="amt">$50,000</span></div>
       <div class="t-sub">247 players competing now</div>
     </div>
@@ -594,7 +631,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 </div>
 
 <!-- PROVIDERS -->
-<div class="sec-h"><div class="sec-t"><span class="ic">🎮</span>60+ Providers</div></div>
+<div class="sec-h"><div class="sec-t"><span class="ic">&#127918;</span>60+ Providers</div></div>
 <div class="prov-conv">
   <div class="prov-r l">
     <div class="pv-item"><img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/WolfGold.png"><span class="n">Pragmatic</span></div>
@@ -674,7 +711,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
     <div class="ft-col"><h4>Account</h4><a href="/wallet">Deposit</a><a href="/wallet">Withdraw</a><a href="/mypage/vip">VIP Program</a><a href="/mypage/coupons">Promotions</a></div>
   </div>
   <div class="ft-bot">
-    <span>© 2026 DR.SLOT. All rights reserved.</span>
+    <span>&copy; 2026 DR.SLOT. All rights reserved.</span>
     <div class="ft-coins">
       <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png"><img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png"><img src="https://assets.coingecko.com/coins/images/325/small/Tether.png"><img src="https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png"><img src="https://assets.coingecko.com/coins/images/4128/small/solana.png">
     </div>
@@ -704,6 +741,60 @@ function toggleSidebar() {
 function closeSidebar() {
   document.getElementById('mobileSidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('active');
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR ACCORDION
+// ═══════════════════════════════════════════
+function toggleSubList(header) {
+  const targetId = header.getAttribute('data-toggle');
+  if (!targetId) return;
+  const subList = document.getElementById(targetId);
+  if (!subList) return;
+  const isOpen = subList.classList.contains('open');
+  // Close all sub-lists first
+  document.querySelectorAll('.sb-sub-list').forEach(s => s.classList.remove('open'));
+  document.querySelectorAll('.sb-cat-header').forEach(h => h.classList.remove('open'));
+  // Toggle current
+  if (!isOpen) {
+    subList.classList.add('open');
+    header.classList.add('open');
+  }
+}
+
+// ═══════════════════════════════════════════
+// CARD SLIDER
+// ═══════════════════════════════════════════
+let currentSlide = 0;
+const totalSlides = 3;
+let sliderInterval;
+
+function goToSlide(index) {
+  currentSlide = index;
+  const track = document.getElementById('sliderTrack');
+  if (track) track.style.transform = 'translateX(-' + (currentSlide * (100/totalSlides)) + '%)';
+  // Update dots
+  const dots = document.querySelectorAll('#sliderDots span');
+  dots.forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+}
+
+function nextSlide() {
+  goToSlide((currentSlide + 1) % totalSlides);
+}
+
+function startSlider() {
+  sliderInterval = setInterval(nextSlide, 3500);
+}
+
+startSlider();
+
+// Pause on hover
+const sliderEl = document.getElementById('cardSlider');
+if (sliderEl) {
+  sliderEl.addEventListener('mouseenter', () => clearInterval(sliderInterval));
+  sliderEl.addEventListener('mouseleave', startSlider);
 }
 
 // ═══════════════════════════════════════════
@@ -855,7 +946,7 @@ async function loadGamesFromAPI() {
           const badge = g.is_hot ? '<span class="bdg hot">HOT</span>' : g.is_new ? '<span class="bdg new">NEW</span>' : '';
           const thumb = g.image_url
             ? `<img class="thumb mid" src="${g.image_url}">`
-            : `<div class="thumb mid" style="display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#1a1a3a,#0d0d2a)">${g.thumbnail || '🎰'}</div>`;
+            : `<div class="thumb mid" style="display:flex;align-items:center;justify-content:center;font-size:36px;background:linear-gradient(135deg,#1a1a3a,#0d0d2a)">${g.thumbnail || '&#127920;'}</div>`;
           return `<div class="gm-card" onclick="location.href='/lobby'">${thumb}${badge}<div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">${g.name || g.game_name}</div><div class="pv">${g.provider || ''}</div><div class="meta"><span class="rtp">${g.rtp || '96.0'}%</span><span class="mw">x${g.max_win || '50000'}</span></div></div></div>`;
         }).join('');
         grid.innerHTML = html || existingHTML;
@@ -877,8 +968,6 @@ document.querySelectorAll('.bn-item.center, .cn-circ').forEach(btn => {
 
 if (authToken) updateUIForLogin();
 loadGamesFromAPI();
-
-// ═══ 3D Carousel (CSS animation only) ═══
 </script>
 
 </body>
