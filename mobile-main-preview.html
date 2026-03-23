@@ -2495,10 +2495,12 @@ loadGamesFromAPI();
 function openMobSidebar1(){
   document.getElementById('mobSidebarOverlay1').classList.add('open');
   document.body.classList.add('no-scroll');
+  var bn=document.querySelector('.bottom-nav');if(bn)bn.style.display='none';
 }
 function closeMobSidebar1(){
   document.getElementById('mobSidebarOverlay1').classList.remove('open');
   document.body.classList.remove('no-scroll');
+  var bn=document.querySelector('.bottom-nav');if(bn)bn.style.display='';
 }
 document.getElementById('mobSbClose1').addEventListener('click',closeMobSidebar1);
 document.getElementById('mobSidebarOverlay1').addEventListener('click',function(e){

@@ -347,8 +347,8 @@ document.getElementById('mobMenu').innerHTML=menuHTML;
 function initAcc(root){root.querySelectorAll('.sb-cat[data-expand]').forEach(c=>{c.addEventListener('click',()=>{const k=c.dataset.expand,s=root.querySelector('.sb-sub[data-sub="'+k+'"]'),o=s.classList.contains('open');root.querySelectorAll('.sb-sub').forEach(x=>x.classList.remove('open'));root.querySelectorAll('.sb-cat').forEach(x=>x.classList.remove('expanded'));if(!o){s.classList.add('open');c.classList.add('expanded');setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'nearest'}),120)}})})}
 initAcc(document.getElementById('deskMenu'));initAcc(document.getElementById('mobMenu'));
 const mobOv=document.getElementById('mobOverlay'),mobSb=document.getElementById('mobSidebar');
-document.getElementById('menuBtn').addEventListener('click',()=>{if(mobOv.classList.contains('open')){closeMob()}else{mobOv.classList.add('open');document.body.classList.add('no-scroll')}});
-function closeMob(){mobOv.classList.remove('open');document.body.classList.remove('no-scroll')}
+document.getElementById('menuBtn').addEventListener('click',()=>{if(mobOv.classList.contains('open')){closeMob()}else{mobOv.classList.add('open');document.body.classList.add('no-scroll');var bn=document.querySelector('.bnav');if(bn)bn.style.display='none'}});
+function closeMob(){mobOv.classList.remove('open');document.body.classList.remove('no-scroll');var bn=document.querySelector('.bnav');if(bn)bn.style.display=''}
 document.getElementById('mobClose').addEventListener('click',closeMob);
 mobOv.addEventListener('click',e=>{if(e.target===mobOv)closeMob()});
 mobSb.addEventListener('click',e=>e.stopPropagation());

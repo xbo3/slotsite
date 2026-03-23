@@ -692,12 +692,15 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 function toggleSidebar() {
   const sb = document.getElementById('mobileSidebar');
   const ov = document.getElementById('sidebarOverlay');
+  const bn = document.querySelector('.bnav');
   sb.classList.toggle('mobile-open');
   ov.classList.toggle('active');
+  if(bn) bn.style.display = sb.classList.contains('mobile-open') ? 'none' : '';
 }
 function closeSidebar() {
   document.getElementById('mobileSidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('active');
+  var bn=document.querySelector('.bnav');if(bn)bn.style.display='';
 }
 
 // ═══════════════════════════════════════════
