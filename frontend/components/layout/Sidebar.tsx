@@ -11,7 +11,7 @@ const CATEGORIES = [
     id: 'slots',
     labelKey: 'slots',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <rect x="2" y="4" width="20" height="16" rx="2" />
         <path d="M8 4v16M16 4v16M2 12h20" />
       </svg>
@@ -99,7 +99,7 @@ const CATEGORIES = [
     id: 'casino',
     labelKey: 'casino',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M23 7l-7 5 7 5V7z" />
         <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
       </svg>
@@ -118,7 +118,7 @@ const CATEGORIES = [
     id: 'sports',
     labelKey: 'sports',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" />
         <path d="M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M2 12h20" />
       </svg>
@@ -130,7 +130,7 @@ const CATEGORIES = [
     id: 'promotion',
     labelKey: 'promotion',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6" />
         <rect x="2" y="7" width="20" height="5" rx="1" />
         <path d="M12 22V7" />
@@ -143,7 +143,7 @@ const CATEGORIES = [
     id: 'bonus',
     labelKey: 'bonus',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
       </svg>
     ),
@@ -154,7 +154,7 @@ const CATEGORIES = [
     id: 'partner',
     labelKey: 'partner',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
         <circle cx="9" cy="7" r="4" />
         <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -168,7 +168,7 @@ const CATEGORIES = [
     id: 'support247',
     labelKey: 'support_247',
     icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
       </svg>
     ),
@@ -222,7 +222,7 @@ export default function Sidebar() {
                 {/* Category button — 호버 0.5s 딜레이 복귀 */}
                 <button
                   onClick={() => handleCatClick(cat.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl group/cat cat-btn-shine ${
+                  className={`w-full flex items-center gap-3 px-4 py-4 rounded-xl group/cat cat-btn-shine ${
                     isExpanded ? 'bg-white/[0.08] text-white' : 'text-white/60'
                   }`}
                   style={{
@@ -244,10 +244,10 @@ export default function Sidebar() {
                     }
                   }}
                 >
-                  <span className="flex-shrink-0 w-6 flex justify-center">{cat.icon}</span>
+                  <span className="flex-shrink-0 w-10 h-10 flex items-center justify-center">{cat.icon}</span>
                   {!collapsed && (
                     <>
-                      <span className="flex-1 text-left text-sm font-light">{t(cat.labelKey)}</span>
+                      <span className="flex-1 text-left text-base font-light">{t(cat.labelKey)}</span>
                       <svg
                         className="w-4 h-4 transition-transform duration-300"
                         style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transitionTimingFunction: 'cubic-bezier(0.33, 1, 0.68, 1)' }}
@@ -344,7 +344,7 @@ export default function Sidebar() {
       {collapsed && (
         <div className="p-2 flex justify-center">
           <Link href="/support" className="group relative p-2 hover:text-white transition-colors" style={{ color: '#888888' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
             <div className="sidebar-tooltip absolute left-full ml-2 px-2 py-1 bg-dark-elevated text-white text-sm rounded-md whitespace-nowrap z-50 shadow-lg">
