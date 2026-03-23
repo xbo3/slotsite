@@ -74,9 +74,9 @@
   .sb-divider{height:1px;margin:6px 18px;background:var(--bdr)}
 
   /* Mobile overlay */
-  .mob-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0);pointer-events:none;transition:background .35s ease}
+  .mob-overlay{position:fixed;top:0;left:0;right:0;bottom:60px;z-index:300;background:rgba(0,0,0,0);pointer-events:none;transition:background .35s ease}
   .mob-overlay.open{background:rgba(0,0,0,0.6);pointer-events:auto}
-  .mob-sidebar{position:fixed;top:0;left:0;z-index:301;width:min(280px,78vw);height:100%;height:100dvh;background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden}
+  .mob-sidebar{position:fixed;top:0;left:0;z-index:301;width:min(280px,78vw);height:calc(100% - 60px);height:calc(100dvh - 60px);background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden}
   .mob-overlay.open .mob-sidebar{transform:translateX(0)}
   @media(min-width:768px){.mob-overlay{display:none}}
 
@@ -339,6 +339,30 @@
   .nav.on::before{content:'';position:absolute;top:0;width:22px;height:3px;border-radius:2px;background:var(--pearl-btn);box-shadow:var(--pearl-glow-sm)}
   .spacer{height:72px}@media(min-width:768px){.spacer{height:20px}}
   body.no-scroll{overflow:hidden}
+
+  /* ═══ PC RESPONSIVE ═══ */
+  @media(min-width:768px){
+    .content{max-width:1200px;margin:0 auto;padding:24px 32px}
+    .section{margin-bottom:20px}
+    .phone-scene{height:500px}
+    .phone-carousel{transform-style:preserve-3d}
+    .phone-card:nth-child(1){transform:rotateY(0deg) translateZ(350px)}
+    .phone-card:nth-child(2){transform:rotateY(72deg) translateZ(350px)}
+    .phone-card:nth-child(3){transform:rotateY(144deg) translateZ(350px)}
+    .phone-card:nth-child(4){transform:rotateY(216deg) translateZ(350px)}
+    .phone-card:nth-child(5){transform:rotateY(288deg) translateZ(350px)}
+    .recent-sc{grid-template-columns:repeat(4,1fr)}
+    .g-list{grid-template-columns:1fr 1fr 1fr}
+    .lv-grid{grid-template-columns:repeat(3,1fr)}
+    .win-list{grid-template-columns:1fr 1fr 1fr}
+    .quick{grid-template-columns:repeat(4,1fr)}
+    .promo-sc{grid-template-columns:1fr 1fr}
+  }
+
+  /* ═══ SIDEBAR: PC에서는 오버레이 bottom 리셋 ═══ */
+  @media(min-width:768px){
+    .mob-overlay{bottom:0}
+  }
 </style>
 </head>
 <body>
@@ -360,6 +384,80 @@
     <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
     <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
   </div></div></div>
+
+  <!-- 3D Phone Carousel (상단 배너 영역) -->
+  <div class="section">
+    <div class="phone-scene">
+      <div class="phone-carousel" id="phoneCarousel">
+        <!-- CARD 1: HOME -->
+        <div class="phone-card">
+          <div class="phone-screen s-home">
+            <div class="sh-logo"><div class="sh-mark">♔</div><span class="sh-name">ROYAL PLAY</span></div>
+            <div class="sh-bal-card">
+              <div class="sh-lbl">Total Balance</div>
+              <div class="sh-amt"><span class="sh-cur">$ </span>14,287.50</div>
+              <div class="sh-btns"><button class="sh-btn sh-btn-dep">⚡ Deposit</button><button class="sh-btn sh-btn-wd">💸 Withdraw</button></div>
+            </div>
+            <div class="sh-promo"><div class="sh-promo-tag">🎁 WELCOME</div><div class="sh-promo-t">200% First Deposit</div><div class="sh-promo-d">Up to $5,000 + 100 Free Spins</div><div class="sh-promo-e">🎰</div></div>
+            <div class="sh-quick"><div class="sh-qi"><div class="sh-qi-ico">🎰</div><div class="sh-qi-lbl">Slots</div></div><div class="sh-qi"><div class="sh-qi-ico">🃏</div><div class="sh-qi-lbl">Live</div></div><div class="sh-qi"><div class="sh-qi-ico">🔥</div><div class="sh-qi-lbl">Hot Slots</div></div></div>
+            <div class="sh-sec-t">🔥 Popular Games</div>
+            <div class="sh-game-row"><div class="sh-game-ico sh-gi1">🎰</div><div class="sh-game-info"><div class="sh-game-nm">Gates of Olympus</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
+            <div class="sh-game-row"><div class="sh-game-ico sh-gi2">💎</div><div class="sh-game-info"><div class="sh-game-nm">Sweet Bonanza</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
+            <div class="sh-game-row"><div class="sh-game-ico sh-gi3">⚡</div><div class="sh-game-info"><div class="sh-game-nm">Starlight Princess</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
+          </div>
+          <div class="phone-mini-nav"><div class="pmn-item pmn-on"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
+        </div>
+        <!-- CARD 2: LIVE CASINO -->
+        <div class="phone-card">
+          <div class="phone-screen s-live">
+            <div class="sl-hdr"><span class="sl-back">‹</span><span class="sl-title">🃏 Live Casino</span></div>
+            <div class="sl-card"><div class="sl-card-img sl-c1"><div class="sl-live-tag"><div class="sl-live-dot"></div> LIVE</div>🃏</div><div class="sl-card-body"><div class="sl-card-nm">Blackjack VIP</div><div class="sl-card-dl">Dealer: Sarah K. · 👥 2,847</div></div></div>
+            <div class="sl-card"><div class="sl-card-img sl-c2"><div class="sl-live-tag"><div class="sl-live-dot"></div> LIVE</div>🎡</div><div class="sl-card-body"><div class="sl-card-nm">Lightning Roulette</div><div class="sl-card-dl">Dealer: James L. · 👥 5,231</div></div></div>
+            <div class="sl-card"><div class="sl-card-img sl-c3"><div class="sl-live-tag"><div class="sl-live-dot"></div> LIVE</div>🎴</div><div class="sl-card-body"><div class="sl-card-nm">Baccarat Squeeze</div><div class="sl-card-dl">Dealer: Emma W. · 👥 1,583</div></div></div>
+          </div>
+          <div class="phone-mini-nav"><div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
+        </div>
+        <!-- CARD 3: WALLET -->
+        <div class="phone-card">
+          <div class="phone-screen s-wallet">
+            <div class="sw-hdr"><div class="sw-lbl">Total Assets</div><div class="sw-total">$14,287.50</div><div class="sw-sub">≈ 14,287.50 USDT</div></div>
+            <div class="sw-actions"><div class="sw-act"><div class="sw-act-ico">📥</div><div class="sw-act-lbl">Deposit</div></div><div class="sw-act"><div class="sw-act-ico">📤</div><div class="sw-act-lbl">Withdraw</div></div><div class="sw-act"><div class="sw-act-ico">🔄</div><div class="sw-act-lbl">Transfer</div></div></div>
+            <div class="sw-divider"></div>
+            <div class="sw-asset-t">Assets <span>🔍</span></div>
+            <div class="sw-coin"><div class="sw-coin-ico sw-btc">₿</div><div class="sw-coin-info"><div class="sw-coin-nm">BTC</div><div class="sw-coin-sub">Bitcoin</div></div><div class="sw-coin-val"><div class="sw-coin-amt">0.1248</div><div class="sw-coin-usd">≈ $8,420</div></div></div>
+            <div class="sw-coin"><div class="sw-coin-ico sw-usdt">₮</div><div class="sw-coin-info"><div class="sw-coin-nm">USDT</div><div class="sw-coin-sub">Tether</div></div><div class="sw-coin-val"><div class="sw-coin-amt">3,867.50</div><div class="sw-coin-usd">≈ $3,867</div></div></div>
+            <div class="sw-coin"><div class="sw-coin-ico sw-eth">Ξ</div><div class="sw-coin-info"><div class="sw-coin-nm">ETH</div><div class="sw-coin-sub">Ethereum</div></div><div class="sw-coin-val"><div class="sw-coin-amt">0.5200</div><div class="sw-coin-usd">≈ $1,560</div></div></div>
+            <div class="sw-coin"><div class="sw-coin-ico sw-trx">◈</div><div class="sw-coin-info"><div class="sw-coin-nm">TRX</div><div class="sw-coin-sub">TRON</div></div><div class="sw-coin-val"><div class="sw-coin-amt">1,840.00</div><div class="sw-coin-usd">≈ $440</div></div></div>
+          </div>
+          <div class="phone-mini-nav"><div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
+        </div>
+        <!-- CARD 4: BONUSES -->
+        <div class="phone-card">
+          <div class="phone-screen s-bonus">
+            <div class="pc-sb-hdr"><div class="pc-sb-title">🎁 Bonuses</div><div class="pc-sb-sub">Claim your exclusive rewards</div></div>
+            <div class="pc-sb-card pc-sb1"><div class="pc-sb-tag">🎁 WELCOME</div><div class="pc-sb-name">200% First Deposit</div><div class="pc-sb-desc">Up to $5,000 + 100 Free Spins</div><div class="pc-sb-claim">Claim Now</div><div class="pc-sb-emoji">🎰</div></div>
+            <div class="pc-sb-card pc-sb2"><div class="pc-sb-tag">⚽ SPORTS</div><div class="pc-sb-name">Weekend Special</div><div class="pc-sb-desc">15% Cashback on Live Bets</div><div class="pc-sb-claim">Claim Now</div><div class="pc-sb-emoji">⚽</div></div>
+            <div class="pc-sb-card pc-sb3"><div class="pc-sb-tag">🔥 LIMITED</div><div class="pc-sb-name">Lucky Spin Tournament</div><div class="pc-sb-desc">$50,000 Prize Pool</div><div class="pc-sb-claim">Join Now</div><div class="pc-sb-emoji">🏆</div></div>
+          </div>
+          <div class="phone-mini-nav"><div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item pmn-on"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
+        </div>
+        <!-- CARD 5: PROFILE -->
+        <div class="phone-card">
+          <div class="phone-screen s-profile">
+            <div class="sp-avatar">👤</div><div class="sp-name">Player_2847</div><div class="sp-id">UID: 28471093</div>
+            <div class="sp-vip-card"><div class="sp-vip-tag">VIP GOLD</div><div class="sp-vip-bar"><div class="sp-vip-fill"></div></div><div class="sp-vip-txt">35% to PLATINUM · 2,150 XP needed</div></div>
+            <div class="sp-menu-item"><div class="sp-menu-ico">💰</div><div class="sp-menu-txt">Wallet</div><div class="sp-menu-arr">›</div></div>
+            <div class="sp-menu-item"><div class="sp-menu-ico">📊</div><div class="sp-menu-txt">Bet History</div><div class="sp-menu-arr">›</div></div>
+            <div class="sp-menu-item"><div class="sp-menu-ico">🎁</div><div class="sp-menu-txt">My Bonuses</div><div class="sp-menu-arr">›</div></div>
+            <div class="sp-menu-item"><div class="sp-menu-ico">🔒</div><div class="sp-menu-txt">Security</div><div class="sp-menu-arr">›</div></div>
+            <div class="sp-menu-item"><div class="sp-menu-ico">⚙️</div><div class="sp-menu-txt">Settings</div><div class="sp-menu-arr">›</div></div>
+            <div class="sp-menu-item"><div class="sp-menu-ico">💬</div><div class="sp-menu-txt">Support</div><div class="sp-menu-arr">›</div></div>
+          </div>
+          <div class="phone-mini-nav"><div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item pmn-on"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t">🏆 Recent Winners</div><div class="sec-m">More ›</div></div>
   <div class="win-list">
@@ -400,206 +498,6 @@
     <div class="lv"><div class="lv-img li3"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🎴<div class="lv-cnt">👥 1,583</div></div><div class="lv-body"><div class="lv-name">Baccarat Squeeze</div><div class="lv-deal">Dealer: Emma W.</div><div class="lv-lim">Bet: <span>$10–$100K</span></div></div></div>
   </div></div>
 
-  <!-- 3D Phone Carousel -->
-  <div class="section">
-    <div class="phone-scene">
-      <div class="phone-carousel" id="phoneCarousel">
-
-        <!-- CARD 1: HOME -->
-        <div class="phone-card">
-          <div class="phone-screen s-home">
-            <div class="sh-logo">
-              <div class="sh-mark">♔</div>
-              <span class="sh-name">ROYAL PLAY</span>
-            </div>
-            <div class="sh-bal-card">
-              <div class="sh-lbl">Total Balance</div>
-              <div class="sh-amt"><span class="sh-cur">$ </span>14,287.50</div>
-              <div class="sh-btns">
-                <button class="sh-btn sh-btn-dep">⚡ Deposit</button>
-                <button class="sh-btn sh-btn-wd">💸 Withdraw</button>
-              </div>
-            </div>
-            <div class="sh-promo">
-              <div class="sh-promo-tag">🎁 WELCOME</div>
-              <div class="sh-promo-t">200% First Deposit</div>
-              <div class="sh-promo-d">Up to $5,000 + 100 Free Spins</div>
-              <div class="sh-promo-e">🎰</div>
-            </div>
-            <div class="sh-quick">
-              <div class="sh-qi"><div class="sh-qi-ico">🎰</div><div class="sh-qi-lbl">Slots</div></div>
-              <div class="sh-qi"><div class="sh-qi-ico">🃏</div><div class="sh-qi-lbl">Live</div></div>
-              <div class="sh-qi"><div class="sh-qi-ico">🔥</div><div class="sh-qi-lbl">Hot Slots</div></div>
-            </div>
-            <div class="sh-sec-t">🔥 Popular Games</div>
-            <div class="sh-game-row"><div class="sh-game-ico sh-gi1">🎰</div><div class="sh-game-info"><div class="sh-game-nm">Gates of Olympus</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
-            <div class="sh-game-row"><div class="sh-game-ico sh-gi2">💎</div><div class="sh-game-info"><div class="sh-game-nm">Sweet Bonanza</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
-            <div class="sh-game-row"><div class="sh-game-ico sh-gi3">⚡</div><div class="sh-game-info"><div class="sh-game-nm">Starlight Princess</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
-          </div>
-          <div class="phone-mini-nav">
-            <div class="pmn-item pmn-on"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div>
-            <div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div>
-          </div>
-        </div>
-
-        <!-- CARD 2: LIVE CASINO -->
-        <div class="phone-card">
-          <div class="phone-screen s-live">
-            <div class="sl-hdr">
-              <span class="sl-back">‹</span>
-              <span class="sl-title">🃏 Live Casino</span>
-            </div>
-            <div class="sl-card">
-              <div class="sl-card-img sl-c1">
-                <div class="sl-live-tag"><div class="sl-live-dot"></div> LIVE</div>
-                🃏
-              </div>
-              <div class="sl-card-body">
-                <div class="sl-card-nm">Blackjack VIP</div>
-                <div class="sl-card-dl">Dealer: Sarah K. · 👥 2,847</div>
-              </div>
-            </div>
-            <div class="sl-card">
-              <div class="sl-card-img sl-c2">
-                <div class="sl-live-tag"><div class="sl-live-dot"></div> LIVE</div>
-                🎡
-              </div>
-              <div class="sl-card-body">
-                <div class="sl-card-nm">Lightning Roulette</div>
-                <div class="sl-card-dl">Dealer: James L. · 👥 5,231</div>
-              </div>
-            </div>
-            <div class="sl-card">
-              <div class="sl-card-img sl-c3">
-                <div class="sl-live-tag"><div class="sl-live-dot"></div> LIVE</div>
-                🎴
-              </div>
-              <div class="sl-card-body">
-                <div class="sl-card-nm">Baccarat Squeeze</div>
-                <div class="sl-card-dl">Dealer: Emma W. · 👥 1,583</div>
-              </div>
-            </div>
-          </div>
-          <div class="phone-mini-nav">
-            <div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div>
-            <div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div>
-          </div>
-        </div>
-
-        <!-- CARD 3: WALLET -->
-        <div class="phone-card">
-          <div class="phone-screen s-wallet">
-            <div class="sw-hdr">
-              <div class="sw-lbl">Total Assets</div>
-              <div class="sw-total">$14,287.50</div>
-              <div class="sw-sub">≈ 14,287.50 USDT</div>
-            </div>
-            <div class="sw-actions">
-              <div class="sw-act"><div class="sw-act-ico">📥</div><div class="sw-act-lbl">Deposit</div></div>
-              <div class="sw-act"><div class="sw-act-ico">📤</div><div class="sw-act-lbl">Withdraw</div></div>
-              <div class="sw-act"><div class="sw-act-ico">🔄</div><div class="sw-act-lbl">Transfer</div></div>
-            </div>
-            <div class="sw-divider"></div>
-            <div class="sw-asset-t">Assets <span>🔍</span></div>
-            <div class="sw-coin">
-              <div class="sw-coin-ico sw-btc">₿</div>
-              <div class="sw-coin-info"><div class="sw-coin-nm">BTC</div><div class="sw-coin-sub">Bitcoin</div></div>
-              <div class="sw-coin-val"><div class="sw-coin-amt">0.1248</div><div class="sw-coin-usd">≈ $8,420</div></div>
-            </div>
-            <div class="sw-coin">
-              <div class="sw-coin-ico sw-usdt">₮</div>
-              <div class="sw-coin-info"><div class="sw-coin-nm">USDT</div><div class="sw-coin-sub">Tether</div></div>
-              <div class="sw-coin-val"><div class="sw-coin-amt">3,867.50</div><div class="sw-coin-usd">≈ $3,867</div></div>
-            </div>
-            <div class="sw-coin">
-              <div class="sw-coin-ico sw-eth">Ξ</div>
-              <div class="sw-coin-info"><div class="sw-coin-nm">ETH</div><div class="sw-coin-sub">Ethereum</div></div>
-              <div class="sw-coin-val"><div class="sw-coin-amt">0.5200</div><div class="sw-coin-usd">≈ $1,560</div></div>
-            </div>
-            <div class="sw-coin">
-              <div class="sw-coin-ico sw-trx">◈</div>
-              <div class="sw-coin-info"><div class="sw-coin-nm">TRX</div><div class="sw-coin-sub">TRON</div></div>
-              <div class="sw-coin-val"><div class="sw-coin-amt">1,840.00</div><div class="sw-coin-usd">≈ $440</div></div>
-            </div>
-          </div>
-          <div class="phone-mini-nav">
-            <div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div>
-            <div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div>
-          </div>
-        </div>
-
-        <!-- CARD 4: BONUSES -->
-        <div class="phone-card">
-          <div class="phone-screen s-bonus">
-            <div class="pc-sb-hdr">
-              <div class="pc-sb-title">🎁 Bonuses</div>
-              <div class="pc-sb-sub">Claim your exclusive rewards</div>
-            </div>
-            <div class="pc-sb-card pc-sb1">
-              <div class="pc-sb-tag">🎁 WELCOME</div>
-              <div class="pc-sb-name">200% First Deposit</div>
-              <div class="pc-sb-desc">Up to $5,000 + 100 Free Spins</div>
-              <div class="pc-sb-claim">Claim Now</div>
-              <div class="pc-sb-emoji">🎰</div>
-            </div>
-            <div class="pc-sb-card pc-sb2">
-              <div class="pc-sb-tag">⚽ SPORTS</div>
-              <div class="pc-sb-name">Weekend Special</div>
-              <div class="pc-sb-desc">15% Cashback on Live Bets</div>
-              <div class="pc-sb-claim">Claim Now</div>
-              <div class="pc-sb-emoji">⚽</div>
-            </div>
-            <div class="pc-sb-card pc-sb3">
-              <div class="pc-sb-tag">🔥 LIMITED</div>
-              <div class="pc-sb-name">Lucky Spin Tournament</div>
-              <div class="pc-sb-desc">$50,000 Prize Pool</div>
-              <div class="pc-sb-claim">Join Now</div>
-              <div class="pc-sb-emoji">🏆</div>
-            </div>
-          </div>
-          <div class="phone-mini-nav">
-            <div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div>
-            <div class="pmn-item pmn-on"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div>
-            <div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div>
-          </div>
-        </div>
-
-        <!-- CARD 5: PROFILE -->
-        <div class="phone-card">
-          <div class="phone-screen s-profile">
-            <div class="sp-avatar">👤</div>
-            <div class="sp-name">Player_2847</div>
-            <div class="sp-id">UID: 28471093</div>
-            <div class="sp-vip-card">
-              <div class="sp-vip-tag">VIP GOLD</div>
-              <div class="sp-vip-bar"><div class="sp-vip-fill"></div></div>
-              <div class="sp-vip-txt">35% to PLATINUM · 2,150 XP needed</div>
-            </div>
-            <div class="sp-menu-item"><div class="sp-menu-ico">💰</div><div class="sp-menu-txt">Wallet</div><div class="sp-menu-arr">›</div></div>
-            <div class="sp-menu-item"><div class="sp-menu-ico">📊</div><div class="sp-menu-txt">Bet History</div><div class="sp-menu-arr">›</div></div>
-            <div class="sp-menu-item"><div class="sp-menu-ico">🎁</div><div class="sp-menu-txt">My Bonuses</div><div class="sp-menu-arr">›</div></div>
-            <div class="sp-menu-item"><div class="sp-menu-ico">🔒</div><div class="sp-menu-txt">Security</div><div class="sp-menu-arr">›</div></div>
-            <div class="sp-menu-item"><div class="sp-menu-ico">⚙️</div><div class="sp-menu-txt">Settings</div><div class="sp-menu-arr">›</div></div>
-            <div class="sp-menu-item"><div class="sp-menu-ico">💬</div><div class="sp-menu-txt">Support</div><div class="sp-menu-arr">›</div></div>
-          </div>
-          <div class="phone-mini-nav">
-            <div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div>
-            <div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div>
-            <div class="pmn-item pmn-on"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
 
 </div>
 <div class="spacer"></div>
@@ -638,8 +536,8 @@ document.getElementById('mobMenu').innerHTML=menuHTML;
 function initAcc(root){root.querySelectorAll('.sb-cat[data-expand]').forEach(c=>{c.addEventListener('click',()=>{const k=c.dataset.expand,s=root.querySelector('.sb-sub[data-sub="'+k+'"]'),o=s.classList.contains('open');root.querySelectorAll('.sb-sub').forEach(x=>x.classList.remove('open'));root.querySelectorAll('.sb-cat').forEach(x=>x.classList.remove('expanded'));if(!o){s.classList.add('open');c.classList.add('expanded');setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'nearest'}),120)}})})}
 initAcc(document.getElementById('deskMenu'));initAcc(document.getElementById('mobMenu'));
 const mobOv=document.getElementById('mobOverlay'),mobSb=document.getElementById('mobSidebar');
-document.getElementById('menuBtn').addEventListener('click',()=>{if(mobOv.classList.contains('open')){closeMob()}else{mobOv.classList.add('open');document.body.classList.add('no-scroll');var bn=document.querySelector('.bnav');if(bn)bn.style.display='none'}});
-function closeMob(){mobOv.classList.remove('open');document.body.classList.remove('no-scroll');var bn=document.querySelector('.bnav');if(bn)bn.style.display=''}
+document.getElementById('menuBtn').addEventListener('click',()=>{if(mobOv.classList.contains('open')){closeMob()}else{mobOv.classList.add('open');document.body.classList.add('no-scroll')}});
+function closeMob(){mobOv.classList.remove('open');document.body.classList.remove('no-scroll')}
 document.getElementById('mobClose').addEventListener('click',closeMob);
 mobOv.addEventListener('click',e=>{if(e.target===mobOv)closeMob()});
 mobSb.addEventListener('click',e=>e.stopPropagation());
