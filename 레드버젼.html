@@ -344,6 +344,7 @@
 
   /* ═══ PC RESPONSIVE ═══ */
   @media(min-width:768px){
+    .hdr .logo{display:none}
     .content{max-width:1200px;margin:0 auto;padding:24px 32px}
     .section{margin-bottom:20px}
     .phone-scene{height:500px}
@@ -360,6 +361,30 @@
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
   }
+
+  /* ═══ FOOTER ═══ */
+  .site-footer{background:#080810;border-top:1px solid rgba(255,46,74,0.1);padding:40px var(--pad) 20px;color:rgba(255,255,255,0.4);font-size:13px;line-height:1.7}
+  .ft-inner{max-width:1200px;margin:0 auto}
+  .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px;margin-bottom:30px}
+  @media(max-width:767px){.ft-top{grid-template-columns:1fr;gap:20px}}
+  .ft-brand-logo{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+  .ft-brand-mark{width:28px;height:28px;border-radius:8px;background:var(--pearl-btn);display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:var(--pearl-glow-sm)}
+  .ft-brand-name{font-weight:200;font-size:14px;letter-spacing:3px;color:rgba(255,255,255,0.7)}
+  .ft-brand-desc{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;margin-bottom:14px}
+  .ft-col-title{font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+  .ft-col a{display:block;color:rgba(255,255,255,0.35);text-decoration:none;font-size:12px;padding:3px 0;transition:color .15s}
+  .ft-col a:hover{color:var(--pearl-lt)}
+  .ft-divider{height:1px;background:rgba(255,255,255,0.04);margin:0 0 20px}
+  .ft-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+  @media(max-width:767px){.ft-bottom{flex-direction:column;text-align:center}}
+  .ft-license{font-size:11px;color:rgba(255,255,255,0.25);max-width:500px}
+  .ft-coins{display:flex;align-items:center;gap:10px}
+  .ft-coins img{width:24px;height:24px;border-radius:50%;opacity:0.5;transition:opacity .15s}
+  .ft-coins img:hover{opacity:0.9}
+  .ft-18{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.25)}
+  .ft-18-badge{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,46,74,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--pearl-1)}
+  .ft-copy{font-size:11px;color:rgba(255,255,255,0.2);text-align:center;margin-top:16px}
+  .phone-screen .sh-game-ico img{width:100%;height:100%;object-fit:cover;border-radius:6px}
 
   /* ═══ SIDEBAR: PC에서는 오버레이 bottom 리셋 ═══ */
   @media(min-width:768px){
@@ -392,9 +417,9 @@
             <div class="sh-promo"><div class="sh-promo-tag">🎁 WELCOME</div><div class="sh-promo-t">200% First Deposit</div><div class="sh-promo-d">Up to $5,000 + 100 Free Spins</div><div class="sh-promo-e">🎰</div></div>
             <div class="sh-quick"><div class="sh-qi"><div class="sh-qi-ico">🎰</div><div class="sh-qi-lbl">Slots</div></div><div class="sh-qi"><div class="sh-qi-ico">🃏</div><div class="sh-qi-lbl">Live</div></div><div class="sh-qi"><div class="sh-qi-ico">🔥</div><div class="sh-qi-lbl">Hot Slots</div></div></div>
             <div class="sh-sec-t">🔥 Popular Games</div>
-            <div class="sh-game-row"><div class="sh-game-ico sh-gi1">🎰</div><div class="sh-game-info"><div class="sh-game-nm">Gates of Olympus</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
-            <div class="sh-game-row"><div class="sh-game-ico sh-gi2">💎</div><div class="sh-game-info"><div class="sh-game-nm">Sweet Bonanza</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
-            <div class="sh-game-row"><div class="sh-game-ico sh-gi3">⚡</div><div class="sh-game-info"><div class="sh-game-nm">Starlight Princess</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
+            <div class="sh-game-row"><div class="sh-game-ico sh-gi1"><img src="https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png" alt="Gates of Olympus"></div><div class="sh-game-info"><div class="sh-game-nm">Gates of Olympus</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
+            <div class="sh-game-row"><div class="sh-game-ico sh-gi2"><img src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Mental_2_69663c454c.png" alt="Sweet Bonanza"></div><div class="sh-game-info"><div class="sh-game-nm">Sweet Bonanza</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
+            <div class="sh-game-row"><div class="sh-game-ico sh-gi3"><img src="https://fan-cdn.nolimitcity.com/small_outsourced_logo2_3da26f2a07.png" alt="Starlight Princess"></div><div class="sh-game-info"><div class="sh-game-nm">Starlight Princess</div><div class="sh-game-pv">Pragmatic Play</div></div></div>
           </div>
           <div class="phone-mini-nav"><div class="pmn-item pmn-on"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
         </div>
@@ -426,9 +451,9 @@
         <div class="phone-card">
           <div class="phone-screen s-bonus">
             <div class="pc-sb-hdr"><div class="pc-sb-title">🎁 Bonuses</div><div class="pc-sb-sub">Claim your exclusive rewards</div></div>
-            <div class="pc-sb-card pc-sb1"><div class="pc-sb-tag">🎁 WELCOME</div><div class="pc-sb-name">200% First Deposit</div><div class="pc-sb-desc">Up to $5,000 + 100 Free Spins</div><div class="pc-sb-claim">Claim Now</div><div class="pc-sb-emoji">🎰</div></div>
-            <div class="pc-sb-card pc-sb2"><div class="pc-sb-tag">⚽ SPORTS</div><div class="pc-sb-name">Weekend Special</div><div class="pc-sb-desc">15% Cashback on Live Bets</div><div class="pc-sb-claim">Claim Now</div><div class="pc-sb-emoji">⚽</div></div>
-            <div class="pc-sb-card pc-sb3"><div class="pc-sb-tag">🔥 LIMITED</div><div class="pc-sb-name">Lucky Spin Tournament</div><div class="pc-sb-desc">$50,000 Prize Pool</div><div class="pc-sb-claim">Join Now</div><div class="pc-sb-emoji">🏆</div></div>
+            <div class="pc-sb-card pc-sb1"><div class="pc-sb-tag">🎁 WELCOME</div><div class="pc-sb-name">200% First Deposit</div><div class="pc-sb-desc">Up to $5,000 + 100 Free Spins</div><div class="pc-sb-claim">Claim Now</div><div class="pc-sb-emoji" style="font-size:28px;opacity:.5">🎰🪙</div></div>
+            <div class="pc-sb-card pc-sb2"><div class="pc-sb-tag">⚽ SPORTS</div><div class="pc-sb-name">Weekend Special</div><div class="pc-sb-desc">15% Cashback on Live Bets</div><div class="pc-sb-claim">Claim Now</div><div class="pc-sb-emoji" style="font-size:28px;opacity:.5">⚽🏅</div></div>
+            <div class="pc-sb-card pc-sb3"><div class="pc-sb-tag">🔥 LIMITED</div><div class="pc-sb-name">Lucky Spin Tournament</div><div class="pc-sb-desc">$50,000 Prize Pool</div><div class="pc-sb-claim">Join Now</div><div class="pc-sb-emoji" style="font-size:28px;opacity:.5">🎁💰</div></div>
           </div>
           <div class="phone-mini-nav"><div class="pmn-item"><div class="pmn-ico">🏠</div><div class="pmn-lbl">Home</div></div><div class="pmn-item"><div class="pmn-ico">🔍</div><div class="pmn-lbl">Search</div></div><div class="pmn-item pmn-on"><div class="pmn-ico">🎁</div><div class="pmn-lbl">Bonus</div></div><div class="pmn-item"><div class="pmn-ico">👤</div><div class="pmn-lbl">Profile</div></div></div>
         </div>
@@ -503,6 +528,43 @@
 
 </div>
 <div class="spacer"></div>
+
+<footer class="site-footer">
+<div class="ft-inner">
+  <div class="ft-top">
+    <div class="ft-col">
+      <div class="ft-brand-logo"><div class="ft-brand-mark">♔</div><span class="ft-brand-name">ROYAL PLAY</span></div>
+      <div class="ft-brand-desc">ROYAL PLAY is a licensed online gaming platform providing premium casino and sports betting experience.</div>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-title">Company</div>
+      <a href="#">About Us</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Blog</a>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-title">Support</div>
+      <a href="#">FAQ</a><a href="#">Contact</a><a href="#">Live Chat</a><a href="#">Responsible Gaming</a>
+    </div>
+    <div class="ft-col">
+      <div class="ft-col-title">Legal</div>
+      <a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">AML Policy</a><a href="#">Cookie Policy</a>
+    </div>
+  </div>
+  <div class="ft-divider"></div>
+  <div class="ft-bottom">
+    <div class="ft-license">Licensed and regulated by Curacao eGaming. License No. 365/JAZ</div>
+    <div class="ft-coins">
+      <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC">
+      <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="ETH">
+      <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT">
+      <img src="https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png" alt="BNB">
+      <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL">
+    </div>
+    <div class="ft-18"><div class="ft-18-badge">18+</div> Gambling can be addictive.</div>
+  </div>
+  <div class="ft-copy">&copy; 2026 ROYAL PLAY. All rights reserved.</div>
+</div>
+</footer>
+
 </div>
 </div>
 
