@@ -30,9 +30,10 @@
   body{font-family:'Poppins',sans-serif;font-weight:300;background:var(--bg);color:var(--txt);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
   body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 20% 8%,rgba(255,46,74,0.06),transparent),radial-gradient(ellipse 50% 50% at 80% 90%,rgba(167,139,250,0.03),transparent);pointer-events:none;z-index:0}
 
-  .layout{display:flex;min-height:100vh;position:relative;z-index:1}
+  .layout{display:flex;flex-direction:column;min-height:100vh;position:relative;z-index:1}
   .desk-sidebar{display:none;width:var(--sidebar-w);flex-shrink:0;position:sticky;top:0;height:100vh;background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);overflow:hidden;flex-direction:column}
   .main{flex:1;min-width:0;width:100%}
+  .pc-body{display:contents} /* mobile: no effect, children flow normally */
   @media(min-width:768px){.desk-sidebar{display:flex}.mob-menu-btn{display:none!important}}
   @media(min-width:1200px){:root{--sidebar-w:300px}}
 
@@ -348,9 +349,31 @@
 
   /* ═══ PC RESPONSIVE ═══ */
   @media(min-width:768px){
-    .hdr .logo{display:none}
+    /* --- Layout: full-width header on top, sidebar+main below --- */
+    .layout{display:flex;flex-direction:column;min-height:100vh}
+
+    /* Header: full width, sticky top */
+    .hdr{position:sticky;top:0;z-index:100;width:100%;padding:10px 24px;display:flex;align-items:center;justify-content:space-between}
+    /* On PC, hide header logo (sidebar has it), or show it — showing it for now */
+    .hdr .logo{display:flex;width:196px;flex-shrink:0} /* same width as sidebar for alignment */
+
+    /* Sign In/Up buttons: ensure visible in header right */
+    .hdr-btns{display:flex;gap:8px;margin-left:auto}
+
+    /* Body area below header: sidebar fixed left + main scrollable */
+    .pc-body{display:flex;flex:1;min-height:0}
+
+    /* Desktop sidebar: fixed left, below header */
+    .desk-sidebar{display:flex;flex-direction:column;width:220px;flex-shrink:0;position:fixed;left:0;top:56px;height:calc(100vh - 56px);background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);overflow:hidden;z-index:90}
+
+    /* Main content: offset by sidebar width */
+    .main{margin-left:220px;flex:1;min-width:0;width:auto}
+
+    /* Content area */
     .content{max-width:1200px;margin:0 auto;padding:24px 32px}
     .section{margin-bottom:20px}
+
+    /* 3D Phone Carousel */
     .phone-scene{height:500px}
     .phone-carousel{transform-style:preserve-3d}
     .phone-card:nth-child(1){transform:rotateY(0deg) translateZ(350px)}
@@ -358,12 +381,20 @@
     .phone-card:nth-child(3){transform:rotateY(144deg) translateZ(350px)}
     .phone-card:nth-child(4){transform:rotateY(216deg) translateZ(350px)}
     .phone-card:nth-child(5){transform:rotateY(288deg) translateZ(350px)}
+
+    /* Grids */
     .recent-sc{grid-template-columns:repeat(4,1fr)}
     .g-list{grid-template-columns:1fr 1fr 1fr}
     .lv-grid{grid-template-columns:repeat(3,1fr)}
     .win-list{grid-template-columns:1fr 1fr 1fr}
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
+
+  }
+
+  @media(min-width:1200px){
+    .desk-sidebar{width:280px}
+    .main{margin-left:280px}
   }
 
   /* ═══ FOOTER ═══ */
@@ -398,11 +429,15 @@
 </head>
 <body>
 <div class="layout">
+<!-- Header: full width on PC -->
+<header class="hdr"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="location.href='/login'" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="location.href='/register'" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></header>
+
+<!-- Sidebar + Main wrapper -->
+<div class="pc-body">
 <aside class="desk-sidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark pearl-shimmer">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div></div><div class="sb-scroll" id="deskMenu"></div></aside>
 <div class="mob-overlay" id="mobOverlay"><div class="mob-sidebar" id="mobSidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark pearl-shimmer">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div><div class="sb-close" id="mobClose">✕</div></div><div class="sb-scroll" id="mobMenu"></div></div></div>
 
 <div class="main">
-<header class="hdr"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="location.href='/login'" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="location.href='/register'" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></header>
 <div class="content">
 
   <!-- 3D Phone Carousel (상단 배너 영역) -->
@@ -572,8 +607,9 @@
 </div>
 </footer>
 
-</div>
-</div>
+</div><!-- /main -->
+</div><!-- /pc-body -->
+</div><!-- /layout -->
 
 <nav class="bnav">
   <div class="nav on" id="menuBtn"><div class="nav-i"><img src="red_icon1.png" alt="Menu" class="nav-icon"></div><div class="nav-l">Menu</div></div>
