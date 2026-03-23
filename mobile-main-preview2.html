@@ -320,13 +320,18 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== DESKTOP ===== */
 @media(min-width:768px){
-  .sidebar{display:flex;bottom:0}
+  /* Sidebar: always visible, fixed left */
+  .sidebar{display:flex;bottom:0;transform:translateX(0) !important;position:fixed;left:0;top:0;width:var(--sidebar-w);z-index:400}
+  .sidebar-overlay{display:none}
+  /* Main: offset by sidebar */
   .main{margin-left:var(--sidebar-w)}
   .bnav{display:none}
-  .logo-m{display:none}
   .pc-ft{display:block}
   :root{--px-m:var(--px-d)}
-  .topnav{padding:10px var(--px-d);border-bottom:1px solid var(--border)}
+  /* Header: sticky, spans main area, sign in/up right-aligned */
+  .topnav{padding:10px var(--px-d);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+  .logo-m{display:none}
+  .nav-r{display:flex;align-items:center;gap:8px}
 
   .hero-full{margin:0 var(--px-d) 20px;height:340px;border-radius:24px;max-width:var(--max-w);margin-left:auto;margin-right:auto}
   .hero-inner2{padding:40px 48px}

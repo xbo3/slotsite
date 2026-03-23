@@ -232,6 +232,11 @@
 
   /* ═══ PC RESPONSIVE ═══ */
   @media(min-width:768px){
+    /* Header: hide logo (sidebar has its own), push buttons to far right */
+    .hdr .logo{display:none}
+    .hdr{justify-content:flex-end}
+    .hdr-btns{display:flex;gap:10px;align-items:center}
+
     .content{max-width:1200px;margin:0 auto;padding:24px 32px}
     .section{margin-bottom:20px}
     .recent-sc{grid-template-columns:repeat(4,1fr)}
