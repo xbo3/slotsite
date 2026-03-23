@@ -304,10 +304,10 @@
 
   <!-- Quick Actions with actual images -->
   <div class="section"><div class="quick">
-    <div class="q-item" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer"><img class="q-img" src="slot_480x480.webp" alt="Slots"><div class="q-lbl">Slots</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><img class="q-img" src="casino_480x480.webp" alt="Casino"><div class="q-lbl">Casino</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=sports'" style="cursor:pointer"><img class="q-img" src="sports_480x480.webp" alt="Sports"><div class="q-lbl">Sports</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=virtual'" style="cursor:pointer"><img class="q-img" src="virtual_game_480x480.webp" alt="Virtual"><div class="q-lbl">ETC</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer"><img class="q-img" src="cat-icons/slot.png" alt="Slots" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">Slots</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><img class="q-img" src="cat-icons/casino.png" alt="Casino" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">Casino</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=sports'" style="cursor:pointer"><img class="q-img" src="cat-icons/sports.png" alt="Sports" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">Sports</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=virtual'" style="cursor:pointer"><img class="q-img" src="cat-icons/etc.png" alt="ETC" style="width:64px;height:64px;object-fit:contain"><div class="q-lbl">ETC</div></div>
   </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t"><span class="g-emoji">🃏</span> Live Casino</div><div class="sec-m">View All ›</div></div>
@@ -359,22 +359,22 @@
 
 <script>
 const menuHTML=`
-<div class="sb-cat" data-expand="games"><div class="sb-cat-ico"><img src="cat-icons/게임.png" alt="Games"></div><div class="sb-cat-txt"><div class="sb-cat-name">Games</div><div class="sb-cat-sub">Slots, Live, Sports & more</div></div><span class="sb-cat-badge badge-hot">HOT</span><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="games"><div class="sb-cat-ico"><img src="cat-icons/게임.png" alt="Games" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Games</div><div class="sb-cat-sub">Slots, Live, Sports & more</div></div><span class="sb-cat-badge badge-hot">HOT</span><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="games"><div class="sb-sub-item"><div class="sb-sub-ico" style="padding:0;overflow:hidden"><img src="cat-icons/slot_480x480.webp" alt="Slots" style="width:100%;height:100%;object-fit:cover;border-radius:7px"></div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/lobby?cat=slots'">Slots</div><div class="sb-sub-cnt">1,390</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico" style="padding:0;overflow:hidden"><img src="cat-icons/casino_480x480.webp" alt="Casino" style="width:100%;height:100%;object-fit:cover;border-radius:7px"></div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/lobby?cat=live'">Live Casino</div><div class="sb-sub-cnt">246</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico" style="padding:0;overflow:hidden"><img src="cat-icons/sports_480x480.webp" alt="Sports" style="width:100%;height:100%;object-fit:cover;border-radius:7px"></div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/lobby?cat=sports'">Sports Betting</div><div class="sb-sub-cnt">58</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🎲</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/lobby?cat=virtual'">Quick Games</div><div class="sb-sub-cnt">32</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🎣</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/lobby?cat=virtual'">Fishing</div><div class="sb-sub-cnt">18</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico" style="padding:0;overflow:hidden"><img src="cat-icons/virtual_game_480x480.webp" alt="Virtual" style="width:100%;height:100%;object-fit:cover;border-radius:7px"></div><div class="sb-sub-name">Virtual Games</div><div class="sb-sub-cnt">24</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">₿</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/lobby?cat=virtual'">Crypto Futures</div><div class="sb-sub-cnt">3</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="promo"><div class="sb-cat-ico"><img src="cat-icons/프로모션.png" alt="Promotions"></div><div class="sb-cat-txt"><div class="sb-cat-name">Promotions</div><div class="sb-cat-sub">Events & campaigns</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="promo"><div class="sb-cat-ico"><img src="cat-icons/프로모션.png" alt="Promotions" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Promotions</div><div class="sb-cat-sub">Events & campaigns</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="promo"><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🏆</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Tournament</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🎰</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Slot Race</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📅</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Daily Deals</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🔥</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Weekend Special</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🎯</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Leaderboard</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="bonus"><div class="sb-cat-ico"><img src="cat-icons/보너스.png" alt="Bonus"></div><div class="sb-cat-txt"><div class="sb-cat-name">Bonus</div><div class="sb-cat-sub">Rewards & cashback</div></div><span class="sb-cat-badge badge-new">NEW</span><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="bonus"><div class="sb-cat-ico"><img src="cat-icons/보너스쿠폰.png" alt="Bonus" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Bonus</div><div class="sb-cat-sub">Rewards & cashback</div></div><span class="sb-cat-badge badge-new">NEW</span><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="bonus"><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🎊</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Welcome Bonus</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🔄</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Reload Bonus</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">💸</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Cashback</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🎡</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Free Spins</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">👑</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/vip'">VIP Rewards</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="coupon"><div class="sb-cat-ico"><img src="cat-icons/쿠폰.png" alt="Coupon"></div><div class="sb-cat-txt"><div class="sb-cat-name">Coupon</div><div class="sb-cat-sub">Redeem your codes</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="coupon"><div class="sb-cat-ico"><img src="cat-icons/미스테리박스.png" alt="Coupon" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Coupon</div><div class="sb-cat-sub">Redeem your codes</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="coupon"><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📝</div><div class="sb-sub-name">Enter Code</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📋</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">My Coupons</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">⏰</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/mypage/coupons'">Expiring Soon</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="partners"><div class="sb-cat-ico"><img src="cat-icons/파트너프로그램.png" alt="Partners"></div><div class="sb-cat-txt"><div class="sb-cat-name">Partners Program</div><div class="sb-cat-sub">Earn commissions</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="partners"><div class="sb-cat-ico"><img src="cat-icons/파트너스프로그램.jpg" alt="Partners" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Partners Program</div><div class="sb-cat-sub">Earn commissions</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="partners"><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📊</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">Dashboard</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">🔗</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">Referral Link</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">💰</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">Commission</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📈</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">Statistics</div><div class="sb-sub-arr">›</div></div></div>
 <div class="sb-divider"></div>
-<div class="sb-cat" data-expand="support"><div class="sb-cat-ico"><img src="cat-icons/24시cs.png" alt="Support"></div><div class="sb-cat-txt"><div class="sb-cat-name">24/7 Support</div><div class="sb-cat-sub">We're always here</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-cat" data-expand="support"><div class="sb-cat-ico"><img src="cat-icons/247.png" alt="Support" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">24/7 Support</div><div class="sb-cat-sub">We're always here</div></div><div class="sb-cat-arrow">▼</div></div>
 <div class="sb-sub" data-sub="support"><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">💬</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">Live Chat</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📧</div><div class="sb-sub-name">Email</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">📱</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">Telegram</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico g-emoji">❓</div><div class="sb-sub-name" onclick="event.stopPropagation();location.href='/support'">FAQ</div><div class="sb-sub-arr">›</div></div></div>
 `;
 document.getElementById('deskMenu').innerHTML=menuHTML;
@@ -437,5 +437,52 @@ function closeLoginModal(){const m=document.getElementById('drslot-login-modal')
   setInterval(()=>go((cur+1)%total),3500);
 })();
 </script>
+
+<footer style="background:#080810;border-top:1px solid rgba(201,168,76,0.1);padding:40px 20px 24px;margin-top:40px;">
+  <div class="royal-footer" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;">
+    <div>
+      <div style="font-weight:800;font-size:20px;background:linear-gradient(135deg,#C9A84C,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px;">ROYAL PLAY</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.35);line-height:1.6;">ROYAL PLAY is a licensed online gaming platform providing premium casino and sports betting experience.</p>
+    </div>
+    <div>
+      <h4 style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:16px;letter-spacing:1px;">COMPANY</h4>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">About Us</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Careers</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Press</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Blog</a>
+    </div>
+    <div>
+      <h4 style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:16px;letter-spacing:1px;">SUPPORT</h4>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Help Center</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Live Chat</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Email Us</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">FAQ</a>
+    </div>
+    <div>
+      <h4 style="color:rgba(255,255,255,0.6);font-size:12px;margin-bottom:16px;letter-spacing:1px;">LEGAL</h4>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Terms of Service</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Privacy Policy</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">Responsible Gaming</a>
+      <a href="#" style="display:block;color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:8px;text-decoration:none;">AML Policy</a>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:24px auto 0;padding-top:20px;border-top:1px solid rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.25);flex-wrap:wrap;gap:12px;">
+    <span>&copy; 2026 ROYAL PLAY. All rights reserved. Licensed by Curacao eGaming.</span>
+    <div style="display:flex;gap:8px;">
+      <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" style="width:20px;height:20px;" alt="BTC">
+      <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" style="width:20px;height:20px;" alt="ETH">
+      <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" style="width:20px;height:20px;" alt="USDT">
+    </div>
+  </div>
+</footer>
+<style>
+  @media(max-width:767px){
+    .royal-footer{grid-template-columns:1fr!important;gap:24px!important;}
+  }
+  @media(min-width:768px) and (max-width:959px){
+    .royal-footer{grid-template-columns:1fr 1fr!important;gap:28px!important;}
+  }
+</style>
+
 </body>
 </html>
