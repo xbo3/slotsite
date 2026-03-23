@@ -22,9 +22,9 @@ body{font-family:'Inter','Poppins',sans-serif;background:var(--bg);color:var(--t
 a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== SIDEBAR (PC) ===== */
-.sidebar{display:flex;position:fixed;left:0;top:0;bottom:0;width:min(280px,78vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
+.sidebar{display:flex;position:fixed;left:0;top:0;bottom:60px;width:min(280px,78vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
 .sidebar.mobile-open{transform:translateX(0)}
-.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0);pointer-events:none;z-index:399;transition:background .35s ease}
+.sidebar-overlay{position:fixed;top:0;left:0;right:0;bottom:60px;background:rgba(0,0,0,0);pointer-events:none;z-index:399;transition:background .35s ease}
 .sidebar-overlay.active{background:rgba(0,0,0,0.6);pointer-events:auto}
 .sidebar::-webkit-scrollbar{display:none}
 .sb-logo{padding:20px;font-family:'Poppins';font-weight:800;font-size:22px;border-bottom:1px solid var(--border)}
@@ -321,7 +321,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== DESKTOP ===== */
 @media(min-width:768px){
-  .sidebar{display:flex}
+  .sidebar{display:flex;bottom:0}
   .main{margin-left:var(--sidebar-w)}
   .bnav{display:none}
   .logo-m{display:none}
@@ -692,15 +692,12 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 function toggleSidebar() {
   const sb = document.getElementById('mobileSidebar');
   const ov = document.getElementById('sidebarOverlay');
-  const bn = document.querySelector('.bnav');
   sb.classList.toggle('mobile-open');
   ov.classList.toggle('active');
-  if(bn) bn.style.display = sb.classList.contains('mobile-open') ? 'none' : '';
 }
 function closeSidebar() {
   document.getElementById('mobileSidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('active');
-  var bn=document.querySelector('.bnav');if(bn)bn.style.display='';
 }
 
 // ═══════════════════════════════════════════

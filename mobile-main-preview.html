@@ -1052,7 +1052,7 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ===== MOBILE SIDEBAR OVERLAY ===== */
 .mob-sidebar-overlay {
-  position: fixed; inset: 0; z-index: 300;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 60px; z-index: 300;
   background: rgba(0,0,0,0); pointer-events: none;
   transition: background 0.35s ease;
 }
@@ -1061,7 +1061,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 .mob-sidebar-panel {
   position: fixed; top: 0; left: 0; z-index: 301;
-  width: min(280px, 78vw); height: 100%; height: 100dvh;
+  width: min(280px, 78vw); height: calc(100% - 60px); height: calc(100dvh - 60px);
   background: linear-gradient(180deg, #0d0d10, #08080a);
   border-right: 1px solid var(--border);
   transform: translateX(-100%);
@@ -2607,12 +2607,11 @@ loadGamesFromAPI();
 function openMobSidebar1(){
   document.getElementById('mobSidebarOverlay1').classList.add('open');
   document.body.classList.add('no-scroll');
-  var bn=document.querySelector('.bottom-nav');if(bn)bn.style.display='none';
+
 }
 function closeMobSidebar1(){
   document.getElementById('mobSidebarOverlay1').classList.remove('open');
   document.body.classList.remove('no-scroll');
-  var bn=document.querySelector('.bottom-nav');if(bn)bn.style.display='';
 }
 document.getElementById('mobSbClose1').addEventListener('click',closeMobSidebar1);
 document.getElementById('mobSidebarOverlay1').addEventListener('click',function(e){
