@@ -193,15 +193,15 @@
   .g-meta{display:flex;align-items:center;gap:8px;margin-top:3px}.g-players{font-size:clamp(8px,2vw,10px);color:var(--txt2);font-weight:300}.g-rtp{font-size:clamp(8px,2vw,10px);color:var(--gold);font-weight:400}
 
   /* Live */
-  .lv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
-  .lv{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s}
+  .lv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap)}
+  .lv{border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .2s}
+  .lv:hover{transform:scale(1.02);box-shadow:0 8px 32px rgba(201,168,76,0.15);border-color:rgba(201,168,76,0.3)}
   .lv:active{transform:scale(.97)}
-  .lv-img{width:100%;aspect-ratio:1/0.8;display:flex;align-items:center;justify-content:center;font-size:clamp(28px,7vw,52px);position:relative}
-  .li1{background:linear-gradient(145deg,#142014,#0a100a)}.li2{background:linear-gradient(145deg,#201414,#100a0a)}.li3{background:linear-gradient(145deg,#141420,#0a0a10)}
-  .lv-live{position:absolute;top:6px;left:6px;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);padding:3px 8px;border-radius:6px;font-size:clamp(8px,2vw,10px);font-weight:400;color:var(--red)}
-  .lv-dot{width:5px;height:5px;background:var(--red);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
+  .lv-thumb{width:100%;height:clamp(120px,20vw,180px);object-fit:cover;object-position:top center;display:block}
+  .lv-img{position:relative}
+  .lv-live{position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);padding:3px 8px;border-radius:6px;font-size:clamp(8px,2vw,10px);font-weight:700;color:#fff;letter-spacing:.5px}
+  .lv-dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-  .lv-cnt{position:absolute;bottom:6px;right:6px;font-size:clamp(8px,2vw,10px);color:rgba(255,255,255,.6);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:5px;font-weight:300}
   .lv-body{padding:clamp(8px,2vw,14px)}
   .lv-name{font-size:clamp(11px,2.8vw,14px);font-weight:400;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lv-deal{font-size:clamp(9px,2vw,11px);color:var(--txt3);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -237,6 +237,7 @@
     .recent-sc{grid-template-columns:repeat(4,1fr)}
     .g-list{grid-template-columns:1fr 1fr 1fr}
     .lv-grid{grid-template-columns:repeat(3,1fr)}
+    .lv-thumb{height:180px}
     .win-list{grid-template-columns:1fr 1fr 1fr}
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
@@ -324,9 +325,12 @@
 
   <div class="section"><div class="sec-hd"><div class="sec-t"><span class="g-emoji">🃏</span> Live Casino</div><div class="sec-m">View All ›</div></div>
   <div class="lv-grid">
-    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img li1"><div class="lv-live"><div class="lv-dot"></div> LIVE</div><span class="g-emoji" style="font-size:inherit">🃏</span><div class="lv-cnt">👥 2,847</div></div><div class="lv-body"><div class="lv-name">Blackjack VIP</div><div class="lv-deal">Dealer: Sarah K.</div><div class="lv-lim">Bet: <span>$10–$50K</span></div></div></div>
-    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img li2"><div class="lv-live"><div class="lv-dot"></div> LIVE</div><span class="g-emoji">🎡</span><div class="lv-cnt">👥 5,231</div></div><div class="lv-body"><div class="lv-name">Lightning Roulette</div><div class="lv-deal">Dealer: James L.</div><div class="lv-lim">Bet: <span>$5–$20K</span></div></div></div>
-    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img li3"><div class="lv-live"><div class="lv-dot"></div> LIVE</div><span class="g-emoji">🎴</span><div class="lv-cnt">👥 1,583</div></div><div class="lv-body"><div class="lv-name">Baccarat Squeeze</div><div class="lv-deal">Dealer: Emma W.</div><div class="lv-lim">Bet: <span>$10–$100K</span></div></div></div>
+    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img"><img class="lv-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaRoulette.png" alt="Mega Roulette"><div class="lv-live"><div class="lv-dot"></div> LIVE</div></div><div class="lv-body"><div class="lv-name">Mega Roulette</div><div class="lv-deal">Dealer: Victoria M.</div><div class="lv-lim">Bet: <span>$1–$10K</span></div></div></div>
+    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img"><img class="lv-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaBaccarat.png" alt="Mega Baccarat"><div class="lv-live"><div class="lv-dot"></div> LIVE</div></div><div class="lv-body"><div class="lv-name">Mega Baccarat</div><div class="lv-deal">Dealer: Yuki S.</div><div class="lv-lim">Bet: <span>$5–$50K</span></div></div></div>
+    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img"><img class="lv-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SpeedRoulette.png" alt="Speed Roulette"><div class="lv-live"><div class="lv-dot"></div> LIVE</div></div><div class="lv-body"><div class="lv-name">Speed Roulette</div><div class="lv-deal">Dealer: James L.</div><div class="lv-lim">Bet: <span>$1–$5K</span></div></div></div>
+    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img"><img class="lv-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaSicBo.png" alt="Mega Sic Bo"><div class="lv-live"><div class="lv-dot"></div> LIVE</div></div><div class="lv-body"><div class="lv-name">Mega Sic Bo</div><div class="lv-deal">Dealer: Luna K.</div><div class="lv-lim">Bet: <span>$2–$20K</span></div></div></div>
+    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img"><img class="lv-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/DragonTigerLive.png" alt="Dragon Tiger"><div class="lv-live"><div class="lv-dot"></div> LIVE</div></div><div class="lv-body"><div class="lv-name">Dragon Tiger</div><div class="lv-deal">Dealer: Sarah K.</div><div class="lv-lim">Bet: <span>$1–$10K</span></div></div></div>
+    <div class="lv" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="lv-img"><img class="lv-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/Baccarat.png" alt="Baccarat"><div class="lv-live"><div class="lv-dot"></div> LIVE</div></div><div class="lv-body"><div class="lv-name">Baccarat</div><div class="lv-deal">Dealer: Emma W.</div><div class="lv-lim">Bet: <span>$10–$100K</span></div></div></div>
   </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t"><span class="g-emoji">🏆</span> Recent Winners</div><div class="sec-m">More ›</div></div>
