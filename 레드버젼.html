@@ -354,8 +354,8 @@
 
     /* Header: full width, sticky top */
     .hdr{position:sticky;top:0;z-index:100;width:100%;padding:10px 24px;display:flex;align-items:center;justify-content:space-between}
-    /* On PC, hide header logo (sidebar has it), or show it — showing it for now */
-    .hdr .logo{display:flex;width:196px;flex-shrink:0} /* same width as sidebar for alignment */
+    /* PC: 사이드바 로고만 사용, 헤더 로고 숨김 */
+    .hdr .logo{display:none}
 
     /* Sign In/Up buttons: ensure visible in header right */
     .hdr-btns{display:flex;gap:8px;margin-left:auto}
