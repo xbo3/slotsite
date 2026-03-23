@@ -126,17 +126,20 @@ button { cursor: pointer; font-family: inherit; }
 .sidebar-provider img { width: 28px; height: 28px; object-fit: contain; filter: brightness(0.8); }
 
 /* ===== TOP NAV ===== */
-.top-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 16px 10px;
+.top-nav-wrap {
   position: sticky;
   top: 0;
   z-index: 100;
   background: rgba(8,8,10,0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px 10px;
 }
 
 .logo-mobile {
@@ -493,6 +496,94 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 .bal-btn.withdraw:hover { background: rgba(255,255,255,0.1); }
+
+/* ===== LIVE CASINO SECTION ===== */
+.live-casino-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 0 12px;
+  margin-bottom: 20px;
+}
+
+.live-casino-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.live-casino-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.lc-thumb {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.lc-live-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.lc-live-badge .lc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: lc-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes lc-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.lc-info {
+  padding: 10px 12px;
+}
+
+.lc-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lc-dealer {
+  font-size: 11px;
+  color: var(--text-sec);
+  margin-bottom: 3px;
+}
+
+.lc-range {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
 
 /* ===== SURPRISE QUIZ ===== */
 .quiz-card {
@@ -1769,6 +1860,15 @@ body.no-scroll { overflow: hidden; }
 
   .top-nav {
     padding: 12px 24px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: flex-start;
+    gap: 24px;
+    position: relative;
+  }
+
+  .top-nav-wrap {
     border-bottom: 1px solid var(--border);
   }
 
@@ -1780,11 +1880,6 @@ body.no-scroll { overflow: hidden; }
     gap: 12px;
   }
 
-  /* PC: group deposit + balance together, push left */
-  .top-nav {
-    justify-content: flex-start;
-    gap: 24px;
-  }
   .top-nav .nav-actions {
     margin-left: auto;
   }
@@ -1867,6 +1962,24 @@ body.no-scroll { overflow: hidden; }
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-12px); }
   }
+
+  /* -- Live Casino section PC -- */
+  .live-casino-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0 24px;
+    margin-bottom: 32px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .live-casino-card {
+    width: auto;
+  }
+
+  .live-casino-card .lc-thumb { height: 160px; }
 
   /* -- Quiz card PC -- */
   .quiz-card {
@@ -2142,6 +2255,7 @@ body.no-scroll { overflow: hidden; }
   </div>
 
   <!-- TOP NAV -->
+  <div class="top-nav-wrap">
   <div class="top-nav">
     <span class="logo-mobile"><span style="background:linear-gradient(135deg,#F0B90B,#FFD93D);-webkit-background-clip:text;-webkit-text-fill-color:transparent">DR.</span><span style="-webkit-text-fill-color:#FFFFFF">SLOT</span></span>
 
@@ -2162,6 +2276,7 @@ body.no-scroll { overflow: hidden; }
       <div class="nav-balance-pc"><span class="currency">$ </span>14,287.50</div>
       <div class="nav-user-avatar">W</div>
     </div>
+  </div>
   </div>
 
   <!-- HERO -->
@@ -2330,6 +2445,69 @@ body.no-scroll { overflow: hidden; }
       <span class="game-badge hot">HOT</span>
       <div class="game-overlay"><div class="game-play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
       <div class="game-info"><div class="game-name">Mental 2</div><div class="game-provider">Nolimit City</div><div class="game-meta"><span class="game-rtp">96.01%</span><span class="game-maxwin">x66666</span></div></div>
+    </div>
+  </div>
+
+  <!-- LIVE CASINO -->
+  <div class="section-header fade-in delay-3">
+    <div class="section-title"><span class="fire">🃏</span> Live Casino</div>
+    <a href="/lobby?cat=live" class="see-all">View All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
+  </div>
+
+  <div class="live-casino-grid fade-in delay-3">
+    <div class="live-casino-card" onclick="location.href='/lobby?cat=live'">
+      <img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaRoulette.png" alt="Mega Roulette">
+      <div class="lc-live-badge"><span class="lc-dot"></span>LIVE</div>
+      <div class="lc-info">
+        <div class="lc-name">Mega Roulette</div>
+        <div class="lc-dealer">Dealer: Sofia</div>
+        <div class="lc-range">$0.50 — $10,000</div>
+      </div>
+    </div>
+    <div class="live-casino-card" onclick="location.href='/lobby?cat=live'">
+      <img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaBaccarat.png" alt="Mega Baccarat">
+      <div class="lc-live-badge"><span class="lc-dot"></span>LIVE</div>
+      <div class="lc-info">
+        <div class="lc-name">Mega Baccarat</div>
+        <div class="lc-dealer">Dealer: Emma</div>
+        <div class="lc-range">$1 — $25,000</div>
+      </div>
+    </div>
+    <div class="live-casino-card" onclick="location.href='/lobby?cat=live'">
+      <img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SpeedRoulette.png" alt="Speed Roulette">
+      <div class="lc-live-badge"><span class="lc-dot"></span>LIVE</div>
+      <div class="lc-info">
+        <div class="lc-name">Speed Roulette</div>
+        <div class="lc-dealer">Dealer: Maria</div>
+        <div class="lc-range">$0.50 — $5,000</div>
+      </div>
+    </div>
+    <div class="live-casino-card" onclick="location.href='/lobby?cat=live'">
+      <img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaSicBo.png" alt="Mega Sic Bo">
+      <div class="lc-live-badge"><span class="lc-dot"></span>LIVE</div>
+      <div class="lc-info">
+        <div class="lc-name">Mega Sic Bo</div>
+        <div class="lc-dealer">Dealer: Lily</div>
+        <div class="lc-range">$0.25 — $5,000</div>
+      </div>
+    </div>
+    <div class="live-casino-card" onclick="location.href='/lobby?cat=live'">
+      <img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/DragonTigerLive.png" alt="Dragon Tiger">
+      <div class="lc-live-badge"><span class="lc-dot"></span>LIVE</div>
+      <div class="lc-info">
+        <div class="lc-name">Dragon Tiger</div>
+        <div class="lc-dealer">Dealer: Hana</div>
+        <div class="lc-range">$1 — $15,000</div>
+      </div>
+    </div>
+    <div class="live-casino-card" onclick="location.href='/lobby?cat=live'">
+      <img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/Baccarat.png" alt="Baccarat">
+      <div class="lc-live-badge"><span class="lc-dot"></span>LIVE</div>
+      <div class="lc-info">
+        <div class="lc-name">Baccarat</div>
+        <div class="lc-dealer">Dealer: Rachel</div>
+        <div class="lc-range">$1 — $50,000</div>
+      </div>
     </div>
   </div>
 
