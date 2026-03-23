@@ -891,7 +891,7 @@ button { cursor: pointer; font-family: inherit; }
 
 /* ===== 3D ROTATING CAROUSEL (Black Space + Crypto Float) ===== */
 .carousel3d-section {
-  padding: 20px 14px;
+  padding: 20px 12px;
   margin: 0 12px 24px;
   position: relative;
   border-radius: 16px;
@@ -1031,7 +1031,7 @@ button { cursor: pointer; font-family: inherit; }
   0% { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
 }
-/* Glassmorphism card base — clean translucent */
+/* Glassmorphism card base — fully transparent glass */
 .carousel3d-card {
   position: absolute;
   width: 280px;
@@ -1042,16 +1042,39 @@ button { cursor: pointer; font-family: inherit; }
   flex-direction: column;
   justify-content: center;
   backface-visibility: hidden;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(240,185,11,0.25);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
   overflow: hidden;
 }
-/* shimmer/glow removed for readability */
-.carousel3d-card::before { display: none; }
-.carousel3d-card::after { display: none; }
+/* Inner highlight glow */
+.carousel3d-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+/* Diagonal shimmer sweep animation */
+.carousel3d-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.1) 45%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, transparent 60%);
+  background-size: 200% 100%;
+  animation: glass-shine 3s ease infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes glass-shine {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 .carousel3d-card:nth-child(1) { transform: rotateY(0deg) translateZ(230px); }
 .carousel3d-card:nth-child(2) { transform: rotateY(120deg) translateZ(230px); }
 .carousel3d-card:nth-child(3) { transform: rotateY(240deg) translateZ(230px); }
@@ -1741,11 +1764,11 @@ body.no-scroll { overflow: hidden; }
   .pc-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 24px;
   }
 
   .top-nav {
-    padding: 12px 32px;
+    padding: 12px 24px;
     border-bottom: 1px solid var(--border);
   }
 
@@ -1789,7 +1812,7 @@ body.no-scroll { overflow: hidden; }
   .nav-balance-pc .currency { color: var(--text-sec); font-size: 12px; font-weight: 400; }
 
   /* -- Hero -- */
-  .hero-wrapper { padding: 0 32px; margin-bottom: 28px; max-width: 1264px; margin-left: auto; margin-right: auto; }
+  .hero-wrapper { padding: 0 24px; margin-bottom: 28px; max-width: 1200px; margin-left: auto; margin-right: auto; }
 
   .hero {
     height: 340px;
@@ -1805,7 +1828,7 @@ body.no-scroll { overflow: hidden; }
   }
 
   .hero-content {
-    padding: 40px 48px;
+    padding: 40px 40px;
     width: 55%;
   }
 
@@ -1819,7 +1842,7 @@ body.no-scroll { overflow: hidden; }
   .hero-right {
     display: flex;
     position: absolute;
-    right: 48px;
+    right: 40px;
     top: 50%;
     transform: translateY(-50%);
     gap: 12px;
@@ -1847,7 +1870,7 @@ body.no-scroll { overflow: hidden; }
 
   /* -- Quiz card PC -- */
   .quiz-card {
-    margin: 0 32px 20px;
+    margin: 0 24px 20px;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -1859,9 +1882,9 @@ body.no-scroll { overflow: hidden; }
 
   /* -- 4 Category buttons PC -- */
   .cat-4btn {
-    padding: 0 32px;
+    padding: 0 24px;
     margin-bottom: 24px;
-    max-width: 1264px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     gap: 12px;
@@ -1879,7 +1902,7 @@ body.no-scroll { overflow: hidden; }
 
   /* -- Live ticker -- */
   .live-ticker {
-    margin: 0 32px 28px;
+    margin: 0 24px 28px;
     padding: 12px 20px;
     border-radius: 14px;
     max-width: 1200px;
@@ -1889,9 +1912,9 @@ body.no-scroll { overflow: hidden; }
 
   /* -- Section headers -- */
   .section-header {
-    padding: 0 32px;
+    padding: 0 24px;
     margin-bottom: 16px;
-    max-width: 1264px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -1900,9 +1923,9 @@ body.no-scroll { overflow: hidden; }
 
   /* -- Hot Games: PC에서 그리드로 변환 -- */
   .game-scroll {
-    padding: 0 32px;
+    padding: 0 24px;
     margin-bottom: 32px;
-    max-width: 1264px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     /* PC: 가로 스크롤 → 그리드로 */
@@ -1923,10 +1946,10 @@ body.no-scroll { overflow: hidden; }
   /* -- New Games grid -- */
   .game-grid {
     grid-template-columns: repeat(4, 1fr);
-    padding: 0 32px;
+    padding: 0 24px;
     gap: 14px;
     margin-bottom: 32px;
-    max-width: 1264px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -1935,10 +1958,10 @@ body.no-scroll { overflow: hidden; }
 
   /* -- Promo: 3열 균등 그리드 -- */
   .promo-scroll {
-    padding: 0 32px;
+    padding: 0 24px;
     gap: 14px;
     margin-bottom: 32px;
-    max-width: 1264px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
     /* PC: 가로 스크롤 → 3열 그리드 */
@@ -1960,11 +1983,9 @@ body.no-scroll { overflow: hidden; }
 
   /* -- 3D Carousel PC -- */
   .carousel3d-section {
-    padding: 0 32px;
-    margin-bottom: 32px;
-    max-width: 1264px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 20px 24px;
+    margin: 0 auto 32px;
+    max-width: 1200px;
   }
   .carousel3d-wrap {
     height: 240px;
@@ -1988,19 +2009,19 @@ body.no-scroll { overflow: hidden; }
 
   /* -- Big Wins 3열 -- */
   .bigwin-list {
-    padding: 0 32px;
+    padding: 0 24px;
     margin-bottom: 32px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    max-width: 1264px;
+    max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
   }
 
   /* -- Provider conveyor PC -- */
   .provider-conveyor {
-    margin: 0 32px 32px;
+    margin: 0 24px 32px;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -2027,7 +2048,7 @@ body.no-scroll { overflow: hidden; }
   /* -- CTA -- */
   .cta-bottom {
     margin: 0 auto 60px;
-    padding: 48px 40px;
+    padding: 48px 24px;
     border-radius: 24px;
     max-width: 1200px;
   }
