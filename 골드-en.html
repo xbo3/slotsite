@@ -226,6 +226,18 @@
   .nav.on::before{content:'';position:absolute;top:0;width:22px;height:3px;border-radius:2px;background:var(--gold-btn);box-shadow:var(--gold-glow-sm)}
   .spacer{height:72px}@media(min-width:768px){.spacer{height:20px}}
   body.no-scroll{overflow:hidden}
+
+  /* ═══ PC RESPONSIVE ═══ */
+  @media(min-width:768px){
+    .content{max-width:1200px;margin:0 auto;padding:24px 32px}
+    .section{margin-bottom:20px}
+    .recent-sc{grid-template-columns:repeat(4,1fr)}
+    .g-list{grid-template-columns:1fr 1fr 1fr}
+    .lv-grid{grid-template-columns:repeat(3,1fr)}
+    .win-list{grid-template-columns:1fr 1fr 1fr}
+    .quick{grid-template-columns:repeat(4,1fr)}
+    .promo-sc{grid-template-columns:1fr 1fr}
+  }
 </style>
 </head>
 <body>
