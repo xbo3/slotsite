@@ -306,7 +306,7 @@
   @media(max-width:479px){.lv-grid{grid-template-columns:repeat(3,1fr)}}
   .lv{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s}
   .lv:active{transform:scale(.97)}
-  .lv-img{width:100%;aspect-ratio:1/0.8;display:flex;align-items:center;justify-content:center;font-size:clamp(28px,7vw,52px);position:relative}
+  .lv-img{width:100%;height:clamp(80px,15vw,120px);display:flex;align-items:center;justify-content:center;font-size:clamp(28px,7vw,52px);position:relative;background:linear-gradient(135deg,rgba(232,54,78,0.08),rgba(120,80,200,0.05))}
   .li1{background:linear-gradient(145deg,#1a2a1a,#0d1a0d)}.li2{background:linear-gradient(145deg,#2a1a1a,#1a0d0d)}.li3{background:linear-gradient(145deg,#1a1a2a,#0d0d1a)}
   .lv-live{position:absolute;top:6px;left:6px;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);padding:3px 8px;border-radius:6px;font-size:clamp(8px,2vw,10px);font-weight:400;color:var(--pearl-lt)}
   .lv-dot{width:5px;height:5px;background:var(--pearl-1);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
@@ -373,17 +373,6 @@
 <div class="main">
 <header class="hdr"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="openLoginModal()" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="openLoginModal('register')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></header>
 <div class="content">
-
-  <div class="section"><div class="bal pearl-shimmer">
-    <div class="bal-lbl">Total Balance</div><div class="bal-amt"><span class="cur">$</span>14,287.50</div>
-    <div class="vip"><div class="vip-tag pearl-shimmer">VIP GOLD</div><div class="vip-bar"><div class="vip-fill"></div></div><div class="vip-nxt">35% to PLATINUM</div></div>
-    <div class="bal-row"><button class="bal-btn btn-dep pearl-shimmer">⚡ Deposit</button><button class="bal-btn btn-wd">💸 Withdraw</button></div>
-  </div></div>
-
-  <div class="section"><div class="ticker-wrap"><div class="ticker">
-    <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
-    <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
-  </div></div></div>
 
   <!-- 3D Phone Carousel (상단 배너 영역) -->
   <div class="section">
@@ -458,6 +447,17 @@
       </div>
     </div>
   </div>
+
+  <div class="section"><div class="bal pearl-shimmer">
+    <div class="bal-lbl">Total Balance</div><div class="bal-amt"><span class="cur">$</span>14,287.50</div>
+    <div class="vip"><div class="vip-tag pearl-shimmer">VIP GOLD</div><div class="vip-bar"><div class="vip-fill"></div></div><div class="vip-nxt">35% to PLATINUM</div></div>
+    <div class="bal-row"><button class="bal-btn btn-dep pearl-shimmer">⚡ Deposit</button><button class="bal-btn btn-wd">💸 Withdraw</button></div>
+  </div></div>
+
+  <div class="section"><div class="ticker-wrap"><div class="ticker">
+    <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
+    <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
+  </div></div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t">🏆 Recent Winners</div><div class="sec-m">More ›</div></div>
   <div class="win-list">
