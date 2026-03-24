@@ -129,11 +129,11 @@
   .tick .amt{color:var(--green);font-weight:400}.tick .gm{color:var(--txt3)}
 
   /* ═══ 3D PHONE CAROUSEL ═══ */
-  .phone-scene{perspective:1200px;overflow:visible;position:relative;height:400px;display:flex;align-items:center;justify-content:center}
-  .phone-carousel{width:200px;height:380px;position:relative;transform-style:preserve-3d;animation:phoneSpin 20s linear infinite}
+  .phone-scene{perspective:1200px;overflow:visible;position:relative;height:320px;display:flex;align-items:center;justify-content:center}
+  .phone-carousel{width:160px;height:300px;position:relative;transform-style:preserve-3d;animation:phoneSpin 20s linear infinite}
   .phone-carousel:hover{animation-play-state:paused}
   @keyframes phoneSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
-  .phone-card{position:absolute;width:200px;height:380px;border-radius:20px;overflow:hidden;border:2px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 30px rgba(232,54,78,0.08),inset 0 1px 0 rgba(255,255,255,0.05);backface-visibility:hidden;background:#0c0810;transition:box-shadow .3s}
+  .phone-card{position:absolute;width:160px;height:300px;border-radius:18px;overflow:hidden;border:2px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 30px rgba(232,54,78,0.08),inset 0 1px 0 rgba(255,255,255,0.05);backface-visibility:hidden;background:#0c0810;transition:box-shadow .3s}
   .phone-card:nth-child(1){transform:rotateY(0deg) translateZ(280px)}
   .phone-card:nth-child(2){transform:rotateY(72deg) translateZ(280px)}
   .phone-card:nth-child(3){transform:rotateY(144deg) translateZ(280px)}
@@ -374,13 +374,14 @@
     .section{margin-bottom:20px}
 
     /* 3D Phone Carousel */
-    .phone-scene{height:500px}
-    .phone-carousel{transform-style:preserve-3d}
-    .phone-card:nth-child(1){transform:rotateY(0deg) translateZ(350px)}
-    .phone-card:nth-child(2){transform:rotateY(72deg) translateZ(350px)}
-    .phone-card:nth-child(3){transform:rotateY(144deg) translateZ(350px)}
-    .phone-card:nth-child(4){transform:rotateY(216deg) translateZ(350px)}
-    .phone-card:nth-child(5){transform:rotateY(288deg) translateZ(350px)}
+    .phone-scene{height:400px}
+    .phone-carousel{width:180px;height:340px;transform-style:preserve-3d}
+    .phone-card{width:180px;height:340px}
+    .phone-card:nth-child(1){transform:rotateY(0deg) translateZ(300px)}
+    .phone-card:nth-child(2){transform:rotateY(72deg) translateZ(300px)}
+    .phone-card:nth-child(3){transform:rotateY(144deg) translateZ(300px)}
+    .phone-card:nth-child(4){transform:rotateY(216deg) translateZ(300px)}
+    .phone-card:nth-child(5){transform:rotateY(288deg) translateZ(300px)}
 
     /* Grids */
     .recent-sc{grid-template-columns:repeat(4,1fr)}
