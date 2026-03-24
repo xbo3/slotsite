@@ -49,11 +49,13 @@ html{scrollbar-width:none;-ms-overflow-style:none}
 .nav-desktop a{color:var(--text-dim);font-size:13px;font-weight:600;text-decoration:none;padding:8px 14px;border-radius:8px;transition:all .2s;white-space:nowrap}
 .nav-desktop a:hover{color:var(--text);background:rgba(255,255,255,0.04)}
 .nav-desktop a.active{color:var(--green)}
-.header-auth{display:none;align-items:center;gap:8px}
-.btn-signin{padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--text);font-weight:600;font-size:13px;cursor:pointer;transition:all .2s}
+.header-auth{display:flex;align-items:center;gap:8px}
+.btn-signin{padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--text);font-weight:600;font-size:11px;cursor:pointer;transition:all .2s}
 .btn-signin:hover{border-color:var(--green);color:var(--green)}
-.btn-signup{padding:8px 16px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#00cc00);color:#000;font-weight:700;font-size:13px;cursor:pointer;transition:transform .15s}
+.btn-signup{padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#00cc00);color:#000;font-weight:700;font-size:11px;cursor:pointer;transition:transform .15s}
 .btn-signup:hover{transform:scale(1.05)}
+/* Mobile: hide logged-in elements, show only auth */
+.balance-chip,.btn-deposit,.btn-icon,.nav-desktop{display:none}
 
 /* ══════════ MAIN ══════════ */
 .main{transition:margin .3s}
@@ -265,7 +267,10 @@ html{scrollbar-width:none;-ms-overflow-style:none}
   .header.wide{margin-left:0}
   .header .logo{display:none}
   .nav-desktop{display:flex}
-  .header-auth{display:flex}
+  .balance-chip{display:none}.btn-deposit{display:none}.btn-icon{display:none}
+  .header-auth{display:flex;margin-left:auto}
+  .btn-signin{padding:8px 18px;font-size:13px}
+  .btn-signup{padding:8px 18px;font-size:13px}
   .main{margin-left:var(--sidebar-w);transition:margin .35s cubic-bezier(.4,0,.2,1)}
   .main.wide{margin-left:0}
   .bottom-nav{display:none}

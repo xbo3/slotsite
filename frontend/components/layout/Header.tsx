@@ -53,23 +53,44 @@ export default function Header() {
             <span className="text-white font-thin tracking-[0.2em]">SLOT</span>
           </span>
         </Link>
-        <div className="flex items-center gap-1">
-          {/* Notification bell */}
-          <button className="relative p-2" style={{ color: '#888888' }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-            </svg>
-            {notifCount > 0 && (
-              <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] flex items-center justify-center font-medium">{notifCount}</span>
-            )}
-          </button>
-          {/* Chat icon */}
-          <Link href="/support" className="p-2" style={{ color: '#888888' }}>
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-            </svg>
-          </Link>
+        <div className="flex items-center gap-2">
+          {isLoggedIn ? (
+            <>
+              {/* Notification bell */}
+              <button className="relative p-2" style={{ color: '#888888' }}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                {notifCount > 0 && (
+                  <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[8px] flex items-center justify-center font-medium">{notifCount}</span>
+                )}
+              </button>
+              {/* Chat icon */}
+              <Link href="/support" className="p-2" style={{ color: '#888888' }}>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="px-3 py-1.5 text-[11px] font-medium text-white rounded-lg border transition-colors"
+                style={{ borderColor: 'rgba(255,255,255,0.2)', background: 'transparent' }}
+              >
+                {t('login')}
+              </Link>
+              <Link
+                href="/register"
+                className="px-3 py-1.5 text-[11px] font-medium rounded-lg border-none transition-colors"
+                style={{ background: 'rgba(255,255,255,0.9)', color: '#0A0A0A' }}
+              >
+                {t('register')}
+              </Link>
+            </>
+          )}
         </div>
       </div>
 
