@@ -55,7 +55,7 @@
   .sb-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.1) transparent;padding-bottom:20px}
   .sb-scroll::-webkit-scrollbar{width:3px}.sb-scroll::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.1);border-radius:2px}
 
-  .sb-cat{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
+  .sb-cat{display:flex;align-items:center;gap:8px;padding:10px 10px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
   .sb-cat:hover{background:rgba(201,168,76,0.04)}.sb-cat:active{background:rgba(201,168,76,0.08)}
   .sb-cat.expanded{background:rgba(201,168,76,0.04);border-left-color:var(--gold)}
   .sb-cat-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;overflow:hidden;background:none;border:none}
@@ -78,9 +78,9 @@
   .sb-sub-name{font-size:13px;font-weight:300;color:var(--txt2);flex:1}.sb-sub-cnt{font-size:10px;color:var(--txt3);flex-shrink:0;font-weight:300}.sb-sub-arr{font-size:10px;color:var(--txt3);flex-shrink:0}
   .sb-divider{height:1px;margin:6px 18px;background:var(--bdr)}
 
-  .mob-overlay{position:fixed;top:0;left:0;right:0;bottom:60px;z-index:300;background:rgba(0,0,0,0);pointer-events:none;transition:background .35s ease}
+  .mob-overlay{position:fixed;top:0;left:0;right:0;bottom:60px;z-index:140;background:rgba(0,0,0,0);pointer-events:none;transition:background .35s ease}
   .mob-overlay.open{background:rgba(0,0,0,0.6);pointer-events:auto}
-  .mob-sidebar{position:fixed;top:0;left:0;z-index:301;width:min(280px,78vw);height:calc(100% - 60px);height:calc(100dvh - 60px);background:linear-gradient(180deg,#0d0b12,#08070c);border-right:1px solid var(--bdr);transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden}
+  .mob-sidebar{position:fixed;top:0;left:0;z-index:150;width:min(160px,45vw);height:calc(100% - 60px);height:calc(100dvh - 60px);background:linear-gradient(180deg,#0d0b12,#08070c);border-right:1px solid var(--bdr);transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden}
   .mob-overlay.open .mob-sidebar{transform:translateX(0)}
   @media(min-width:768px){.mob-overlay{display:none}}
 
@@ -94,7 +94,7 @@
   .logo-mark{width:34px;height:34px;border-radius:10px;overflow:hidden}
   .logo-mark img{width:100%;height:100%;object-fit:cover}
   .logo-name{font-weight:200;font-size:17px;letter-spacing:3px;background:var(--gold-grad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldText 6s ease infinite}
-  .hdr-btns{display:flex;gap:8px}
+  .hdr-btns{display:flex;gap:8px;align-items:center}
   .hdr-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:all .15s}
   .hdr-btn:active{transform:scale(.9)}.dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:var(--gold);border-radius:50%;border:1.5px solid var(--card)}
 
