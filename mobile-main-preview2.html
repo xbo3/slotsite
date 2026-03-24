@@ -474,8 +474,8 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 <div class="topnav" id="nav-guest">
   <span class="logo-m"><span class="dr">DR.</span><span class="slot">SLOT</span></span>
   <div class="nav-r">
-    <button class="g-btn ghost" onclick="location.href='/login'">Sign In</button>
-    <button class="g-btn primary" onclick="location.href='/register'">Sign Up</button>
+    <button class="g-btn ghost" onclick="openLoginModal('login')">Sign In</button>
+    <button class="g-btn primary" onclick="openLoginModal('register')">Sign Up</button>
   </div>
 </div>
 <!-- TOP NAV (logged) -->
@@ -863,7 +863,7 @@ function switchAuthTab(tab) {
   document.getElementById('drslot-auth-submit').textContent = tab === 'login' ? 'Sign In' : 'Sign Up';
   document.getElementById('drslot-auth-error').style.display = 'none';
 }
-function openLoginModal() { createLoginModal('login'); }
+function openLoginModal(tab) { createLoginModal(tab || 'login'); }
 function closeLoginModal() { const m = document.getElementById('drslot-login-modal'); if (m) m.style.display = 'none'; }
 async function submitAuth() {
   const username = document.getElementById('drslot-username').value.trim();
@@ -893,10 +893,10 @@ async function submitAuth() {
     btns.forEach(btn => {
       const txt = btn.textContent.trim();
       if (txt === 'Sign In') {
-        // Replace inline onclick with API login
         btn.removeAttribute('onclick');
         btn.addEventListener('click', () => createLoginModal('login'));
       } else if (txt === 'Sign Up') {
+        btn.removeAttribute('onclick');
         btn.addEventListener('click', () => createLoginModal('register'));
       } else if (txt === 'Deposit' || txt === 'Withdraw') {
         btn.addEventListener('click', () => { if (!authToken) createLoginModal('login'); else alert(txt + ' page'); });
