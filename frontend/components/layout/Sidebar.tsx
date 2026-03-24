@@ -17,80 +17,80 @@ const CATEGORIES = [
     href: '/lobby?cat=slots',
     subs: [
       { id: 'all', labelKey: 'all', href: '/lobby?cat=slots' },
-      { id: 'evolution', label: 'Evolution Gaming', href: '/lobby?provider=evolution', img: 'https://imgxcut.com/game/image/9c40f44618.png' },
-      { id: 'boongo', label: 'Booongo', href: '/lobby?provider=boongo', img: 'https://imgxcut.com/game/image/c9c8ea471b.png' },
-      { id: 'microgaming', label: 'Microgaming', href: '/lobby?provider=microgaming', img: 'https://imgxcut.com/game/image/5030317209.png' },
-      { id: 'sexygaming', label: 'Sexy Gaming', href: '/lobby?provider=sexygaming', img: 'https://imgxcut.com/game/image/2e8e44ae59.png' },
-      { id: 'pgsoft', label: 'PG Soft', href: '/lobby?provider=pgsoft', img: 'https://imgxcut.com/game/image/128992a35d.png' },
-      { id: 'hacksaw', label: 'Hacksaw', href: '/lobby?provider=hacksaw', img: 'https://imgxcut.com/game/image/ccf8045f30.png' },
-      { id: 'nolimit', label: 'NoLimitCity', href: '/lobby?provider=nolimit', img: 'https://imgxcut.com/game/image/1f7914af40.png' },
-      { id: 'advantplay', label: 'AdvantPlay', href: '/lobby?provider=advantplay', img: 'https://imgxcut.com/game/image/7a8603b60e.png' },
-      { id: 'redtiger', label: 'Red Tiger', href: '/lobby?provider=redtiger', img: 'https://imgxcut.com/game/image/651ed6cb08.png' },
-      { id: 'fatpanda', label: 'Fat Panda', href: '/lobby?provider=fatpanda', img: 'https://imgxcut.com/game/image/bf9711c9c6.png' },
-      { id: 'habanero', label: 'Habanero', href: '/lobby?provider=habanero', img: 'https://imgxcut.com/game/image/1600322b49.png' },
-      { id: 'jdb', label: 'JDB', href: '/lobby?provider=jdb', img: 'https://imgxcut.com/game/image/b7afeab59d.png' },
-      { id: 'netent', label: 'NetEnt', href: '/lobby?provider=netent', img: 'https://imgxcut.com/game/image/50e7c80e3a.png' },
-      { id: 'jili', label: 'JILI', href: '/lobby?provider=jili', img: 'https://imgxcut.com/game/image/11dec4b4c5.png' },
-      { id: 'spadegaming', label: 'Spadegaming', href: '/lobby?provider=spadegaming', img: 'https://imgxcut.com/game/image/408156443a.png' },
-      { id: 'skywind', label: 'Skywind', href: '/lobby?provider=skywind', img: 'https://imgxcut.com/game/image/ffcc4827a8.png' },
-      { id: 'btg', label: 'Big Time Gaming', href: '/lobby?provider=btg', img: 'https://imgxcut.com/game/image/dd8ef215f6.png' },
-      { id: 'fachai', label: 'FA CHAI', href: '/lobby?provider=fachai', img: 'https://imgxcut.com/game/image/b6fa55fc56.png' },
-      { id: 'pragmatic', label: 'Pragmatic Play', href: '/lobby?provider=pragmatic', img: 'https://imgxcut.com/game/image/0ed1c4fe40.png' },
-      { id: '1spin4win', label: '1Spin4Win', href: '/lobby?provider=1spin4win', img: 'https://imgxcut.com/game/image/46e85c6609.png' },
-      { id: 'endorphina', label: 'Endorphina', href: '/lobby?provider=endorphina', img: 'https://imgxcut.com/game/image/311c691438.png' },
-      { id: 'bgaming', label: 'BGaming', href: '/lobby?provider=bgaming', img: 'https://imgxcut.com/game/image/75b5d81876.png' },
-      { id: 'fazi', label: 'Fazi', href: '/lobby?provider=fazi', img: 'https://imgxcut.com/game/image/63fd72ebf2.png' },
-      { id: 'penguinking', label: 'Penguin King', href: '/lobby?provider=penguinking', img: 'https://imgxcut.com/game/image/d491d907d7.png' },
-      { id: 'inout', label: 'InOut', href: '/lobby?provider=inout', img: 'https://imgxcut.com/game/image/18139477b2.png' },
-      { id: 'booming', label: 'Booming', href: '/lobby?provider=booming', img: 'https://imgxcut.com/game/image/1deccce607.png' },
-      { id: 'rubyplay', label: 'Ruby Play', href: '/lobby?provider=rubyplay', img: 'https://imgxcut.com/game/image/9aaca2713b.png' },
-      { id: 'onlyplay', label: 'OnlyPlay', href: '/lobby?provider=onlyplay', img: 'https://imgxcut.com/game/image/ec35f0cabe.png' },
-      { id: 'relaxgaming', label: 'Relax Gaming', href: '/lobby?provider=relaxgaming', img: 'https://imgxcut.com/game/image/bf6887c12b.png' },
-      { id: 'backseat', label: 'Backseat', href: '/lobby?provider=backseat', img: 'https://imgxcut.com/game/image/86443046ce.png' },
-      { id: 'funtagaming', label: 'FunTa Gaming', href: '/lobby?provider=funtagaming', img: 'https://imgxcut.com/game/image/1a8699e3a1.png' },
-      { id: 'amigogaming', label: 'Amigo Gaming', href: '/lobby?provider=amigogaming', img: 'https://imgxcut.com/game/image/d6d95c1dde.png' },
-      { id: 'novomatic', label: 'Novomatic', href: '/lobby?provider=novomatic', img: 'https://imgxcut.com/game/image/4047f2dada.png' },
-      { id: 'platipus', label: 'Platipus', href: '/lobby?provider=platipus', img: 'https://imgxcut.com/game/image/9aec8f2b38.png' },
-      { id: 'betsoft', label: 'BetSoft', href: '/lobby?provider=betsoft', img: 'https://imgxcut.com/game/image/e1162a0386.png' },
-      { id: 'thunderkick', label: 'Thunderkick', href: '/lobby?provider=thunderkick', img: 'https://imgxcut.com/game/image/f6d618de9c.png' },
-      { id: 'belatra', label: 'Belatra', href: '/lobby?provider=belatra', img: 'https://imgxcut.com/game/image/6bf141b73a.png' },
-      { id: 'avatarux', label: 'AvatarUX', href: '/lobby?provider=avatarux', img: 'https://imgxcut.com/game/image/fa86aec911.png' },
-      { id: 'popokgaming', label: 'PopOk Gaming', href: '/lobby?provider=popokgaming', img: 'https://imgxcut.com/game/image/a3d3a3b1ac.png' },
-      { id: 'smartsoft', label: 'SmartSoft Gaming', href: '/lobby?provider=smartsoft', img: 'https://imgxcut.com/game/image/40542a64f2.png' },
-      { id: 'bullshark', label: 'Bullshark', href: '/lobby?provider=bullshark', img: 'https://imgxcut.com/game/image/4020d8470e.png' },
-      { id: 'pegasus', label: 'Pegasus', href: '/lobby?provider=pegasus', img: 'https://imgxcut.com/game/image/bb96fcdaf2.png' },
-      { id: 'spinomenal', label: 'Spinomenal', href: '/lobby?provider=spinomenal', img: 'https://imgxcut.com/game/image/96e8551016.png' },
-      { id: 'quickspin', label: 'Quickspin', href: '/lobby?provider=quickspin', img: 'https://imgxcut.com/game/image/3861400bec.png' },
-      { id: '1x2gaming', label: '1x2 Gaming', href: '/lobby?provider=1x2gaming', img: 'https://imgxcut.com/game/image/ef623e6158.png' },
-      { id: 'slotmill', label: 'Slotmill', href: '/lobby?provider=slotmill', img: 'https://imgxcut.com/game/image/b14c4907d7.png' },
-      { id: 'popiplay', label: 'Popiplay', href: '/lobby?provider=popiplay', img: 'https://imgxcut.com/game/image/7d95aaa8bc.png' },
-      { id: 'gameart', label: 'GameArt', href: '/lobby?provider=gameart', img: 'https://imgxcut.com/game/image/65c347aca8.png' },
-      { id: 'tomhorn', label: 'Tom Horn Gaming', href: '/lobby?provider=tomhorn', img: 'https://imgxcut.com/game/image/591a3fa8a2.png' },
-      { id: 'nownow', label: 'NowNow Gaming', href: '/lobby?provider=nownow', img: 'https://imgxcut.com/game/image/dd4ab6808d.png' },
-      { id: 'tvbet', label: 'TVBET', href: '/lobby?provider=tvbet', img: 'https://imgxcut.com/game/image/34568ae274.png' },
-      { id: 'redrake', label: 'RedRake', href: '/lobby?provider=redrake', img: 'https://imgxcut.com/game/image/5f408a87a5.png' },
-      { id: 'thehood', label: 'The Hood', href: '/lobby?provider=thehood', img: 'https://imgxcut.com/game/image/17eb7575e2.png' },
-      { id: 'spribe', label: 'Spribe', href: '/lobby?provider=spribe', img: 'https://imgxcut.com/game/image/e03d7b925f.png' },
-      { id: 'jaderabbit', label: 'Jade Rabbit Studio', href: '/lobby?provider=jaderabbit', img: 'https://imgxcut.com/game/image/e2b7761aac.png' },
-      { id: 'bfgames', label: 'BF Games', href: '/lobby?provider=bfgames', img: 'https://imgxcut.com/game/image/e4c0234846.png' },
-      { id: 'taparoo', label: 'Tap-A-Roo', href: '/lobby?provider=taparoo', img: 'https://imgxcut.com/game/image/db38919d0c.png' },
-      { id: 'galaxsys', label: 'Galaxsys', href: '/lobby?provider=galaxsys', img: 'https://imgxcut.com/game/image/a98ed75f1e.png' },
-      { id: 'wazdan', label: 'Wazdan', href: '/lobby?provider=wazdan', img: 'https://imgxcut.com/game/image/826ecb0385.png' },
-      { id: 'trustygaming', label: 'Trusty Gaming', href: '/lobby?provider=trustygaming', img: 'https://imgxcut.com/game/image/e05b242a5e.png' },
-      { id: 'shadylady', label: 'Shady Lady', href: '/lobby?provider=shadylady', img: 'https://imgxcut.com/game/image/a36340728d.png' },
-      { id: 'atsupachi', label: 'Atsupachi Gaming', href: '/lobby?provider=atsupachi', img: 'https://imgxcut.com/game/image/126d2fd39e.png' },
-      { id: 'blueprint', label: 'Blueprint', href: '/lobby?provider=blueprint', img: 'https://imgxcut.com/game/image/b12f8fcf83.png' },
-      { id: 'jdbgaming', label: 'JDB Gaming', href: '/lobby?provider=jdbgaming', img: 'https://imgxcut.com/game/image/19e415fe43.png' },
-      { id: 'ezugi', label: 'Ezugi', href: '/lobby?provider=ezugi', img: 'https://imgxcut.com/game/image/5e9d393fde.png' },
-      { id: 'spinmatic', label: 'Spinmatic', href: '/lobby?provider=spinmatic', img: 'https://imgxcut.com/game/image/041e91d42e.png' },
-      { id: 'rtg', label: 'Real Time Gaming', href: '/lobby?provider=rtg', img: 'https://imgxcut.com/game/image/d9f0c93a08.png' },
-      { id: 'caleta', label: 'Caleta Gaming', href: '/lobby?provider=caleta', img: 'https://imgxcut.com/game/image/b88c82bdd7.png' },
-      { id: 'nekogames', label: 'Neko Games', href: '/lobby?provider=nekogames', img: 'https://imgxcut.com/game/image/32f0dc4f00.png' },
-      { id: 'waligames', label: 'WALI GAMES', href: '/lobby?provider=waligames', img: 'https://imgxcut.com/game/image/3edda86a11.png' },
-      { id: 'winfinity', label: 'Winfinity', href: '/lobby?provider=winfinity', img: 'https://imgxcut.com/game/image/ca2c0677f4.png' },
-      { id: 'vivogaming', label: 'Vivo Gaming', href: '/lobby?provider=vivogaming', img: 'https://imgxcut.com/game/image/e263acc7ab.png' },
-      { id: 'voltent', label: 'VoltEnt', href: '/lobby?provider=voltent', img: 'https://imgxcut.com/game/image/ce79f0a41b.png' },
-      { id: 'sneakyslots', label: 'Sneaky Slots', href: '/lobby?provider=sneakyslots', img: 'https://imgxcut.com/game/image/43f46874d3.png' },
+      { id: 'evolution', label: 'Evolution Gaming', href: '/lobby?provider=evolution' },
+      { id: 'boongo', label: 'Booongo', href: '/lobby?provider=boongo' },
+      { id: 'microgaming', label: 'Microgaming', href: '/lobby?provider=microgaming' },
+      { id: 'sexygaming', label: 'Sexy Gaming', href: '/lobby?provider=sexygaming' },
+      { id: 'pgsoft', label: 'PG Soft', href: '/lobby?provider=pgsoft' },
+      { id: 'hacksaw', label: 'Hacksaw', href: '/lobby?provider=hacksaw' },
+      { id: 'nolimit', label: 'NoLimitCity', href: '/lobby?provider=nolimit' },
+      { id: 'advantplay', label: 'AdvantPlay', href: '/lobby?provider=advantplay' },
+      { id: 'redtiger', label: 'Red Tiger', href: '/lobby?provider=redtiger' },
+      { id: 'fatpanda', label: 'Fat Panda', href: '/lobby?provider=fatpanda' },
+      { id: 'habanero', label: 'Habanero', href: '/lobby?provider=habanero' },
+      { id: 'jdb', label: 'JDB', href: '/lobby?provider=jdb' },
+      { id: 'netent', label: 'NetEnt', href: '/lobby?provider=netent' },
+      { id: 'jili', label: 'JILI', href: '/lobby?provider=jili' },
+      { id: 'spadegaming', label: 'Spadegaming', href: '/lobby?provider=spadegaming' },
+      { id: 'skywind', label: 'Skywind', href: '/lobby?provider=skywind' },
+      { id: 'btg', label: 'Big Time Gaming', href: '/lobby?provider=btg' },
+      { id: 'fachai', label: 'FA CHAI', href: '/lobby?provider=fachai' },
+      { id: 'pragmatic', label: 'Pragmatic Play', href: '/lobby?provider=pragmatic' },
+      { id: '1spin4win', label: '1Spin4Win', href: '/lobby?provider=1spin4win' },
+      { id: 'endorphina', label: 'Endorphina', href: '/lobby?provider=endorphina' },
+      { id: 'bgaming', label: 'BGaming', href: '/lobby?provider=bgaming' },
+      { id: 'fazi', label: 'Fazi', href: '/lobby?provider=fazi' },
+      { id: 'penguinking', label: 'Penguin King', href: '/lobby?provider=penguinking' },
+      { id: 'inout', label: 'InOut', href: '/lobby?provider=inout' },
+      { id: 'booming', label: 'Booming', href: '/lobby?provider=booming' },
+      { id: 'rubyplay', label: 'Ruby Play', href: '/lobby?provider=rubyplay' },
+      { id: 'onlyplay', label: 'OnlyPlay', href: '/lobby?provider=onlyplay' },
+      { id: 'relaxgaming', label: 'Relax Gaming', href: '/lobby?provider=relaxgaming' },
+      { id: 'backseat', label: 'Backseat', href: '/lobby?provider=backseat' },
+      { id: 'funtagaming', label: 'FunTa Gaming', href: '/lobby?provider=funtagaming' },
+      { id: 'amigogaming', label: 'Amigo Gaming', href: '/lobby?provider=amigogaming' },
+      { id: 'novomatic', label: 'Novomatic', href: '/lobby?provider=novomatic' },
+      { id: 'platipus', label: 'Platipus', href: '/lobby?provider=platipus' },
+      { id: 'betsoft', label: 'BetSoft', href: '/lobby?provider=betsoft' },
+      { id: 'thunderkick', label: 'Thunderkick', href: '/lobby?provider=thunderkick' },
+      { id: 'belatra', label: 'Belatra', href: '/lobby?provider=belatra' },
+      { id: 'avatarux', label: 'AvatarUX', href: '/lobby?provider=avatarux' },
+      { id: 'popokgaming', label: 'PopOk Gaming', href: '/lobby?provider=popokgaming' },
+      { id: 'smartsoft', label: 'SmartSoft Gaming', href: '/lobby?provider=smartsoft' },
+      { id: 'bullshark', label: 'Bullshark', href: '/lobby?provider=bullshark' },
+      { id: 'pegasus', label: 'Pegasus', href: '/lobby?provider=pegasus' },
+      { id: 'spinomenal', label: 'Spinomenal', href: '/lobby?provider=spinomenal' },
+      { id: 'quickspin', label: 'Quickspin', href: '/lobby?provider=quickspin' },
+      { id: '1x2gaming', label: '1x2 Gaming', href: '/lobby?provider=1x2gaming' },
+      { id: 'slotmill', label: 'Slotmill', href: '/lobby?provider=slotmill' },
+      { id: 'popiplay', label: 'Popiplay', href: '/lobby?provider=popiplay' },
+      { id: 'gameart', label: 'GameArt', href: '/lobby?provider=gameart' },
+      { id: 'tomhorn', label: 'Tom Horn Gaming', href: '/lobby?provider=tomhorn' },
+      { id: 'nownow', label: 'NowNow Gaming', href: '/lobby?provider=nownow' },
+      { id: 'tvbet', label: 'TVBET', href: '/lobby?provider=tvbet' },
+      { id: 'redrake', label: 'RedRake', href: '/lobby?provider=redrake' },
+      { id: 'thehood', label: 'The Hood', href: '/lobby?provider=thehood' },
+      { id: 'spribe', label: 'Spribe', href: '/lobby?provider=spribe' },
+      { id: 'jaderabbit', label: 'Jade Rabbit Studio', href: '/lobby?provider=jaderabbit' },
+      { id: 'bfgames', label: 'BF Games', href: '/lobby?provider=bfgames' },
+      { id: 'taparoo', label: 'Tap-A-Roo', href: '/lobby?provider=taparoo' },
+      { id: 'galaxsys', label: 'Galaxsys', href: '/lobby?provider=galaxsys' },
+      { id: 'wazdan', label: 'Wazdan', href: '/lobby?provider=wazdan' },
+      { id: 'trustygaming', label: 'Trusty Gaming', href: '/lobby?provider=trustygaming' },
+      { id: 'shadylady', label: 'Shady Lady', href: '/lobby?provider=shadylady' },
+      { id: 'atsupachi', label: 'Atsupachi Gaming', href: '/lobby?provider=atsupachi' },
+      { id: 'blueprint', label: 'Blueprint', href: '/lobby?provider=blueprint' },
+      { id: 'jdbgaming', label: 'JDB Gaming', href: '/lobby?provider=jdbgaming' },
+      { id: 'ezugi', label: 'Ezugi', href: '/lobby?provider=ezugi' },
+      { id: 'spinmatic', label: 'Spinmatic', href: '/lobby?provider=spinmatic' },
+      { id: 'rtg', label: 'Real Time Gaming', href: '/lobby?provider=rtg' },
+      { id: 'caleta', label: 'Caleta Gaming', href: '/lobby?provider=caleta' },
+      { id: 'nekogames', label: 'Neko Games', href: '/lobby?provider=nekogames' },
+      { id: 'waligames', label: 'WALI GAMES', href: '/lobby?provider=waligames' },
+      { id: 'winfinity', label: 'Winfinity', href: '/lobby?provider=winfinity' },
+      { id: 'vivogaming', label: 'Vivo Gaming', href: '/lobby?provider=vivogaming' },
+      { id: 'voltent', label: 'VoltEnt', href: '/lobby?provider=voltent' },
+      { id: 'sneakyslots', label: 'Sneaky Slots', href: '/lobby?provider=sneakyslots' },
     ],
   },
   {
@@ -362,14 +362,12 @@ function getGradientColor(index: number, total: number) {
 
 // 서브카테고리 리스트 — 그라데이션 컬러 + 로고 클릭 애니메이션
 function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
-  cat: { subs: { id: string; labelKey?: string; label?: string; href: string; img?: string }[] };
+  cat: { subs: { id: string; labelKey?: string; label?: string; href: string }[] };
   isExpanded: boolean;
   t: (key: string) => string;
   activeSub: string | null;
   setActiveSub: (id: string | null) => void;
 }) {
-  const [isAnimating, setIsAnimating] = useState(false);
-
   // all 항목 분리 + 나머지 알파벳순 정렬
   const allItem = cat.subs.find(s => s.id === 'all');
   const restSorted = cat.subs
@@ -388,8 +386,6 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
             : getGradientColor(idx - (allItem ? 1 : 0), restSorted.length);
 
           const handleClick = (e: React.MouseEvent) => {
-            if (isAnimating) return; // 애니메이션 중 재클릭 차단
-
             setActiveSub(isActive ? null : sub.id);
             const el = e.currentTarget as HTMLElement;
 
@@ -398,21 +394,6 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
             void el.offsetWidth;
             el.classList.add('border-click');
             setTimeout(() => el.classList.remove('border-click'), 2000);
-
-            // 로고 팝업
-            const img = el.querySelector('.provider-logo') as HTMLImageElement;
-            if (img) {
-              setIsAnimating(true); // 락 ON
-              img.style.height = '48px';
-              img.style.filter = `drop-shadow(0 0 8px ${colors.glow}) drop-shadow(0 0 16px ${colors.color}) brightness(1.4)`;
-              img.style.transition = 'all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1)';
-              setTimeout(() => {
-                img.style.height = '20px';
-                img.style.filter = 'none';
-                img.style.transition = 'all 0.4s ease';
-                setTimeout(() => setIsAnimating(false), 450); // 락 OFF
-              }, 1500);
-            }
           };
 
           return (
@@ -439,26 +420,7 @@ function SubCategoryList({ cat, isExpanded, t, activeSub, setActiveSub }: {
                 {sub.labelKey ? t(sub.labelKey) : sub.label}
               </span>
 
-              {/* 로고 이미지 — 우측, 원본 컬러 유지 */}
-              {sub.img && (
-                <div className="flex items-center" style={{ transition: 'all 0.3s ease' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={sub.img}
-                    alt=""
-                    className="provider-logo object-contain"
-                    style={{
-                      height: '20px',
-                      width: 'auto',
-                      opacity: isActive ? 1 : 0.4,
-                      isolation: 'isolate',
-                      mixBlendMode: 'normal',
-                      transition: 'all 0.3s ease',
-                    }}
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                </div>
-              )}
+              {/* imgxcut.com 로고 제거됨 — 텍스트만 표시 */}
             </Link>
           );
         })}

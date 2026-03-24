@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import Link from 'next/link';
@@ -448,12 +449,12 @@ export default function Home() {
       <div className="md:hidden px-3 mb-6">
         <div className="grid grid-cols-3 gap-2">
           {[
-            { href: '/lobby?cat=slots', label: t('slots'), icon: '\uD83C\uDFB0' },
-            { href: '/lobby?cat=live', label: t('live'), icon: '\uD83C\uDFB2' },
-            { href: '/lobby?cat=slots&hot=true', label: t('hot_slots'), icon: '\uD83D\uDD25' },
+            { href: '/lobby?cat=slots', label: t('slots'), icon: '/cat-icons/slot.png' },
+            { href: '/lobby?cat=live', label: t('live'), icon: '/cat-icons/casino.png' },
+            { href: '/lobby?cat=slots&hot=true', label: t('hot_slots'), icon: '/cat-icons/게임.png' },
           ].map(cat => (
             <Link key={cat.href} href={cat.href} className="flex flex-col items-center gap-1.5 py-3 rounded-2xl border border-white/5 touch-active" style={{ background: '#111111' }}>
-              <span className="text-xl">{cat.icon}</span>
+              <img src={cat.icon} alt="" style={{width:24,height:24,objectFit:'contain'}} />
               <span className="text-white text-[11px] font-light">{cat.label}</span>
             </Link>
           ))}
