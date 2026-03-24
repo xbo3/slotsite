@@ -110,7 +110,7 @@ html{scrollbar-width:none;-ms-overflow-style:none}
 .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px;margin-top:16px}
 .cat-card{background:var(--card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:14px 8px;text-align:center;cursor:pointer;transition:all .25s}
 .cat-card:hover{background:var(--card-hover);transform:translateY(-2px)}
-.cat-icon{width:32px;height:32px;margin:0 auto 6px;display:block;object-fit:contain}
+.cat-icon{width:64px;height:64px;margin:0 auto 6px;display:block;object-fit:contain}
 .cat-name{font-size:11px;font-weight:600;color:var(--text-dim)}
 .cat-card.active{border-color:var(--green);background:rgba(0,231,1,0.05)}
 .cat-card.active .cat-name{color:var(--green)}
@@ -246,7 +246,7 @@ html{scrollbar-width:none;-ms-overflow-style:none}
   .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--text-dim);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
   .sidebar-item:hover{background:rgba(255,255,255,0.04);color:var(--text)}
   .sidebar-item.active{background:rgba(0,231,1,0.08);color:var(--green)}
-  .sidebar-item .s-icon{width:20px;height:20px;object-fit:contain;flex-shrink:0}
+  .sidebar-item .s-icon{width:38px;height:38px;object-fit:contain;flex-shrink:0}
   .sidebar-divider{height:1px;background:rgba(255,255,255,0.04);margin:16px 20px}
   .sidebar-section{padding:0 20px;margin-bottom:8px;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
 
@@ -277,19 +277,19 @@ html{scrollbar-width:none;-ms-overflow-style:none}
   .site-footer{margin-left:var(--sidebar-w);transition:margin .35s cubic-bezier(.4,0,.2,1)}
   .site-footer.wide{margin-left:0}
 
-  .hero-section{padding:20px 32px 0}
+  .hero-section{padding:20px 24px 0}
   .hero-card{min-height:195px;max-height:220px}
   .hero-title{font-size:26px}
-  .hero-timer-wrap{margin:0 32px 4px}
-  .live-wins{margin:16px 32px}
-  .categories{padding:0 32px;gap:12px}
-  .big-cats{padding:0 32px;gap:16px}.big-cat{min-height:130px}
-  .section{padding:0 32px;margin-top:28px}
+  .hero-timer-wrap{margin:0 24px 4px}
+  .live-wins{margin:16px 24px}
+  .categories{padding:0 24px;gap:12px}
+  .big-cats{padding:0 24px;gap:16px}.big-cat{min-height:130px}
+  .section{padding:0 24px;margin-top:28px}
   .game-grid{grid-template-columns:repeat(6,1fr);gap:14px}
   .game-card:hover .game-overlay{opacity:1}
   .matches-scroll{display:none}
   .matches-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-  .site-footer{padding:40px 32px 32px}
+  .site-footer{padding:40px 24px 24px}
 }
 @media(min-width:1440px){
   :root{--sidebar-w:240px}
@@ -358,7 +358,7 @@ html{scrollbar-width:none;-ms-overflow-style:none}
     <div class="btn-icon">👤</div>
     <div class="header-auth">
       <button class="btn-signin" onclick="openLoginModal()">Sign In</button>
-      <button class="btn-signup" onclick="openLoginModal()">Sign Up</button>
+      <button class="btn-signup" onclick="openLoginModal('register')">Sign Up</button>
     </div>
   </div>
 </header>
@@ -701,21 +701,30 @@ function createLoginModal() {
   const modal = document.createElement('div');
   modal.id = 'drslot-login-modal';
   modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center';
-  modal.innerHTML = `<div style="background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;width:min(360px,90vw);position:relative">
+  modal.innerHTML = `<div style="background:var(--card);border:1px solid rgba(52,211,153,0.12);border-radius:16px;padding:28px;width:min(380px,90vw);position:relative">
     <div style="position:absolute;top:12px;right:16px;cursor:pointer;font-size:20px;color:var(--text-dim)" onclick="closeLoginModal()">&times;</div>
     <div style="font-size:20px;font-weight:700;margin-bottom:20px;text-align:center">DR.<span style="color:var(--green)">SLOT</span></div>
     <div id="drslot-login-tab" style="display:flex;gap:8px;margin-bottom:16px">
-      <button onclick="switchAuthTab('login')" class="auth-tab active" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--green);color:#000;font-weight:600;font-size:13px;cursor:pointer">로그인</button>
-      <button onclick="switchAuthTab('register')" class="auth-tab" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--card);color:var(--text-dim);font-weight:600;font-size:13px;cursor:pointer">회원가입</button>
+      <button onclick="switchAuthTab('login')" class="auth-tab active" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--green);color:#000;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit">Sign In</button>
+      <button onclick="switchAuthTab('register')" class="auth-tab" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:var(--card);color:var(--text-dim);font-weight:600;font-size:13px;cursor:pointer;font-family:inherit">Sign Up</button>
     </div>
     <div id="drslot-auth-form">
-      <input id="drslot-username" type="text" placeholder="유저명" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none">
-      <input id="drslot-password" type="password" placeholder="비밀번호" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none">
+      <input id="drslot-username" type="text" placeholder="Email / Username" style="width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none;font-family:inherit">
+      <input id="drslot-password" type="password" placeholder="Password" style="width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none;font-family:inherit">
       <div id="drslot-register-fields" style="display:none">
-        <input id="drslot-nickname" type="text" placeholder="닉네임" style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none">
+        <input id="drslot-nickname" type="text" placeholder="Nickname" style="width:100%;padding:12px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:14px;margin-bottom:10px;outline:none;font-family:inherit">
       </div>
       <div id="drslot-auth-error" style="color:var(--red);font-size:12px;margin-bottom:8px;display:none"></div>
-      <button id="drslot-auth-submit" onclick="submitAuth()" style="width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#00cc00);color:#000;font-weight:700;font-size:14px;cursor:pointer">로그인</button>
+      <button id="drslot-auth-submit" onclick="submitAuth()" style="width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(135deg,#34d399,#10b981);color:#000;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;box-shadow:0 2px 12px rgba(52,211,153,0.3)">Sign In</button>
+      <div style="display:flex;align-items:center;gap:12px;margin:16px 0">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.08)"></div>
+        <span style="font-size:12px;color:var(--text-muted);font-weight:500">OR</span>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.08)"></div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="alert('Google login coming soon')" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 001 12c0 1.77.42 3.44 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg> Google</button>
+        <button onclick="alert('Telegram login coming soon')" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:var(--surface);color:var(--text);font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:inherit"><svg width="16" height="16" viewBox="0 0 24 24" fill="#29a9eb"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.53 8.09l-1.8 8.49c-.13.6-.5.75-.99.47l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.07-4.58c.22-.2-.05-.3-.34-.12l-6.27 3.95-2.7-.84c-.59-.18-.6-.59.12-.87l10.54-4.07c.49-.18.92.12.76.87z"/></svg> Telegram</button>
+      </div>
     </div>
   </div>`;
   document.body.appendChild(modal);
@@ -729,11 +738,13 @@ function switchAuthTab(tab) {
   tabs[1].style.background = tab === 'register' ? 'var(--green)' : 'var(--card)';
   tabs[1].style.color = tab === 'register' ? '#000' : 'var(--text-dim)';
   document.getElementById('drslot-register-fields').style.display = tab === 'register' ? 'block' : 'none';
-  document.getElementById('drslot-auth-submit').textContent = tab === 'login' ? '로그인' : '회원가입';
+  document.getElementById('drslot-auth-submit').textContent = tab === 'login' ? 'Sign In' : 'Sign Up';
   document.getElementById('drslot-auth-error').style.display = 'none';
 }
-function openLoginModal() {
+function openLoginModal(tab) {
   createLoginModal();
+  if (tab === 'register') switchAuthTab('register');
+  else switchAuthTab('login');
   document.getElementById('drslot-login-modal').style.display = 'flex';
 }
 function closeLoginModal() {
