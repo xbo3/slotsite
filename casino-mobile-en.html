@@ -20,7 +20,7 @@
     --green:#34d399;--red:#e8364e;--blue:#60a5fa;--purple:#a78bfa;
     --txt:#f0ece4;--txt2:#968e80;--txt3:#584e40;
     --bdr:rgba(201,168,76,0.10);--bdr2:rgba(201,168,76,0.06);
-    --sidebar-w:280px;
+    --sidebar-w:220px;
     --gap:clamp(8px,2vw,14px);
     --pad:clamp(12px,3vw,20px);
   }
@@ -32,8 +32,8 @@
   .layout{display:flex;min-height:100vh;position:relative;z-index:1}
   .desk-sidebar{display:none;width:var(--sidebar-w);flex-shrink:0;position:sticky;top:0;height:100vh;background:linear-gradient(180deg,#0d0b12,#08070c);border-right:1px solid var(--bdr);overflow:hidden;flex-direction:column}
   .main{flex:1;min-width:0;width:100%}
-  @media(min-width:768px){.desk-sidebar{display:flex}.mob-menu-btn{display:none!important}.hdr .logo{display:none}}
-  @media(min-width:1200px){:root{--sidebar-w:300px}}
+  @media(min-width:768px){.desk-sidebar{display:flex}.mob-menu-btn{display:none!important}.hdr .logo{display:none}.bnav{display:none}.content{max-width:1200px;margin:0 auto;padding:24px}.section{max-width:1200px}.recent-sc{grid-template-columns:repeat(6,1fr)}.g-list{grid-template-columns:repeat(3,1fr)}.lc-grid{grid-template-columns:repeat(3,1fr)}.lv-grid{grid-template-columns:repeat(3,1fr)}.quick .q-item{padding:clamp(14px,2vw,22px) 8px clamp(10px,2vw,16px)}.q-img{width:clamp(56px,6vw,80px);height:clamp(56px,6vw,80px)}.promo-sc{gap:16px}.promo{min-height:200px}}
+  @media(min-width:1200px){:root{--sidebar-w:220px}}
 
   /* Matte brushed shimmer (subtle, not glossy) */
   .matte-shimmer{position:relative;overflow:hidden}
@@ -145,7 +145,7 @@
   .sec-t{font-size:clamp(14px,3.8vw,20px);font-weight:200}.sec-m{font-size:clamp(10px,2.8vw,13px);font-weight:300;color:var(--gold);cursor:pointer}
 
   /* Recent */
-  .recent-sc{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
+  .recent-sc{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
   .recent-card{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s;text-align:center;padding-bottom:8px}
   .recent-card:active{transform:scale(.95)}
   .recent-icon{height:clamp(48px,12vw,90px);display:flex;align-items:center;justify-content:center;font-size:clamp(20px,5vw,36px)}
@@ -154,8 +154,8 @@
   .recent-time{font-size:clamp(7px,1.8vw,10px);color:var(--txt3);margin-top:1px;font-weight:300}
 
   /* Games */
-  .g-list{display:grid;grid-template-columns:1fr;gap:var(--gap)}
-  @media(min-width:960px){.g-list{grid-template-columns:1fr 1fr 1fr}}
+  .g-list{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--gap)}
+  @media(min-width:960px){.g-list{grid-template-columns:repeat(6,1fr)}}
   .g-row{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
   .g-row:active{transform:scale(.98);background:var(--card2)}
   .g-row .play-hint{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.06);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold)}
@@ -187,6 +187,7 @@
   /* Live Casino Cards (new section) */
   .lc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap)}
   @media(min-width:768px){.lc-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(min-width:960px){.lc-grid{grid-template-columns:repeat(6,1fr)}}
   .lc-card{border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s;position:relative}
   .lc-card:active{transform:scale(.97)}
   .lc-img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;display:block}
@@ -219,6 +220,41 @@
   .nav.on::before{content:'';position:absolute;top:0;width:22px;height:3px;border-radius:2px;background:var(--gold-btn);box-shadow:var(--gold-glow-sm)}
   .spacer{height:72px}@media(min-width:768px){.spacer{height:20px}}
   body.no-scroll{overflow:hidden}
+
+  /* ═══ PC: Continue Playing 6칸 ═══ */
+  @media(min-width:960px){.recent-sc{grid-template-columns:repeat(6,1fr)}}
+
+  /* ═══ PC: Popular Games 카드 모드 ═══ */
+  @media(min-width:768px){
+    .g-row{flex-direction:column;align-items:stretch;padding:0;border-radius:14px}
+    .g-thumb{width:100%;height:auto;aspect-ratio:1/1;border-radius:14px 14px 0 0;font-size:36px}
+    .g-info{padding:10px 12px;padding-right:12px}
+    .g-row .play-hint{display:none}
+    .g-name{white-space:normal;font-size:13px}
+  }
+
+  /* ═══ FOOTER ═══ */
+  .site-footer{background:linear-gradient(180deg,#0a0910,#07060a);border-top:1px solid var(--bdr);padding:40px var(--pad) 24px;margin-top:20px}
+  .footer-inner{max-width:1200px;margin:0 auto}
+  .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px;margin-bottom:30px}
+  @media(max-width:767px){.footer-top{grid-template-columns:1fr;gap:20px;text-align:center}}
+  .footer-brand .fb-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  @media(max-width:767px){.footer-brand .fb-logo{justify-content:center}}
+  .fb-logo-mark{width:36px;height:36px;border-radius:10px;background:var(--gold-btn);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:var(--gold-glow-sm)}
+  .fb-logo-name{font-weight:200;font-size:16px;letter-spacing:3px;background:var(--gold-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .footer-brand .fb-desc{font-size:12px;color:var(--txt2);line-height:1.6;font-weight:300;max-width:280px}
+  @media(max-width:767px){.footer-brand .fb-desc{max-width:none}}
+  .footer-col h4{font-size:12px;font-weight:400;color:var(--gold);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+  .footer-col a{display:block;font-size:12px;color:var(--txt2);text-decoration:none;padding:4px 0;font-weight:300;transition:color .15s}
+  .footer-col a:hover{color:var(--gold-lt)}
+  .footer-coins{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  @media(max-width:767px){.footer-coins{justify-content:center}}
+  .footer-coins img{width:24px;height:24px;border-radius:50%}
+  .footer-license{display:flex;align-items:center;gap:8px;padding:14px 0;border-top:1px solid var(--bdr);flex-wrap:wrap}
+  @media(max-width:767px){.footer-license{justify-content:center;text-align:center}}
+  .footer-license .fl-badge{font-size:14px;font-weight:600;color:var(--red);background:rgba(232,54,78,0.1);border:1px solid rgba(232,54,78,0.2);border-radius:6px;padding:2px 8px}
+  .footer-license .fl-text{font-size:10px;color:var(--txt3);font-weight:300;line-height:1.5}
+  .footer-copy{text-align:center;font-size:10px;color:var(--txt3);font-weight:300;padding-top:14px;border-top:1px solid var(--bdr2)}
 </style>
 </head>
 <body>
@@ -266,6 +302,8 @@
     <div class="recent-card"><div class="recent-icon ri2"><img src="https://fan-cdn.nolimitcity.com/small_duck_hunters_logo2_813513f3fb.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Duck Hunters</div><div class="recent-time">15 min ago</div></div>
     <div class="recent-card"><div class="recent-icon ri3"><img src="https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Fire in the Hole 3</div><div class="recent-time">1 hr ago</div></div>
     <div class="recent-card"><div class="recent-icon ri4"><img src="https://fan-cdn.nolimitcity.com/small_outsourced_logo2_3da26f2a07.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Outsourced</div><div class="recent-time">3 hrs ago</div></div>
+    <div class="recent-card"><div class="recent-icon ri1"><img src="https://fan-cdn.nolimitcity.com/small_Website_Icon_Catfish_Hunters_47ef66edfe.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Sugar Rush</div><div class="recent-time">5 hrs ago</div></div>
+    <div class="recent-card"><div class="recent-icon ri2"><img src="https://fan-cdn.nolimitcity.com/small_duck_hunters_logo2_813513f3fb.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Wild Bandito</div><div class="recent-time">8 hrs ago</div></div>
   </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t">🃏 Live Casino</div><div class="sec-m">View All ›</div></div>
@@ -283,6 +321,9 @@
     <div class="g-row"><div class="g-thumb gt1"><div class="g-badge b-hot">HOT</div>🎰</div><div class="g-info"><div class="g-name">Gates of Olympus</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 12,847</div><div class="g-rtp">RTP 96.5%</div></div></div><div class="play-hint">▶</div></div>
     <div class="g-row"><div class="g-thumb gt2"><div class="g-badge b-top">TOP</div>💎</div><div class="g-info"><div class="g-name">Sweet Bonanza</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 9,531</div><div class="g-rtp">RTP 96.4%</div></div></div><div class="play-hint">▶</div></div>
     <div class="g-row"><div class="g-thumb gt3"><div class="g-badge b-new">NEW</div>⚡</div><div class="g-info"><div class="g-name">Starlight Princess</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 7,204</div><div class="g-rtp">RTP 96.7%</div></div></div><div class="play-hint">▶</div></div>
+    <div class="g-row"><div class="g-thumb gt1"><div class="g-badge b-hot">HOT</div>🍬</div><div class="g-info"><div class="g-name">Sugar Rush</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 6,182</div><div class="g-rtp">RTP 96.5%</div></div></div><div class="play-hint">▶</div></div>
+    <div class="g-row"><div class="g-thumb gt2"><div class="g-badge b-top">TOP</div>🐉</div><div class="g-info"><div class="g-name">Dragon Hatch</div><div class="g-prov">PG Soft</div><div class="g-meta"><div class="g-players">👥 5,430</div><div class="g-rtp">RTP 96.8%</div></div></div><div class="play-hint">▶</div></div>
+    <div class="g-row"><div class="g-thumb gt3"><div class="g-badge b-new">NEW</div>🔮</div><div class="g-info"><div class="g-name">Wild Bandito</div><div class="g-prov">PG Soft</div><div class="g-meta"><div class="g-players">👥 4,891</div><div class="g-rtp">RTP 96.7%</div></div></div><div class="play-hint">▶</div></div>
   </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t">🃏 Live Casino</div><div class="sec-m">View All ›</div></div>
@@ -300,6 +341,34 @@
   </div></div>
 
 </div>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="site-footer">
+<div class="footer-inner">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="fb-logo"><div class="fb-logo-mark">&#9812;</div><span class="fb-logo-name">ROYAL PLAY</span></div>
+      <p class="fb-desc">Licensed online gaming platform offering premium slots, live casino, and sports betting. Secure, fair, and responsible gaming since 2024.</p>
+    </div>
+    <div class="footer-col"><h4>Company</h4><a href="#">About Us</a><a href="#">Careers</a><a href="#">Press</a><a href="#">Blog</a></div>
+    <div class="footer-col"><h4>Support</h4><a href="#">Help Center</a><a href="#">Live Chat</a><a href="#">Email Us</a><a href="#">FAQ</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">AML Policy</a><a href="#">Responsible Gaming</a></div>
+  </div>
+  <div class="footer-coins">
+    <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC">
+    <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="ETH">
+    <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT">
+    <img src="https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png" alt="BNB">
+    <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL">
+  </div>
+  <div class="footer-license">
+    <span class="fl-badge">18+</span>
+    <span class="fl-text">Royal Play is licensed and regulated under Curacao eGaming (License No. 365/JAZ). Gambling can be addictive. Please play responsibly.</span>
+  </div>
+  <div class="footer-copy">&copy; 2026 ROYAL PLAY. All rights reserved.</div>
+</div>
+</footer>
+
 <div class="spacer"></div>
 </div>
 </div>
