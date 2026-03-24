@@ -26,7 +26,7 @@ body.sidebar-open{overflow-x:hidden}
 a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== SIDEBAR (PC) ===== */
-.sidebar{display:flex;position:fixed;left:0;top:0;bottom:60px;width:min(200px,55vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
+.sidebar{display:flex;position:fixed;left:0;top:0;bottom:calc(56px + env(safe-area-inset-bottom,0px));width:min(160px,45vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
 .sidebar.mobile-open{transform:translateX(0)}
 .sidebar-overlay{position:fixed;top:0;left:0;right:0;bottom:60px;background:rgba(0,0,0,0);pointer-events:none;z-index:399;transition:background .35s ease}
 .sidebar-overlay.active{background:rgba(0,0,0,0.15);pointer-events:auto}
@@ -100,7 +100,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 /* ===== MAIN ===== */
 .main{max-width:100%;transition:padding-left .35s ease;overflow-x:hidden}
 /* Sidebar push mode (mobile) */
-body.sidebar-open .main{padding-left:min(200px,55vw);transform:none;transition:padding-left .35s ease}
+body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:padding-left .35s ease}
 /* 하단바 항상 고정 — 움직이지 않음 */
 
 /* ===== JACKPOT TICKER ===== */
@@ -462,7 +462,7 @@ body.sidebar-open .main{padding-left:min(200px,55vw);transform:none;transition:p
   <div class="sb-sec">
     <div class="sb-sec-t">Offers</div>
     <div class="sb-item" onclick="location.href='/mypage/coupons'"><img class="ic" src="mint-cat-icons/프로모션.png" alt="">Promotions</div>
-    <div class="sb-item" onclick="location.href='/mypage/coupons'"><img class="ic" src="mint-cat-icons/보너스쿠폰.png" alt="">Bonus / Coupon</div>
+    <div class="sb-item" onclick="location.href='/mypage/coupons'"><img class="ic" src="mint-cat-icons/보너스쿠폰.png" alt="">Coupon</div>
     <div class="sb-item" onclick="location.href='/mypage/vip'"><img class="ic" src="mint-cat-icons/vip.png" alt="">VIP</div>
     <div class="sb-item" onclick="location.href='/tournament'"><img class="ic" src="mint-cat-icons/토너먼트.png" alt="">Tournament</div>
   </div>
