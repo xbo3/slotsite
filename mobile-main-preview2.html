@@ -337,7 +337,8 @@ body.sidebar-open .bnav{transform:translateX(min(280px,78vw));transition:transfo
 /* ===== DESKTOP ===== */
 @media(min-width:768px){
   /* Sidebar: always visible, fixed left */
-  .sidebar{display:flex;bottom:0;transform:translateX(0) !important;position:fixed;left:0;top:0;width:var(--sidebar-w);z-index:400}
+  .sidebar{display:flex;bottom:0;transform:translateX(0) !important;position:fixed;left:0;top:0;width:var(--sidebar-w);z-index:400;padding-top:0}
+  .sidebar .sb-logo{display:flex;align-items:center;height:52px;padding:0 24px;font-family:'Poppins';font-weight:800;font-size:20px;border-bottom:1px solid var(--border)}
   .sidebar-overlay{display:none}
   /* Main: offset by sidebar */
   .main{margin-left:var(--sidebar-w);transform:none !important}
@@ -347,7 +348,7 @@ body.sidebar-open .bnav{transform:translateX(min(280px,78vw));transition:transfo
   .pc-ft{display:block}
   :root{--px-m:var(--px-d)}
   /* Header: sticky, spans main area, sign in/up right-aligned */
-  .topnav{padding:10px 0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;display:block}
+  .topnav{padding:0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;display:block;height:52px;display:flex;align-items:center}
   .topnav-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:flex-end;width:100%}
   .logo-m{display:none}
   .nav-r{display:flex;align-items:center;gap:8px}
