@@ -108,9 +108,10 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== HERO FULL ===== */
 .hero-full{position:relative;margin:0 var(--px-m) 16px;border-radius:20px;overflow:hidden;height:220px}
-.hero-full .bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d1b2a,#1b2838,#162447);z-index:0}
-.hero-full .bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 75% 30%,rgba(0,229,255,0.12),transparent),radial-gradient(ellipse 50% 60% at 20% 80%,rgba(240,185,11,0.1),transparent)}
-.hero-full .mesh{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:20px 20px;z-index:1}
+.hero-full .bg{position:absolute;inset:0;z-index:0}
+.hero-full .bg::after{display:none}
+.hero-full .mesh{display:none}
+.hero-banner-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:20px;z-index:0}
 .hero-inner2{position:relative;z-index:2;padding:24px 20px;height:100%;display:flex;flex-direction:column;justify-content:space-between}
 .hero-top-row{display:flex;align-items:center;gap:8px}
 .hero-live{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;background:rgba(0,229,255,0.1);border:1px solid rgba(0,229,255,0.15)}
@@ -503,6 +504,7 @@ a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 <!-- HERO -->
 <div class="hero-full fi d1">
+  <img src="banners/민트배너.png" alt="Banner" class="hero-banner-img">
   <div class="bg"></div>
   <div class="mesh"></div>
   <div class="hero-inner2">

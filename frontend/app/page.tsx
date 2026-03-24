@@ -31,6 +31,7 @@ const CAROUSEL_BANNERS = [
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
     accent: '#4FC3F7',
     ctaHref: '/register',
+    bannerImg: '/banners/보라배너.png',
   },
   {
     title: 'Slot Loan Bonus',
@@ -38,6 +39,7 @@ const CAROUSEL_BANNERS = [
     gradient: 'linear-gradient(135deg, #1a1a1a 0%, #2d1b4e 50%, #1a1a2e 100%)',
     accent: '#CE93D8',
     ctaHref: '/register',
+    bannerImg: null,
   },
   {
     title: 'Every Deposit Bonus',
@@ -45,6 +47,7 @@ const CAROUSEL_BANNERS = [
     gradient: 'linear-gradient(135deg, #1a1a1a 0%, #1b3a2d 50%, #1a2e1a 100%)',
     accent: '#81C784',
     ctaHref: '/wallet',
+    bannerImg: null,
   },
 ];
 
@@ -237,16 +240,24 @@ export default function Home() {
                       background: banner.gradient,
                     }}
                   >
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 md:p-10 text-center">
-                      <h2 className="text-lg md:text-4xl lg:text-5xl font-extralight text-white leading-tight tracking-tight">
-                        {banner.title}
-                      </h2>
-                      <p className="mt-2 md:mt-4 text-xs md:text-base font-light max-w-md" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                        {banner.desc}
-                      </p>
+                    {banner.bannerImg && (
+                      <img src={banner.bannerImg} alt={banner.title} className="absolute inset-0 w-full h-full object-cover" style={{ zIndex: 0 }} />
+                    )}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 md:p-10 text-center" style={{ zIndex: 1 }}>
+                      {!banner.bannerImg && (
+                        <>
+                          <h2 className="text-lg md:text-4xl lg:text-5xl font-extralight text-white leading-tight tracking-tight">
+                            {banner.title}
+                          </h2>
+                          <p className="mt-2 md:mt-4 text-xs md:text-base font-light max-w-md" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                            {banner.desc}
+                          </p>
+                        </>
+                      )}
                       <Link
                         href={banner.ctaHref}
                         className="mt-3 md:mt-6 inline-flex items-center gap-2 px-4 md:px-8 py-2 md:py-3 text-xs md:text-sm font-light btn-cta"
+                        style={banner.bannerImg ? { position: 'absolute', bottom: '16px', right: '16px' } : {}}
                       >
                         Get Started
                         <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

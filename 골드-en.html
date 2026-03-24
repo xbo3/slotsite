@@ -137,6 +137,7 @@
 
   /* 3D Promo Banner */
   .banner3d-wrap{padding:0 var(--pad);margin-bottom:var(--gap);perspective:1000px;overflow:hidden;position:relative;height:clamp(140px,32vw,200px)}
+  .banner3d-img{width:100%;height:100%;object-fit:cover;border-radius:14px;position:absolute;inset:0;z-index:0}
   .banner3d-track{display:flex;width:300%;height:100%;transition:transform 0.7s cubic-bezier(0.25,0.8,0.25,1)}
   .banner3d-slide{flex:0 0 33.333%;border-radius:14px;padding:clamp(18px,4vw,30px);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;transform-style:preserve-3d;backface-visibility:hidden}
   .banner3d-slide::after{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,0.06),transparent 70%)}
@@ -283,10 +284,8 @@
   <div class="section">
     <div class="banner3d-wrap" id="banner3d3">
       <div class="banner3d-track" id="banner3dTrack3">
-        <div class="banner3d-slide b3d-s1 matte-shimmer">
-          <div class="banner3d-tag">First Deposit Bonus</div>
-          <div class="banner3d-title">100% Bonus</div>
-          <div class="banner3d-desc">Double your first deposit instantly</div>
+        <div class="banner3d-slide b3d-s1 matte-shimmer" style="padding:0">
+          <img src="banners/골드배너.png" alt="Banner" class="banner3d-img">
         </div>
         <div class="banner3d-slide b3d-s2">
           <div class="banner3d-tag">Slot Loan Bonus</div>
