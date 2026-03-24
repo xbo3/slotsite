@@ -256,9 +256,9 @@ button { cursor: pointer; font-family: inherit; }
   .top-nav { padding: 6px 12px; }
   .hero-wrapper { padding: 0 12px; }
   .section-header { padding: 0 12px; }
-  .live-casino-grid { padding: 0 12px; grid-template-columns: repeat(2, 1fr); }
+  .live-casino-grid { padding: 0 12px; grid-template-columns: repeat(3, 1fr); }
   .live-casino-grid .live-casino-card:nth-child(n+7) { display: none; }
-  .game-grid { padding: 0 12px; grid-template-columns: repeat(2, 1fr); }
+  .game-grid { padding: 0 12px; grid-template-columns: repeat(3, 1fr); }
   .game-grid .game-card-grid:nth-child(n+7) { display: none; }
   .game-scroll { padding: 0 12px; }
 }
@@ -524,7 +524,7 @@ button { cursor: pointer; font-family: inherit; }
 /* ===== LIVE CASINO SECTION ===== */
 .live-casino-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   padding: 0 12px;
   margin-bottom: 20px;
@@ -982,7 +982,7 @@ button { cursor: pointer; font-family: inherit; }
 /* ===== GAME GRID (responsive) ===== */
 .game-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   padding: 0 12px;
   margin-bottom: 24px;
