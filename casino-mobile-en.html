@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ROYAL PLAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07060a;--card:#110f18;--card2:#181520;--card3:#1e1a28;
+    /* ── Matte Gold System ── */
+    --gold:#c9a84c;--gold-lt:#dfc06a;--gold-dk:#8a7030;--gold-deep:#6a5420;
+    --gold-mute:#a89050;--gold-pale:#f0dca0;
+    --gold-grad:linear-gradient(135deg,#8a7030,#c9a84c,#dfc06a,#c9a84c,#8a7030);
+    --gold-grad2:linear-gradient(135deg,#6a5420,#c9a84c,#e8d080,#c9a84c,#6a5420);
+    --gold-btn:linear-gradient(145deg,#b89840 0%,#c9a84c 30%,#dfc06a 55%,#a88838 80%,#8a7030 100%);
+    --gold-glow:0 0 24px rgba(201,168,76,0.2);
+    --gold-glow-sm:0 0 12px rgba(201,168,76,0.18);
+    /* Accents */
+    --green:#34d399;--red:#e8364e;--blue:#60a5fa;--purple:#a78bfa;
+    --txt:#f0ece4;--txt2:#968e80;--txt3:#584e40;
+    --bdr:rgba(201,168,76,0.10);--bdr2:rgba(201,168,76,0.06);
+    --sidebar-w:280px;
+    --gap:clamp(8px,2vw,14px);
+    --pad:clamp(12px,3vw,20px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{font-size:16px}
+  body{font-family:'Poppins',sans-serif;font-weight:300;background:var(--bg);color:var(--txt);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 25% 10%,rgba(201,168,76,0.04),transparent),radial-gradient(ellipse 50% 50% at 75% 85%,rgba(138,112,48,0.03),transparent);pointer-events:none;z-index:0}
+
+  .layout{display:flex;min-height:100vh;position:relative;z-index:1}
+  .desk-sidebar{display:none;width:var(--sidebar-w);flex-shrink:0;position:sticky;top:0;height:100vh;background:linear-gradient(180deg,#0d0b12,#08070c);border-right:1px solid var(--bdr);overflow:hidden;flex-direction:column}
+  .main{flex:1;min-width:0;width:100%}
+  @media(min-width:768px){.desk-sidebar{display:flex}.mob-menu-btn{display:none!important}.hdr .logo{display:none}}
+  @media(min-width:1200px){:root{--sidebar-w:300px}}
+
+  /* Matte brushed shimmer (subtle, not glossy) */
+  .matte-shimmer{position:relative;overflow:hidden}
+  .matte-shimmer::after{content:'';position:absolute;top:0;left:-100%;width:80%;height:100%;background:linear-gradient(105deg,transparent 35%,rgba(223,192,106,0.04) 45%,rgba(201,168,76,0.06) 50%,rgba(223,192,106,0.04) 55%,transparent 65%);animation:matteGlide 5s ease-in-out infinite;pointer-events:none}
+  @keyframes matteGlide{0%{left:-100%}50%{left:150%}100%{left:150%}}
+
+  /* ═══ SIDEBAR ═══ */
+  .sb-hdr{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);flex-shrink:0}
+  .sb-logo{display:flex;align-items:center;gap:8px}
+  .sb-logo-mark{width:32px;height:32px;border-radius:9px;background:var(--gold-btn);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:var(--gold-glow-sm);position:relative;overflow:hidden}
+  .sb-logo-name{font-weight:200;font-size:15px;letter-spacing:3px;background:var(--gold-grad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldText 6s ease infinite}
+  @keyframes goldText{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .sb-close{width:32px;height:32px;border-radius:9px;border:1px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+  .sb-close:active{transform:scale(.9)}
+  .desk-sidebar .sb-close{display:none}
+  .sb-scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(201,168,76,0.1) transparent;padding-bottom:20px}
+  .sb-scroll::-webkit-scrollbar{width:3px}.sb-scroll::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.1);border-radius:2px}
+
+  .sb-cat{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none}
+  .sb-cat:hover{background:rgba(201,168,76,0.04)}.sb-cat:active{background:rgba(201,168,76,0.08)}
+  .sb-cat.expanded{background:rgba(201,168,76,0.04);border-left-color:var(--gold)}
+  .sb-cat-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+  .ci-gold{background:linear-gradient(135deg,rgba(201,168,76,0.14),rgba(201,168,76,0.04))}
+  .ci-amber{background:linear-gradient(135deg,rgba(220,180,60,0.14),rgba(220,180,60,0.04))}
+  .ci-green{background:linear-gradient(135deg,rgba(52,211,153,0.14),rgba(52,211,153,0.04))}
+  .ci-blue{background:linear-gradient(135deg,rgba(96,165,250,0.14),rgba(96,165,250,0.04))}
+  .ci-purple{background:linear-gradient(135deg,rgba(167,139,250,0.14),rgba(167,139,250,0.04))}
+  .ci-teal{background:linear-gradient(135deg,rgba(45,212,191,0.14),rgba(45,212,191,0.04))}
+  .sb-cat-txt{flex:1;min-width:0}.sb-cat-name{font-size:14px;font-weight:400}.sb-cat-sub{font-size:10px;color:var(--txt3);margin-top:1px;font-weight:300}
+  .sb-cat-arrow{font-size:10px;color:var(--txt3);transition:transform .3s cubic-bezier(0.4,0,0.2,1);flex-shrink:0;width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.02)}
+  .sb-cat.expanded .sb-cat-arrow{transform:rotate(180deg);color:var(--gold-lt);background:rgba(201,168,76,0.08)}
+  .sb-cat-badge{font-size:9px;font-weight:400;padding:2px 7px;border-radius:5px;flex-shrink:0}
+  .badge-hot{background:var(--gold-btn);color:#1a1408;box-shadow:var(--gold-glow-sm)}.badge-new{background:var(--green);color:#fff}
+  .sb-sub{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(0.4,0,0.2,1);background:rgba(0,0,0,0.2)}.sb-sub.open{max-height:800px}
+  .sb-sub-item{display:flex;align-items:center;gap:10px;padding:10px 18px 10px 58px;cursor:pointer;transition:all .15s}
+  .sb-sub-item:hover{background:rgba(201,168,76,0.03)}.sb-sub-item:active{background:rgba(201,168,76,0.06)}
+  .sb-sub-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:var(--card);border:1px solid var(--bdr2)}
+  .sb-sub-name{font-size:13px;font-weight:300;color:var(--txt2);flex:1}.sb-sub-cnt{font-size:10px;color:var(--txt3);flex-shrink:0;font-weight:300}.sb-sub-arr{font-size:10px;color:var(--txt3);flex-shrink:0}
+  .sb-divider{height:1px;margin:6px 18px;background:var(--bdr)}
+
+  .mob-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0);pointer-events:none;transition:background .35s ease}
+  .mob-overlay.open{background:rgba(0,0,0,0.6);pointer-events:auto}
+  .mob-sidebar{position:fixed;top:0;left:0;z-index:301;width:min(280px,78vw);height:100%;height:100dvh;background:linear-gradient(180deg,#0d0b12,#08070c);border-right:1px solid var(--bdr);transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;overflow:hidden}
+  .mob-overlay.open .mob-sidebar{transform:translateX(0)}
+  @media(min-width:768px){.mob-overlay{display:none}}
+
+  /* ═══ HEADER ═══ */
+  .hdr{position:sticky;top:0;z-index:100;padding:10px var(--pad);display:flex;align-items:center;justify-content:space-between;background:rgba(7,6,10,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr)}
+  .logo{display:flex;align-items:center;gap:8px}
+  .logo-mark{width:34px;height:34px;border-radius:10px;overflow:hidden}
+  .logo-mark img{width:100%;height:100%;object-fit:cover}
+  .logo-name{font-weight:200;font-size:17px;letter-spacing:3px;background:var(--gold-grad);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:goldText 6s ease infinite}
+  .hdr-btns{display:flex;gap:8px}
+  .hdr-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:all .15s}
+  .hdr-btn:active{transform:scale(.9)}.dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:var(--gold);border-radius:50%;border:1.5px solid var(--card)}
+
+  /* ═══ CONTENT ═══ */
+  .content{padding:var(--pad)}.section{margin-bottom:var(--gap)}
+
+  /* Balance */
+  .bal{background:linear-gradient(155deg,#161220 0%,#110f18 40%,#141018 100%);border:1px solid var(--bdr);border-radius:16px;padding:var(--pad);position:relative;overflow:hidden}
+  .bal::before{content:'';position:absolute;top:-40px;right:-40px;width:130px;height:130px;background:radial-gradient(circle,rgba(201,168,76,0.1),transparent 70%);border-radius:50%}
+  .bal::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gold-grad2);background-size:300% 100%;animation:goldLine 4s ease infinite;opacity:.6}
+  @keyframes goldLine{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .bal-lbl{font-size:11px;color:var(--txt2);font-weight:300;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:4px}
+  .bal-amt{font-size:clamp(26px,7vw,42px);font-weight:200;letter-spacing:0.5px;color:var(--gold-pale)}
+  .bal-amt .cur{font-size:14px;font-weight:300;color:var(--gold);margin-right:2px}
+  .vip{display:flex;align-items:center;gap:8px;margin-top:10px}
+  .vip-tag{font-size:9px;font-weight:400;letter-spacing:1.2px;padding:3px 8px;border-radius:6px;background:var(--gold-btn);color:#1a1408;white-space:nowrap;box-shadow:var(--gold-glow-sm)}
+  .vip-bar{flex:1;height:3px;background:rgba(255,255,255,0.04);border-radius:2px;overflow:hidden}
+  .vip-fill{height:100%;width:65%;background:var(--gold-grad2);background-size:300% 100%;border-radius:2px;animation:vg .8s ease forwards,goldLine 4s ease infinite}
+  @keyframes vg{from{width:0}to{width:65%}}
+  .vip-nxt{font-size:9px;color:var(--txt3);font-weight:300;white-space:nowrap}
+  .bal-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:14px}
+  .bal-btn{height:44px;border-radius:12px;border:none;font-family:'Poppins',sans-serif;font-weight:400;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+  .bal-btn:active{transform:scale(.96)}
+  .btn-dep{background:var(--gold-btn);color:#1a1408;box-shadow:0 4px 20px rgba(201,168,76,0.2)}
+  .btn-wd{background:var(--card2);color:var(--txt);border:1px solid var(--bdr)}
+
+  /* Ticker */
+  .ticker-wrap{overflow:hidden}
+  .ticker{display:flex;gap:14px;animation:tScroll 25s linear infinite;width:max-content}
+  @keyframes tScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .tick{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt2);white-space:nowrap;padding:6px 12px;background:var(--card);border:1px solid var(--bdr2);border-radius:8px;flex-shrink:0;font-weight:300}
+  .tick .amt{color:var(--green);font-weight:400}.tick .gm{color:var(--txt3)}
+
+  /* ═══ QUICK ACTIONS with images ═══ */
+  .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
+  .q-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:clamp(10px,2.5vw,18px) 4px clamp(8px,2vw,14px);background:var(--card);border:1px solid var(--bdr);border-radius:14px;cursor:pointer;transition:all .15s}
+  .q-item:active{transform:scale(.93);background:var(--card2)}
+  .q-item:hover{border-color:rgba(201,168,76,0.15)}
+  .q-img{width:clamp(44px,11vw,72px);height:clamp(44px,11vw,72px);object-fit:contain}
+  .q-lbl{font-size:clamp(9px,2.5vw,13px);font-weight:300;color:var(--txt2)}
+
+  /* Promo */
+  .promo-sc{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+  .promo{border-radius:14px;padding:clamp(18px,4vw,30px);position:relative;overflow:hidden;cursor:pointer;transition:transform .2s;min-height:clamp(140px,32vw,220px)}
+  .promo:active{transform:scale(.98)}
+  .p1{background:linear-gradient(140deg,#1a1408,#2a2010,#1a1408);border:1px solid rgba(201,168,76,0.15)}
+  .p2{background:linear-gradient(140deg,#0a141e,#102838,#0a141e);border:1px solid rgba(96,165,250,0.15)}
+  .p1::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gold-grad2);background-size:300% 100%;animation:goldLine 4s ease infinite;opacity:.5}
+  .p-tag{display:inline-block;font-size:clamp(8px,2.2vw,11px);font-weight:400;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:5px;margin-bottom:clamp(8px,2vw,14px)}
+  .p1 .p-tag{background:rgba(201,168,76,0.18);color:var(--gold-lt)}.p2 .p-tag{background:rgba(96,165,250,0.18);color:#90c8ff}
+  .p-title{font-size:clamp(14px,3.8vw,24px);font-weight:200;line-height:1.2;margin-bottom:4px}
+  .p-desc{font-size:clamp(9px,2.5vw,14px);color:var(--txt2);line-height:1.4;font-weight:300}
+  .p-emoji{position:absolute;right:clamp(8px,2vw,20px);bottom:clamp(8px,2vw,18px);font-size:clamp(28px,7vw,56px);opacity:.35}
+
+  .sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--gap)}
+  .sec-t{font-size:clamp(14px,3.8vw,20px);font-weight:200}.sec-m{font-size:clamp(10px,2.8vw,13px);font-weight:300;color:var(--gold);cursor:pointer}
+
+  /* Recent */
+  .recent-sc{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
+  .recent-card{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s;text-align:center;padding-bottom:8px}
+  .recent-card:active{transform:scale(.95)}
+  .recent-icon{height:clamp(48px,12vw,90px);display:flex;align-items:center;justify-content:center;font-size:clamp(20px,5vw,36px)}
+  .ri1{background:linear-gradient(145deg,#201810,#110f18)}.ri2{background:linear-gradient(145deg,#101820,#110f18)}.ri3{background:linear-gradient(145deg,#1a1810,#110f18)}.ri4{background:linear-gradient(145deg,#181020,#110f18)}
+  .recent-name{font-size:clamp(8px,2.2vw,12px);font-weight:400;padding:4px 3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .recent-time{font-size:clamp(7px,1.8vw,10px);color:var(--txt3);margin-top:1px;font-weight:300}
+
+  /* Games */
+  .g-list{display:grid;grid-template-columns:1fr;gap:var(--gap)}
+  @media(min-width:480px){.g-list{grid-template-columns:1fr 1fr}}
+  @media(min-width:960px){.g-list{grid-template-columns:1fr 1fr 1fr}}
+  .g-row{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+  .g-row:active{transform:scale(.98);background:var(--card2)}
+  .g-row .play-hint{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(201,168,76,0.06);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold)}
+  .g-thumb{width:clamp(44px,11vw,64px);height:clamp(44px,11vw,64px);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,5vw,30px);flex-shrink:0;position:relative}
+  .gt1{background:linear-gradient(145deg,#2a1810,#110f18)}.gt2{background:linear-gradient(145deg,#101a2a,#110f18)}.gt3{background:linear-gradient(145deg,#1a1a10,#110f18)}
+  .g-badge{position:absolute;top:2px;left:2px;font-size:7px;font-weight:400;padding:2px 5px;border-radius:4px;text-transform:uppercase}
+  .b-hot{background:var(--gold-btn);color:#1a1408;box-shadow:var(--gold-glow-sm)}.b-new{background:var(--green);color:#fff}.b-top{background:var(--gold);color:#1a1408}
+  .g-info{flex:1;min-width:0;padding-right:34px}
+  .g-name{font-size:clamp(12px,3vw,15px);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+  .g-prov{font-size:clamp(9px,2.2vw,11px);color:var(--txt3);font-weight:300}
+  .g-meta{display:flex;align-items:center;gap:8px;margin-top:3px}.g-players{font-size:clamp(8px,2vw,10px);color:var(--txt2);font-weight:300}.g-rtp{font-size:clamp(8px,2vw,10px);color:var(--gold);font-weight:400}
+
+  /* Live */
+  .lv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
+  .lv{border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s}
+  .lv:active{transform:scale(.97)}
+  .lv-img{width:100%;aspect-ratio:1/0.8;display:flex;align-items:center;justify-content:center;font-size:clamp(28px,7vw,52px);position:relative}
+  .li1{background:linear-gradient(145deg,#142014,#0a100a)}.li2{background:linear-gradient(145deg,#201414,#100a0a)}.li3{background:linear-gradient(145deg,#141420,#0a0a10)}
+  .lv-live{position:absolute;top:6px;left:6px;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);padding:3px 8px;border-radius:6px;font-size:clamp(8px,2vw,10px);font-weight:400;color:var(--red)}
+  .lv-dot{width:5px;height:5px;background:var(--red);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .lv-cnt{position:absolute;bottom:6px;right:6px;font-size:clamp(8px,2vw,10px);color:rgba(255,255,255,.6);background:rgba(0,0,0,.5);padding:2px 7px;border-radius:5px;font-weight:300}
+  .lv-body{padding:clamp(8px,2vw,14px)}
+  .lv-name{font-size:clamp(11px,2.8vw,14px);font-weight:400;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lv-deal{font-size:clamp(9px,2vw,11px);color:var(--txt3);font-weight:300;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lv-lim{display:flex;align-items:center;gap:3px;margin-top:6px;font-size:clamp(8px,2vw,10px);color:var(--txt2);font-weight:300;white-space:nowrap;overflow:hidden}
+  .lv-lim span{color:var(--gold);font-weight:400}
+
+  /* Live Casino Cards (new section) */
+  .lc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap)}
+  @media(min-width:768px){.lc-grid{grid-template-columns:repeat(3,1fr)}}
+  .lc-card{border-radius:14px;overflow:hidden;background:var(--card);border:1px solid var(--bdr);cursor:pointer;transition:all .15s;position:relative}
+  .lc-card:active{transform:scale(.97)}
+  .lc-img{width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top center;display:block}
+  .lc-badge{position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);padding:3px 8px;border-radius:6px;font-size:10px;font-weight:400;color:var(--red)}
+  .lc-badge .lv-dot{width:5px;height:5px;background:var(--red);border-radius:50%;animation:pulse 1.4s ease-in-out infinite}
+  .lc-body{padding:10px 12px}
+  .lc-name{font-size:clamp(12px,3vw,14px);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+  .lc-deal{font-size:clamp(9px,2.2vw,11px);color:var(--txt3);font-weight:300}
+  .lc-bet{font-size:clamp(9px,2vw,11px);color:var(--txt2);font-weight:300;margin-top:4px}
+  .lc-bet span{color:var(--gold);font-weight:400}
+
+  /* Winners */
+  .win-list{display:grid;grid-template-columns:1fr;gap:var(--gap)}
+  @media(min-width:480px){.win-list{grid-template-columns:1fr 1fr 1fr}}
+  .win-row{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card);border:1px solid var(--bdr);border-radius:10px;animation:wSlide .4s ease forwards;opacity:0}
+  .win-row:nth-child(1){animation-delay:.1s}.win-row:nth-child(2){animation-delay:.2s}.win-row:nth-child(3){animation-delay:.3s}
+  @keyframes wSlide{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+  .win-av{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .wa1{background:linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.03))}.wa2{background:linear-gradient(135deg,rgba(96,165,250,.12),rgba(96,165,250,.03))}.wa3{background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(52,211,153,.03))}
+  .win-dt{flex:1;min-width:0}.win-nm{font-size:12px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.win-gm{font-size:10px;color:var(--txt3);font-weight:300}
+  .win-val{font-size:13px;font-weight:400;color:var(--green);flex-shrink:0}
+
+  /* Bottom Nav */
+  .bnav{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(7,6,10,0.92);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-top:1px solid var(--bdr);display:grid;grid-template-columns:repeat(4,1fr);padding:7px 0 calc(7px + env(safe-area-inset-bottom,0px))}
+  @media(min-width:768px){.bnav{display:none}}
+  .nav{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 4px;transition:all .15s;position:relative}
+  .nav:active{transform:scale(.88)}
+  .nav-i{font-size:22px;line-height:1}.nav-l{font-size:10px;font-weight:300;color:var(--txt3);transition:color .15s}
+  .nav.on .nav-l{color:var(--gold)}
+  .nav.on::before{content:'';position:absolute;top:0;width:22px;height:3px;border-radius:2px;background:var(--gold-btn);box-shadow:var(--gold-glow-sm)}
+  .spacer{height:72px}@media(min-width:768px){.spacer{height:20px}}
+  body.no-scroll{overflow:hidden}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="desk-sidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div></div><div class="sb-scroll" id="deskMenu"></div></aside>
+<div class="mob-overlay" id="mobOverlay"><div class="mob-sidebar" id="mobSidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div><div class="sb-close" id="mobClose">✕</div></div><div class="sb-scroll" id="mobMenu"></div></div></div>
+
+<div class="main">
+<header class="hdr">
+  <div class="logo">
+    <div class="logo-mark"><img src="logo.png" alt="Logo"></div>
+    <span class="logo-name">ROYAL PLAY</span>
+  </div>
+  <div class="hdr-btns"><div class="hdr-btn">🔔<div class="dot"></div></div><div class="hdr-btn">💬</div></div>
+</header>
+<div class="content">
+
+  <div class="section"><div class="bal matte-shimmer">
+    <div class="bal-lbl">Total Balance</div><div class="bal-amt"><span class="cur">$</span>14,287.50</div>
+    <div class="vip"><div class="vip-tag">VIP GOLD</div><div class="vip-bar"><div class="vip-fill"></div></div><div class="vip-nxt">35% to PLATINUM</div></div>
+    <div class="bal-row"><button class="bal-btn btn-dep">⚡ Deposit</button><button class="bal-btn btn-wd">💸 Withdraw</button></div>
+  </div></div>
+
+  <div class="section"><div class="ticker-wrap"><div class="ticker">
+    <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
+    <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
+  </div></div></div>
+
+  <div class="section"><div class="promo-sc">
+    <div class="promo p1 matte-shimmer"><div class="p-tag">🎁 Welcome</div><div class="p-title">200% First Deposit Bonus</div><div class="p-desc">Up to $5,000 + 100 Free Spins</div><div class="p-emoji">🎰</div></div>
+    <div class="promo p2"><div class="p-tag">⚽ Sports</div><div class="p-title">Weekend Sports Special</div><div class="p-desc">15% Cashback on Live Bets</div><div class="p-emoji">⚽</div></div>
+  </div></div>
+
+  <!-- Quick Actions with actual images -->
+  <div class="section"><div class="quick">
+    <div class="q-item"><img class="q-img" src="cat-icons/casino.png" alt="Casino"><div class="q-lbl">Casino</div></div>
+    <div class="q-item"><img class="q-img" src="cat-icons/slot.png" alt="Slots"><div class="q-lbl">Slots</div></div>
+    <div class="q-item"><img class="q-img" src="cat-icons/sports.png" alt="Sports"><div class="q-lbl">Sports</div></div>
+    <div class="q-item"><img class="q-img" src="cat-icons/etc.png" alt="Virtual"><div class="q-lbl">Virtual</div></div>
+  </div></div>
+
+  <div class="section"><div class="sec-hd"><div class="sec-t">⏱ Continue Playing</div></div>
+  <div class="recent-sc">
+    <div class="recent-card"><div class="recent-icon ri1"><img src="https://fan-cdn.nolimitcity.com/small_Website_Icon_Catfish_Hunters_47ef66edfe.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Catfish Hunters</div><div class="recent-time">2 min ago</div></div>
+    <div class="recent-card"><div class="recent-icon ri2"><img src="https://fan-cdn.nolimitcity.com/small_duck_hunters_logo2_813513f3fb.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Duck Hunters</div><div class="recent-time">15 min ago</div></div>
+    <div class="recent-card"><div class="recent-icon ri3"><img src="https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Fire in the Hole 3</div><div class="recent-time">1 hr ago</div></div>
+    <div class="recent-card"><div class="recent-icon ri4"><img src="https://fan-cdn.nolimitcity.com/small_outsourced_logo2_3da26f2a07.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px 12px 0 0"></div><div class="recent-name">Outsourced</div><div class="recent-time">3 hrs ago</div></div>
+  </div></div>
+
+  <div class="section"><div class="sec-hd"><div class="sec-t">🃏 Live Casino</div><div class="sec-m">View All ›</div></div>
+  <div class="lc-grid">
+    <div class="lc-card"><div style="position:relative"><img class="lc-img" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaRoulette.png" alt="Mega Roulette"><div class="lc-badge"><div class="lv-dot"></div> LIVE</div></div><div class="lc-body"><div class="lc-name">Mega Roulette</div><div class="lc-deal">Dealer: Victoria M.</div><div class="lc-bet">Bet: <span>$1–$10K</span></div></div></div>
+    <div class="lc-card"><div style="position:relative"><img class="lc-img" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaBaccarat.png" alt="Mega Baccarat"><div class="lc-badge"><div class="lv-dot"></div> LIVE</div></div><div class="lc-body"><div class="lc-name">Mega Baccarat</div><div class="lc-deal">Dealer: Yuki S.</div><div class="lc-bet">Bet: <span>$5–$50K</span></div></div></div>
+    <div class="lc-card"><div style="position:relative"><img class="lc-img" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SpeedRoulette.png" alt="Speed Roulette"><div class="lc-badge"><div class="lv-dot"></div> LIVE</div></div><div class="lc-body"><div class="lc-name">Speed Roulette</div><div class="lc-deal">Dealer: James L.</div><div class="lc-bet">Bet: <span>$1–$5K</span></div></div></div>
+    <div class="lc-card"><div style="position:relative"><img class="lc-img" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaSicBo.png" alt="Mega Sic Bo"><div class="lc-badge"><div class="lv-dot"></div> LIVE</div></div><div class="lc-body"><div class="lc-name">Mega Sic Bo</div><div class="lc-deal">Dealer: Luna K.</div><div class="lc-bet">Bet: <span>$2–$20K</span></div></div></div>
+    <div class="lc-card"><div style="position:relative"><img class="lc-img" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/DragonTigerLive.png" alt="Dragon Tiger"><div class="lc-badge"><div class="lv-dot"></div> LIVE</div></div><div class="lc-body"><div class="lc-name">Dragon Tiger</div><div class="lc-deal">Dealer: Sarah K.</div><div class="lc-bet">Bet: <span>$1–$10K</span></div></div></div>
+    <div class="lc-card"><div style="position:relative"><img class="lc-img" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/Baccarat.png" alt="Baccarat"><div class="lc-badge"><div class="lv-dot"></div> LIVE</div></div><div class="lc-body"><div class="lc-name">Baccarat</div><div class="lc-deal">Dealer: Emma W.</div><div class="lc-bet">Bet: <span>$10–$100K</span></div></div></div>
+  </div></div>
+
+  <div class="section"><div class="sec-hd"><div class="sec-t">🔥 Popular Games</div><div class="sec-m">View All ›</div></div>
+  <div class="g-list">
+    <div class="g-row"><div class="g-thumb gt1"><div class="g-badge b-hot">HOT</div>🎰</div><div class="g-info"><div class="g-name">Gates of Olympus</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 12,847</div><div class="g-rtp">RTP 96.5%</div></div></div><div class="play-hint">▶</div></div>
+    <div class="g-row"><div class="g-thumb gt2"><div class="g-badge b-top">TOP</div>💎</div><div class="g-info"><div class="g-name">Sweet Bonanza</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 9,531</div><div class="g-rtp">RTP 96.4%</div></div></div><div class="play-hint">▶</div></div>
+    <div class="g-row"><div class="g-thumb gt3"><div class="g-badge b-new">NEW</div>⚡</div><div class="g-info"><div class="g-name">Starlight Princess</div><div class="g-prov">Pragmatic Play</div><div class="g-meta"><div class="g-players">👥 7,204</div><div class="g-rtp">RTP 96.7%</div></div></div><div class="play-hint">▶</div></div>
+  </div></div>
+
+  <div class="section"><div class="sec-hd"><div class="sec-t">🃏 Live Casino</div><div class="sec-m">View All ›</div></div>
+  <div class="lv-grid">
+    <div class="lv"><div class="lv-img li1"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🃏<div class="lv-cnt">👥 2,847</div></div><div class="lv-body"><div class="lv-name">Blackjack VIP</div><div class="lv-deal">Dealer: Sarah K.</div><div class="lv-lim">Bet: <span>$10–$50K</span></div></div></div>
+    <div class="lv"><div class="lv-img li2"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🎡<div class="lv-cnt">👥 5,231</div></div><div class="lv-body"><div class="lv-name">Lightning Roulette</div><div class="lv-deal">Dealer: James L.</div><div class="lv-lim">Bet: <span>$5–$20K</span></div></div></div>
+    <div class="lv"><div class="lv-img li3"><div class="lv-live"><div class="lv-dot"></div> LIVE</div>🎴<div class="lv-cnt">👥 1,583</div></div><div class="lv-body"><div class="lv-name">Baccarat Squeeze</div><div class="lv-deal">Dealer: Emma W.</div><div class="lv-lim">Bet: <span>$10–$100K</span></div></div></div>
+  </div></div>
+
+  <div class="section"><div class="sec-hd"><div class="sec-t">🏆 Recent Winners</div><div class="sec-m">More ›</div></div>
+  <div class="win-list">
+    <div class="win-row"><div class="win-av wa1">🦊</div><div class="win-dt"><div class="win-nm">alex****82</div><div class="win-gm">Gates of Olympus</div></div><div class="win-val">+$12,450</div></div>
+    <div class="win-row"><div class="win-av wa2">🐺</div><div class="win-dt"><div class="win-nm">lucky****07</div><div class="win-gm">Sweet Bonanza</div></div><div class="win-val">+$8,230</div></div>
+    <div class="win-row"><div class="win-av wa3">🦁</div><div class="win-dt"><div class="win-nm">ace****uk</div><div class="win-gm">Lightning Roulette</div></div><div class="win-val">+$5,670</div></div>
+  </div></div>
+
+</div>
+<div class="spacer"></div>
+</div>
+</div>
+
+<nav class="bnav">
+  <div class="nav mob-menu-btn" id="menuBtn"><div class="nav-i">☰</div><div class="nav-l">Menu</div></div>
+  <div class="nav on"><div class="nav-i">🏠</div><div class="nav-l">Home</div></div>
+  <div class="nav"><div class="nav-i">🎁</div><div class="nav-l">Bonus</div></div>
+  <div class="nav"><div class="nav-i">👤</div><div class="nav-l">Profile</div></div>
+</nav>
+
+<script>
+const menuHTML=`
+<div class="sb-cat" data-expand="games"><div class="sb-cat-ico ci-gold"><img src="cat-icons/게임.png" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Games</div><div class="sb-cat-sub">Slots, Live, Sports & more</div></div><span class="sb-cat-badge badge-hot">HOT</span><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-sub" data-sub="games"><div class="sb-sub-item"><div class="sb-sub-ico">🎰</div><div class="sb-sub-name">Slots</div><div class="sb-sub-cnt">1,390</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🃏</div><div class="sb-sub-name">Live Casino</div><div class="sb-sub-cnt">246</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">⚽</div><div class="sb-sub-name">Sports Betting</div><div class="sb-sub-cnt">58</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎲</div><div class="sb-sub-name">Quick Games</div><div class="sb-sub-cnt">32</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎣</div><div class="sb-sub-name">Fishing</div><div class="sb-sub-cnt">18</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📊</div><div class="sb-sub-name">Virtual Games</div><div class="sb-sub-cnt">24</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">₿</div><div class="sb-sub-name">Crypto Futures</div><div class="sb-sub-cnt">3</div><div class="sb-sub-arr">›</div></div></div>
+<div class="sb-divider"></div>
+<div class="sb-cat" data-expand="promo"><div class="sb-cat-ico ci-amber"><img src="cat-icons/프로모션.png" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Promotions</div><div class="sb-cat-sub">Events & campaigns</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-sub" data-sub="promo"><div class="sb-sub-item"><div class="sb-sub-ico">🏆</div><div class="sb-sub-name">Tournament</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎰</div><div class="sb-sub-name">Slot Race</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📅</div><div class="sb-sub-name">Daily Deals</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🔥</div><div class="sb-sub-name">Weekend Special</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎯</div><div class="sb-sub-name">Leaderboard</div><div class="sb-sub-arr">›</div></div></div>
+<div class="sb-divider"></div>
+<div class="sb-cat" data-expand="bonus"><div class="sb-cat-ico ci-green"><img src="cat-icons/보너스쿠폰.png" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Bonus</div><div class="sb-cat-sub">Rewards & cashback</div></div><span class="sb-cat-badge badge-new">NEW</span><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-sub" data-sub="bonus"><div class="sb-sub-item"><div class="sb-sub-ico">🎊</div><div class="sb-sub-name">Welcome Bonus</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🔄</div><div class="sb-sub-name">Reload Bonus</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">💸</div><div class="sb-sub-name">Cashback</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🎡</div><div class="sb-sub-name">Free Spins</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">👑</div><div class="sb-sub-name">VIP Rewards</div><div class="sb-sub-arr">›</div></div></div>
+<div class="sb-divider"></div>
+<div class="sb-cat" data-expand="coupon"><div class="sb-cat-ico ci-purple"><img src="cat-icons/미스테리박스.png" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">Coupon</div><div class="sb-cat-sub">Redeem your codes</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-sub" data-sub="coupon"><div class="sb-sub-item"><div class="sb-sub-ico">📝</div><div class="sb-sub-name">Enter Code</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📋</div><div class="sb-sub-name">My Coupons</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">⏰</div><div class="sb-sub-name">Expiring Soon</div><div class="sb-sub-arr">›</div></div></div>
+<div class="sb-divider"></div>
+<div class="sb-cat" data-expand="partners"><div class="sb-cat-ico ci-blue"><img src="cat-icons/파트너스프로그램.jpg" style="width:36px;height:36px;object-fit:contain;border-radius:6px"></div><div class="sb-cat-txt"><div class="sb-cat-name">Partners Program</div><div class="sb-cat-sub">Earn commissions</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-sub" data-sub="partners"><div class="sb-sub-item"><div class="sb-sub-ico">📊</div><div class="sb-sub-name">Dashboard</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">🔗</div><div class="sb-sub-name">Referral Link</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">💰</div><div class="sb-sub-name">Commission</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📈</div><div class="sb-sub-name">Statistics</div><div class="sb-sub-arr">›</div></div></div>
+<div class="sb-divider"></div>
+<div class="sb-cat" data-expand="support"><div class="sb-cat-ico ci-teal"><img src="cat-icons/247.png" style="width:36px;height:36px;object-fit:contain"></div><div class="sb-cat-txt"><div class="sb-cat-name">24/7 Support</div><div class="sb-cat-sub">We're always here</div></div><div class="sb-cat-arrow">▼</div></div>
+<div class="sb-sub" data-sub="support"><div class="sb-sub-item"><div class="sb-sub-ico">💬</div><div class="sb-sub-name">Live Chat</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📧</div><div class="sb-sub-name">Email</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">📱</div><div class="sb-sub-name">Telegram</div><div class="sb-sub-arr">›</div></div><div class="sb-sub-item"><div class="sb-sub-ico">❓</div><div class="sb-sub-name">FAQ</div><div class="sb-sub-arr">›</div></div></div>
+`;
+document.getElementById('deskMenu').innerHTML=menuHTML;
+document.getElementById('mobMenu').innerHTML=menuHTML;
+function initAcc(r){r.querySelectorAll('.sb-cat[data-expand]').forEach(c=>{c.addEventListener('click',()=>{const k=c.dataset.expand,s=r.querySelector('.sb-sub[data-sub="'+k+'"]'),o=s.classList.contains('open');r.querySelectorAll('.sb-sub').forEach(x=>x.classList.remove('open'));r.querySelectorAll('.sb-cat').forEach(x=>x.classList.remove('expanded'));if(!o){s.classList.add('open');c.classList.add('expanded');setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'nearest'}),120)}})})}
+initAcc(document.getElementById('deskMenu'));initAcc(document.getElementById('mobMenu'));
+const mobOv=document.getElementById('mobOverlay'),mobSb=document.getElementById('mobSidebar');
+document.getElementById('menuBtn').addEventListener('click',()=>{if(mobOv.classList.contains('open')){closeMob()}else{mobOv.classList.add('open');document.body.classList.add('no-scroll')}});
+function closeMob(){mobOv.classList.remove('open');document.body.classList.remove('no-scroll')}
+document.getElementById('mobClose').addEventListener('click',closeMob);
+mobOv.addEventListener('click',e=>{if(e.target===mobOv)closeMob()});
+mobSb.addEventListener('click',e=>e.stopPropagation());
+let tx=0;mobSb.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+mobSb.addEventListener('touchend',e=>{if(tx-e.changedTouches[0].clientX>60)closeMob()},{passive:true});
+document.querySelectorAll('.nav:not(.mob-menu-btn)').forEach(n=>{n.addEventListener('click',()=>{document.querySelectorAll('.nav').forEach(x=>x.classList.remove('on'));n.classList.add('on')})});
+</script>
+</body>
+</html>
