@@ -26,7 +26,7 @@ body.sidebar-open{overflow-x:hidden}
 a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}
 
 /* ===== SIDEBAR (PC) ===== */
-.sidebar{display:flex;position:fixed;left:0;top:0;bottom:calc(56px + env(safe-area-inset-bottom,0px));width:min(160px,45vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
+.sidebar{display:flex;position:fixed;left:0;top:0;bottom:calc(68px + env(safe-area-inset-bottom,0px));width:min(160px,45vw);background:var(--surface);border-right:1px solid var(--border);z-index:400;flex-direction:column;overflow-y:auto;scrollbar-width:none;transform:translateX(-100%);transition:transform .35s cubic-bezier(0.4,0,0.2,1)}
 .sidebar.mobile-open{transform:translateX(0)}
 .sidebar-overlay{position:fixed;top:0;left:0;right:0;bottom:60px;background:rgba(0,0,0,0);pointer-events:none;z-index:399;transition:background .35s ease}
 .sidebar-overlay.active{background:rgba(0,0,0,0.15);pointer-events:auto}
@@ -307,7 +307,7 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
 .cta2 button:hover{transform:translateY(-2px);box-shadow:0 6px 24px var(--neon-g)}
 
 /* ===== BOTTOM NAV ===== */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,9,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:200}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,9,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:6px 0 max(6px,env(safe-area-inset-bottom));z-index:500}
 .bn-item{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 12px;color:var(--t3);position:relative}
 .bn-item.active{color:var(--neon)}
 .bn-item.active::before{content:'';position:absolute;top:-6px;width:16px;height:2px;border-radius:1px;background:var(--neon)}
