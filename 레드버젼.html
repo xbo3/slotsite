@@ -292,7 +292,7 @@
   /* ═══ GAMES GRID ═══ */
   .g-list{display:grid;grid-template-columns:1fr;gap:var(--gap)}
   @media(min-width:480px){.g-list{grid-template-columns:1fr 1fr}}
-  @media(min-width:960px){.g-list{grid-template-columns:1fr 1fr 1fr}}
+  @media(min-width:960px){.g-list{grid-template-columns:repeat(6,1fr)}}
   .g-row{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
   .g-row:active{transform:scale(.98);background:var(--card2)}
   .g-row .play-hint{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:rgba(255,46,74,0.08);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--pearl-lt)}
@@ -384,7 +384,12 @@
 
     /* Grids */
     .recent-sc{grid-template-columns:repeat(4,1fr)}
-    .g-list{grid-template-columns:1fr 1fr 1fr}
+    .g-list{grid-template-columns:repeat(6,1fr)}
+    .g-row{flex-direction:column;align-items:stretch;padding:0;border-radius:14px}
+    .g-thumb{width:100%;height:auto;aspect-ratio:1/1;border-radius:14px 14px 0 0;font-size:36px}
+    .g-info{padding:10px 12px;padding-right:12px}
+    .g-row .play-hint{display:none}
+    .g-name{white-space:normal;font-size:13px}
     .lv-grid{grid-template-columns:repeat(3,1fr)}
     .win-list{grid-template-columns:1fr 1fr 1fr}
     .quick{grid-template-columns:repeat(4,1fr)}
