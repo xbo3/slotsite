@@ -155,7 +155,6 @@
 
   /* Games */
   .g-list{display:grid;grid-template-columns:1fr;gap:var(--gap)}
-  @media(min-width:480px){.g-list{grid-template-columns:1fr 1fr}}
   @media(min-width:960px){.g-list{grid-template-columns:1fr 1fr 1fr}}
   .g-row{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
   .g-row:active{transform:scale(.98);background:var(--card2)}
@@ -230,7 +229,7 @@
 <div class="main">
 <header class="hdr">
   <div class="logo">
-    <div class="logo-mark"><img src="logo.png" alt="Logo"></div>
+    <div class="logo-mark" style="display:flex;align-items:center;justify-content:center;background:var(--gold-btn);font-size:18px;box-shadow:var(--gold-glow-sm)">♔</div>
     <span class="logo-name">ROYAL PLAY</span>
   </div>
   <div class="hdr-btns"><div class="hdr-btn">🔔<div class="dot"></div></div><div class="hdr-btn">💬</div></div>
@@ -306,10 +305,10 @@
 </div>
 
 <nav class="bnav">
-  <div class="nav mob-menu-btn" id="menuBtn"><div class="nav-i">☰</div><div class="nav-l">Menu</div></div>
-  <div class="nav on"><div class="nav-i">🏠</div><div class="nav-l">Home</div></div>
-  <div class="nav"><div class="nav-i">🎁</div><div class="nav-l">Bonus</div></div>
-  <div class="nav"><div class="nav-i">👤</div><div class="nav-l">Profile</div></div>
+  <div class="nav mob-menu-btn" id="menuBtn"><div class="nav-i"><img src="cat-icons/하단메뉴.jpg" style="width:44px;height:44px;border-radius:50%;object-fit:cover"></div><div class="nav-l">Menu</div></div>
+  <div class="nav on"><div class="nav-i"><img src="cat-icons/하단스포츠.jpg" style="width:44px;height:44px;border-radius:50%;object-fit:cover"></div><div class="nav-l">Sports</div></div>
+  <div class="nav"><div class="nav-i"><img src="cat-icons/하단보너스.jpg" style="width:44px;height:44px;border-radius:50%;object-fit:cover"></div><div class="nav-l">Bonus</div></div>
+  <div class="nav"><div class="nav-i"><img src="cat-icons/하단프로필.png" style="width:44px;height:44px;border-radius:50%;object-fit:cover"></div><div class="nav-l">Profile</div></div>
 </nav>
 
 <script>
