@@ -489,26 +489,26 @@ document.querySelectorAll('.sidebar-item.has-sub').forEach(item=>{
 
 // ═══ GAME DATA ═══
 const hotGamesData=[
-  {name:'Fortune Snake',provider:'PG Soft',emoji:'🐍',bg:'#1a3a1a,#0d2d0d',badge:'hot'},
-  {name:'Doomsday Rampage',provider:'PG Soft',emoji:'💥',bg:'#2a1a0a,#1a0d00',badge:'hot'},
-  {name:'Gates of Olympus',provider:'Pragmatic',emoji:'⚡',bg:'#1a1a3a,#0d0d2a',badge:null},
-  {name:"Cleopatra's Gold",provider:'NetEnt',emoji:'👑',bg:'#2a0a2a,#1a001a',badge:'new'},
-  {name:'Dragon Tiger',provider:'Evolution',emoji:'🐉',bg:'#0a2a2a,#001a1a',badge:null},
-  {name:'Sugar Rush',provider:'Pragmatic',emoji:'🍬',bg:'#2a2a0a,#1a1a00',badge:null},
-  {name:'Wild Machine',provider:'PG Soft',emoji:'🦁',bg:'#2a1a1a,#1a0d0d',badge:'hot'},
-  {name:'Crash Cricket',provider:'Hacksaw',emoji:'🏏',bg:'#0a2a1a,#001a0d',badge:null},
-  {name:'Bone Fortune',provider:'PG Soft',emoji:'🦴',bg:'#1a1a1a,#0d0d0d',badge:null},
-  {name:'Lucky Dice',provider:'NetEnt',emoji:'🎲',bg:'#1a0a2a,#0d001a',badge:'new'},
-  {name:'Phoenix Rises',provider:'Pragmatic',emoji:'🔥',bg:'#2a0a0a,#1a0000',badge:null},
-  {name:'Mystic Moon',provider:'Evolution',emoji:'🌙',bg:'#0a0a2a,#00001a',badge:null},
+  {name:'Sweet Bonanza',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/SweetBonanza.png',badge:'hot'},
+  {name:'Starlight Princess',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/StarlightPrincess.png',badge:'hot'},
+  {name:'Sugar Rush',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/SugarRush.png',badge:null},
+  {name:'Big Bass Bonanza',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/BigBassBonanza.png',badge:'hot'},
+  {name:'The Dog House',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/TheDogHouse.png',badge:null},
+  {name:'Wolf Gold',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/WolfGold.png',badge:null},
+  {name:'Catfish Hunters',provider:'Nolimit City',img:'https://fan-cdn.nolimitcity.com/small_Website_Icon_Catfish_Hunters_47ef66edfe.jpg',badge:'hot'},
+  {name:'Duck Hunters',provider:'Nolimit City',img:'https://fan-cdn.nolimitcity.com/small_duck_hunters_logo2_813513f3fb.png',badge:null},
+  {name:'Fire In The Hole 3',provider:'Nolimit City',img:'https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png',badge:'new'},
+  {name:'Wild West Gold',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/WildWestGold.png',badge:null},
+  {name:'Mustang Gold',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/MustangGold.png',badge:null},
+  {name:'Great Rhino MW',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/GreatRhinoMegaways.png',badge:null},
 ];
 const newGamesData=[
-  {name:'Volcanic Gold',provider:'Hacksaw',emoji:'🌋',bg:'#3a1a0a,#2a0d00',badge:'new'},
-  {name:'Ocean Fortune',provider:'PG Soft',emoji:'🌊',bg:'#0a1a3a,#000d2a',badge:'new'},
-  {name:'Phantom Riches',provider:'NetEnt',emoji:'🎭',bg:'#2a0a1a,#1a000d',badge:'new'},
-  {name:'Samurai Ways',provider:'Pragmatic',emoji:'⛩️',bg:'#1a0a0a,#0d0000',badge:'new'},
-  {name:'Crystal Cave',provider:'Evolution',emoji:'💎',bg:'#0a1a2a,#000d1a',badge:'new'},
-  {name:'Thunder Strike',provider:'Hacksaw',emoji:'⚡',bg:'#2a2a0a,#1a1a00',badge:'new'},
+  {name:'Fire In The Hole 2',provider:'Nolimit City',img:'https://fan-cdn.nolimitcity.com/small_fith_2_icon5_0f344179fa.png',badge:'new'},
+  {name:'Outsourced',provider:'Nolimit City',img:'https://fan-cdn.nolimitcity.com/small_outsourced_logo2_3da26f2a07.png',badge:'new'},
+  {name:'Mental 2',provider:'Nolimit City',img:'https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Mental_2_69663c454c.png',badge:'new'},
+  {name:'Chicken Drop',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/ChickenDrop.png',badge:'new'},
+  {name:'Madame Destiny',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/MadameDestiny.png',badge:'new'},
+  {name:'Lady Godiva',provider:'Pragmatic Play',img:'https://cdn.softswiss.net/i/s3/pragmaticexternal/LadyGodiva.png',badge:'new'},
 ];
 const matchesData=[
   {league:'프리미어리그',live:true,home:'맨유',homeIcon:'🔴',away:'번리',awayIcon:'🟡',time:'03:00',date:'내일',odds:['1.45','4.20','6.50']},
@@ -517,7 +517,7 @@ const matchesData=[
   {league:'분데스리가',live:true,home:'바이에른',homeIcon:'🔴',away:'도르트문트',awayIcon:'🟡',time:'22:30',date:'오늘',odds:['1.65','3.80','5.00']},
 ];
 
-function makeGameCard(g){return`<div class="game-card"><div class="game-placeholder" style="background:linear-gradient(135deg,${g.bg})">${g.emoji}</div>${g.badge==='hot'?'<span class="badge-hot">HOT</span>':g.badge==='new'?'<span class="badge-new">NEW</span>':''}<div class="game-overlay"><div class="play-btn">▶</div></div><div class="game-info"><div class="game-name">${g.name}</div><div class="game-provider">${g.provider}</div></div></div>`}
+function makeGameCard(g){return`<div class="game-card">${g.img?`<img src="${g.img}" alt="${g.name}" style="width:100%;height:100%;object-fit:cover">`:`<div class="game-placeholder" style="background:linear-gradient(135deg,${g.bg||'#1a1a3a,#0d0d2a'})">${g.emoji||'🎰'}</div>`}${g.badge==='hot'?'<span class="badge-hot">HOT</span>':g.badge==='new'?'<span class="badge-new">NEW</span>':''}<div class="game-overlay"><div class="play-btn">▶</div></div><div class="game-info"><div class="game-name">${g.name}</div><div class="game-provider">${g.provider}</div></div></div>`}
 function makeMatchCard(m){return`<div class="match-card"><div class="match-league">${m.live?'<span class="live-dot"></span>':''}${m.league}</div><div class="match-teams"><div class="team"><div class="team-logo">${m.homeIcon}</div><div class="team-name">${m.home}</div></div><div class="match-vs"><div class="match-time">${m.time}</div><div class="match-date">${m.date}</div></div><div class="team"><div class="team-logo">${m.awayIcon}</div><div class="team-name">${m.away}</div></div></div><div class="match-odds"><div class="odd-btn"><div class="odd-label">홈</div><div class="odd-value">${m.odds[0]}</div></div><div class="odd-btn"><div class="odd-label">무</div><div class="odd-value">${m.odds[1]}</div></div><div class="odd-btn"><div class="odd-label">원</div><div class="odd-value">${m.odds[2]}</div></div></div></div>`}
 
 document.getElementById('hotGames').innerHTML=hotGamesData.map(makeGameCard).join('');
@@ -804,10 +804,11 @@ async function loadGamesFromAPI() {
       const hotEl = document.getElementById('hotGames');
       const newEl = document.getElementById('newGames');
       const apiCards = games.map(g => {
+        const img = g.image_url || '';
         const emoji = g.thumbnail || '🎰';
         const bg = '#1a1a3a,#0d0d2a';
         const badge = g.is_hot ? 'hot' : g.is_new ? 'new' : null;
-        return makeGameCard({ name: g.name || g.game_name, provider: g.provider || '', emoji, bg, badge });
+        return makeGameCard({ name: g.name || g.game_name, provider: g.provider || '', img, emoji, bg, badge });
       });
       if (hotEl) hotEl.innerHTML = apiCards.slice(0, 12).join('');
       if (newEl) newEl.innerHTML = apiCards.slice(12).join('') || newEl.innerHTML;
