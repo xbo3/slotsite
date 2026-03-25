@@ -395,10 +395,10 @@
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
 
-    /* PC: 프로모션 1단+2단 가로 배치 */
-    .promo-glass-wrap{display:grid!important;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+    /* PC: 프로모션 3칸 균등 배치 */
+    .promo-glass-wrap{display:grid!important;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:stretch}
     .promo-glass-1{margin-bottom:0!important}
-    .promo-glass-2{gap:16px!important}
+    .promo-glass-2{display:contents!important}
     /* PC: 코인입금 가로형 */
     .coin-bonus-wrap{display:flex!important;align-items:center;gap:24px}
     .coin-bonus-coins{margin-bottom:0!important}
@@ -570,10 +570,10 @@
     <div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,0.04) 0%,transparent 100%);pointer-events:none"></div>
     <div class="coin-bonus-wrap" style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
       <div class="coin-bonus-coins" style="display:flex;align-items:center">
-        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" style="width:32px;height:32px;border-radius:50%;filter:drop-shadow(0 2px 6px rgba(255,170,0,0.5))">
-        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" style="width:28px;height:28px;border-radius:50%;margin-left:-6px;filter:drop-shadow(0 2px 6px rgba(38,161,123,0.5))">
-        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH" style="width:24px;height:24px;border-radius:50%;margin-left:-6px;filter:drop-shadow(0 2px 6px rgba(98,126,234,0.5))">
-        <img src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="TRX" style="width:22px;height:22px;border-radius:50%;margin-left:-6px;filter:drop-shadow(0 2px 6px rgba(255,0,0,0.4))">
+        <img src="coin-icons/btc.svg" alt="BTC" style="width:32px;height:32px;filter:drop-shadow(0 2px 6px rgba(255,170,0,0.5))">
+        <img src="coin-icons/usdt.svg" alt="USDT" style="width:28px;height:28px;margin-left:-6px;filter:drop-shadow(0 2px 6px rgba(38,161,123,0.5))">
+        <img src="coin-icons/eth.svg" alt="ETH" style="width:24px;height:24px;margin-left:-6px;filter:drop-shadow(0 2px 6px rgba(98,126,234,0.5))">
+        <img src="coin-icons/trx.svg" alt="TRX" style="width:22px;height:22px;margin-left:-6px;filter:drop-shadow(0 2px 6px rgba(255,0,0,0.4))">
       </div>
       <div>
         <div style="font-size:10px;font-weight:700;color:#ff2e4a;letter-spacing:1.5px;text-transform:uppercase">CRYPTO DEPOSIT</div>
