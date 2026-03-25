@@ -358,14 +358,14 @@
     /* Main content: offset by sidebar width */
     .main{margin-left:220px;flex:1;min-width:0;width:auto}
 
-    /* Header: inside main, same alignment as content */
-    .hdr{position:sticky;top:0;z-index:100;padding:10px 0}
-    .hdr-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:flex-end}
+    /* Header: inside main, same padding as content */
+    .hdr{position:sticky;top:0;z-index:100;padding:10px 24px}
+    .hdr-inner{display:flex;align-items:center;justify-content:flex-end}
     .hdr .logo{display:none}
     .hdr-btns{display:flex;gap:8px}
 
-    /* Content area — same max-width as header */
-    .content{max-width:1200px;margin:0 auto;padding:24px}
+    /* Content area — same padding as header */
+    .content{padding:12px 24px}
     .section{margin-bottom:20px}
 
     /* 3D Phone Carousel */
@@ -410,7 +410,7 @@
 
   /* ═══ FOOTER ═══ */
   .site-footer{background:#080810;border-top:1px solid rgba(255,46,74,0.1);padding:40px var(--pad) 20px;color:rgba(255,255,255,0.4);font-size:13px;line-height:1.7}
-  .ft-inner{max-width:1200px;margin:0 auto}
+  .ft-inner{padding:0 24px}
   .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px;margin-bottom:30px}
   @media(max-width:767px){.ft-top{grid-template-columns:1fr;gap:20px}}
   .ft-brand-logo{display:flex;align-items:center;gap:8px;margin-bottom:12px}
