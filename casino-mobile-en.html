@@ -24,7 +24,8 @@
     --gap:clamp(8px,2vw,14px);
     --pad:clamp(12px,3vw,20px);
   }
-  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-ms-overflow-style:none;scrollbar-width:none}
+  ::-webkit-scrollbar{display:none}
   html{font-size:16px}
   body{font-family:'Poppins',sans-serif;font-weight:300;background:var(--bg);color:var(--txt);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
   body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 40% at 25% 10%,rgba(201,168,76,0.04),transparent),radial-gradient(ellipse 50% 50% at 75% 85%,rgba(138,112,48,0.03),transparent);pointer-events:none;z-index:0}
