@@ -267,15 +267,17 @@ button { cursor: pointer; font-family: inherit; }
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  height: clamp(200px, 40vw, 280px);
+  height: clamp(220px, 45vw, 320px);
   background: #000;
 }
-.hero-banner-img {
+
+.hero-bg-img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background-size: cover;
+  background-position: right center;
   border-radius: 18px;
   z-index: 0;
 }
@@ -284,15 +286,15 @@ button { cursor: pointer; font-family: inherit; }
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 80% 40%, rgba(240,185,11,0.15), transparent),
-    radial-gradient(ellipse 60% 80% at 20% 80%, rgba(139,92,246,0.12), transparent);
+  background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%);
+  z-index: 1;
 }
 
 .hero-particles {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  z-index: 1;
 }
 
 .hero-particles span {
@@ -319,63 +321,65 @@ button { cursor: pointer; font-family: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  max-width: 55%;
 }
 
-.hero-right {
-  display: none;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  background: rgba(240,185,11,0.12);
-  border: 1px solid rgba(240,185,11,0.2);
-  width: fit-content;
-  margin-bottom: 10px;
-}
-
-.hero-badge .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.8); }
-}
-
-.hero-badge .text {
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--gold);
-  letter-spacing: 0.5px;
-}
-
-.hero h1 {
+.hero-title-main {
   font-family: 'Poppins', sans-serif;
-  font-size: 26px;
+  font-size: 32px;
   font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-  margin-bottom: 4px;
-}
-
-.hero h1 .gold {
-  background: linear-gradient(135deg, #F0B90B, #FFD93D);
+  line-height: 1;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #F0B90B 0%, #FFD93D 40%, #F0B90B 70%, #E8A800 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 8px rgba(240,185,11,0.3));
+  margin-bottom: 6px;
 }
 
-.hero p.hero-desc {
-  font-size: 12px;
-  color: rgba(255,255,255,0.6);
+.hero-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, #F0B90B, transparent);
+  margin-bottom: 8px;
+}
+
+.hero-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 200;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 2px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.hero-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 14px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hero-features li {
+  font-size: 11px;
+  color: rgba(255,255,255,0.8);
   font-weight: 400;
-  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-features .feat-icon {
+  font-size: 13px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .hero-cta {
@@ -402,39 +406,15 @@ button { cursor: pointer; font-family: inherit; }
 .hero-cta .btn-ghost {
   padding: 10px 16px;
   border-radius: 12px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
+  background: transparent;
+  border: 1px solid rgba(240,185,11,0.4);
+  color: #F0B90B;
   font-size: 13px;
   font-weight: 500;
   transition: all 0.2s;
 }
 
-.hero-cta .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-
-.hero-dots {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-  z-index: 3;
-}
-
-.hero-dots span {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.hero-dots span.active {
-  width: 20px;
-  border-radius: 3px;
-  background: var(--gold);
-}
+.hero-cta .btn-ghost:hover { background: rgba(240,185,11,0.1); border-color: rgba(240,185,11,0.6); }
 
 /* ===== BALANCE CARD ===== */
 .balance-card {
@@ -1934,58 +1914,24 @@ body.no-scroll { overflow: hidden; }
   .hero-wrapper { padding: 0 24px; margin-bottom: 28px; max-width: 1200px; margin-left: auto; margin-right: auto; }
 
   .hero {
-    height: 340px;
+    height: 380px;
     border-radius: 24px;
   }
 
-  .hero-inner {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    position: relative;
-    z-index: 2;
-  }
-
   .hero-content {
-    padding: 40px 40px;
-    width: 55%;
+    padding: 48px 48px;
+    max-width: 50%;
   }
 
-  .hero-badge .text { font-size: 12px; }
-  .hero h1 { font-size: 44px; margin-bottom: 8px; }
-  .hero p.hero-desc { font-size: 15px; margin-bottom: 20px; max-width: 380px; }
+  .hero-title-main { font-size: 56px; letter-spacing: 4px; margin-bottom: 10px; }
+  .hero-divider { width: 120px; height: 3px; margin-bottom: 12px; }
+  .hero-subtitle { font-size: 18px; letter-spacing: 3px; margin-bottom: 16px; }
+  .hero-features { gap: 6px; margin-bottom: 24px; }
+  .hero-features li { font-size: 15px; }
+  .hero-features .feat-icon { font-size: 17px; width: 22px; }
 
   .hero-cta .btn-primary { padding: 14px 32px; font-size: 15px; border-radius: 14px; }
   .hero-cta .btn-ghost { padding: 14px 24px; font-size: 15px; border-radius: 14px; }
-
-  .hero-right {
-    display: flex;
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    gap: 12px;
-    perspective: 600px;
-  }
-
-  .hero-float-card {
-    width: 110px;
-    height: 150px;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-    animation: float-card 3s ease-in-out infinite;
-  }
-
-  .hero-float-card:nth-child(2) { animation-delay: 0.5s; }
-  .hero-float-card:nth-child(3) { animation-delay: 1s; }
-  .hero-float-card img { width: 100%; height: 100%; object-fit: cover; }
-
-  @keyframes float-card {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-12px); }
-  }
 
   /* -- Live Casino section PC -- */
   .live-casino-grid {
@@ -2205,9 +2151,9 @@ body.no-scroll { overflow: hidden; }
   .game-grid { grid-template-columns: repeat(4, 1fr); }
   .provider-item { min-width: 120px; max-width: 150px; }
 
-  .hero { height: 360px; }
-  .hero h1 { font-size: 52px; }
-  .hero-float-card { width: 130px; height: 175px; }
+  .hero { height: 420px; }
+  .hero-title-main { font-size: 64px; }
+  .hero-subtitle { font-size: 20px; }
 }
 
 /* ============================================
@@ -2301,7 +2247,7 @@ body.no-scroll { overflow: hidden; }
   <!-- HERO -->
   <div class="hero-wrapper fade-in">
     <div class="hero">
-      <img src="banners/골드배너.png" alt="Banner" class="hero-banner-img">
+      <div class="hero-bg-img" style="background-image:url('banners/블랙배너.png')"></div>
       <div class="hero-particles">
         <span style="left:10%;top:80%;animation-delay:0s"></span>
         <span style="left:25%;top:90%;animation-delay:0.8s"></span>
@@ -2309,42 +2255,24 @@ body.no-scroll { overflow: hidden; }
         <span style="left:65%;top:95%;animation-delay:2.4s"></span>
         <span style="left:80%;top:88%;animation-delay:0.4s"></span>
         <span style="left:90%;top:92%;animation-delay:1.2s"></span>
-        <span style="left:15%;top:75%;animation-delay:2s"></span>
-        <span style="left:55%;top:80%;animation-delay:3s"></span>
-        <span style="left:35%;top:70%;animation-delay:3.5s"></span>
-        <span style="left:72%;top:65%;animation-delay:1.8s"></span>
       </div>
       <div class="hero-content">
-        <div class="hero-badge">
-          <span class="dot"></span>
-          <span class="text">2,847 Playing Now</span>
-        </div>
-        <h1>Welcome<br><span class="gold">200% Bonus</span></h1>
-        <p class="hero-desc">First deposit bonus up to $10,000</p>
+        <h1 class="hero-title-main">DR.SLOT</h1>
+        <div class="hero-divider"></div>
+        <p class="hero-subtitle">Your Premium<br>Gaming Destination</p>
+        <ul class="hero-features">
+          <li><span class="feat-icon">🎰</span> 10,000+ Games</li>
+          <li><span class="feat-icon">🃏</span> Live Casino 24/7</li>
+          <li><span class="feat-icon">⚡</span> Instant Crypto Deposits</li>
+          <li><span class="feat-icon">🏆</span> Up to 200% Welcome Bonus</li>
+        </ul>
         <div class="hero-cta">
           <button class="btn-primary">
-            Get Bonus
+            Get Started
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
           <button class="btn-ghost">Browse Games</button>
         </div>
-      </div>
-      <!-- PC: floating game cards -->
-      <div class="hero-right">
-        <div class="hero-float-card">
-          <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SweetBonanza.png" alt="Gates of Olympus">
-        </div>
-        <div class="hero-float-card">
-          <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/StarlightPrincess.png" alt="Sweet Bonanza">
-        </div>
-        <div class="hero-float-card">
-          <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SugarRush.png" alt="Starlight Princess">
-        </div>
-      </div>
-      <div class="hero-dots">
-        <span class="active"></span>
-        <span></span>
-        <span></span>
       </div>
     </div>
   </div>
