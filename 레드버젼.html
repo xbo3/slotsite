@@ -395,6 +395,16 @@
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
 
+    /* PC: 프로모션 1단+2단 가로 배치 */
+    .promo-glass-wrap{display:grid!important;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+    .promo-glass-1{margin-bottom:0!important}
+    .promo-glass-2{gap:16px!important}
+    /* PC: 코인입금 가로형 */
+    .coin-bonus-wrap{display:flex!important;align-items:center;gap:24px}
+    .coin-bonus-coins{margin-bottom:0!important}
+    .coin-bonus-tags{margin-bottom:0!important;flex:1}
+    .coin-bonus-btn{flex-shrink:0;width:auto!important;padding:0 32px!important}
+
   }
 
   @media(min-width:1200px){
@@ -453,8 +463,9 @@
 
   <!-- Promotions (레드 테마 — 글래스) -->
   <div class="section" style="padding:0 var(--pad,12px)">
+    <div class="promo-glass-wrap">
     <!-- 1단: Welcome 200% (글래스 + 60% 축소) -->
-    <div style="background:rgba(255,46,74,0.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,46,74,0.15);border-radius:16px;padding:16px 24px;margin-bottom:10px;position:relative;overflow:hidden">
+    <div class="promo-glass-1" style="background:rgba(255,46,74,0.08);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,46,74,0.15);border-radius:16px;padding:16px 24px;margin-bottom:10px;position:relative;overflow:hidden">
       <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,46,74,0.2) 0%,transparent 70%)"></div>
       <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent)"></div>
       <div style="font-size:11px;font-weight:700;color:#ff2e4a;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">WELCOME</div>
@@ -462,7 +473,7 @@
       <div style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:500">First Deposit Bonus</div>
     </div>
     <!-- 2단: Cashback + VIP (글래스) -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="promo-glass-2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div style="background:rgba(255,46,74,0.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,46,74,0.12);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden">
         <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent)"></div>
         <div style="font-size:10px;font-weight:700;color:#ff6b81;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">DAILY</div>
@@ -475,6 +486,7 @@
         <div style="font-size:clamp(16px,4vw,22px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:2px">Unlimited</div>
         <div style="font-size:11px;color:rgba(255,255,255,0.5);font-weight:500">Withdrawals</div>
       </div>
+    </div>
     </div>
   </div>
   <!-- REMOVED: 3D Phone Carousel -->
@@ -553,8 +565,8 @@
   <!-- 코인입금 200% 보너스 (축소 60%) -->
   <div class="section"><div style="background:rgba(255,255,255,0.04);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px var(--pad,12px);position:relative;overflow:hidden">
     <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)"></div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-      <div style="display:flex;gap:-4px;align-items:center">
+    <div class="coin-bonus-wrap" style="display:flex;align-items:center;gap:12px;margin-bottom:10px;flex-wrap:wrap">
+      <div class="coin-bonus-coins" style="display:flex;gap:-4px;align-items:center">
         <span style="font-size:28px;filter:drop-shadow(0 2px 4px rgba(255,170,0,0.4))">🪙</span>
         <span style="font-size:24px;margin-left:-6px;filter:drop-shadow(0 2px 4px rgba(255,100,0,0.4))">🟠</span>
         <span style="font-size:20px;margin-left:-6px;filter:drop-shadow(0 2px 4px rgba(100,200,255,0.4))">🔵</span>
@@ -565,7 +577,6 @@
         <div style="font-size:10px;font-weight:700;color:#ff2e4a;letter-spacing:1.5px;text-transform:uppercase">CRYPTO DEPOSIT</div>
         <div style="font-size:clamp(20px,5vw,28px);font-weight:900;color:#fff;line-height:1.1">200% Bonus</div>
       </div>
-    </div>
     <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:4px;background:rgba(255,170,0,0.1);border:1px solid rgba(255,170,0,0.2);border-radius:20px;padding:4px 10px">
         <span style="font-size:14px">₿</span><span style="font-size:11px;color:#ffaa00;font-weight:600">BTC</span>
