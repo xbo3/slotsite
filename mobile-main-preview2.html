@@ -195,118 +195,78 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
 .bonus-emoji{font-size:24px;margin-bottom:8px;animation:bounce 1s ease infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-/* ===== PHONE MOCKUP SHOWCASE ===== */
-.phone-showcase{padding:0 var(--px-m);margin-bottom:24px}
-.phone-showcase .sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon);margin-bottom:12px;opacity:0.7}
-.phone-row-big{margin-bottom:10px}
-.phone-row-small{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.phone-frame{
-  background:#000;border-radius:24px;border:2px solid rgba(255,255,255,0.1);
-  position:relative;overflow:hidden;cursor:pointer;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px rgba(0,229,255,0.05);
+/* ===== PROMO CARDS SECTION ===== */
+.promo-section{position:relative;padding:0 var(--px-m);margin-bottom:24px;overflow:hidden}
+.promo-section .sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon);margin-bottom:16px;opacity:0.7}
+/* Floating crypto coins background */
+.promo-bg{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;z-index:0}
+.crypto-coin{position:absolute;font-size:24px;opacity:0.35;animation:coinFloat linear infinite;z-index:0}
+.crypto-coin:nth-child(1){left:5%;top:10%;font-size:28px;animation-duration:6s;animation-delay:0s;opacity:0.4}
+.crypto-coin:nth-child(2){left:85%;top:20%;font-size:20px;animation-duration:8s;animation-delay:1s;opacity:0.3}
+.crypto-coin:nth-child(3){left:45%;top:60%;font-size:32px;animation-duration:7s;animation-delay:0.5s;opacity:0.35}
+.crypto-coin:nth-child(4){left:70%;top:75%;font-size:22px;animation-duration:9s;animation-delay:2s;opacity:0.3}
+.crypto-coin:nth-child(5){left:20%;top:80%;font-size:26px;animation-duration:5.5s;animation-delay:1.5s;opacity:0.4}
+.crypto-coin:nth-child(6){left:55%;top:15%;font-size:18px;animation-duration:7.5s;animation-delay:3s;opacity:0.3}
+.crypto-coin:nth-child(7){left:92%;top:50%;font-size:24px;animation-duration:6.5s;animation-delay:0.8s;opacity:0.35}
+@keyframes coinFloat{
+  0%{transform:translateY(0) rotate(0deg)}
+  25%{transform:translateY(-15px) rotate(5deg)}
+  50%{transform:translateY(0) rotate(0deg)}
+  75%{transform:translateY(10px) rotate(-5deg)}
+  100%{transform:translateY(0) rotate(0deg)}
+}
+/* Shooting star */
+.shooting-star{position:absolute;width:80px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,0.6),transparent);border-radius:2px;opacity:0;z-index:0}
+.shooting-star::before{content:'';position:absolute;left:0;top:-1px;width:6px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px rgba(255,255,255,0.8)}
+.shooting-star:nth-child(8){top:25%;left:80%;animation:shootStar 4s ease-in-out 2s infinite}
+.shooting-star:nth-child(9){top:65%;left:70%;animation:shootStar 5s ease-in-out 4.5s infinite}
+@keyframes shootStar{
+  0%{opacity:0;transform:translateX(0) translateY(0) rotate(-35deg)}
+  5%{opacity:1}
+  30%{opacity:1;transform:translateX(-200px) translateY(80px) rotate(-35deg)}
+  31%{opacity:0}
+  100%{opacity:0}
+}
+/* Promo cards grid */
+.promo-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;position:relative;z-index:1}
+.promo-card{
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(16px) saturate(180%);
+  -webkit-backdrop-filter:blur(16px) saturate(180%);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow:hidden;cursor:pointer;position:relative;
   transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+  padding:16px 12px 14px;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
 }
-.phone-frame:hover{
-  transform:scale(1.02);
-  box-shadow:0 25px 70px rgba(0,0,0,0.6),0 0 40px rgba(0,229,255,0.12);
-  border-color:rgba(0,229,255,0.25);
+.promo-card:hover{
+  transform:translateY(-4px) scale(1.02);
+  box-shadow:0 12px 40px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.15);
+  border-color:rgba(255,255,255,0.25);
 }
-.phone-frame::after{
+/* Diagonal shimmer */
+.promo-card::after{
   content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);
-  transition:left .6s ease;pointer-events:none;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,0.06) 50%,transparent 70%);
+  animation:promoShimmer 4s ease-in-out infinite;pointer-events:none;
 }
-.phone-frame:hover::after{left:150%}
-.phone-notch{
-  width:80px;height:6px;background:#1a1a1a;border-radius:0 0 8px 8px;
-  margin:0 auto;position:relative;z-index:2;
+@keyframes promoShimmer{
+  0%{left:-100%}
+  50%{left:150%}
+  100%{left:150%}
 }
-.phone-notch::before{
-  content:'';position:absolute;top:1px;left:50%;transform:translateX(-50%);
-  width:24px;height:3px;background:#222;border-radius:2px;
+.promo-card:nth-child(2)::after{animation-delay:1.3s}
+.promo-card:nth-child(3)::after{animation-delay:2.6s}
+.promo-card img{
+  width:80%;max-width:120px;height:auto;border-radius:10px;margin-bottom:10px;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));
 }
-.phone-screen{padding:12px 14px 16px;position:relative;min-height:100px}
-/* Big phone - Red theme */
-.phone-big .phone-screen{
-  background:linear-gradient(135deg,#1a0010,#2a0020);min-height:220px;
-}
-.phone-big .phone-logo{
-  font-family:'Poppins';font-size:14px;font-weight:800;color:#ff2244;
-  margin-bottom:10px;display:flex;align-items:center;gap:6px;
-}
-.phone-big .phone-logo::before{content:'';width:8px;height:8px;border-radius:50%;background:#ff2244;box-shadow:0 0 8px #ff2244}
-.phone-big .phone-slots{display:flex;gap:8px;margin-bottom:12px}
-.phone-big .phone-slots .mini-game{
-  flex:1;border-radius:10px;overflow:hidden;position:relative;
-  border:1px solid rgba(255,34,68,0.2);
-}
-.phone-big .phone-slots .mini-game img{width:100%;height:80px;object-fit:cover;display:block}
-.phone-big .phone-slots .mini-game .mg-name{
-  position:absolute;bottom:0;left:0;right:0;padding:4px 6px;
-  background:linear-gradient(transparent,rgba(0,0,0,0.85));
-  font-size:8px;font-weight:600;color:rgba(255,255,255,0.8);
-}
-.phone-big .phone-balance{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:8px 10px;background:rgba(255,34,68,0.08);border-radius:10px;
-  border:1px solid rgba(255,34,68,0.15);
-}
-.phone-big .phone-balance .bal-label{font-size:8px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px}
-.phone-big .phone-balance .bal-val{font-family:'Poppins';font-size:16px;font-weight:700;color:#fff}
-.phone-big .phone-balance .bal-btn{
-  padding:6px 14px;border-radius:8px;border:none;
-  background:linear-gradient(135deg,#ff2244,#cc1133);color:#fff;
-  font-size:10px;font-weight:700;cursor:pointer;
-}
-/* Small phone 1 - Gold VIP theme */
-.phone-gold .phone-screen{
-  background:linear-gradient(135deg,#1a1200,#2a2000);min-height:180px;
-}
-.phone-gold .vip-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  padding:3px 10px;border-radius:6px;font-size:9px;font-weight:700;
-  background:linear-gradient(135deg,rgba(240,185,11,0.2),rgba(240,185,11,0.05));
-  border:1px solid rgba(240,185,11,0.3);color:var(--gold);margin-bottom:10px;
-}
-.phone-gold .vip-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold)}
-.phone-gold .mini-list{display:flex;flex-direction:column;gap:6px}
-.phone-gold .mini-list-item{
-  display:flex;align-items:center;gap:8px;padding:6px 8px;
-  background:rgba(240,185,11,0.05);border-radius:8px;
-  border:1px solid rgba(240,185,11,0.08);
-}
-.phone-gold .mini-list-item .mli-icon{
-  width:28px;height:28px;border-radius:6px;object-fit:cover;flex-shrink:0;
-}
-.phone-gold .mini-list-item .mli-name{font-size:9px;font-weight:600;color:rgba(255,255,255,0.8)}
-.phone-gold .mini-list-item .mli-pv{font-size:7px;color:rgba(255,255,255,0.35)}
-.phone-gold .mini-list-item .mli-rtp{
-  margin-left:auto;font-size:8px;font-weight:600;color:var(--gold);
-}
-/* Small phone 2 - Mint Live Casino theme */
-.phone-mint .phone-screen{
-  background:linear-gradient(135deg,#001a14,#002a20);min-height:180px;
-}
-.phone-mint .phone-frame-wrap{border-color:rgba(0,229,255,0.2)}
-.phone-mint .live-header{
-  display:flex;align-items:center;gap:5px;margin-bottom:10px;
-}
-.phone-mint .live-header .live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:livePulse 1.5s ease infinite}
-@keyframes livePulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.phone-mint .live-header span{font-size:10px;font-weight:700;color:var(--neon)}
-.phone-mint .live-cards{display:flex;flex-direction:column;gap:6px}
-.phone-mint .live-mini{
-  display:flex;align-items:center;gap:8px;padding:6px 8px;
-  background:rgba(0,229,255,0.04);border-radius:8px;
-  border:1px solid rgba(0,229,255,0.08);
-}
-.phone-mint .live-mini img{width:28px;height:28px;border-radius:6px;object-fit:cover;flex-shrink:0}
-.phone-mint .live-mini .lm-info .lm-name{font-size:9px;font-weight:600;color:rgba(255,255,255,0.8)}
-.phone-mint .live-mini .lm-info .lm-dealer{font-size:7px;color:rgba(255,255,255,0.35)}
-.phone-mint .live-mini .lm-live{
-  margin-left:auto;font-size:7px;font-weight:700;color:var(--green);
-  padding:2px 6px;border-radius:4px;background:rgba(0,230,118,0.1);
-  border:1px solid rgba(0,230,118,0.2);
+.promo-card .promo-title{
+  font-family:'Poppins';font-size:11px;font-weight:700;
+  color:rgba(255,255,255,0.9);line-height:1.3;
+  letter-spacing:0.3px;
 }
 
 /* ===== GAME GRID 2x2 ===== */
@@ -475,9 +435,9 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
   .sec-t{font-size:20px}
 
   .bonus-card{max-width:var(--max-w);margin:0 auto 20px}
-  .phone-showcase{max-width:var(--max-w);margin:0 auto 28px;padding:0}
-  .phone-row-small{gap:14px}
-  .phone-big .phone-slots .mini-game img{height:120px}
+  .promo-section{max-width:var(--max-w);margin:0 auto 28px;padding:0}
+  .promo-cards{gap:16px}
+  .promo-card img{max-width:160px}
   .game-grid-2x{max-width:var(--max-w);margin:0 auto 28px;padding:0;grid-template-columns:repeat(4,1fr);gap:14px}
   .gm-card .thumb.mid{height:180px}
 
@@ -687,90 +647,33 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
   </div>
 </div>
 
-<!-- PHONE MOCKUP SHOWCASE -->
-<div class="phone-showcase fi d2">
-  <!-- Big Phone - Red Theme -->
-  <div class="phone-row-big">
-    <div class="phone-frame phone-big">
-      <div class="phone-notch"></div>
-      <div class="phone-screen">
-        <div class="phone-logo">ROYAL PLAY</div>
-        <div class="phone-slots">
-          <div class="mini-game">
-            <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SweetBonanza.png" alt="Sweet Bonanza">
-            <div class="mg-name">Sweet Bonanza</div>
-          </div>
-          <div class="mini-game">
-            <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/WolfGold.png" alt="Wolf Gold">
-            <div class="mg-name">Wolf Gold</div>
-          </div>
-          <div class="mini-game">
-            <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/StarlightPrincess.png" alt="Starlight Princess">
-            <div class="mg-name">Starlight Princess</div>
-          </div>
-        </div>
-        <div class="phone-balance">
-          <div>
-            <div class="bal-label">Balance</div>
-            <div class="bal-val">$14,287.50</div>
-          </div>
-          <button class="bal-btn">Deposit</button>
-        </div>
-      </div>
-    </div>
+<!-- PROMO CARDS -->
+<div class="promo-section fi d2">
+  <!-- Floating crypto coins background -->
+  <div class="promo-bg">
+    <span class="crypto-coin">&#8383;</span>
+    <span class="crypto-coin">&#926;</span>
+    <span class="crypto-coin">&#8382;</span>
+    <span class="crypto-coin">SOL</span>
+    <span class="crypto-coin">BNB</span>
+    <span class="crypto-coin">&#8383;</span>
+    <span class="crypto-coin">&#926;</span>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
   </div>
-  <!-- Small Phones Row -->
-  <div class="phone-row-small">
-    <!-- Small Phone 1 - Gold VIP -->
-    <div class="phone-frame phone-gold">
-      <div class="phone-notch"></div>
-      <div class="phone-screen">
-        <div class="vip-badge">VIP GOLD</div>
-        <div class="mini-list">
-          <div class="mini-list-item">
-            <img class="mli-icon" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/BigBassBonanza.png" alt="">
-            <div><div class="mli-name">Big Bass Bonanza</div><div class="mli-pv">Pragmatic Play</div></div>
-            <div class="mli-rtp">96.71%</div>
-          </div>
-          <div class="mini-list-item">
-            <img class="mli-icon" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/WildWestGold.png" alt="">
-            <div><div class="mli-name">Wild West Gold</div><div class="mli-pv">Pragmatic Play</div></div>
-            <div class="mli-rtp">96.51%</div>
-          </div>
-          <div class="mini-list-item">
-            <img class="mli-icon" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MustangGold.png" alt="">
-            <div><div class="mli-name">Mustang Gold</div><div class="mli-pv">Pragmatic Play</div></div>
-            <div class="mli-rtp">96.53%</div>
-          </div>
-        </div>
-      </div>
+  <!-- 3 Promo Cards -->
+  <div class="promo-cards">
+    <div class="promo-card" onclick="location.href='/register'">
+      <img src="promo-bonus.png" alt="100% First Deposit Bonus">
+      <div class="promo-title">100% First Deposit Bonus</div>
     </div>
-    <!-- Small Phone 2 - Mint Live Casino -->
-    <div class="phone-frame phone-mint">
-      <div class="phone-notch"></div>
-      <div class="phone-screen">
-        <div class="live-header">
-          <span class="live-dot"></span>
-          <span>Live Casino</span>
-        </div>
-        <div class="live-cards">
-          <div class="live-mini">
-            <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaRoulette.png" alt="">
-            <div class="lm-info"><div class="lm-name">Mega Roulette</div><div class="lm-dealer">Victoria M.</div></div>
-            <div class="lm-live">LIVE</div>
-          </div>
-          <div class="live-mini">
-            <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaBaccarat.png" alt="">
-            <div class="lm-info"><div class="lm-name">Mega Baccarat</div><div class="lm-dealer">Yuki S.</div></div>
-            <div class="lm-live">LIVE</div>
-          </div>
-          <div class="live-mini">
-            <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SpeedRoulette.png" alt="">
-            <div class="lm-info"><div class="lm-name">Speed Roulette</div><div class="lm-dealer">James L.</div></div>
-            <div class="lm-live">LIVE</div>
-          </div>
-        </div>
-      </div>
+    <div class="promo-card" onclick="location.href='/wallet'">
+      <img src="promo-deposit.png" alt="Every Deposit Bonus">
+      <div class="promo-title">Every Deposit 13%&#8594;19% UP</div>
+    </div>
+    <div class="promo-card" onclick="location.href='/lobby'">
+      <img src="promo-slots.png" alt="Premium Slots">
+      <div class="promo-title">10,000+ Premium Slots</div>
     </div>
   </div>
 </div>
