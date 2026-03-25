@@ -350,25 +350,21 @@
 
   /* ═══ PC RESPONSIVE ═══ */
   @media(min-width:768px){
-    /* --- Layout: full-width header on top, sidebar+main below --- */
-    .layout{display:flex;flex-direction:column;min-height:100vh}
+    .layout{display:flex;min-height:100vh}
 
-    /* Header: full width, sticky top, inner offset by sidebar + constrained */
-    .hdr{position:sticky;top:0;z-index:100;width:100%;padding:10px 0}
-    .hdr-inner{margin-left:220px;max-width:1200px;padding:0 24px;display:flex;align-items:center;justify-content:flex-end}
-    .hdr .logo{display:none}
-    .hdr-btns{display:flex;gap:8px}
-
-    /* Body area below header: sidebar fixed left + main scrollable */
-    .pc-body{display:flex;flex:1;min-height:0}
-
-    /* Desktop sidebar: fixed left, below header */
-    .desk-sidebar{display:flex;flex-direction:column;width:220px;flex-shrink:0;position:fixed;left:0;top:56px;height:calc(100vh - 56px);background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);overflow:hidden;z-index:90}
+    /* Desktop sidebar: fixed left */
+    .desk-sidebar{display:flex;flex-direction:column;width:220px;flex-shrink:0;position:fixed;left:0;top:0;height:100vh;background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);overflow:hidden;z-index:90}
 
     /* Main content: offset by sidebar width */
     .main{margin-left:220px;flex:1;min-width:0;width:auto}
 
-    /* Content area */
+    /* Header: inside main, same alignment as content */
+    .hdr{position:sticky;top:0;z-index:100;padding:10px 0}
+    .hdr-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+    .hdr .logo{display:block}
+    .hdr-btns{display:flex;gap:8px}
+
+    /* Content area — same max-width as header */
     .content{max-width:1200px;margin:0 auto;padding:24px}
     .section{margin-bottom:20px}
 
@@ -410,7 +406,6 @@
   @media(min-width:1200px){
     .desk-sidebar{width:280px}
     .main{margin-left:280px}
-    .hdr-inner{margin-left:280px}
   }
 
   /* ═══ FOOTER ═══ */
@@ -445,24 +440,20 @@
 </head>
 <body>
 <div class="layout">
-<!-- Header: full width on PC -->
-<header class="hdr"><div class="hdr-inner"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="openLoginModal('login')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="openLoginModal('register')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></div></header>
-
-<!-- Sidebar + Main wrapper -->
-<div class="pc-body">
 <aside class="desk-sidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark pearl-shimmer">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div></div><div class="sb-scroll" id="deskMenu"></div></aside>
 <div class="mob-overlay" id="mobOverlay"><div class="mob-sidebar" id="mobSidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark pearl-shimmer">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div><div class="sb-close" id="mobClose">✕</div></div><div class="sb-scroll" id="mobMenu"></div></div></div>
 
 <div class="main">
+<header class="hdr"><div class="hdr-inner"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="openLoginModal('login')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="openLoginModal('register')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></div></header>
 <div class="content">
 
   <!-- 메인 배너 이미지 -->
-  <div class="section" style="padding:0 var(--pad,12px);margin-bottom:12px">
+  <div class="section" style="margin-bottom:12px">
     <img src="banners/레드배너.png" alt="Banner" style="width:100%;height:clamp(200px,40vw,320px);border-radius:16px;object-fit:cover;object-position:center top;display:block">
   </div>
 
   <!-- Promotions (레드 테마 — 글래스) -->
-  <div class="section" style="padding:0 var(--pad,12px)">
+  <div class="section" style="">
     <div class="promo-glass-wrap">
     <!-- 1단: Welcome 200% (세라믹 글래스) -->
     <div class="promo-glass-1" style="background:linear-gradient(165deg,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.04) 40%,rgba(255,46,74,0.08) 100%);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(255,255,255,0.18);border-top:1px solid rgba(255,255,255,0.3);border-radius:16px;padding:16px 24px;margin-bottom:10px;position:relative;overflow:hidden;box-shadow:inset 0 1px 1px rgba(255,255,255,0.2),inset 0 -1px 1px rgba(0,0,0,0.1),0 8px 40px rgba(0,0,0,0.35),0 2px 8px rgba(255,46,74,0.1)">
@@ -683,7 +674,6 @@
 </footer>
 
 </div><!-- /main -->
-</div><!-- /pc-body -->
 </div><!-- /layout -->
 
 <nav class="bnav">
