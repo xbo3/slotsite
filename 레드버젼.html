@@ -352,20 +352,23 @@
   @media(min-width:768px){
     .layout{display:flex;min-height:100vh}
 
-    /* Desktop sidebar: fixed left */
-    .desk-sidebar{display:flex;flex-direction:column;width:220px;flex-shrink:0;position:fixed;left:0;top:0;height:100vh;background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);overflow:hidden;z-index:90}
+    /* Desktop sidebar: fixed left, toggleable */
+    .desk-sidebar{display:flex;flex-direction:column;width:220px;flex-shrink:0;position:fixed;left:0;top:0;height:100vh;background:linear-gradient(180deg,#0e0b14,#0a0810);border-right:1px solid var(--bdr);overflow:hidden;z-index:90;transition:transform .3s ease}
+    .desk-sidebar.hidden{transform:translateX(-100%)}
+    .sidebar-collapsed .main{margin-left:0!important}
 
     /* Main content: offset by sidebar width */
     .main{margin-left:220px;flex:1;min-width:0;width:auto}
 
-    /* Header: inside main-wrap */
+    /* Header: inside main */
     .hdr{position:sticky;top:0;z-index:100;padding:10px 0}
-    .hdr-inner{display:flex;align-items:center;justify-content:flex-end}
+    .hdr-inner{display:flex;align-items:center;justify-content:flex-end;gap:12px}
     .hdr .logo{display:none}
+    .hdr .sb-toggle-btn{display:flex!important;margin-right:auto}
     .hdr-btns{display:flex;gap:8px}
 
-    /* Main-wrap: 하나의 컨테이너로 header+content 좌우 정렬 통일 */
-    .main{margin-left:220px;flex:1;min-width:0;width:auto;padding:0 24px}
+    /* Main-wrap: 여백 = Sign In+Sign Up 버튼 폭 양쪽 */
+    .main{margin-left:220px;flex:1;min-width:0;width:auto;padding:0 clamp(40px,4vw,80px);transition:margin-left .3s ease}
 
     /* Content area */
     .content{padding:12px 0}
@@ -447,7 +450,7 @@
 <div class="mob-overlay" id="mobOverlay"><div class="mob-sidebar" id="mobSidebar"><div class="sb-hdr"><div class="sb-logo"><div class="sb-logo-mark pearl-shimmer">♔</div><span class="sb-logo-name">ROYAL PLAY</span></div><div class="sb-close" id="mobClose">✕</div></div><div class="sb-scroll" id="mobMenu"></div></div></div>
 
 <div class="main">
-<header class="hdr"><div class="hdr-inner"><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="openLoginModal('login')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="openLoginModal('register')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></div></header>
+<header class="hdr"><div class="hdr-inner"><button class="sb-toggle-btn" onclick="toggleDeskSidebar()" style="width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#fff;font-size:18px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:all .15s;backdrop-filter:blur(8px)">☰</button><div class="logo"><div class="logo-mark pearl-shimmer">♔</div><span class="logo-name">ROYAL PLAY</span></div><div class="hdr-btns"><button onclick="openLoginModal('login')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(255,46,74,0.3);background:rgba(255,46,74,0.1);color:#ff8a9a;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign In</button><button onclick="openLoginModal('register')" style="padding:6px 14px;border-radius:8px;border:none;background:linear-gradient(135deg,#FF2E4A,#FF6B81);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Sign Up</button></div></div></header>
 <div class="content">
 
   <!-- 메인 배너 이미지 -->
@@ -711,6 +714,14 @@ const menuHTML=`
 `;
 document.getElementById('deskMenu').innerHTML=menuHTML;
 document.getElementById('mobMenu').innerHTML=menuHTML;
+
+// PC 사이드바 토글
+function toggleDeskSidebar(){
+  const sb=document.querySelector('.desk-sidebar');
+  const layout=document.querySelector('.layout');
+  sb.classList.toggle('hidden');
+  layout.classList.toggle('sidebar-collapsed');
+}
 function initAcc(root){root.querySelectorAll('.sb-cat[data-expand]').forEach(c=>{c.addEventListener('click',()=>{const k=c.dataset.expand,s=root.querySelector('.sb-sub[data-sub="'+k+'"]'),o=s.classList.contains('open');root.querySelectorAll('.sb-sub').forEach(x=>x.classList.remove('open'));root.querySelectorAll('.sb-cat').forEach(x=>x.classList.remove('expanded'));if(!o){s.classList.add('open');c.classList.add('expanded');setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'nearest'}),120)}})})}
 initAcc(document.getElementById('deskMenu'));initAcc(document.getElementById('mobMenu'));
 const mobOv=document.getElementById('mobOverlay'),mobSb=document.getElementById('mobSidebar');
