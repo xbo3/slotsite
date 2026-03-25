@@ -135,8 +135,21 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
 .hero-dots2{position:absolute;bottom:12px;right:20px;display:flex;gap:5px;z-index:3}
 .hero-dots2 span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15)}
 .hero-dots2 span.a{width:18px;border-radius:3px;background:var(--neon)}
-/* PC hero float */
+/* PC hero float (legacy) */
 .hero-float{display:none}
+
+/* ===== 3D PHONE ORBIT ===== */
+.phone-orbit{display:none;position:absolute;right:15%;top:50%;transform:translateY(-50%);width:200px;height:200px;perspective:600px;z-index:2}
+.phone-spinner{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:phoneSpin 15s linear infinite}
+@keyframes phoneSpin{0%{transform:rotateY(0deg)}100%{transform:rotateY(360deg)}}
+.phone-mock{position:absolute;width:80px;height:140px;left:50%;top:50%;margin-left:-40px;margin-top:-70px;border-radius:12px;background:rgba(0,0,0,0.8);border:2px solid rgba(0,229,255,0.3);backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0.85;overflow:hidden}
+.phone-mock:nth-child(1){transform:rotateY(0deg) translateZ(100px)}
+.phone-mock:nth-child(2){transform:rotateY(120deg) translateZ(100px)}
+.phone-mock:nth-child(3){transform:rotateY(240deg) translateZ(100px)}
+.phone-notch{width:30px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);position:absolute;top:6px}
+.phone-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.phone-logo{font-family:'Poppins';font-size:10px;font-weight:700;color:#00E5FF;letter-spacing:0.5px}
+.phone-slot-icon{font-size:22px}
 
 /* ===== CATEGORY STICKY ===== */
 .cat-bar{position:sticky;top:52px;z-index:90;padding:8px var(--px-m);display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;background:rgba(6,6,9,0.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
@@ -358,11 +371,7 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
   .hero-mid h1{font-size:46px}
   .hero-mid p{font-size:15px;max-width:380px}
   .h-btn{padding:14px 32px;font-size:14px}
-  .hero-float{display:flex;position:absolute;right:48px;top:50%;transform:translateY(-50%);gap:14px;z-index:2}
-  .hf-card{width:120px;height:165px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);box-shadow:0 12px 40px rgba(0,0,0,.5);animation:flt 3s ease-in-out infinite}
-  .hf-card:nth-child(2){animation-delay:.5s}.hf-card:nth-child(3){animation-delay:1s}
-  .hf-card img{width:100%;height:100%;object-fit:cover}
-  @keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .phone-orbit{display:block;right:10%;width:220px;height:220px}
 
   .jackpot{max-width:var(--max-w);margin:0 auto 16px}
   .cat-bar{padding:8px var(--px-d);top:56px;max-width:calc(var(--max-w) + 64px);margin:0 auto;justify-content:center;gap:8px;flex-wrap:wrap}
@@ -407,7 +416,7 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
 @media(min-width:1200px){
   .hero-full{height:380px}
   .hero-mid h1{font-size:52px}
-  .hf-card{width:140px;height:190px}
+  .phone-orbit{right:12%;width:240px;height:240px}
   .game-grid-2x{grid-template-columns:repeat(4,1fr)}
 }
 </style>
@@ -525,18 +534,36 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
       <div class="hero-live"><span class="dot"></span><span class="txt">2,847 Online</span></div>
     </div>
     <div class="hero-mid">
-      <h1>Play & Win<br><span class="cyan">200%</span> <span class="gold">Bonus</span></h1>
-      <p>First deposit bonus up to $10,000 USDT</p>
     </div>
     <div class="hero-bottom">
       <button class="h-btn pri" onclick="location.href='/register'">Get Started <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       <button class="h-btn sec" onclick="location.href='/lobby'">Browse Games</button>
     </div>
   </div>
-  <div class="hero-float">
-    <div class="hf-card"><img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MadameDestiny.png" alt="Madame Destiny"></div>
-    <div class="hf-card"><img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/LadyGodiva.png" alt="Lady Godiva"></div>
-    <div class="hf-card"><img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/StarlightPrincess1000.png" alt="Starlight Princess 1000"></div>
+  <div class="phone-orbit">
+    <div class="phone-spinner">
+      <div class="phone-mock">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-logo">DR.SLOT</div>
+          <div class="phone-slot-icon">🎰</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-logo">DR.SLOT</div>
+          <div class="phone-slot-icon">🎰</div>
+        </div>
+      </div>
+      <div class="phone-mock">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="phone-logo">DR.SLOT</div>
+          <div class="phone-slot-icon">🎰</div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="hero-dots2"><span class="a"></span><span></span><span></span></div>
 </div>
