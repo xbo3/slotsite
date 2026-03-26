@@ -105,9 +105,9 @@
   .shine-hover:hover::before{transform:skewX(-10deg) translateX(510%)}
 
   /* ═══ PROMO PRISM — 삼각 프리즘 3D 회전 ═══ */
-  .prism-wrap{perspective:1000px;height:clamp(120px,28vw,180px);overflow:hidden;position:relative;border-radius:16px}
+  .prism-wrap{perspective:1200px;height:clamp(130px,30vw,200px);overflow:hidden;position:relative;border-radius:16px}
   .prism{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(0.4,0,0.2,1)}
-  .prism-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+  .prism-face{position:absolute;top:5%;left:0;right:0;bottom:5%;backface-visibility:hidden;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
   .prism-face:nth-child(1){transform:rotateX(0deg) translateZ(var(--pz))}
   .prism-face:nth-child(2){transform:rotateX(120deg) translateZ(var(--pz))}
   .prism-face:nth-child(3){transform:rotateX(240deg) translateZ(var(--pz))}
@@ -432,7 +432,7 @@
     .promo-sc{grid-template-columns:1fr 1fr}
 
     /* PC: 프리즘 높이 */
-    .prism-wrap{height:200px}
+    .prism-wrap{height:220px}
     /* PC: 라이브 카지노 6칸 */
     .lc-grid{grid-template-columns:repeat(6,1fr)!important}
 
@@ -490,7 +490,7 @@
   <!-- Promotions: 삼각 프리즘 3D 회전 배너 -->
   <div class="section">
     <div class="prism-wrap" id="prismWrap">
-      <div class="prism" id="promoPrism" style="--pz:55px">
+      <div class="prism" id="promoPrism" style="--pz:40px">
         <!-- Face 1: 코인입금 200% 보너스 -->
         <div class="prism-face" onclick="location.href='/wallet'" style="cursor:pointer">
           <img src="banners/promo-200.jpg" alt="">
