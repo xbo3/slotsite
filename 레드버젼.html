@@ -99,11 +99,19 @@
   @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
   .lc-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,46,74,0.15)}
 
-  /* ═══ PROMO CARDS — 글래스 광택 ═══ */
-  .promo-card:hover{transform:translateY(-2px);box-shadow:inset 0 1px 2px rgba(255,255,255,0.25),0 12px 40px rgba(0,0,0,0.4),0 0 20px rgba(255,46,74,0.1)!important}
-  .promo-card:active{transform:scale(0.98)}
-  .promo-card::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.08) 45%,rgba(255,255,255,0.15) 50%,rgba(255,255,255,0.08) 55%,transparent 60%);transform:translateX(-100%);transition:transform .6s ease;pointer-events:none}
-  .promo-card:hover::after{transform:translateX(30%)}
+  /* ═══ PROMO PRISM — 삼각 프리즘 3D 회전 ═══ */
+  .prism-wrap{perspective:1000px;height:clamp(100px,22vw,140px);overflow:hidden;position:relative;border-radius:16px}
+  .prism{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(0.4,0,0.2,1)}
+  .prism-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
+  .prism-face:nth-child(1){transform:rotateX(0deg) translateZ(var(--pz))}
+  .prism-face:nth-child(2){transform:rotateX(120deg) translateZ(var(--pz))}
+  .prism-face:nth-child(3){transform:rotateX(240deg) translateZ(var(--pz))}
+  .prism-face img{width:100%;height:100%;object-fit:cover;object-position:right center}
+  .prism-face .prism-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.4) 50%,transparent 100%)}
+  .prism-face .prism-text{position:absolute;top:50%;left:20px;transform:translateY(-50%)}
+  /* 회전 시 반사광 */
+  .prism-shine{position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(255,255,255,0.12) 50%,transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none;z-index:5;border-radius:16px}
+  .prism-wrap.rotating .prism-shine{opacity:1}
 
   /* ═══ CONTENT ═══ */
   .content{padding:var(--pad)}
@@ -406,8 +414,8 @@
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
 
-    /* PC: 프로모션 카드 3칸 가로 배치 */
-    .promo-cards{grid-template-columns:1fr 1fr 1fr!important;gap:16px!important}
+    /* PC: 프리즘 높이 */
+    .prism-wrap{height:160px}
     /* PC: 라이브 카지노 6칸 */
     .lc-grid{grid-template-columns:repeat(6,1fr)!important}
 
@@ -462,45 +470,42 @@
     <img src="banners/레드배너.png" alt="Banner" style="width:100%;height:clamp(200px,40vw,320px);border-radius:16px;object-fit:cover;object-position:center top;display:block">
   </div>
 
-  <!-- Promotions: 3개 카드형 배너 (글래스 광택) -->
+  <!-- Promotions: 삼각 프리즘 3D 회전 배너 -->
   <div class="section">
-    <div class="promo-cards" style="display:grid;grid-template-columns:1fr;gap:12px">
-      <!-- 1. 코인입금 200% 보너스 -->
-      <div class="promo-card" onclick="location.href='/wallet'" style="position:relative;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.12);border-top:1px solid rgba(255,255,255,0.25);box-shadow:inset 0 1px 1px rgba(255,255,255,0.15),0 8px 32px rgba(0,0,0,0.3);transition:transform .2s,box-shadow .2s">
-        <img src="banners/promo-200.jpg" alt="" style="width:100%;height:clamp(100px,22vw,160px);object-fit:cover;object-position:right center;display:block">
-        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.4) 50%,transparent 100%)"></div>
-        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,transparent 50%);pointer-events:none"></div>
-        <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)"></div>
-        <div style="position:absolute;top:50%;left:20px;transform:translateY(-50%)">
-          <div style="font-size:10px;font-weight:700;color:#26a17b;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">CRYPTO DEPOSIT</div>
-          <div style="font-size:clamp(24px,6vw,36px);font-weight:900;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,0.5)">200% Bonus</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6)">코인 입금 시 200% 추가 지급</div>
+    <div class="prism-wrap" id="prismWrap">
+      <div class="prism" id="promoPrism" style="--pz:70px">
+        <!-- Face 1: 코인입금 200% 보너스 -->
+        <div class="prism-face" onclick="location.href='/wallet'" style="cursor:pointer">
+          <img src="banners/promo-200.jpg" alt="">
+          <div class="prism-overlay"></div>
+          <div class="prism-text">
+            <div style="font-size:10px;font-weight:700;color:#26a17b;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">CRYPTO DEPOSIT</div>
+            <div style="font-size:clamp(22px,5vw,34px);font-weight:900;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,0.5)">200% Bonus</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">코인 입금 시 200% 추가 지급</div>
+          </div>
+        </div>
+        <!-- Face 2: 슬롯 잭팟 -->
+        <div class="prism-face" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer">
+          <img src="banners/promo-slot.jpg" alt="">
+          <div class="prism-overlay"></div>
+          <div class="prism-text">
+            <div style="font-size:10px;font-weight:700;color:#ff2e4a;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">SLOT JACKPOT</div>
+            <div style="font-size:clamp(22px,5vw,34px);font-weight:900;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,0.5)">777 Lucky Spin</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">슬롯 잭팟 테더 당첨 기회</div>
+          </div>
+        </div>
+        <!-- Face 3: USDT Jackpot -->
+        <div class="prism-face" onclick="location.href='/wallet'" style="cursor:pointer">
+          <img src="banners/promo-jackpot.jpg" alt="">
+          <div class="prism-overlay"></div>
+          <div class="prism-text">
+            <div style="font-size:10px;font-weight:700;color:#c084fc;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">BONUS JACKPOTS</div>
+            <div style="font-size:clamp(22px,5vw,34px);font-weight:900;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,0.5)">USDT Jackpot</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6)">배수만 걸려도 테더 추가 당첨!</div>
+          </div>
         </div>
       </div>
-      <!-- 2. 슬롯 잭팟 -->
-      <div class="promo-card" onclick="location.href='/lobby?cat=slots'" style="position:relative;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.12);border-top:1px solid rgba(255,255,255,0.25);box-shadow:inset 0 1px 1px rgba(255,255,255,0.15),0 8px 32px rgba(0,0,0,0.3);transition:transform .2s,box-shadow .2s">
-        <img src="banners/promo-slot.jpg" alt="" style="width:100%;height:clamp(100px,22vw,160px);object-fit:cover;object-position:right center;display:block">
-        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.4) 50%,transparent 100%)"></div>
-        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,transparent 50%);pointer-events:none"></div>
-        <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)"></div>
-        <div style="position:absolute;top:50%;left:20px;transform:translateY(-50%)">
-          <div style="font-size:10px;font-weight:700;color:#ff2e4a;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">SLOT JACKPOT</div>
-          <div style="font-size:clamp(24px,6vw,36px);font-weight:900;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,0.5)">777 Lucky Spin</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6)">슬롯 잭팟 테더 당첨 기회</div>
-        </div>
-      </div>
-      <!-- 3. 충전 시 배수 걸면 테더 추가 당첨 -->
-      <div class="promo-card" onclick="location.href='/wallet'" style="position:relative;border-radius:16px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.12);border-top:1px solid rgba(255,255,255,0.25);box-shadow:inset 0 1px 1px rgba(255,255,255,0.15),0 8px 32px rgba(0,0,0,0.3);transition:transform .2s,box-shadow .2s">
-        <img src="banners/promo-jackpot.jpg" alt="" style="width:100%;height:clamp(100px,22vw,160px);object-fit:cover;object-position:right center;display:block">
-        <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.4) 50%,transparent 100%)"></div>
-        <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.06) 0%,transparent 50%);pointer-events:none"></div>
-        <div style="position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)"></div>
-        <div style="position:absolute;top:50%;left:20px;transform:translateY(-50%)">
-          <div style="font-size:10px;font-weight:700;color:#c084fc;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px">BONUS JACKPOTS</div>
-          <div style="font-size:clamp(24px,6vw,36px);font-weight:900;color:#fff;line-height:1;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,0.5)">USDT Jackpot</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6)">배수만 걸려도 테더 추가 당첨!</div>
-        </div>
-      </div>
+      <div class="prism-shine"></div>
     </div>
   </div>
   <!-- Live Casino (PC 6칸 / 모바일 3칸) -->
@@ -736,6 +741,20 @@ const menuHTML=`
 `;
 document.getElementById('deskMenu').innerHTML=menuHTML;
 document.getElementById('mobMenu').innerHTML=menuHTML;
+
+// 삼각 프리즘 회전 (3초마다)
+(function(){
+  const prism=document.getElementById('promoPrism');
+  const wrap=document.getElementById('prismWrap');
+  if(!prism||!wrap)return;
+  let angle=0;
+  setInterval(()=>{
+    angle-=120;
+    wrap.classList.add('rotating');
+    prism.style.transform='rotateX('+angle+'deg)';
+    setTimeout(()=>wrap.classList.remove('rotating'),1400);
+  },3000);
+})();
 
 // PC 사이드바 토글
 function toggleDeskSidebar(){
