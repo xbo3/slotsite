@@ -178,25 +178,25 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
 .see-a{font-size:11px;color:var(--neon);font-weight:500;display:flex;align-items:center;gap:3px}
 
 /* ===== BONUS CARD ===== */
-.bonus-card{margin:0 var(--px-m) 16px;padding:24px 20px;border-radius:18px;background:linear-gradient(135deg,#0d1a2e,#1a0a2e,#0a2e1a);border:1px solid rgba(240,185,11,0.15);text-align:center;position:relative;overflow:hidden}
+.bonus-card{margin:0 var(--px-m) 12px;padding:16px 20px;border-radius:18px;background:linear-gradient(135deg,#0d1a2e,#1a0a2e,#0a2e1a);border:1px solid rgba(240,185,11,0.15);text-align:center;position:relative;overflow:hidden}
 .bonus-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(240,185,11,0.1),transparent 60%);pointer-events:none}
 .bonus-card::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(240,185,11,0.04) 45%,rgba(255,255,255,0.06) 50%,rgba(240,185,11,0.04) 55%,transparent 60%);animation:bonus-shimmer 3s infinite;pointer-events:none}
 @keyframes bonus-shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 .bonus-inner{position:relative;z-index:1}
-.bonus-coins{display:flex;justify-content:center;gap:12px;margin-bottom:14px}
-.bonus-coins img{width:30px;height:30px;object-fit:contain;animation:coin-float 2s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(240,185,11,0.3))}
+.bonus-coins{display:flex;justify-content:center;gap:10px;margin-bottom:8px}
+.bonus-coins img{width:22px;height:22px;object-fit:contain;animation:coin-float 2s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(240,185,11,0.3))}
 .bonus-coins img:nth-child(2){animation-delay:.3s}
 .bonus-coins img:nth-child(3){animation-delay:.6s}
 .bonus-coins img:nth-child(4){animation-delay:.9s}
 @keyframes coin-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.bonus-text{font-family:'Poppins';font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;background:linear-gradient(135deg,var(--gold),#FFD93D,#FFF,#FFD93D,var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gold-shift 3s ease infinite}
+.bonus-text{font-family:'Poppins';font-size:15px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;background:linear-gradient(135deg,var(--gold),#FFD93D,#FFF,#FFD93D,var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gold-shift 3s ease infinite}
 @keyframes gold-shift{0%{background-position:0% center}50%{background-position:200% center}100%{background-position:0% center}}
-.bonus-sub{font-size:12px;color:rgba(255,255,255,0.5);font-weight:400}
-.bonus-emoji{font-size:24px;margin-bottom:8px;animation:bounce 1s ease infinite}
+.bonus-sub{font-size:10px;color:rgba(255,255,255,0.5);font-weight:400}
+.bonus-emoji{font-size:18px;margin-bottom:4px;animation:bounce 1s ease infinite}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
 /* ===== PROMO CARDS SECTION ===== */
-.promo-section{position:relative;padding:0 var(--px-m);margin-bottom:24px;overflow:hidden}
+.promo-section{position:relative;padding:0 var(--px-m);margin-bottom:16px;overflow:hidden}
 .promo-section .sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--neon);margin-bottom:16px;opacity:0.7}
 /* Floating crypto coins background */
 .promo-bg{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;overflow:hidden;z-index:0}
@@ -238,7 +238,7 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
   box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.1);
   overflow:hidden;cursor:pointer;position:relative;
   transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
-  padding:16px 12px 14px;
+  padding:10px 10px 10px;
   display:flex;flex-direction:column;align-items:center;text-align:center;
 }
 .promo-card:hover{
@@ -260,12 +260,12 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
 .promo-card:nth-child(2)::after{animation-delay:1.3s}
 .promo-card:nth-child(3)::after{animation-delay:2.6s}
 .promo-card img{
-  width:80%;max-width:120px;height:auto;border-radius:10px;margin-bottom:10px;
+  width:70%;max-width:90px;height:auto;border-radius:10px;margin-bottom:6px;
   filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));
 }
 .promo-card .promo-title{
-  font-family:'Poppins';font-size:11px;font-weight:700;
-  color:rgba(255,255,255,0.9);line-height:1.3;
+  font-family:'Poppins';font-size:10px;font-weight:700;
+  color:rgba(255,255,255,0.9);line-height:1.2;
   letter-spacing:0.3px;
 }
 
@@ -689,6 +689,17 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
   <div class="lc-card" onclick="location.href='/lobby?cat=live'"><img class="lc-thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/Baccarat.png" alt="Baccarat"><div class="lc-badge"><span class="lc-dot"></span>LIVE</div><div class="lc-info"><div class="lc-name">Baccarat</div><div class="lc-dealer">Dealer: Emma W.</div><div class="lc-range">$10 – $100K</div></div></div>
 </div>
 
+<!-- NEW RELEASES (Nolimit City) — 라이브카지노 바로 다음 -->
+<div class="sec-h"><div class="sec-t"><span class="ic">&#10024;</span>New Releases</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
+<div class="game-row">
+  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_Website_Icon_No_Text_Mental_2_69663c454c.png" alt="Mental"><div class="info"><div class="nm">Mental</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_outsourced_logo2_3da26f2a07.png" alt="Tombstone RIP"><div class="info"><div class="nm">Tombstone RIP</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_fith3_icon5_eac75738a1.png" alt="Fire in the Hole"><div class="info"><div class="nm">Fire in the Hole</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_xWays_Hoarder_xSplit_icon_no_text_8d4dba954e.png" alt="xWays Hoarder"><div class="info"><div class="nm">xWays Hoarder</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_San_Quentin_x_Ways_icon_no_text_3b30a6f416.png" alt="San Quentin"><div class="info"><div class="nm">San Quentin xWays</div><div class="pv">Nolimit City</div></div></div>
+  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://fan-cdn.nolimitcity.com/small_Misery_Mining_icon_no_text_ed6b8b4c7e.png" alt="Misery Mining"><div class="info"><div class="nm">Misery Mining</div><div class="pv">Nolimit City</div></div></div>
+</div>
+
 <!-- POPULAR GAMES (2x2 grid) -->
 <div class="sec-h"><div class="sec-t"><span class="ic">&#128293;</span>Popular Games</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
 <div class="game-grid-2x">
@@ -702,16 +713,7 @@ body.sidebar-open .main{padding-left:min(160px,45vw);transform:none;transition:p
   <div class="gm-card" onclick="location.href='/lobby'"><img class="thumb mid" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/ChickenDrop.png" alt="Madame Destiny Megaways"><span class="bdg new">NEW</span><div class="g-ov"><div class="g-play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21"/></svg></div></div><div class="info"><div class="nm">Madame Destiny MW</div><div class="pv">Pragmatic Play</div><div class="meta"><span class="rtp">96.56%</span><span class="mw">x5,000</span></div></div></div>
 </div>
 
-<!-- NEW GAMES (row) -->
-<div class="sec-h"><div class="sec-t"><span class="ic">&#10024;</span>New Releases</div><span class="see-a">See All <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></div>
-<div class="game-row">
-  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/JuicyFruits.png" alt="Fruit Party"><div class="info"><div class="nm">Fruit Party</div><div class="pv">Pragmatic Play</div></div></div>
-  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SweetBonanza.png" alt="Buffalo King Megaways"><div class="info"><div class="nm">Buffalo King MW</div><div class="pv">Pragmatic Play</div></div></div>
-  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/StarlightPrincess.png" alt="Gems Bonanza"><div class="info"><div class="nm">Gems Bonanza</div><div class="pv">Pragmatic Play</div></div></div>
-  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SugarRush.png" alt="Wild West Gold"><div class="info"><div class="nm">Wild West Gold</div><div class="pv">Pragmatic Play</div></div></div>
-  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/BigBassBonanza.png" alt="Starlight Princess"><div class="info"><div class="nm">Starlight Princess</div><div class="pv">Pragmatic Play</div></div></div>
-  <div class="gr-card" onclick="location.href='/lobby'"><img class="thumb" src="https://cdn.softswiss.net/i/s3/pragmaticexternal/TheDogHouse.png" alt="Sugar Rush"><div class="info"><div class="nm">Sugar Rush</div><div class="pv">Pragmatic Play</div></div></div>
-</div>
+<!-- (New Releases moved above Popular Games) -->
 
 <!-- TOURNAMENT -->
 <div class="tourney">
