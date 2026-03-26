@@ -106,7 +106,7 @@
 
   /* ═══ PROMO PRISM — 삼각 프리즘 3D 회전 ═══ */
   .prism-wrap{perspective:1000px;height:clamp(100px,22vw,140px);overflow:hidden;position:relative;border-radius:16px}
-  .prism{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.8s cubic-bezier(0.4,0,0.2,1)}
+  .prism{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(0.4,0,0.2,1)}
   .prism-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
   .prism-face:nth-child(1){transform:rotateX(0deg) translateZ(var(--pz))}
   .prism-face:nth-child(2){transform:rotateX(120deg) translateZ(var(--pz))}
@@ -117,6 +117,14 @@
   /* 회전 시 반사광 — game-card-shine 방식 */
   .prism-face::before{content:'';position:absolute;top:0;bottom:0;width:22%;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,0.45) 45%,rgba(255,255,255,0.1) 60%,transparent 80%);filter:blur(0.6px);transform:skewX(-10deg) translateX(-120%);pointer-events:none;z-index:10;transition:none}
   .prism-wrap.rotating .prism-face::before{transform:skewX(-10deg) translateX(510%);transition:transform .9s ease}
+
+  /* ═══ BUTTON EFFECTS (Railway 프론트엔드 동일) ═══ */
+  /* 호버 리프트 + 글로우 */
+  .bal-btn,.hdr-btns button,.sb-cat{transition:all .2s ease}
+  .bal-btn:hover,.hdr-btns button:hover{transform:scale(1.02);box-shadow:0 8px 25px rgba(0,0,0,0.3)}
+  /* Neon pulse 클릭 효과 */
+  @keyframes cardNeonPulse{0%,100%{box-shadow:0 0 0 1px transparent inset,0 0 0 transparent}50%{box-shadow:0 0 0 1px rgba(255,255,255,0.3) inset,0 0 16px rgba(255,255,255,0.15),0 0 32px rgba(255,255,255,0.08)}}
+  .neon-pulse{animation:cardNeonPulse .45s ease-in-out 3}
 
   /* ═══ CONTENT ═══ */
   .content{padding:var(--pad)}
@@ -393,8 +401,8 @@
     .hdr .sb-toggle-btn{display:flex!important;margin-right:auto}
     .hdr-btns{display:flex;gap:8px}
 
-    /* Main-wrap: 최소 여백만 */
-    .main{margin-left:220px;flex:1;min-width:0;width:auto;padding:0 16px;transition:margin-left .3s ease}
+    /* Main-wrap: 양쪽 여백 (Sign Up 끝 = 콘텐츠 끝) */
+    .main{margin-left:220px;flex:1;min-width:0;width:auto;padding:0 24px;transition:margin-left .3s ease}
 
     /* Content area */
     .content{padding:12px 0}
@@ -750,7 +758,7 @@ const menuHTML=`
 document.getElementById('deskMenu').innerHTML=menuHTML;
 document.getElementById('mobMenu').innerHTML=menuHTML;
 
-// 삼각 프리즘 회전 (3초에 한바퀴 = 1초마다 120도)
+// 삼각 프리즘 회전 (9초에 한바퀴 = 3초마다 120도)
 (function(){
   const prism=document.getElementById('promoPrism');
   const wrap=document.getElementById('prismWrap');
@@ -759,11 +767,11 @@ document.getElementById('mobMenu').innerHTML=menuHTML;
   setInterval(()=>{
     angle-=120;
     wrap.classList.remove('rotating');
-    void wrap.offsetWidth; // reflow for re-trigger
+    void wrap.offsetWidth;
     wrap.classList.add('rotating');
     prism.style.transform='rotateX('+angle+'deg)';
-    setTimeout(()=>wrap.classList.remove('rotating'),1000);
-  },1000);
+    setTimeout(()=>wrap.classList.remove('rotating'),1200);
+  },3000);
 })();
 
 // PC 사이드바 토글
