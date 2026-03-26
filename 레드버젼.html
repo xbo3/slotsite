@@ -96,6 +96,9 @@
   .hdr-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--bdr);background:var(--card);color:var(--txt2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:all .15s}
   .hdr-btn:active{transform:scale(.9)}.dot{position:absolute;top:5px;right:5px;width:6px;height:6px;background:var(--pearl-1);border-radius:50%;border:1.5px solid var(--card)}
 
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+  .lc-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,46,74,0.15)}
+
   /* ═══ PROMO CARDS — 글래스 광택 ═══ */
   .promo-card:hover{transform:translateY(-2px);box-shadow:inset 0 1px 2px rgba(255,255,255,0.25),0 12px 40px rgba(0,0,0,0.4),0 0 20px rgba(255,46,74,0.1)!important}
   .promo-card:active{transform:scale(0.98)}
@@ -373,8 +376,8 @@
     .hdr .sb-toggle-btn{display:flex!important;margin-right:auto}
     .hdr-btns{display:flex;gap:8px}
 
-    /* Main-wrap: 여백 = Sign In+Sign Up 버튼 폭 양쪽 */
-    .main{margin-left:220px;flex:1;min-width:0;width:auto;padding:0 clamp(40px,4vw,80px);transition:margin-left .3s ease}
+    /* Main-wrap: 최소 여백만 */
+    .main{margin-left:220px;flex:1;min-width:0;width:auto;padding:0 16px;transition:margin-left .3s ease}
 
     /* Content area */
     .content{padding:12px 0}
@@ -405,6 +408,8 @@
 
     /* PC: 프로모션 카드 3칸 가로 배치 */
     .promo-cards{grid-template-columns:1fr 1fr 1fr!important;gap:16px!important}
+    /* PC: 라이브 카지노 6칸 */
+    .lc-grid{grid-template-columns:repeat(6,1fr)!important}
 
   }
 
@@ -498,6 +503,43 @@
       </div>
     </div>
   </div>
+  <!-- Live Casino (PC 6칸 / 모바일 3칸) -->
+  <div class="section">
+    <div class="sec-hd"><div class="sec-t"><span class="g-emoji">🃏</span> Live Casino</div><div class="sec-m" onclick="location.href='/lobby?cat=live'" style="cursor:pointer">View All ›</div></div>
+    <div class="lc-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+      <div class="lc-card" style="position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" onclick="location.href='/lobby?cat=live'">
+        <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaRoulette.png" alt="Mega Roulette" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(255,0,0,0.8);border-radius:4px;padding:2px 6px;font-size:9px;color:#fff;font-weight:600"><span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s infinite"></span> LIVE</div>
+        <div style="padding:8px;background:rgba(0,0,0,0.6)"><div style="font-size:12px;font-weight:600;color:#fff">Mega Roulette</div><div style="font-size:10px;color:rgba(255,255,255,0.5)">Pragmatic Play</div></div>
+      </div>
+      <div class="lc-card" style="position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" onclick="location.href='/lobby?cat=live'">
+        <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SpeedRoulette.png" alt="Speed Roulette" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(255,0,0,0.8);border-radius:4px;padding:2px 6px;font-size:9px;color:#fff;font-weight:600"><span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s infinite"></span> LIVE</div>
+        <div style="padding:8px;background:rgba(0,0,0,0.6)"><div style="font-size:12px;font-weight:600;color:#fff">Speed Roulette</div><div style="font-size:10px;color:rgba(255,255,255,0.5)">Pragmatic Play</div></div>
+      </div>
+      <div class="lc-card" style="position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" onclick="location.href='/lobby?cat=live'">
+        <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/Baccarat.png" alt="Baccarat" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(255,0,0,0.8);border-radius:4px;padding:2px 6px;font-size:9px;color:#fff;font-weight:600"><span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s infinite"></span> LIVE</div>
+        <div style="padding:8px;background:rgba(0,0,0,0.6)"><div style="font-size:12px;font-weight:600;color:#fff">Baccarat Squeeze</div><div style="font-size:10px;color:rgba(255,255,255,0.5)">Pragmatic Play</div></div>
+      </div>
+      <div class="lc-card" style="position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" onclick="location.href='/lobby?cat=live'">
+        <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/MegaSicBo.png" alt="Mega Sic Bo" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(255,0,0,0.8);border-radius:4px;padding:2px 6px;font-size:9px;color:#fff;font-weight:600"><span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s infinite"></span> LIVE</div>
+        <div style="padding:8px;background:rgba(0,0,0,0.6)"><div style="font-size:12px;font-weight:600;color:#fff">Mega Sic Bo</div><div style="font-size:10px;color:rgba(255,255,255,0.5)">Pragmatic Play</div></div>
+      </div>
+      <div class="lc-card" style="position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" onclick="location.href='/lobby?cat=live'">
+        <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/DragonTiger.png" alt="Dragon Tiger" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(255,0,0,0.8);border-radius:4px;padding:2px 6px;font-size:9px;color:#fff;font-weight:600"><span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s infinite"></span> LIVE</div>
+        <div style="padding:8px;background:rgba(0,0,0,0.6)"><div style="font-size:12px;font-weight:600;color:#fff">Dragon Tiger</div><div style="font-size:10px;color:rgba(255,255,255,0.5)">Pragmatic Play</div></div>
+      </div>
+      <div class="lc-card" style="position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .2s" onclick="location.href='/lobby?cat=live'">
+        <img src="https://cdn.softswiss.net/i/s3/pragmaticexternal/SweetBonanzaCandyland.png" alt="Sweet Bonanza Candyland" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block">
+        <div style="position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:4px;background:rgba(255,0,0,0.8);border-radius:4px;padding:2px 6px;font-size:9px;color:#fff;font-weight:600"><span style="width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1s infinite"></span> LIVE</div>
+        <div style="padding:8px;background:rgba(0,0,0,0.6)"><div style="font-size:12px;font-weight:600;color:#fff">Candyland</div><div style="font-size:10px;color:rgba(255,255,255,0.5)">Pragmatic Play</div></div>
+      </div>
+    </div>
+  </div>
+
   <!-- REMOVED: 3D Phone Carousel -->
   <div style="display:none">
     <div class="phone-carousel" id="phoneCarousel">
