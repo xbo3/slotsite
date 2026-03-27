@@ -301,11 +301,11 @@
 
   /* ═══ QUICK 1x3 ═══ */
   .quick{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap)}
-  .q-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 4px;background:none;border:none;border-radius:0;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+  .q-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;background:none;border:none;border-radius:0;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
   .q-item::before{content:'';position:absolute;top:0;bottom:0;width:22%;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,0.35) 45%,rgba(255,255,255,0.08) 60%,transparent 80%);filter:blur(0.6px);transform:skewX(-10deg) translateX(-120%);transition:transform .9s ease;pointer-events:none;z-index:10}
   .q-item:hover::before{transform:skewX(-10deg) translateX(510%)}
   .q-item:active{transform:scale(.93)}
-  .q-ico{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:none}
+  .q-ico{width:82px;height:82px;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;background:none}
   .q-ico img{width:100%;height:100%;object-fit:cover;border-radius:50%}
   .q-lbl{font-size:clamp(10px,2.8vw,14px);font-weight:300;color:var(--txt2)}
 
@@ -524,6 +524,15 @@
       </div>
     </div>
   </div>
+
+  <!-- Category Icons (프리즘 바로 뒤) -->
+  <div class="section"><div class="quick">
+    <div class="q-item" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer"><div class="q-ico qi1"><img src="red-cat-icons/slot.png" alt="Slots"></div><div class="q-lbl">Slots</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="q-ico qi2"><img src="red-cat-icons/casino.png" alt="Casino"></div><div class="q-lbl">Casino</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=sports'" style="cursor:pointer"><div class="q-ico qi3"><img src="red-cat-icons/sports.png" alt="Sports"></div><div class="q-lbl">Sports</div></div>
+    <div class="q-item" onclick="location.href='/lobby?cat=virtual'" style="cursor:pointer"><div class="q-ico"><img src="red-cat-icons/etc.png" alt="ETC"></div><div class="q-lbl">ETC</div></div>
+  </div></div>
+
   <!-- Live Casino (PC 6칸 / 모바일 3칸) -->
   <div class="section">
     <div class="sec-hd"><div class="sec-t"><span class="g-emoji">🃏</span> Live Casino</div><div class="sec-m" onclick="location.href='/lobby?cat=live'" style="cursor:pointer">View All ›</div></div>
@@ -640,13 +649,6 @@
     <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
     <div class="tick">🎉 <strong>alex***</strong> won <span class="amt">$8,420</span> <span class="gm">· Olympus</span></div><div class="tick">🔥 <strong>dan***</strong> won <span class="amt">$3,100</span> <span class="gm">· Bonanza</span></div><div class="tick">💎 <strong>yuki***</strong> won <span class="amt">$15,780</span> <span class="gm">· Roulette</span></div><div class="tick">🎰 <strong>max***</strong> won <span class="amt">$6,250</span> <span class="gm">· Aviator</span></div>
   </div></div></div>
-
-  <div class="section"><div class="quick">
-    <div class="q-item" onclick="location.href='/lobby?cat=slots'" style="cursor:pointer"><div class="q-ico qi1"><img src="red-cat-icons/slot.png" alt="Slots"></div><div class="q-lbl">Slots</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=live'" style="cursor:pointer"><div class="q-ico qi2"><img src="red-cat-icons/casino.png" alt="Casino"></div><div class="q-lbl">Casino</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=sports'" style="cursor:pointer"><div class="q-ico qi3"><img src="red-cat-icons/sports.png" alt="Sports"></div><div class="q-lbl">Sports</div></div>
-    <div class="q-item" onclick="location.href='/lobby?cat=virtual'" style="cursor:pointer"><div class="q-ico"><img src="red-cat-icons/etc.png" alt="ETC"></div><div class="q-lbl">ETC</div></div>
-  </div></div>
 
   <div class="section"><div class="sec-hd"><div class="sec-t">🃏 Live Casino</div><div class="sec-m">View All ›</div></div>
   <div class="lv-grid">
