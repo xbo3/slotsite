@@ -5,15 +5,16 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { formatKRW } from '@/lib/utils';
 import { useLang } from '@/hooks/useLang';
+import ProfilePanel from './ProfilePanel';
 
 const RECENT_SEARCHES = ['Gates of Olympus', 'Sweet Bonanza', 'Fortune Tiger'];
 
 export default function Header() {
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [walletOpen, setWalletOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
+  const [profilePanelOpen, setProfilePanelOpen] = useState(false);
   const [notifCount] = useState(3);
   const [onlineCount, setOnlineCount] = useState(2847);
   const { t } = useLang();
@@ -26,14 +27,12 @@ export default function Header() {
   }, []);
 
   const walletRef = useRef<HTMLDivElement>(null);
-  const profileRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (walletRef.current && !walletRef.current.contains(e.target as Node)) setWalletOpen(false);
-      if (profileRef.current && !profileRef.current.contains(e.target as Node)) setProfileOpen(false);
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) setSearchFocused(false);
     }
     document.addEventListener('mousedown', handleClick);
@@ -72,6 +71,15 @@ export default function Header() {
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </Link>
+              {/* Profile avatar — opens side panel */}
+              <button
+                onClick={() => setProfilePanelOpen(true)}
+                className="p-1.5"
+              >
+                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-light" style={{ background: 'rgba(255,255,255,0.1)', color: '#FFFFFF' }}>
+                  {nickname ? nickname.charAt(0).toUpperCase() : 'U'}
+                </div>
+              </button>
             </>
           ) : (
             <>
@@ -231,61 +239,17 @@ export default function Header() {
                 )}
               </div>
 
-              {/* Profile dropdown */}
-              <div className="relative" ref={profileRef}>
-                <button
-                  onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-white/5 transition-colors"
-                  style={{ color: '#888888' }}
-                >
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-light" style={{ background: 'rgba(255,255,255,0.1)', color: '#FFFFFF' }}>
-                    {nickname ? nickname.charAt(0).toUpperCase() : 'U'}
-                  </div>
-                  <span className="hidden lg:inline font-light">{nickname}</span>
-                  <svg className={`w-3 h-3 transition-transform ${profileOpen ? 'rotate-180' : ''}`} style={{ color: '#555555' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {profileOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-56 border rounded-xl shadow-xl z-50 overflow-hidden dropdown-enter" style={{ background: '#111111', borderColor: 'rgba(255,255,255,0.1)' }}>
-                    <div className="p-1">
-                      {[
-                        { href: '/wallet', label: t('my_wallet'), icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
-                        { href: '/wallet?tab=deposit', label: t('deposit_menu'), icon: 'M12 4v16m8-8H4' },
-                        { href: '/wallet?tab=withdraw', label: t('withdraw_menu'), icon: 'M12 20V4m-8 8h16' },
-                        { href: '/mypage/transactions', label: t('tx_history'), icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
-                        { href: '/mypage/bets', label: t('bet_history'), icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-                        { href: '/mypage/vip', label: t('vip_club'), icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z' },
-                        { href: '/mypage', label: t('global_setting'), icon: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z' },
-                      ].map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setProfileOpen(false)}
-                          className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-light hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                          style={{ color: '#888888' }}
-                        >
-                          <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                            <path d={item.icon} />
-                          </svg>
-                          {item.label}
-                        </Link>
-                      ))}
-                      <div className="my-1 mx-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }} />
-                      <button
-                        onClick={() => { setProfileOpen(false); logout(); }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 text-sm font-light rounded-lg transition-colors text-left"
-                        style={{ color: '#E53935' }}
-                      >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        {t('logout')}
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+              {/* Profile button — opens side panel */}
+              <button
+                onClick={() => setProfilePanelOpen(true)}
+                className="flex items-center gap-2 px-3 py-2 text-sm rounded-lg hover:bg-white/5 transition-colors"
+                style={{ color: '#888888' }}
+              >
+                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-light" style={{ background: 'rgba(255,255,255,0.1)', color: '#FFFFFF' }}>
+                  {nickname ? nickname.charAt(0).toUpperCase() : 'U'}
+                </div>
+                <span className="hidden lg:inline font-light">{nickname}</span>
+              </button>
             </>
           ) : (
             <>
@@ -308,6 +272,10 @@ export default function Header() {
         </div>{/* end right area */}
       </div>{/* end desktop header */}
 
+      {/* Profile Side Panel */}
+      {isLoggedIn && (
+        <ProfilePanel isOpen={profilePanelOpen} onClose={() => setProfilePanelOpen(false)} />
+      )}
     </header>
   );
 }

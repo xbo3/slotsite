@@ -164,6 +164,30 @@ export const pointsApi = {
   updateSettings: (data: any) => api.put('/admin/points/settings', data),
 };
 
+// Safe (금고)
+export const safeApi = {
+  getBalance: () => api.get('/safe/balance'),
+  deposit: (amount: number) => api.post('/safe/deposit', { amount }),
+  withdraw: (amount: number) => api.post('/safe/withdraw', { amount }),
+  getHistory: (params?: string) => api.get(`/safe/history${params ? `?${params}` : ''}`),
+};
+
+// Messages (쪽지)
+export const messageApi = {
+  getMessages: (params?: string) => api.get(`/messages${params ? `?${params}` : ''}`),
+  getMessage: (id: number) => api.get(`/messages/${id}`),
+  getUnreadCount: () => api.get('/messages/unread-count'),
+  markRead: (id: number) => api.put(`/messages/${id}/read`),
+  deleteMessage: (id: number) => api.delete(`/messages/${id}`),
+};
+
+// Promotions (프로모션)
+export const promotionApi = {
+  getPromotions: (params?: string) => api.get(`/promotions${params ? `?${params}` : ''}`),
+  getPromotion: (id: number) => api.get(`/promotions/${id}`),
+  like: (id: number) => api.post(`/promotions/${id}/like`),
+};
+
 // Backward compatibility
 export { getToken, removeToken };
 export function setToken(token: string) { if (typeof window !== 'undefined') localStorage.setItem('token', token); }

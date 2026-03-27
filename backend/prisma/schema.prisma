@@ -45,8 +45,13 @@ model User {
   game_sessions      GameSession[]
   game_rounds        GameRound[]
   admin_logs         AdminLog[]
+  safe_balance       Decimal   @default(0) @db.Decimal(18, 2)
+
   partner            Partner?  @relation("PartnerUsers", fields: [partner_id], references: [id])
   point_transactions PointTransaction[]
+  safe_transactions  SafeTransaction[]
+  sent_messages      Message[] @relation("MessageSender")
+  received_messages  Message[] @relation("MessageReceiver")
 }
 
 model Transaction {
@@ -601,4 +606,60 @@ model UserFingerprint {
   @@index([ip_address])
   @@index([canvas_hash])
   @@index([session_id])
+}
+
+// ===== 금고 시스템 =====
+
+model SafeTransaction {
+  id          Int       @id @default(autoincrement())
+  user_id     Int
+  type        String    // DEPOSIT (잔액→금고), WITHDRAW (금고→잔액)
+  amount      Decimal   @db.Decimal(18, 2)
+  balance_after Decimal @db.Decimal(18, 2)  // 금고 잔액
+  memo        String?
+  created_at  DateTime  @default(now())
+
+  user        User      @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}
+
+// ===== 쪽지 시스템 =====
+
+model Message {
+  id          Int       @id @default(autoincrement())
+  sender_id   Int?      // null = 시스템/관리자
+  receiver_id Int
+  title       String
+  content     String
+  is_read     Boolean   @default(false)
+  created_at  DateTime  @default(now())
+
+  sender      User?     @relation("MessageSender", fields: [sender_id], references: [id])
+  receiver    User      @relation("MessageReceiver", fields: [receiver_id], references: [id])
+
+  @@index([receiver_id, is_read])
+  @@index([sender_id])
+}
+
+// ===== 프로모션 시스템 =====
+
+model Promotion {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  image       String?
+  type        String    @default("general")  // welcome, deposit, cashback, freespin, vip, general
+  likes       Int       @default(0)
+  starts_at   DateTime  @default(now())
+  ends_at     DateTime?
+  is_active   Boolean   @default(true)
+  sort_order  Int       @default(0)
+  details     String?   // 상세 설명 (긴 텍스트)
+  cta_text    String?   // CTA 버튼 텍스트
+  cta_link    String?   // CTA 링크
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@index([is_active, sort_order])
 }

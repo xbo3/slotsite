@@ -230,33 +230,62 @@ function LobbyContent() {
   const { t } = useLang();
   const searchParams = useSearchParams();
   const providerParam = searchParams.get('provider');
+  const catParam = searchParams.get('cat');
+  const subParam = searchParams.get('sub');
   const isMobile = useIsMobile();
 
   // Games state: try API, fallback to DEFAULT_GAMES
   const [GAMES, setGAMES] = useState<Game[]>(DEFAULT_GAMES);
-  const [, setApiLoading] = useState(true);
+  const [apiLoaded, setApiLoaded] = useState(false);
 
-  useEffect(() => {
-    gameApi.getGames().then(res => {
-      try {
-        if (res.success && res.data && Array.isArray(res.data) && res.data.length > 0) {
-          const apiGames: Game[] = res.data.map((g: Record<string, unknown>) => ({
-            id: String(g.id || ''),
-            name: String(g.name || ''),
-            provider: String(g.provider || ''),
-            category: String(g.category || 'SLOT'),
-            rtp: Number(g.rtp) || 96,
-            isHot: Boolean(g.isHot || g.is_hot),
-            isNew: Boolean(g.isNew || g.is_new),
-            maxWin: String(g.maxWin || g.max_win || ''),
-            thumbnail: g.thumbnail ? String(g.thumbnail) : undefined,
-          }));
-          setGAMES(apiGames);
-        }
-      } catch { /* fallback to DEFAULT_GAMES */ }
-      setApiLoading(false);
-    }).catch(() => setApiLoading(false));
+  // API에서 게임 로드 함수
+  const fetchGamesFromApi = useCallback(async (params?: { provider?: string; category?: string; sub?: string; search?: string }) => {
+    try {
+      const queryParts: string[] = [];
+      if (params?.provider) queryParts.push(`provider=${encodeURIComponent(params.provider)}`);
+      if (params?.category) queryParts.push(`category=${encodeURIComponent(params.category)}`);
+      if (params?.sub) queryParts.push(`sub=${encodeURIComponent(params.sub)}`);
+      if (params?.search) queryParts.push(`search=${encodeURIComponent(params.search)}`);
+      queryParts.push('limit=200');
+
+      const queryString = queryParts.length > 0 ? queryParts.join('&') : undefined;
+      const res = await gameApi.getGames(queryString);
+
+      // API 응답 구조: { success, data } — data가 배열이거나 data.games가 배열
+      const gamesArray = res.success
+        ? (Array.isArray(res.data) ? res.data : res.data?.games && Array.isArray(res.data.games) ? res.data.games : null)
+        : null;
+
+      if (gamesArray && gamesArray.length > 0) {
+        const apiGames: Game[] = gamesArray.map((g: Record<string, unknown>) => ({
+          id: String(g.id || ''),
+          name: String(g.name || ''),
+          provider: String(g.provider || ''),
+          category: String(g.category || 'SLOT'),
+          rtp: Number(g.rtp) || 96,
+          isHot: Boolean(g.isHot || g.is_hot),
+          isNew: Boolean(g.isNew || g.is_new),
+          maxWin: String(g.maxWin || g.max_win || ''),
+          thumbnail: g.thumbnail ? String(g.thumbnail) : undefined,
+        }));
+        setGAMES(apiGames);
+        setApiLoaded(true);
+        return true;
+      }
+    } catch { /* fallback */ }
+    return false;
   }, []);
+
+  // 초기 로드: URL 파라미터 기반 API 호출
+  useEffect(() => {
+    const params: { provider?: string; category?: string; sub?: string } = {};
+    if (providerParam) params.provider = providerParam;
+    if (catParam) params.category = catParam;
+    if (subParam) params.sub = subParam;
+    fetchGamesFromApi(params).then(success => {
+      if (!success) setApiLoaded(false); // DEFAULT_GAMES 유지
+    });
+  }, [providerParam, catParam, subParam, fetchGamesFromApi]);
 
   // Multi-select providers
   const [selectedProviders, setSelectedProviders] = useState<Set<string>>(() => {
@@ -307,7 +336,7 @@ function LobbyContent() {
     if (sortBy === 'rtp') list = [...list].sort((a, b) => b.rtp - a.rtp);
     if (sortBy === 'name') list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     return list;
-  }, [selectedProviders, search, sortBy]);
+  }, [GAMES, selectedProviders, search, sortBy]);
 
   const visibleGames = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
@@ -336,6 +365,28 @@ function LobbyContent() {
   useEffect(() => {
     setVisibleCount(ITEMS_PER_PAGE);
   }, [search, sortBy]);
+
+  // API 검색 연동 (debounce 500ms) — 검색어/프로바이더 변경 시 API 재호출
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const params: { provider?: string; category?: string; sub?: string; search?: string } = {};
+      if (selectedProviders.size === 1) {
+        params.provider = Array.from(selectedProviders)[0];
+      }
+      if (catParam) params.category = catParam;
+      if (subParam) params.sub = subParam;
+      if (search.trim()) params.search = search.trim();
+
+      // 필터가 있을 때만 API 재호출 (기본 상태는 초기 로드에서 이미 처리)
+      if (params.provider || params.search) {
+        fetchGamesFromApi(params);
+      } else if (apiLoaded && !params.provider && !params.search) {
+        // 필터 해제 시 전체 목록 다시 로드
+        fetchGamesFromApi({});
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [search, selectedProviders, catParam, subParam, fetchGamesFromApi, apiLoaded]);
 
   // HOT games = isHot true + has thumbnail
   const hotGames = GAMES.filter(g => g.isHot && g.thumbnail && g.thumbnail.length > 0);

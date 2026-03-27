@@ -3,157 +3,90 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useLang } from '@/hooks/useLang';
+import { gameApi } from '@/lib/api';
 
-const CATEGORIES = [
-  {
-    id: 'slots',
-    labelKey: 'slots',
-    icon: (
-      <img src="/cat-icons/slot.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
-    href: '/lobby?cat=slots',
-    subs: [
-      { id: 'all', labelKey: 'all', href: '/lobby?cat=slots' },
-      { id: 'evolution', label: 'Evolution Gaming', href: '/lobby?provider=evolution' },
-      { id: 'boongo', label: 'Booongo', href: '/lobby?provider=boongo' },
-      { id: 'microgaming', label: 'Microgaming', href: '/lobby?provider=microgaming' },
-      { id: 'sexygaming', label: 'Sexy Gaming', href: '/lobby?provider=sexygaming' },
-      { id: 'pgsoft', label: 'PG Soft', href: '/lobby?provider=pgsoft' },
-      { id: 'hacksaw', label: 'Hacksaw', href: '/lobby?provider=hacksaw' },
-      { id: 'nolimit', label: 'NoLimitCity', href: '/lobby?provider=nolimit' },
-      { id: 'advantplay', label: 'AdvantPlay', href: '/lobby?provider=advantplay' },
-      { id: 'redtiger', label: 'Red Tiger', href: '/lobby?provider=redtiger' },
-      { id: 'fatpanda', label: 'Fat Panda', href: '/lobby?provider=fatpanda' },
-      { id: 'habanero', label: 'Habanero', href: '/lobby?provider=habanero' },
-      { id: 'jdb', label: 'JDB', href: '/lobby?provider=jdb' },
-      { id: 'netent', label: 'NetEnt', href: '/lobby?provider=netent' },
-      { id: 'jili', label: 'JILI', href: '/lobby?provider=jili' },
-      { id: 'spadegaming', label: 'Spadegaming', href: '/lobby?provider=spadegaming' },
-      { id: 'skywind', label: 'Skywind', href: '/lobby?provider=skywind' },
-      { id: 'btg', label: 'Big Time Gaming', href: '/lobby?provider=btg' },
-      { id: 'fachai', label: 'FA CHAI', href: '/lobby?provider=fachai' },
-      { id: 'pragmatic', label: 'Pragmatic Play', href: '/lobby?provider=pragmatic' },
-      { id: '1spin4win', label: '1Spin4Win', href: '/lobby?provider=1spin4win' },
-      { id: 'endorphina', label: 'Endorphina', href: '/lobby?provider=endorphina' },
-      { id: 'bgaming', label: 'BGaming', href: '/lobby?provider=bgaming' },
-      { id: 'fazi', label: 'Fazi', href: '/lobby?provider=fazi' },
-      { id: 'penguinking', label: 'Penguin King', href: '/lobby?provider=penguinking' },
-      { id: 'inout', label: 'InOut', href: '/lobby?provider=inout' },
-      { id: 'booming', label: 'Booming', href: '/lobby?provider=booming' },
-      { id: 'rubyplay', label: 'Ruby Play', href: '/lobby?provider=rubyplay' },
-      { id: 'onlyplay', label: 'OnlyPlay', href: '/lobby?provider=onlyplay' },
-      { id: 'relaxgaming', label: 'Relax Gaming', href: '/lobby?provider=relaxgaming' },
-      { id: 'backseat', label: 'Backseat', href: '/lobby?provider=backseat' },
-      { id: 'funtagaming', label: 'FunTa Gaming', href: '/lobby?provider=funtagaming' },
-      { id: 'amigogaming', label: 'Amigo Gaming', href: '/lobby?provider=amigogaming' },
-      { id: 'novomatic', label: 'Novomatic', href: '/lobby?provider=novomatic' },
-      { id: 'platipus', label: 'Platipus', href: '/lobby?provider=platipus' },
-      { id: 'betsoft', label: 'BetSoft', href: '/lobby?provider=betsoft' },
-      { id: 'thunderkick', label: 'Thunderkick', href: '/lobby?provider=thunderkick' },
-      { id: 'belatra', label: 'Belatra', href: '/lobby?provider=belatra' },
-      { id: 'avatarux', label: 'AvatarUX', href: '/lobby?provider=avatarux' },
-      { id: 'popokgaming', label: 'PopOk Gaming', href: '/lobby?provider=popokgaming' },
-      { id: 'smartsoft', label: 'SmartSoft Gaming', href: '/lobby?provider=smartsoft' },
-      { id: 'bullshark', label: 'Bullshark', href: '/lobby?provider=bullshark' },
-      { id: 'pegasus', label: 'Pegasus', href: '/lobby?provider=pegasus' },
-      { id: 'spinomenal', label: 'Spinomenal', href: '/lobby?provider=spinomenal' },
-      { id: 'quickspin', label: 'Quickspin', href: '/lobby?provider=quickspin' },
-      { id: '1x2gaming', label: '1x2 Gaming', href: '/lobby?provider=1x2gaming' },
-      { id: 'slotmill', label: 'Slotmill', href: '/lobby?provider=slotmill' },
-      { id: 'popiplay', label: 'Popiplay', href: '/lobby?provider=popiplay' },
-      { id: 'gameart', label: 'GameArt', href: '/lobby?provider=gameart' },
-      { id: 'tomhorn', label: 'Tom Horn Gaming', href: '/lobby?provider=tomhorn' },
-      { id: 'nownow', label: 'NowNow Gaming', href: '/lobby?provider=nownow' },
-      { id: 'tvbet', label: 'TVBET', href: '/lobby?provider=tvbet' },
-      { id: 'redrake', label: 'RedRake', href: '/lobby?provider=redrake' },
-      { id: 'thehood', label: 'The Hood', href: '/lobby?provider=thehood' },
-      { id: 'spribe', label: 'Spribe', href: '/lobby?provider=spribe' },
-      { id: 'jaderabbit', label: 'Jade Rabbit Studio', href: '/lobby?provider=jaderabbit' },
-      { id: 'bfgames', label: 'BF Games', href: '/lobby?provider=bfgames' },
-      { id: 'taparoo', label: 'Tap-A-Roo', href: '/lobby?provider=taparoo' },
-      { id: 'galaxsys', label: 'Galaxsys', href: '/lobby?provider=galaxsys' },
-      { id: 'wazdan', label: 'Wazdan', href: '/lobby?provider=wazdan' },
-      { id: 'trustygaming', label: 'Trusty Gaming', href: '/lobby?provider=trustygaming' },
-      { id: 'shadylady', label: 'Shady Lady', href: '/lobby?provider=shadylady' },
-      { id: 'atsupachi', label: 'Atsupachi Gaming', href: '/lobby?provider=atsupachi' },
-      { id: 'blueprint', label: 'Blueprint', href: '/lobby?provider=blueprint' },
-      { id: 'jdbgaming', label: 'JDB Gaming', href: '/lobby?provider=jdbgaming' },
-      { id: 'ezugi', label: 'Ezugi', href: '/lobby?provider=ezugi' },
-      { id: 'spinmatic', label: 'Spinmatic', href: '/lobby?provider=spinmatic' },
-      { id: 'rtg', label: 'Real Time Gaming', href: '/lobby?provider=rtg' },
-      { id: 'caleta', label: 'Caleta Gaming', href: '/lobby?provider=caleta' },
-      { id: 'nekogames', label: 'Neko Games', href: '/lobby?provider=nekogames' },
-      { id: 'waligames', label: 'WALI GAMES', href: '/lobby?provider=waligames' },
-      { id: 'winfinity', label: 'Winfinity', href: '/lobby?provider=winfinity' },
-      { id: 'vivogaming', label: 'Vivo Gaming', href: '/lobby?provider=vivogaming' },
-      { id: 'voltent', label: 'VoltEnt', href: '/lobby?provider=voltent' },
-      { id: 'sneakyslots', label: 'Sneaky Slots', href: '/lobby?provider=sneakyslots' },
-    ],
-  },
-  {
-    id: 'casino',
-    labelKey: 'casino',
-    icon: (
-      <img src="/cat-icons/casino.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
-    href: '/lobby?cat=live',
-    subs: [
-      { id: 'all', labelKey: 'all', href: '/lobby?cat=live' },
-      { id: 'baccarat', label: 'Baccarat', href: '/lobby?cat=live&sub=baccarat' },
-      { id: 'blackjack', label: 'Blackjack', href: '/lobby?cat=live&sub=blackjack' },
-      { id: 'roulette', label: 'Roulette', href: '/lobby?cat=live&sub=roulette' },
-      { id: 'gameshow', label: 'Game Show', href: '/lobby?cat=live&sub=gameshow' },
-      { id: 'poker', label: 'Poker', href: '/lobby?cat=table&sub=poker' },
-    ],
-  },
+// 정적 카테고리 (게임 외 네비게이션)
+const STATIC_CATEGORIES = [
   {
     id: 'sports',
     labelKey: 'sports',
-    icon: (
-      <img src="/cat-icons/sports.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
+    icon: (<img src="/cat-icons/sports.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
     href: '/lobby?cat=sports',
-    subs: [],
+    subs: [
+      { id: 'all', labelKey: 'all', href: '/lobby?cat=sports' },
+      { id: 'football', label: 'Football', href: '/lobby?cat=sports&sub=football' },
+      { id: 'basketball', label: 'Basketball', href: '/lobby?cat=sports&sub=basketball' },
+      { id: 'tennis', label: 'Tennis', href: '/lobby?cat=sports&sub=tennis' },
+      { id: 'baseball', label: 'Baseball', href: '/lobby?cat=sports&sub=baseball' },
+      { id: 'esports', label: 'E-Sports', href: '/lobby?cat=sports&sub=esports' },
+      { id: 'mma', label: 'MMA', href: '/lobby?cat=sports&sub=mma' },
+      { id: 'volleyball', label: 'Volleyball', href: '/lobby?cat=sports&sub=volleyball' },
+      { id: 'hockey', label: 'Hockey', href: '/lobby?cat=sports&sub=hockey' },
+    ] as { id: string; labelKey?: string; label?: string; href: string }[],
   },
   {
     id: 'promotion',
     labelKey: 'promotion',
-    icon: (
-      <img src="/cat-icons/프로모션.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
-    href: '/mypage/coupons',
-    subs: [],
+    icon: (<img src="/cat-icons/프로모션.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
+    href: '/promotions',
+    subs: [
+      { id: 'all', labelKey: 'all', href: '/promotions' },
+      { id: 'welcome', label: 'Welcome Bonus', href: '/promotions?type=welcome' },
+      { id: 'deposit', label: 'Deposit Bonus', href: '/promotions?type=deposit' },
+      { id: 'cashback', label: 'Cashback', href: '/promotions?type=cashback' },
+      { id: 'freespin', label: 'Free Spins', href: '/promotions?type=freespin' },
+      { id: 'vip', label: 'VIP Exclusive', href: '/promotions?type=vip' },
+    ] as { id: string; labelKey?: string; label?: string; href: string }[],
   },
   {
     id: 'bonus',
     labelKey: 'bonus',
-    icon: (
-      <img src="/cat-icons/보너스쿠폰.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
+    icon: (<img src="/cat-icons/보너스쿠폰.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
     href: '/mypage/coupons',
-    subs: [],
+    subs: [
+      { id: 'all', labelKey: 'all', href: '/mypage/coupons' },
+      { id: 'active', label: 'Active Bonus', href: '/mypage/coupons?tab=active' },
+      { id: 'history', label: 'Bonus History', href: '/mypage/coupons?tab=history' },
+      { id: 'coupon', label: 'Coupon Code', href: '/mypage/coupons?tab=coupon' },
+    ] as { id: string; labelKey?: string; label?: string; href: string }[],
   },
   {
     id: 'partner',
     labelKey: 'partner',
-    icon: (
-      <img src="/cat-icons/파트너스프로그램.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
-    href: '/support',
-    subs: [],
+    icon: (<img src="/cat-icons/파트너스프로그램.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
+    href: '/partners',
+    subs: [
+      { id: 'all', labelKey: 'all', href: '/partners' },
+      { id: 'commission', label: 'Commission', href: '/partners#commission' },
+      { id: 'sub-partner', label: 'Sub-Partner', href: '/partners#sub-partner' },
+      { id: 'dashboard', label: 'Dashboard', href: '/partners#dashboard' },
+    ] as { id: string; labelKey?: string; label?: string; href: string }[],
   },
   {
     id: 'support247',
     labelKey: 'support_247',
-    icon: (
-      <img src="/cat-icons/247.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />
-    ),
+    icon: (<img src="/cat-icons/247.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
     href: '/support',
-    subs: [],
+    subs: [
+      { id: 'all', labelKey: 'all', href: '/support' },
+      { id: 'livechat', label: 'Live Chat', href: '/support?tab=chat' },
+      { id: 'faq', label: 'FAQ', href: '/support?tab=faq' },
+      { id: 'telegram', label: 'Telegram', href: '/support?tab=telegram' },
+    ] as { id: string; labelKey?: string; label?: string; href: string }[],
   },
+];
+
+// 카지노(라이브) 고정 하위분류
+const CASINO_SUBS = [
+  { id: 'all', labelKey: 'all', href: '/lobby?cat=live' },
+  { id: 'baccarat', label: 'Baccarat', href: '/lobby?cat=live&sub=baccarat' },
+  { id: 'blackjack', label: 'Blackjack', href: '/lobby?cat=live&sub=blackjack' },
+  { id: 'roulette', label: 'Roulette', href: '/lobby?cat=live&sub=roulette' },
+  { id: 'gameshow', label: 'Game Show', href: '/lobby?cat=live&sub=gameshow' },
+  { id: 'poker', label: 'Poker', href: '/lobby?cat=table&sub=poker' },
 ];
 
 export default function Sidebar() {
@@ -162,6 +95,54 @@ export default function Sidebar() {
   const [expandedCat, setExpandedCat] = useState<string | null>(null);
   const [activeSub, setActiveSub] = useState<string | null>(null);
   const { t, lang, setLang } = useLang();
+  const [categories, setCategories] = useState<typeof STATIC_CATEGORIES>([]);
+
+  // API에서 프로바이더 로딩 → 슬롯 하위분류 동적 생성
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      let slotSubs: { id: string; labelKey?: string; label?: string; href: string }[] = [
+        { id: 'all', labelKey: 'all', href: '/lobby?cat=slots' },
+      ];
+
+      try {
+        const res = await gameApi.getProviders();
+        if (res.success && Array.isArray(res.data)) {
+          const providerSubs = res.data.map((p: { name: string; game_count: number }) => ({
+            id: p.name.toLowerCase().replace(/[^a-z0-9]/g, ''),
+            label: `${p.name} (${p.game_count})`,
+            href: `/lobby?provider=${encodeURIComponent(p.name)}`,
+          }));
+          slotSubs = [...slotSubs, ...providerSubs];
+        }
+      } catch {
+        // API 실패 시 빈 하위분류
+      }
+
+      if (!mounted) return;
+
+      const dynamicCats = [
+        {
+          id: 'slots',
+          labelKey: 'slots',
+          icon: (<img src="/cat-icons/slot.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
+          href: '/lobby?cat=slots',
+          subs: slotSubs,
+        },
+        {
+          id: 'casino',
+          labelKey: 'casino',
+          icon: (<img src="/cat-icons/casino.png" alt="" style={{width:28,height:28,objectFit:'contain'}} />),
+          href: '/lobby?cat=live',
+          subs: CASINO_SUBS,
+        },
+        ...STATIC_CATEGORIES,
+      ];
+
+      setCategories(dynamicCats);
+    })();
+    return () => { mounted = false; };
+  }, []);
 
   const switchLang = (newLang: 'ko' | 'en') => {
     if (lang === newLang) return;
@@ -194,7 +175,7 @@ export default function Sidebar() {
       <div className="flex-1 overflow-y-auto py-4 px-2">
         {/* Categories with subcategory accordion */}
         <div className="space-y-1">
-          {CATEGORIES.map(cat => {
+          {categories.map(cat => {
             const isExpanded = expandedCat === cat.id;
             return (
               <div key={cat.id}>

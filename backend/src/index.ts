@@ -24,6 +24,9 @@ import webhookRouter from './routes/webhook';
 import i18nRouter from './routes/i18n';
 import partnerRouter from './routes/partner';
 import pointsRouter from './routes/points';
+import safeRouter from './routes/safe';
+import messagesRouter from './routes/messages';
+import promotionsRouter from './routes/promotions';
 
 const app = express();
 
@@ -58,6 +61,9 @@ app.use('/api/webhook', webhookRouter);
 app.use('/api/i18n', i18nRouter);
 app.use('/api/admin', partnerRouter);
 app.use('/api/admin', pointsRouter);
+app.use('/api/safe', safeRouter);
+app.use('/api/messages', messagesRouter);
+app.use('/api/promotions', promotionsRouter);
 
 // 헬스체크
 app.get('/health', (_req: Request, res: Response) => {

@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { DEMO_GAMES } from '@/lib/gameData';
+import { gameApi } from '@/lib/api';
 import { useLang } from '@/hooks/useLang';
 import { useAuth } from '@/context/AuthContext';
 
@@ -11,16 +12,16 @@ import { useAuth } from '@/context/AuthContext';
 // PROVIDER_COLORS — kept for potential future use in game cards
 // const PROVIDER_COLORS: Record<string, { from: string; to: string; pattern: string }> = { ... };
 
-// 인기 게임 = Nolimit City HOT 게임 우선
-const NLC_HOT = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isHot && g.thumbnail).slice(0, 8);
-const TOP_GAMES = NLC_HOT.map(g => ({
+// 인기 게임 폴백 = Nolimit City HOT 게임 우선
+const FALLBACK_NLC_HOT = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isHot && g.thumbnail).slice(0, 8);
+const FALLBACK_TOP_GAMES = FALLBACK_NLC_HOT.map(g => ({
   id: g.id, name: g.name, provider: g.provider, maxWin: g.maxWin, thumbnail: g.thumbnail, rtp: g.rtp,
 }));
 
-// 신규 게임 = Nolimit City 신규 우선 + PG Soft 신규 보충
-const NLC_NEW = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isNew && g.thumbnail);
-const PG_NEW = DEMO_GAMES.filter(g => g.provider === 'PG Soft' && g.isNew && g.thumbnail);
-const NEW_GAMES = [...NLC_NEW, ...PG_NEW].slice(0, 8).map(g => ({
+// 신규 게임 폴백 = Nolimit City 신규 우선 + PG Soft 신규 보충
+const FALLBACK_NLC_NEW = DEMO_GAMES.filter(g => g.provider === 'Nolimit City' && g.isNew && g.thumbnail);
+const FALLBACK_PG_NEW = DEMO_GAMES.filter(g => g.provider === 'PG Soft' && g.isNew && g.thumbnail);
+const FALLBACK_NEW_GAMES = [...FALLBACK_NLC_NEW, ...FALLBACK_PG_NEW].slice(0, 8).map(g => ({
   id: g.id, name: g.name, provider: g.provider, maxWin: g.maxWin, thumbnail: g.thumbnail, rtp: g.rtp,
 }));
 
@@ -151,6 +152,50 @@ export default function Home() {
   const { t } = useLang();
   const { user } = useAuth();
   const balance = user ? Number(user.balance) || 0 : 14287.50; // demo fallback
+
+  // Game data state (API -> fallback to DEMO_GAMES)
+  const [TOP_GAMES, setTopGames] = useState(FALLBACK_TOP_GAMES);
+  const [NEW_GAMES, setNewGames] = useState(FALLBACK_NEW_GAMES);
+
+  useEffect(() => {
+    // API에서 게임 데이터 로드, 실패 시 기존 DEMO_GAMES 폴백
+    const loadGames = async () => {
+      try {
+        // 인기 게임 (featured)
+        const featuredRes = await gameApi.getGames('featured=true&limit=8&sort=popular');
+        if (featuredRes.success && featuredRes.data?.games?.length > 0) {
+          const mapped = featuredRes.data.games.map((g: Record<string, unknown>) => ({
+            id: g.id ?? g.slug ?? '',
+            name: String(g.name || ''),
+            provider: String(g.provider || ''),
+            maxWin: String(g.maxWin || g.max_win || ''),
+            thumbnail: g.thumbnail ? String(g.thumbnail) : undefined,
+            rtp: g.rtp ? String(g.rtp) : undefined,
+          }));
+          setTopGames(mapped);
+        }
+      } catch { /* fallback to FALLBACK_TOP_GAMES */ }
+
+      try {
+        // 신규 게임
+        const newRes = await gameApi.getGames('is_new=true&limit=8&sort=newest');
+        if (newRes.success && newRes.data?.games?.length > 0) {
+          const mapped = newRes.data.games.map((g: Record<string, unknown>) => ({
+            id: g.id ?? g.slug ?? '',
+            name: String(g.name || ''),
+            provider: String(g.provider || ''),
+            maxWin: String(g.maxWin || g.max_win || ''),
+            thumbnail: g.thumbnail ? String(g.thumbnail) : undefined,
+            rtp: g.rtp ? String(g.rtp) : undefined,
+          }));
+          setNewGames(mapped);
+        }
+      } catch { /* fallback to FALLBACK_NEW_GAMES */ }
+    };
+
+    loadGames();
+  }, []);
+
   // 3D Carousel
   const [carouselAngle, setCarouselAngle] = useState(0);
   const [carouselPaused, setCarouselPaused] = useState(false);

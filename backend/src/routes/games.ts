@@ -680,4 +680,65 @@ router.get('/admin/games/stats', authMiddleware, adminMiddleware, async (req: Re
   }
 });
 
+// POST /api/games/admin/games/seed — 데모 게임 시드 (DB 비었을 때 사용)
+router.post('/admin/games/seed', authMiddleware, adminMiddleware, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const count = await prisma.game.count();
+    if (count > 0) {
+      res.json(successResponse({ message: `이미 ${count}개 게임이 있습니다. 시드를 건너뜁니다.` }));
+      return;
+    }
+
+    const demoGames = [
+      // PG Soft
+      { name: 'Flirting Scholar', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/d078f748-944f-46c1-89aa-d39e73fe1b7e.jpg', rtp: new Prisma.Decimal('96.75'), is_featured: true, is_new: false, sort_order: 100 },
+      { name: 'Ninja vs Samurai', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/e2133b02-1d3c-49bd-b7c7-b880beecc0b3.jpg', rtp: new Prisma.Decimal('96.50'), is_featured: true, is_new: false, sort_order: 99 },
+      { name: 'Muay Thai Champion', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/786eba8c-64ff-4a74-80dc-307b9e6fee6a.jpg', rtp: new Prisma.Decimal('96.80'), is_featured: false, is_new: false, sort_order: 98 },
+      { name: 'Leprechaun Riches', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/57d40efb-9c97-4c1b-977c-921a5f6173b8.jpg', rtp: new Prisma.Decimal('96.40'), is_featured: true, is_new: false, sort_order: 97 },
+      { name: 'Dragon Legend', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/fbc99b9e-580b-49bd-9fdc-97741fe983de.png', rtp: new Prisma.Decimal('96.70'), is_featured: false, is_new: false, sort_order: 96 },
+      { name: 'Mayan Destiny', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/5799539d-0d10-43ae-a16f-fb81c4197328.jpg', rtp: new Prisma.Decimal('96.55'), is_featured: false, is_new: true, sort_order: 95 },
+      { name: 'Inferno Mayhem', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/8ddbc4f9-891c-4ede-a003-dfc8c0e5f721.webp', rtp: new Prisma.Decimal('96.60'), is_featured: true, is_new: true, sort_order: 94 },
+      { name: 'Fortune Horse', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/c94741fa-7df8-46d3-8841-8b3e6fa8baa3.jpg', rtp: new Prisma.Decimal('96.45'), is_featured: false, is_new: false, sort_order: 93 },
+      { name: 'Dragon Hatch 2', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/d6db46aa-ed58-4289-ac02-dfd9bfc7e0ca.jpg', rtp: new Prisma.Decimal('96.80'), is_featured: true, is_new: true, sort_order: 92 },
+      { name: 'Fortune Rabbit', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/779f47d5-d1ea-47a0-a68f-50cffb587564.jpg', rtp: new Prisma.Decimal('96.70'), is_featured: true, is_new: false, sort_order: 91 },
+      { name: 'Fortune Tiger', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/70aab544-e9aa-4451-9d5c-e2d6dcc85a1c.jpg', rtp: new Prisma.Decimal('96.80'), is_featured: true, is_new: false, sort_order: 90 },
+      { name: 'Fortune Dragon', provider: 'PG Soft', category: 'slots', thumbnail: 'https://www.pgsoft.com/uploads/Games/Images/72f8d537-77e5-4506-803a-63e7f58d4fec.png', rtp: new Prisma.Decimal('96.60'), is_featured: true, is_new: false, sort_order: 89 },
+      // Nolimit City
+      { name: 'Mental 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://assets.nolimitcity.com/games/mental-2/thumb/mental-2.jpg', rtp: new Prisma.Decimal('96.08'), is_featured: true, is_new: true, sort_order: 88 },
+      { name: 'Fire In The Hole 3', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://assets.nolimitcity.com/games/fire-in-the-hole-3/thumb/fire-in-the-hole-3.jpg', rtp: new Prisma.Decimal('96.06'), is_featured: true, is_new: false, sort_order: 87 },
+      { name: 'Catfish Hunters', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://assets.nolimitcity.com/games/catfish-hunters/thumb/catfish-hunters.jpg', rtp: new Prisma.Decimal('96.05'), is_featured: true, is_new: false, sort_order: 86 },
+      { name: 'Duck Hunters', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://assets.nolimitcity.com/games/duck-hunters/thumb/duck-hunters.jpg', rtp: new Prisma.Decimal('96.04'), is_featured: true, is_new: true, sort_order: 85 },
+      { name: 'Tombstone RIP', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://assets.nolimitcity.com/games/tombstone-rip/thumb/tombstone-rip.jpg', rtp: new Prisma.Decimal('96.08'), is_featured: true, is_new: false, sort_order: 84 },
+      { name: 'San Quentin 2', provider: 'Nolimit City', category: 'slots', thumbnail: 'https://assets.nolimitcity.com/games/san-quentin-2/thumb/san-quentin-2.jpg', rtp: new Prisma.Decimal('96.03'), is_featured: true, is_new: false, sort_order: 83 },
+      // Pragmatic Play
+      { name: 'Gates of Olympus', provider: 'Pragmatic Play', category: 'slots', thumbnail: 'https://www.softswiss.com/wp-content/uploads/2022/03/gates-of-olympus.webp', rtp: new Prisma.Decimal('96.50'), is_featured: true, is_new: false, sort_order: 82 },
+      { name: 'Sweet Bonanza', provider: 'Pragmatic Play', category: 'slots', thumbnail: 'https://www.softswiss.com/wp-content/uploads/2022/03/sweet-bonanza.webp', rtp: new Prisma.Decimal('96.48'), is_featured: true, is_new: false, sort_order: 81 },
+      { name: 'Sugar Rush', provider: 'Pragmatic Play', category: 'slots', thumbnail: 'https://www.softswiss.com/wp-content/uploads/2022/10/sugar-rush.webp', rtp: new Prisma.Decimal('96.50'), is_featured: true, is_new: false, sort_order: 80 },
+      { name: 'Starlight Princess', provider: 'Pragmatic Play', category: 'slots', thumbnail: 'https://www.softswiss.com/wp-content/uploads/2022/03/starlight-princess.webp', rtp: new Prisma.Decimal('96.50'), is_featured: true, is_new: false, sort_order: 79 },
+      // Evolution (Live Casino)
+      { name: 'Lightning Roulette', provider: 'Evolution', category: 'live', thumbnail: 'https://static.evolved.com/content/2023/07/lightning-roulette-thumb.jpg', rtp: new Prisma.Decimal('97.30'), is_featured: true, is_new: false, sort_order: 78 },
+      { name: 'Crazy Time', provider: 'Evolution', category: 'live', thumbnail: 'https://static.evolved.com/content/2023/07/crazy-time-thumb.jpg', rtp: new Prisma.Decimal('96.08'), is_featured: true, is_new: false, sort_order: 77 },
+      { name: 'Lightning Baccarat', provider: 'Evolution', category: 'live', thumbnail: 'https://static.evolved.com/content/2023/07/lightning-baccarat-thumb.jpg', rtp: new Prisma.Decimal('98.76'), is_featured: true, is_new: false, sort_order: 76 },
+      { name: 'Blackjack VIP', provider: 'Evolution', category: 'live', thumbnail: 'https://static.evolved.com/content/2023/07/blackjack-vip-thumb.jpg', rtp: new Prisma.Decimal('99.50'), is_featured: true, is_new: false, sort_order: 75 },
+      { name: 'Dream Catcher', provider: 'Evolution', category: 'live', thumbnail: 'https://static.evolved.com/content/2023/07/dream-catcher-thumb.jpg', rtp: new Prisma.Decimal('96.58'), is_featured: false, is_new: false, sort_order: 74 },
+      { name: 'Monopoly Live', provider: 'Evolution', category: 'live', thumbnail: 'https://static.evolved.com/content/2023/07/monopoly-live-thumb.jpg', rtp: new Prisma.Decimal('96.23'), is_featured: true, is_new: false, sort_order: 73 },
+      // Hacksaw Gaming
+      { name: 'Wanted Dead or a Wild', provider: 'Hacksaw Gaming', category: 'slots', thumbnail: 'https://static.hacksawgaming.com/games/wanted-dead-or-a-wild/thumb.jpg', rtp: new Prisma.Decimal('96.38'), is_featured: true, is_new: false, sort_order: 72 },
+      { name: 'Chaos Crew', provider: 'Hacksaw Gaming', category: 'slots', thumbnail: 'https://static.hacksawgaming.com/games/chaos-crew/thumb.jpg', rtp: new Prisma.Decimal('96.35'), is_featured: false, is_new: false, sort_order: 71 },
+      // Crash games
+      { name: 'Aviator', provider: 'Spribe', category: 'crash', thumbnail: 'https://static.spribe.co/games/aviator/thumb.jpg', rtp: new Prisma.Decimal('97.00'), is_featured: true, is_new: false, sort_order: 70 },
+      { name: 'Mines', provider: 'Spribe', category: 'crash', thumbnail: 'https://static.spribe.co/games/mines/thumb.jpg', rtp: new Prisma.Decimal('97.00'), is_featured: false, is_new: false, sort_order: 69 },
+      // Table games
+      { name: 'European Roulette', provider: 'NetEnt', category: 'table', thumbnail: 'https://www.netent.com/wp-content/uploads/2022/11/european-roulette-thumb.webp', rtp: new Prisma.Decimal('97.30'), is_featured: false, is_new: false, sort_order: 68 },
+      { name: 'Blackjack Classic', provider: 'NetEnt', category: 'table', thumbnail: 'https://www.netent.com/wp-content/uploads/2022/11/blackjack-classic-thumb.webp', rtp: new Prisma.Decimal('99.50'), is_featured: false, is_new: false, sort_order: 67 },
+    ];
+
+    const result = await prisma.game.createMany({ data: demoGames });
+    res.status(201).json(successResponse({ seeded: result.count, message: `${result.count}개 데모 게임이 시드되었습니다` }));
+  } catch (err) {
+    console.error('Seed games error:', err);
+    res.status(500).json(errorResponse('시드 오류가 발생했습니다'));
+  }
+});
+
 export default router;
