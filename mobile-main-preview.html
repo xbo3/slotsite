@@ -1944,18 +1944,13 @@ body.no-scroll { overflow: hidden; }
   .status-bar-mobile { display: none; }
   .pc-footer { display: block; }
 
-  /* -- PC wrapper: max-width + center -- */
+  /* -- PC wrapper: 풀와이드 -- */
   .pc-container {
-    max-width: 1200px;
-    margin: 0 auto;
     padding: 0 24px;
   }
 
   .top-nav {
     padding: 12px 24px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
     justify-content: flex-start;
     gap: 24px;
     position: relative;
@@ -1996,7 +1991,7 @@ body.no-scroll { overflow: hidden; }
   .nav-balance-pc .currency { color: var(--text-sec); font-size: 12px; font-weight: 400; }
 
   /* -- Hero -- */
-  .hero-wrapper { padding: 0; margin-bottom: 28px; max-width: 100%; margin-left: 0; margin-right: 0; }
+  .hero-wrapper { padding: 0 24px; margin-bottom: 28px; }
 
   .hero {
     aspect-ratio: 16 / 10;
@@ -2026,9 +2021,6 @@ body.no-scroll { overflow: hidden; }
     gap: 16px;
     padding: 0 24px;
     margin-bottom: 32px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .live-casino-card {
@@ -2040,9 +2032,6 @@ body.no-scroll { overflow: hidden; }
   /* -- Quiz card PC -- */
   .quiz-card {
     margin: 0 24px 20px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
     padding: 20px 24px;
   }
 
@@ -2053,9 +2042,6 @@ body.no-scroll { overflow: hidden; }
   .cat-4btn {
     padding: 0 24px;
     margin-bottom: 24px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
     gap: 12px;
   }
 
@@ -2074,18 +2060,12 @@ body.no-scroll { overflow: hidden; }
     margin: 0 24px 28px;
     padding: 12px 20px;
     border-radius: 14px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   /* -- Section headers -- */
   .section-header {
     padding: 0 24px;
     margin-bottom: 16px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .section-title { font-size: 20px; }
@@ -2094,9 +2074,6 @@ body.no-scroll { overflow: hidden; }
   .game-scroll {
     padding: 0 24px;
     margin-bottom: 32px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
     /* PC: 가로 스크롤 → 그리드로 */
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -2118,21 +2095,15 @@ body.no-scroll { overflow: hidden; }
     padding: 0 24px;
     gap: 14px;
     margin-bottom: 32px;
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .game-card-grid .game-thumb { height: 180px; }
 
   /* -- Promo: 배너와 동일 좌우폭 -- */
   .promo-scroll {
-    padding: 0;
+    padding: 0 24px;
     gap: 14px;
     margin-bottom: 32px;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
     /* PC: 가로 스크롤 → 3열 그리드 */
     display: grid;
     grid-template-columns: repeat(3, 1fr);
