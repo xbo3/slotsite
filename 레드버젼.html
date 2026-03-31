@@ -105,7 +105,7 @@
   .shine-hover:hover::before{transform:skewX(-10deg) translateX(510%)}
 
   /* ═══ PROMO PRISM — 삼각 프리즘 3D 회전 ═══ */
-  .prism-wrap{perspective:1200px;height:clamp(130px,30vw,200px);overflow:hidden;position:relative;border-radius:16px}
+  .prism-wrap{perspective:1200px;height:clamp(156px,36vw,240px);overflow:hidden;position:relative;border-radius:16px}
   .prism{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(0.4,0,0.2,1)}
   .prism-face{position:absolute;top:5%;left:0;right:0;bottom:5%;backface-visibility:hidden;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}
   .prism-face:nth-child(1){transform:rotateX(0deg) translateZ(var(--pz))}
@@ -431,8 +431,8 @@
     .quick{grid-template-columns:repeat(4,1fr)}
     .promo-sc{grid-template-columns:1fr 1fr}
 
-    /* PC: 프리즘 높이 */
-    .prism-wrap{height:220px}
+    /* PC: 프리즘 높이 — 반응형 비율 유지 */
+    .prism-wrap{height:clamp(200px,18vw,360px)}
     /* PC: 라이브 카지노 6칸 */
     .lc-grid{grid-template-columns:repeat(6,1fr)!important}
 
@@ -484,7 +484,7 @@
 
   <!-- 메인 배너 이미지 -->
   <div class="section" style="margin-bottom:12px">
-    <img src="banners/레드배너.png" alt="Banner" style="width:100%;height:clamp(200px,30vw,400px);border-radius:16px;object-fit:cover;object-position:center center;display:block">
+    <img src="banners/레드배너.png" alt="Banner" style="width:100%;height:clamp(200px,30vw,520px);border-radius:16px;object-fit:cover;object-position:center top;display:block">
   </div>
 
   <!-- Promotions: 삼각 프리즘 3D 회전 배너 -->
